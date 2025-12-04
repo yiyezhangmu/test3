@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.store.GeoAddressInfoMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.store.GeoAddressInfoDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="longitude_latitude" jdbcType="VARCHAR" property="longitudeLatitude" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
+    <result column="county" jdbcType="VARCHAR" property="county" />
+    <result column="adcode" jdbcType="VARCHAR" property="adcode" />
+    <result column="township" jdbcType="VARCHAR" property="township" />
+    <result column="towncode" jdbcType="VARCHAR" property="towncode" />
+    <result column="formatted_address" jdbcType="VARCHAR" property="formattedAddress" />
+    <result column="other_info" jdbcType="VARCHAR" property="otherInfo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, longitude_latitude, province, city, city_code, county, adcode, township, towncode, formatted_address, other_info
+  </sql>
+
+  <update id="insertOrUpdate">
+    insert into geo_address_info (longitude_latitude, province, city, city_code, county, adcode, township, towncode, formatted_address, other_info)
+    values (#{record.longitudeLatitude}, #{record.province}, #{record.city}, #{record.cityCode}, #{record.county}, #{record.adcode}, #{record.township}, #{record.towncode}, #{record.formattedAddress}, #{record.otherInfo})
+    on duplicate key update
+      province = #{record.province},
+      city = #{record.city},
+      city_code = #{record.cityCode},
+      county = #{record.county},
+      adcode = #{record.adcode},
+      township = #{record.township},
+      towncode = #{record.towncode},
+      formatted_address = #{record.formattedAddress},
+      other_info = #{record.otherInfo}
+  </update>
+
+  <select id="getAddressByLongitudeLatitude" resultType="String">
+    select formatted_address from geo_address_info where longitude_latitude = #{longitudeLatitude}
+  </select>
+
+</mapper>

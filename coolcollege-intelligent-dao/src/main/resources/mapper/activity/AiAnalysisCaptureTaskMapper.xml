@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.aianalysis.AiAnalysisCaptureTaskMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.aianalysis.entity.AiAnalysisCaptureTaskDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="capture_task_id" jdbcType="VARCHAR" property="captureTaskId"/>
+        <result column="rule_id" jdbcType="BIGINT" property="ruleId"/>
+        <result column="device_id" jdbcType="VARCHAR" property="deviceId"/>
+        <result column="channel_no" jdbcType="VARCHAR" property="channelNo"/>
+        <result column="store_scene_id" jdbcType="BIGINT" property="storeSceneId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="has_result" jdbcType="TINYINT" property="hasResult"/>
+        <result column="error_code" jdbcType="TIMESTAMP" property="errorCode"/>
+        <result column="error_msg" jdbcType="TIMESTAMP" property="errorMsg"/>
+        <result column="generate_date" jdbcType="DATE" property="generateDate"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, capture_task_id, rule_id, device_id, channel_no, store_scene_id, create_time, has_result, error_code, error_msg, generate_date
+    </sql>
+    <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into ai_analysis_capture_task_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.captureTaskId != null">
+                capture_task_id,
+            </if>
+            <if test="record.ruleId != null">
+                rule_id,
+            </if>
+            <if test="record.deviceId != null">
+                device_id,
+            </if>
+            <if test="record.channelNo != null">
+                channel_no,
+            </if>
+            <if test="record.storeSceneId != null">
+                store_scene_id,
+            </if>
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.hasResult != null">
+                has_result,
+            </if>
+            <if test="record.errorCode != null">
+                error_code,
+            </if>
+            <if test="record.errorMsg != null">
+                error_msg,
+            </if>
+            <if test="record.generateDate != null">
+                generate_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.captureTaskId != null">
+                #{record.captureTaskId},
+            </if>
+            <if test="record.ruleId != null">
+                #{record.ruleId},
+            </if>
+            <if test="record.deviceId != null">
+                #{record.deviceId},
+            </if>
+            <if test="record.channelNo != null">
+                #{record.channelNo},
+            </if>
+            <if test="record.storeSceneId != null">
+                #{record.storeSceneId},
+            </if>
+            <if test="record.createTime != null">
+                #{record.createTime},
+            </if>
+            <if test="record.hasResult != null">
+                #{record.hasResult},
+            </if>
+            <if test="record.errorCode != null">
+                #{record.errorCode},
+            </if>
+            <if test="record.errorMsg != null">
+                #{record.errorMsg},
+            </if>
+            <if test="record.generateDate != null">
+                #{record.generateDate},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update ai_analysis_capture_task_${enterpriseId}
+        <set>
+            <if test="record.captureTaskId != null">
+                capture_task_id = #{record.captureTaskId},
+            </if>
+            <if test="record.ruleId != null">
+                rule_id = #{record.ruleId},
+            </if>
+            <if test="record.deviceId != null">
+                device_id = #{record.deviceId},
+            </if>
+            <if test="record.channelNo != null">
+                channel_no = #{record.channelNo},
+            </if>
+            <if test="record.storeSceneId != null">
+                store_scene_id = #{record.storeSceneId},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.hasResult != null">
+                has_result = #{record.hasResult},
+            </if>
+            <if test="record.errorCode != null">
+                error_code = #{record.errorCode},
+            </if>
+            <if test="record.errorMsg != null">
+                error_msg = #{record.errorMsg},
+            </if>
+            <if test="record.generateDate != null">
+                generate_date = #{record.generateDate},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="list.id">
+        INSERT INTO ai_analysis_capture_task_${enterpriseId}
+        (
+            capture_task_id,
+            rule_id,
+            device_id,
+            channel_no,
+            store_scene_id,
+            has_result,
+            error_code,
+            error_msg,
+            generate_date
+        ) VALUES
+        <foreach item="record" collection="list" separator=",">
+            (#{record.captureTaskId}, #{record.ruleId}, #{record.deviceId}, #{record.channelNo}, #{record.storeSceneId},
+             #{record.hasResult}, #{record.errorCode}, #{record.errorMsg}, #{record.generateDate})
+        </foreach>
+    </insert>
+    
+    <update id="updateBatch">
+        UPDATE ai_analysis_capture_task_${enterpriseId}
+        <trim prefix="SET" suffixOverrides=",">
+            <trim prefix="has_result = CASE id" suffix="END,">
+                <foreach collection="list" item="record">
+                    <if test="record.hasResult != null">
+                        WHEN #{record.id} THEN #{record.hasResult}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="error_code = CASE id" suffix="END,">
+                <foreach collection="list" item="record">
+                    <if test="record.errorCode != null">
+                        WHEN #{record.id} THEN #{record.errorCode}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="error_msg = CASE id" suffix="END,">
+                <foreach collection="list" item="record">
+                    <if test="record.errorMsg != null">
+                        WHEN #{record.id} THEN #{record.errorMsg}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        WHERE id IN
+        <foreach item="record" collection="list" separator="," open="(" close=")">
+            #{record.id}
+        </foreach>
+    </update>
+
+    <select id="getNoResultListByDate" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ai_analysis_capture_task_${enterpriseId}
+        WHERE generate_date = #{date} AND has_result = 0
+    </select>
+
+    <select id="getExistRule" resultType="java.lang.Long">
+        SELECT DISTINCT rule_id
+        FROM ai_analysis_capture_task_${enterpriseId}
+        WHERE generate_date = #{generateDate}
+        <if test="ruleIds != null">
+            AND rule_id IN
+            <foreach item="ruleId" collection="ruleIds" separator="," open="(" close=")">
+                #{ruleId}
+            </foreach>
+        </if>
+    </select>
+
+    <delete id="deleteByRuleIds">
+        DELETE FROM ai_analysis_capture_task_${enterpriseId}
+        WHERE  generate_date = #{date}
+        AND rule_id IN
+        <foreach item="ruleId" collection="ruleIds" separator="," open="(" close=")">
+            #{ruleId}
+        </foreach>
+    </delete>
+</mapper>

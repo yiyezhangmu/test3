@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.ai.EnterpriseModelAlgorithmMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.ai.entity.EnterpriseModelAlgorithmDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="enterprise_id" jdbcType="VARCHAR" property="enterpriseId" />
+    <result column="scene_id" jdbcType="BIGINT" property="sceneId" />
+    <result column="scene_name" jdbcType="VARCHAR" property="sceneName" />
+    <result column="model_name" jdbcType="VARCHAR" property="modelName" />
+    <result column="model_code" jdbcType="VARCHAR" property="modelCode" />
+    <result column="system_prompt" jdbcType="VARCHAR" property="systemPrompt" />
+    <result column="user_prompt" jdbcType="VARCHAR" property="userPrompt" />
+    <result column="special_prompt" jdbcType="VARCHAR" property="specialPrompt" />
+    <result column="standard_pic" jdbcType="VARCHAR" property="standardPic" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="algorithm_status" jdbcType="INTEGER" property="algorithmStatus" />
+      <result column="node_info" jdbcType="VARCHAR" property="nodeInfo"/>
+      <result column="expiry_policy" jdbcType="TINYINT" property="expiryPolicy"/>
+      <result column="expiry_times" jdbcType="INTEGER" property="expiryTimes"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, enterprise_id, scene_id, scene_name, model_name, model_code, system_prompt, user_prompt, 
+    special_prompt, standard_pic, remark, create_time, update_time,algorithm_status,expiry_policy,expiry_times
+  </sql>
+    <sql id="Blob_Column_List">
+        node_info
+    </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+    insert into enterprise_model_algorithm
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="enterpriseId != null">
+        enterprise_id,
+      </if>
+      <if test="sceneId != null">
+        scene_id,
+      </if>
+      <if test="sceneName != null">
+        scene_name,
+      </if>
+      <if test="modelName != null">
+        model_name,
+      </if>
+      <if test="modelCode != null">
+        model_code,
+      </if>
+      <if test="systemPrompt != null">
+        system_prompt,
+      </if>
+      <if test="userPrompt != null">
+        user_prompt,
+      </if>
+      <if test="specialPrompt != null">
+        special_prompt,
+      </if>
+      <if test="standardPic != null">
+        standard_pic,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="algorithmStatus != null">
+        algorithm_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="enterpriseId != null">
+        #{enterpriseId},
+      </if>
+      <if test="sceneId != null">
+        #{sceneId},
+      </if>
+      <if test="sceneName != null">
+        #{sceneName},
+      </if>
+      <if test="modelName != null">
+        #{modelName},
+      </if>
+      <if test="modelCode != null">
+        #{modelCode},
+      </if>
+      <if test="systemPrompt != null">
+        #{systemPrompt},
+      </if>
+      <if test="userPrompt != null">
+        #{userPrompt},
+      </if>
+      <if test="specialPrompt != null">
+        #{specialPrompt},
+      </if>
+      <if test="standardPic != null">
+        #{standardPic},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      <if test="createTime != null">
+        #{createTime},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime},
+      </if>
+      <if test="algorithmStatus != null">
+        #{algorithmStatus},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update enterprise_model_algorithm
+    <set>
+      <if test="enterpriseId != null">
+        enterprise_id = #{enterpriseId},
+      </if>
+      <if test="sceneId != null">
+        scene_id = #{sceneId},
+      </if>
+      <if test="sceneName != null">
+        scene_name = #{sceneName},
+      </if>
+      <if test="modelName != null">
+        model_name = #{modelName},
+      </if>
+      <if test="modelCode != null">
+        model_code = #{modelCode},
+      </if>
+      <if test="systemPrompt != null">
+        system_prompt = #{systemPrompt},
+      </if>
+      <if test="userPrompt != null">
+        user_prompt = #{userPrompt},
+      </if>
+      <if test="specialPrompt != null">
+        special_prompt = #{specialPrompt},
+      </if>
+      <if test="standardPic != null">
+        standard_pic = #{standardPic},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+      <if test="algorithmStatus != null">
+        algorithm_status = #{algorithmStatus},
+      </if>
+        <if test="nodeInfo != null">
+            node_info = #{nodeInfo},
+        </if>
+        <if test="expiryPolicy != null">
+            expiry_policy = #{expiryPolicy},
+        </if>
+        <if test="expiryTimes != null">
+            expiry_times = #{expiryTimes},
+        </if>
+    </set>
+    where id = #{id}
+  </update>
+    <update id="updateBySceneId">
+        update enterprise_model_algorithm
+        set
+        scene_name = #{sceneName},
+        model_name = #{modelName},
+        model_code = #{modelCode}
+        where scene_id = #{sceneId}
+    </update>
+    <delete id="deleteByPrimaryKey">
+      delete from enterprise_model_algorithm where id = #{id}
+    </delete>
+  <select id="list" resultType="com.coolcollege.intelligent.model.ai.entity.EnterpriseModelAlgorithmDO">
+    select
+    <include refid="Base_Column_List" />
+    from enterprise_model_algorithm
+    where enterprise_id = #{enterpriseId}
+      <if test="sceneIdList!=null and sceneIdList.size>0">
+          <foreach collection="sceneIdList" item="item" open="and scene_id in(" separator="," close=")" >
+              #{item}
+          </foreach>
+      </if>
+  </select>
+  <select id="detail" resultType="com.coolcollege.intelligent.model.ai.entity.EnterpriseModelAlgorithmDO">
+    select
+    <include refid="Base_Column_List"/>
+      ,
+      <include refid="Blob_Column_List" />
+    from enterprise_model_algorithm
+    where
+    enterprise_id = #{enterpriseId}
+    and scene_id  = #{sceneId}
+  </select>
+</mapper>

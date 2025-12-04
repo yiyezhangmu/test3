@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.coolcollege.intelligent.dao.setting.EnterpriseVideoSettingMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.coolcollege.intelligent.model.setting.EnterpriseVideoSettingDO" id="baseMap">
+        <result property="id" column="id"/>
+        <result property="enterpriseId" column="enterprise_id"/>
+        <result property="accessKeyId" column="access_key_id"/>
+        <result property="secret" column="secret"/>
+        <result property="yunType" column="yun_type"/>
+        <result property="aliyunCorpId" column="aliyun_corp_id"/>
+        <result property="openVideoStreaming" column="open_video_streaming"/>
+        <result property="rootVdsCorpId" column="root_vds_corp_id"/>
+        <result property="openDataAnalysis" column="open_data_analysis"/>
+        <result property="openAlarmEvent" column="open_alarm_event"/>
+        <result property="openYunControl" column="open_yun_control"/>
+        <result property="videoPlaybackType" column="video_playback_type"/>
+        <result property="openWebHook" column="open_web_hook"/>
+        <result property="createName" column="create_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateName" column="update_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="hasOpen" column="has_open"/>
+        <result property="accountType" column="account_type"></result>
+        <result property="lastSyncTime" column="last_sync_time"></result>
+        <result property="syncStatus" column="sync_status"></result>
+        <result property="syncDeviceFlag" column="sync_device_flag"></result>
+        <result property="extendInfo" column="extend_info"/>
+    </resultMap>
+
+    <select id="listEnterpriseVideoSettingByEid" resultMap="baseMap">
+		select * from enterprise_video_setting where enterprise_id = #{eid}
+	</select>
+
+    <select id="selectEnterpriseVideoSettingByYunType" resultMap="baseMap">
+		select * from enterprise_video_setting
+		where enterprise_id = #{eid}
+		and yun_type=#{yunType}
+        and account_type=#{accountType}
+		and has_open=1
+	</select>
+
+
+    <insert id="insertEnterpriseVideoSetting"
+            parameterType="com.coolcollege.intelligent.model.setting.EnterpriseVideoSettingDO">
+		insert into enterprise_video_setting
+		(
+			`enterprise_id`, 
+			`access_key_id`, 
+			`secret`, 
+			`yun_type`, 
+			`aliyun_corp_id`, 
+			`open_video_streaming`, 
+			`root_vds_corp_id`, 
+			`open_data_analysis`,
+			`open_alarm_event`,
+			`open_yun_control`,
+			`video_playback_type`,
+			`open_web_hook`,
+			`create_name`,
+			`create_time`,
+			`update_name`,
+			`update_time`,
+			`has_open`,
+            `account_type`
+		)
+		values
+		(
+			#{enterpriseId}, 
+			#{accessKeyId}, 
+			#{secret}, 
+			#{yunType}, 
+			#{aliyunCorpId}, 
+			#{openVideoStreaming}, 
+			#{rootVdsCorpId}, 
+			#{openDataAnalysis},
+			#{openAlarmEvent},
+			#{openYunControl},
+			#{videoPlaybackType},
+			#{openWebHook},
+			#{createName},
+			#{createTime},
+			#{updateName},
+			#{updateTime},
+			#{hasOpen},
+            #{accountType}
+		)
+	</insert>
+    <update id="updateEnterpriseVideoSetting"
+            parameterType="com.coolcollege.intelligent.model.setting.EnterpriseVideoSettingDO">
+        update enterprise_video_setting
+        <set>
+            `access_key_id` = #{accessKeyId},
+            `secret` = #{secret},
+            `yun_type` = #{yunType},
+            `aliyun_corp_id` = #{aliyunCorpId},
+            <if test="rootVdsCorpId !=null and rootVdsCorpId!=''">
+                `root_vds_corp_id` = #{rootVdsCorpId},
+            </if>
+            `open_video_streaming` = #{openVideoStreaming},
+            `open_data_analysis` = #{openDataAnalysis},
+            `open_alarm_event` = #{openAlarmEvent},
+            `open_yun_control` = #{openYunControl},
+            `video_playback_type` = #{videoPlaybackType},
+            `open_alarm_event` = #{openAlarmEvent},
+            `open_yun_control` = #{openYunControl},
+            `video_playback_type` = #{videoPlaybackType},
+            `open_web_hook` = #{openWebHook},
+            `update_name` = #{updateName},
+            `update_time` = #{updateTime},
+            `has_open` = #{hasOpen},
+            <if test="syncDeviceFlag !=null and syncDeviceFlag!=''">
+                `sync_device_flag` = #{syncDeviceFlag},
+            </if>
+            `account_type` = #{accountType}
+        </set>
+        where id = #{id}
+    </update>
+    
+    <update id="updateVdsCorpId">
+        update enterprise_video_setting set root_vds_corp_id = #{rootVdsCorpId} where id = #{id}
+    </update>
+    
+    <update id="updateLastSyncLastTime">
+        update enterprise_video_setting set last_sync_time = now(), sync_status = #{syncStatus} where enterprise_id = #{enterpriseId} and yun_type = #{yunType}
+    </update>
+
+
+    <select id="selectEnterpriseVideoSettingByAppkey" resultMap="baseMap">
+        select * from enterprise_video_setting
+        where enterprise_id != #{eid}
+        and access_key_id=#{appKey}
+        and yun_type=#{yunType}
+        and account_type=#{accountType}
+        limit 1
+    </select>
+
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>coolcollege-intelligent-facade-api</artifactId>
+    <name>coolcollege-intelligent-facade-api</name>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <groupId>com.coolcollege.intelligent</groupId>
+    <version>1.9.5</version>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.coolcollege.intelligent</groupId>
+            <artifactId>coolcollege-intelligent-common</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <pagehelper.version>1.2.12</pagehelper.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus</id>
+            <name>nexus snapshot</name>
+            <url>https://nexus.hao168.com/repository/maven-snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus</id>
+            <name>nexus release</name>
+            <url>https://nexus.hao168.com/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
+</project>

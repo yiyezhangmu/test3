@@ -1,0 +1,941 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.system.SysRoleMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.system.SysRoleDO" id="sysRoleMap">
+        <result property="id" column="id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="isInternal" column="is_internal"/>
+        <result property="roleAuth" column="role_auth"/>
+        <result property="source" column="source"/>
+        <result property="positionType" column="position_type"/>
+        <result property="appMenu" column="app_menu"/>
+        <result property="synDingRoleId" column="syn_ding_role_id"/>
+        <result property="priority" column="priority"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+
+    <resultMap id="personResultMap" type="com.coolcollege.intelligent.model.enterprise.vo.EnterpriseUserVo">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="jobnumber" property="jobnumber" jdbcType="VARCHAR"/>
+        <result column="departments" property="departments" jdbcType="VARCHAR"/>
+        <collection property="userPositions" ofType="com.coolcollege.intelligent.model.position.dto.PositionDTO"
+                    javaType="java.util.ArrayList">
+            <id column="gid" property="id" jdbcType="VARCHAR"/>
+            <result column="position_id" property="positionId" jdbcType="VARCHAR"/>
+            <result column="gname" property="name" jdbcType="VARCHAR"/>
+
+        </collection>
+        <collection property="userDepartments" ofType="com.coolcollege.intelligent.model.enterprise.SysDepartmentDO">
+            <id column="bid" property="id" jdbcType="VARCHAR"/>
+            <result column="bname" property="name" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="sysRoleVo" type="com.coolcollege.intelligent.model.system.VO.SysRoleVO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        <result column="is_internal" property="isInternal" jdbcType="BIGINT"/>
+        <result column="role_auth" property="roleAuth" jdbcType="BIGINT"/>
+
+        <collection property="enterpriseDOs" ofType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+            <id column="cid" property="id" jdbcType="BIGINT"/>
+            <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+            <result column="name" property="name" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+    <resultMap id="dingRoleMap" type="com.coolcollege.intelligent.model.enterprise.settings.B1RoleDTO">
+        <result column="dingRoleId" property="dingRoleId" />
+        <result column="dingRoleName" property="dingRoleName" />
+        <result column="roleCount" property="roleCount" />
+
+    </resultMap>
+
+
+    <select id="fuzzyRole" resultType="com.coolcollege.intelligent.model.system.dto.RoleDTO">
+        select
+        id ,
+        role_name as roleName,
+        role_auth as roleAuth,
+        `source` as source,
+        priority as priority,
+        create_time as createTime,
+        update_time as updateTime,
+        create_user as createUser,
+        update_user as updateUser,
+        position_type as positionType
+        from sys_role_${enterpriseId}
+        <where>
+            1 = 1
+            <if test="positionType!=null and positionType!= ''">
+                and position_type =#{positionType}
+            </if>
+            <if test="roleName!=null and roleName !=''">
+                and role_name like concat('%',#{roleName, jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+        order by priority
+    </select>
+    <select id="fuzzyRoleBySource" resultType="com.coolcollege.intelligent.model.system.dto.RoleDTO">
+        select
+        id ,
+        role_name as roleName,
+        role_auth as roleAuth,
+        `source` as source,
+        priority as priority,
+        position_type as positionType
+        from sys_role_${enterpriseId}
+        <where>
+            1 = 1
+            <if test="source!=null and source!= ''">
+                and source =#{source}
+            </if>
+            <if test="roleName!=null and roleName !=''">
+                and role_name like concat('%',#{roleName, jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+        order by priority
+    </select>
+    <select id="selectRoleUser" resultType="com.coolcollege.intelligent.model.system.dto.RoleUserDTO">
+        select
+        a.id as roleId,
+        a.role_name as roleName,
+        a.source,
+        count(b.role_id) as userCount
+        from sys_role_${enterpriseId} a
+        left join enterprise_user_role_${enterpriseId} b on a.id=b.role_id
+        left join enterprise_user_${enterpriseId} c on c.user_id=b.user_id
+        <where>
+            c.active = true and c.user_status = '1'
+            <if test="roleIdList !=null and roleIdList.size>0">
+                <foreach collection="roleIdList" item="roleId" separator="," open=" and a.id in (" close=")">
+                    #{roleId}
+                </foreach>
+            </if>
+        </where>
+        group by b.role_id
+
+    </select>
+
+
+
+
+
+    <select id="getRoleUserByRoleEnum" resultMap="sysRoleVo">
+        select
+        a.id ,
+        a.role_name ,
+        a.is_internal ,
+        c.id as cid,
+        c.user_id ,
+        c.name
+        from sys_role_${enterpriseId} a
+        left join enterprise_user_role_${enterpriseId} b on a.id=b.role_id
+        left join enterprise_user_${enterpriseId} c on c.user_id=b.user_id             and c.active = true
+        and c.user_status= '1'
+        <where>
+            a.role_enum = #{roleEnum}
+            <if test="positionType !=null and positionType!=''">
+                and  a.position_type=#{positionType}
+            </if>
+        </where>
+    </select>
+
+    <select id="getRoleUserByRoleAuth" resultMap="sysRoleVo">
+        select
+        a.id ,
+        a.role_name ,
+        a.is_internal ,
+        c.id as cid,
+        c.user_id ,
+        c.name
+        from sys_role_${enterpriseId} a
+        left join enterprise_user_role_${enterpriseId} b on a.id=b.role_id
+        left join enterprise_user_${enterpriseId} c on c.user_id=b.user_id       and c.active = true
+        and c.user_status = '1'
+        <where>
+            <if test="roleAuth!=null">
+                and role_auth = #{roleAuth, jdbcType=VARCHAR}
+            </if>
+--             and a.source = 'create'
+            <if test="positionType !=null and positionType!=''">
+                and  a.position_type=#{positionType}
+            </if>
+        </where>
+    </select>
+    <insert id="addSystemRole" useGeneratedKeys="true" keyProperty="sysRole.id">
+        insert into  sys_role_${eid}
+        (
+        id,
+        role_name,
+        position_type,
+        is_internal,
+        `source`,
+        role_auth,
+        app_menu,
+        syn_ding_role_id,
+        priority,
+        third_unique_id,
+        create_time,
+        create_user
+        <if test="sysRole.roleEnum != null and sysRole.roleEnum != ''">
+            ,
+            role_enum
+        </if>
+
+        )
+        values
+        (
+        #{sysRole.id},
+        #{sysRole.roleName},
+         #{sysRole.positionType},
+        '0',
+        #{sysRole.source},
+         #{sysRole.roleAuth},
+         #{sysRole.appMenu},
+         #{sysRole.synDingRoleId},
+         #{sysRole.priority},
+         #{sysRole.thirdUniqueId},
+         now(),
+         #{sysRole.createUser}
+        <if test="sysRole.roleEnum != null and sysRole.roleEnum != ''">
+            ,
+            #{sysRole.roleEnum}
+        </if>
+        )
+    </insert>
+
+    <select id="getPersonNumsByRoles" resultType="integer">
+        select count(a.id) as count
+        from enterprise_user_${eid} a
+        left join enterprise_user_role_${eid} b on a.user_id =b.user_id
+        left join sys_role_${eid} c on c.id=b.role_id
+        where a.active=true
+--         and c.source = 'create'
+        <if test="roleId!=null ">
+            and c.id= #{roleId}
+        </if>
+    </select>
+
+    <update id="updateRole">
+        update sys_role_${eid}
+        <set>
+            <if test="roleDO.roleName != null and roleDO.roleName !=''">`role_name` = #{roleDO.roleName},</if>
+            <if test="roleDO.isInternal != null">`is_internal` = #{roleDO.isInternal},</if>
+            <if test="roleDO.roleAuth != null and roleDO.roleAuth !=''">`role_auth` = #{roleDO.roleAuth},</if>
+            <if test="roleDO.source != null and roleDO.source !=''">`source` = #{roleDO.source},</if>
+            <if test="roleDO.positionType != null and roleDO.positionType !=''">`position_type` =
+                #{roleDO.positionType},
+            </if>
+            <if test="roleDO.appMenu != null and roleDO.appMenu !=''">`app_menu` = #{roleDO.appMenu},</if>
+            <if test="roleDO.synDingRoleId != null">`syn_ding_role_id` = #{roleDO.synDingRoleId},</if>
+            <if test="roleDO.priority != null">`priority` = #{roleDO.priority},</if>
+            <if test="roleDO.createTime != null">`create_time` = #{roleDO.createTime},</if>
+            <if test="roleDO.updateUser != null">`update_user` = #{roleDO.updateUser},</if>
+            <if test="roleDO.roleEnum != null">`role_enum` = #{roleDO.roleEnum},</if>
+            `update_time` = now()
+        </set>
+        where
+            id=#{roleDO.id}
+    </update>
+
+
+
+
+    <delete id="deleteMenuByRoles">
+        delete from sys_role_menu_v2_${eip}
+        where
+        <if test="roleId!=null ">
+            role_id=#{roleId}
+        </if>
+    </delete>
+    <delete id="batchDeleteMenuRole">
+        delete from sys_role_menu_v2_${eid}
+        where 1>2
+        <if test="roleIdList!=null and roleIdList.size>0 ">
+        <foreach collection="roleIdList" item="roleId" open="or role_id in (" close=")" separator=",">
+            #{roleId}
+        </foreach>
+        </if>
+    </delete>
+
+    <delete id="deleteRoles">
+        delete from sys_role_${eip}
+        where
+        <if test="roleId!=null ">
+            id=#{roleId}
+        </if>
+    </delete>
+    <delete id="batchDeleteRoles">
+        delete from sys_role_${eid}
+        where 1>2
+        <if test="roleIdList!=null and roleIdList.size>0 ">
+            <foreach collection="roleIdList" item="roleId" open="or id in (" close=")" separator=",">
+                #{roleId}
+            </foreach>
+        </if>
+    </delete>
+
+    <insert id="addMenuByRole">
+        insert ignore into sys_role_menu_v2_${eip} (menu_id,role_id,platform)
+        values
+        <foreach collection="menus" item="menu" separator=",">
+            (#{menu},#{roleId},#{platform})
+        </foreach>
+
+    </insert>
+
+    <select id="getPersonsByRole" resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseUserDTO">
+        select
+        a.id,
+        a.user_id as userId,
+        a.name ,
+        a.jobnumber,
+        a.departments,
+        a.is_admin as isAdmin,
+        e.role_name as roleName,
+        e.role_auth as roleAuth
+        from enterprise_user_${eip} a
+        left join enterprise_user_role_${eip} d on d.user_id =a.user_id
+        left join sys_role_${eip} e on e.id=d.role_id
+        where a.active=true
+        <if test="roleIds!=null and roleIds.size>0 ">
+            <foreach collection="roleIds" item="roleId" open="and e.id in (" close=")" separator=",">
+                #{roleId}
+            </foreach>
+        </if>
+        <if test="userName!=null and userName!=''">
+            and a.name like concat('%',#{userName, jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+
+    <insert id="addPersonToUser">
+        insert ignore into enterprise_user_role_${eip} (role_id,user_id,sync_type)
+        values
+        <if test="userIds!=null and userIds.size>0">
+            <foreach collection="userIds" item="userId" separator=",">
+                (#{roleId},#{userId}, #{syncType})
+            </foreach>
+        </if>
+    </insert>
+    <insert id="insertOrUpdateRole">
+        insert into sys_role_${eid}
+        (id, role_name, is_internal, source, position_type, priority, role_enum, create_time, update_time, create_user, update_user)
+        values
+        (#{role.id}, #{role.roleName}, #{role.isInternal}, #{role.source}, #{role.positionType}, #{role.priority}, #{role.roleEnum}, #{role.createTime}, #{role.updateTime}, #{role.createUser}, #{role.updateUser})
+        ON DUPLICATE KEY UPDATE role_name=values(role_name), update_time=values(update_time), update_user=values(update_user)
+    </insert>
+    <insert id="insertBatchUserRole">
+        insert ignore into enterprise_user_role_${eid}
+        (role_id, user_id ,create_time)
+        values
+        <foreach collection="userRoles" item="userRole" separator=",">
+            (#{userRole.roleId}, #{userRole.userId} ,#{userRole.createTime})
+        </foreach>
+    </insert>
+    <insert id="batchInsertOrUpdateRoles">
+        insert into sys_role_${eid}
+        (id, role_name, is_internal, source, syn_ding_role_id, priority, create_time)
+        values
+        <foreach collection="roles" item="role" separator=",">
+            (#{role.id}, #{role.roleName}, #{role.isInternal}, #{role.source},
+             #{role.synDingRoleId}, #{role.priority}, #{role.createTime})
+        </foreach>
+        ON DUPLICATE KEY UPDATE role_name=values(role_name),
+        update_time = values(update_time)
+    </insert>
+
+    <select id="userAndRoles" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserRole">
+        select
+        role_id as roleId,
+        user_id as userId
+        from enterprise_user_role_${eip}
+    </select>
+    <select id="getUserIdListByRoleIdList" resultType="java.lang.String">
+        select
+        distinct a.user_id
+        from enterprise_user_${enterpriseId} a
+        left join enterprise_user_role_${enterpriseId} b on a.user_id=b.user_id
+        <where>
+            and a.active=true
+            and b.role_id in (
+            <foreach collection="roleIdList" separator="," item="roleId">
+                #{roleId}
+            </foreach>
+            )
+        </where>
+    </select>
+    <select id="userAndRolesByUserId" resultType="com.coolcollege.intelligent.model.enterprise.dto.UserRoleDTO">
+        select
+        a.role_id as roleId,
+        a.user_id as userId,
+        b.role_name as roleName,
+        b.role_auth as roleAuth,
+        b.role_enum as roleEnum,
+        b.priority as priority
+        from enterprise_user_role_${eip} a left join sys_role_${eip} b on a.role_id=b.id
+        <where>
+            <if test="userIdList != null and userIdList.size>0">
+                <foreach collection="userIdList" item="userId" separator="," open="a.user_id in (" close=")">
+                    #{userId}
+                </foreach>
+            </if>
+--             and b.source = 'create'
+        AND b.role_name IS NOT NULL
+        </where>
+        order by b.priority
+    </select>
+
+
+    <select id="getRolesByName" resultType="com.coolcollege.intelligent.model.system.SysRoleDO">
+      select
+      id as id,
+      role_name as roleName,
+      role_auth as roleAuth
+       from  sys_role_${eip}
+      where role_name=#{roleName} and source ='create'
+
+    </select>
+
+    <select id="getRole" resultType="com.coolcollege.intelligent.model.system.SysRoleDO">
+      select
+      id as id,
+      role_name as roleName,
+      role_auth as roleAuth,
+      is_internal as isInternal,
+      `source` as source,
+      priority as priority,
+      app_menu as appMenu,
+      position_type as positionType,
+      role_enum as roleEnum
+       from  sys_role_${eid}
+      where id = #{roleId}
+    </select>
+
+    <select id="getRoleByRoleEnum" resultType="com.coolcollege.intelligent.model.system.SysRoleDO">
+      select
+      id as id,
+      role_name as roleName,
+      role_auth as roleAuth,
+      is_internal as isInternal,
+      `source` as source,
+      priority as priority,
+      app_menu as appMenu,
+      position_type as positionType,
+      role_enum as roleEnum
+       from  sys_role_${eid}
+      where role_enum = #{roleEnum}
+    </select>
+    <select id="getRoleList" resultType="com.coolcollege.intelligent.model.system.SysRoleDO">
+      select
+      id as id,
+      role_name as roleName,
+      role_auth as roleAuth,
+      `source` as source,
+      priority as priority,
+      is_internal as isInternal,
+      app_menu as appMenu,
+      position_type as positionType
+       from  sys_role_${eid}
+        where 1 = 1
+      -- source='create'
+      <foreach collection="roleIdList" item="roleId" separator="," open="and id in (" close=")">
+          #{roleId}
+      </foreach>
+    </select>
+
+    <select id="getRoleByRoleIds" resultType="com.coolcollege.intelligent.model.system.SysRoleDO">
+        select
+        id as id,
+        role_name as roleName,
+        role_auth as roleAuth,
+        `source` as source,
+        priority as priority,
+        is_internal as isInternal,
+        app_menu as appMenu,
+        create_time as createTime,
+        update_time as updateTime,
+        position_type as positionType
+        from sys_role_${eid}
+        where 1 = 1
+        <foreach collection="roleIdList" item="roleId" separator="," open="and id in (" close=")">
+            #{roleId}
+        </foreach>
+    </select>
+
+    <select id="getRoleNameList" resultType="java.lang.String">
+        select
+        role_name as roleName
+        from  sys_role_${eid}
+        where source='create'
+        <foreach collection="roleIdList" item="roleId" separator="," open="and id in (" close=")">
+            #{roleId}
+        </foreach>
+    </select>
+    <select id="getRoleUser" resultType="com.coolcollege.intelligent.model.system.dto.UserDTO">
+        select
+        b.user_id as userId,
+        c.jobnumber as jobNumber,
+        c.avatar as avatar,
+        c.face_url as faceUrl,
+        c.name as userName
+        from sys_role_${eid} a
+        left join enterprise_user_role_${eid} b on a.id=b.role_id
+        left join enterprise_user_${eid} c on c.user_id=b.user_id
+        <where>
+            <if test="active == null">
+                and c.active = true
+            </if>
+            and a.id=#{roleId}
+            and user_status = '1'
+            <if test="userName!=null and userName!=''">
+                and c.name like concat('%',#{userName, jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+        order by b.user_id
+
+    </select>
+
+    <delete id="deletePersonToUser">
+        delete from enterprise_user_role_${eip}
+        where role_id=#{roleId}
+        and user_id in
+        <foreach collection="userIds" item="userId" separator="," open="(" close=")">
+            #{userId}
+        </foreach>
+    </delete>
+
+
+    <select id="getHighestPrioritySysRoleDoByUserId" resultType="com.coolcollege.intelligent.model.system.SysRoleDO">
+        select
+        c.id as id,
+         c.role_name as roleName,
+         c.role_auth as roleAuth,
+         c.position_type as positionType,
+         c.app_menu as appMenu,
+         c.role_enum as roleEnum
+        from enterprise_user_${eip} a
+        left join enterprise_user_role_${eip} b on a.user_id =b.user_id
+        left join sys_role_${eip}  c on c.id=b.role_id
+        where  a.user_id= #{userId}
+        and a.active = true
+        ORDER BY c.priority is null , c.priority, position_type desc
+        LIMIT 1
+    </select>
+
+    <select id="getSysRoleByUserId" resultType="com.coolcollege.intelligent.model.system.SysRoleDO">
+        select c.id        as id,
+               c.role_name as roleName,
+               c.role_auth as roleAuth,
+               c.source    as source
+        from enterprise_user_${eip} a
+                 left join enterprise_user_role_${eip} b on a.user_id = b.user_id
+                 left join sys_role_${eip} c on c.id = b.role_id
+        where a.user_id = #{userId}
+          and a.active = true
+          AND c.role_name IS NOT NULL
+    </select>
+
+    <select id="listRoleByUserId" resultType="com.coolcollege.intelligent.model.system.SysRoleDO">
+        select c.id        as id,
+               c.role_name as roleName,
+               c.role_auth as roleAuth,
+               c.source    as source,
+               c.role_enum as roleEnum
+        from  enterprise_user_role_${eip} b
+                 inner join sys_role_${eip} c on c.id = b.role_id
+        where b.user_id = #{userId}
+
+    </select>
+    <select id="selectRolesByuserId" resultType="java.lang.String">
+      select
+      role_id
+      from enterprise_user_role_${eip}
+      where user_id = #{userId}
+--       and sr.source = 'create'
+    </select>
+
+
+    <select id="getHighestPriorityRoleIdByUserId" resultType="java.lang.String">
+        select
+        eur.role_id
+        from enterprise_user_role_${eip} eur
+        left join sys_role_${eip} sr
+        on eur.role_id = sr.id
+        where user_id = #{userId}
+        ORDER BY sr.priority is null , sr.priority
+        LIMIT 1
+    </select>
+
+    <select id="getSyncRoleList" resultType="java.util.Map">
+        select id, role_name
+        from sys_role_${eid} where source = 'sync'
+    </select>
+    <select id="userAndPositionList" resultType="com.coolcollege.intelligent.model.store.dto.StoreUserDTO">
+        SELECT
+            eu.user_id userId,
+            eu.`name` userName,
+            IFNULL(eu.avatar, eu.face_url) avatar,
+            eu.mobile,
+            sr.id positionId,
+            sr.role_name positionName
+        from enterprise_user_${eid} eu
+        left join enterprise_user_role_${eid} eur USING(user_id)
+        left join sys_role_${eid} sr on eur.role_id = sr.id
+        where eu.user_id in
+        <foreach collection="userIdList" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+        <if test="userName != null and userName != '' ">
+            and eu.name like concat('%', #{userName}, '%')
+        </if>
+        and eu.active = true
+--         and sr.source = 'create'
+        <if test="positionType != null and positionType != '' ">
+            and sr.position_type = #{positionType}
+        </if>
+        and eu.user_status = '1'
+    </select>
+    <select id="getPositionUserIds" resultType="java.lang.String">
+        select eu.user_id from
+        enterprise_user_role_${eid} eur
+        left join enterprise_user_${eid} eu USING(user_id)
+        where eur.role_id in
+        <foreach collection="positionIds" item="roleId" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+        and eu.active = true
+    </select>
+    <select id="getUserIdListByPositionId" resultType="com.coolcollege.intelligent.model.system.dto.UserDTO">
+        select eu.user_id as userId,
+        eu.name as userName
+        from enterprise_user_role_${eid} eur
+        left join enterprise_user_${eid} eu USING(user_id)
+        where eu.active = true
+        and eur.role_id = #{positionId}
+        and eu.user_id in
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </select>
+
+    <select id="countRoleByPerson" resultType="java.lang.Integer">
+          select count(*) from enterprise_user_role_${eip} where user_id= #{userId}
+    </select>
+
+
+    <delete id="deleteRolesByPerson">
+        delete from enterprise_user_role_${eip}
+        where 1>2 or (user_id in
+        <foreach collection="userIds" item="userId" separator="," open="(" close=")">
+            #{userId}
+        </foreach>
+        <choose>
+            <when test="delAll">)</when>
+            <otherwise>and role_id in (SELECT id from sys_role_${eip} where 1 = 1
+                /*source = 'create'*/
+                ))
+            </otherwise>
+        </choose>
+    </delete>
+    <delete id="deleteSyncRoleRelate">
+        delete from enterprise_user_role_${eid}
+        where 1 > 2 or
+        (role_id in (SELECT id from sys_role_${eid} where source = 'sync')
+        and user_id = #{userId})
+    </delete>
+    <select id="selectUserByDingRole" resultType="java.lang.String">
+        select b.user_id from sys_role_${eid} a
+        left join enterprise_user_role_${eid} b on a.id=b.role_id
+        left join enterprise_user_${eid} c on b.user_id=c.user_id
+        where role_id=#{roleId} and c.active=true
+    </select>
+
+    <select id="countUserByDingRole" resultType="java.lang.Integer">
+        select count(b.user_id) from sys_role_${eid} a
+        left join enterprise_user_role_${eid} b on a.id=b.role_id
+         left join enterprise_user_${eid} c on b.user_id=c.user_id
+        where role_id=#{roleId} and c.active=true
+    </select>
+
+
+    <select id="selectDingRoleCount" resultMap="dingRoleMap">
+        select a.id as dingRoleId,a.role_name as dingRoleName,count(b.user_id) as roleCount from sys_role_${eid} a left join enterprise_user_role_${eid} b on a.id=b.role_id
+        where a.source = 'sync'
+        <if test="roleName!=null and roleName!=''">
+            and a.role_name like concat('%',#{roleName},'%')
+        </if>
+        group by a.id
+        order by a.id asc
+    </select>
+
+
+    <select id="selectUserRoleBySourceAndUserId" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserRole">
+        select b.role_id as roleId,
+               b.user_id as userId
+        from sys_role_${eid} a
+        left join enterprise_user_role_${eid} b on a.id=b.role_id
+        <where>
+            <if test="userIdList!=null and userIdList.size>0">
+                <foreach collection="userIdList" separator="," open="and b.user_id in(" close=")" item="userId">
+                    #{userId}
+                </foreach>
+            </if>
+            <if test="source!=null and source!=''">
+                and a.source = #{source}
+            </if>
+        </where>
+    </select>
+    <select id="selectUserRoleInfo"
+            resultType="com.coolcollege.intelligent.model.enterprise.dto.SelectUserRoleDTO">
+        select
+            sr.id as positionId,
+            sr.role_name as positionName
+        from enterprise_user_role_${eid} eur
+        left join sys_role_${eid} sr
+        on eur.role_id = sr.id
+        where eur.user_id = #{userId}
+        ORDER BY sr.priority is null , sr.priority
+        LIMIT 1
+    </select>
+
+
+    <select id="selectSysRoleBySource" resultType="com.coolcollege.intelligent.model.system.SysRoleDO">
+        select id, role_name as roleName, is_internal as isInternal, role_auth as roleAuth, `source`,
+               position_type as positionType, app_menu as appMenu, syn_ding_role_id as synDingRoleId,
+               priority, create_time as createTime, update_time as updateTime,role_enum as roleEnum
+        from sys_role_${eid}
+        where `source` = #{source}
+        ORDER BY priority
+    </select>
+
+    <select id="selectByRoleNameAndSource" resultType="com.coolcollege.intelligent.model.system.SysRoleDO">
+        select id, role_name as roleName, is_internal as isInternal, role_auth as roleAuth, `source`,
+               position_type as positionType, app_menu as appMenu, syn_ding_role_id as synDingRoleId,
+               priority, create_time as createTime, update_time as updateTime,role_enum as roleEnum
+        from sys_role_${eid}
+        where `source` = #{source}
+        and role_name = #{roleName}
+        ORDER BY priority
+    </select>
+
+    <select id="getMaxSort" resultType="java.lang.Integer">
+        SELECT MAX(sort) FROM sys_role_${eid}
+    </select>
+    <select id="getNormalRoleMaxPriority" resultType="java.lang.Integer">
+        SELECT priority FROM sys_role_${eid}
+        ORDER BY priority DESC
+        limit 2
+    </select>
+
+    <select id="selectRoleByIdList" resultMap="sysRoleMap">
+        select * from sys_role_${eid} where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="selectRoleByPriority" resultMap="sysRoleMap">
+        select * from sys_role_${eid} where priority = #{priority}
+    </select>
+    <select id="getLimitRoleIds" resultMap="sysRoleMap">
+        select * from sys_role_${eid}  ORDER BY priority ASC limit #{limit}
+    </select>
+    <select id="getAdminRole" resultMap="sysRoleMap">
+        select * from sys_role_${eid} where role_enum = 'master'
+    </select>
+
+    <select id="selectUserRoleByUserIds"
+            resultType="com.coolcollege.intelligent.model.selectcomponent.SelectComponentUserRoleVO">
+        select
+        eur.user_id as userId,
+        sr.id as positionId,
+        sr.`source` as source,
+        sr.role_name as positionName
+        from enterprise_user_role_${eid} eur
+        left join sys_role_${eid} sr
+        on eur.role_id = sr.id
+        where eur.user_id in
+        <foreach item="userId" collection="userIds" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+        ORDER BY sr.priority is null , sr.priority
+    </select>
+    <select id="selectRoleUserByRoleIds" resultType="com.coolcollege.intelligent.model.system.dto.RoleUserDTO">
+        select
+        b.role_id as roleId,
+        count(b.role_id) as userCount
+        from  enterprise_user_role_${enterpriseId} b
+        left join enterprise_user_${enterpriseId} c on c.user_id=b.user_id
+        <where>
+            c.active = true and c.user_status = '1'
+            <if test="roleIdList !=null and roleIdList.size>0">
+                <foreach collection="roleIdList" item="roleId" separator="," open=" and b.role_id in (" close=")">
+                    #{roleId}
+                </foreach>
+            </if>
+        </where>
+        group by b.role_id
+    </select>
+    <select id="userAndPositionListDistinct"
+            resultType="com.coolcollege.intelligent.model.store.dto.StoreUserDTO">
+        SELECT
+        eu.user_id as userId,
+        eu.`name` as userName,
+        IFNULL(eu.avatar, eu.face_url) as avatar,
+        eu.mobile,
+        sr.id as positionId,
+        sr.role_name as positionName
+        from enterprise_user_${eid} eu
+        left join enterprise_user_role_${eid} eur USING(user_id)
+        left join sys_role_${eid} sr on eur.role_id = sr.id
+        where eu.user_id in
+        <foreach collection="userIdList" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+        <if test="userName != null and userName != '' ">
+            and eu.name like concat('%', #{userName}, '%')
+        </if>
+        and eu.active = true
+        --         and sr.source = 'create'
+        <if test="positionType != null and positionType != '' ">
+            and sr.position_type = #{positionType}
+        </if>
+        and eu.user_status = '1'
+        group by eu.user_id
+    </select>
+    <select id="getRoleByEid" resultType="com.coolcollege.intelligent.model.system.SysRoleDO">
+        select
+            id as id,
+            role_name as roleName,
+            role_auth as roleAuth,
+            `source` as source,
+            priority as priority,
+            is_internal as isInternal,
+            app_menu as appMenu,
+            create_time as createTime,
+            update_time as updateTime,
+            position_type as positionType
+        from sys_role_${eid}
+        order by id
+    </select>
+
+    <select id="getRoleListPage" resultType="com.coolcollege.intelligent.model.system.SysRoleDO">
+        select
+        id as id,
+        role_name as roleName,
+        role_auth as roleAuth,
+        `source` as source,
+        priority as priority,
+        is_internal as isInternal,
+        app_menu as appMenu,
+        position_type as positionType
+        from  sys_role_${eid}
+    </select>
+    <select id="getUserRoleNameByUserIdList" resultType="com.coolcollege.intelligent.model.enterprise.dto.UserRoleDTO">
+        select
+        a.user_id as userId,
+        group_concat(b.role_name) as roleName
+        from enterprise_user_role_${eid} a left join sys_role_${eid} b on a.role_id=b.id
+        where
+        <foreach collection="userIdList" item="userId" separator="," open="a.user_id in (" close=")">
+            #{userId}
+        </foreach>
+        group by a.user_id
+    </select>
+
+    <select id="selectBySynDingRoleIdAndSource" resultType="com.coolcollege.intelligent.model.system.SysRoleDO">
+        select id, role_name as roleName, is_internal as isInternal, role_auth as roleAuth, `source`,
+               position_type as positionType, app_menu as appMenu, syn_ding_role_id as synDingRoleId,
+               priority, create_time as createTime, update_time as updateTime,role_enum as roleEnum
+        from sys_role_${eid}
+        <where>
+            <if test="source != null and source != ''">
+                and source = #{source}
+            </if>
+            <if test="synDingRoleId != null">
+                and syn_ding_role_id = #{synDingRoleId}
+            </if>
+        </where>
+        ORDER BY priority
+    </select>
+
+    <select id="getRoleIdByThirdUniqueIds" resultType="com.coolcollege.intelligent.model.system.SysRoleDO">
+        select
+            third_unique_id as thirdUniqueId, id as id
+        from
+            sys_role_${eid}
+        where
+            third_unique_id in
+        <foreach item="thirdUniqueId" collection="thirdUniqueIds" open="(" separator="," close=")">
+            #{thirdUniqueId}
+        </foreach>
+    </select>
+    <insert id="addRole">
+        insert into  sys_role_${enterpriseId} (role_name, third_unique_id, source)
+        values
+        <foreach collection="roleList" item="role" separator=",">
+            (#{role.roleName},#{role.thirdUniqueId}, #{role.source})
+        </foreach>
+    </insert>
+
+    <select id="getNoUserSyncRoleIds" resultType="long">
+        select id from sys_role_${enterpriseId} where source in ('sync', 'sync_position') and id not in (select role_id from enterprise_user_role_${enterpriseId})
+    </select>
+    
+    <update id="deleteByRoleIds">
+        delete from sys_role_${enterpriseId}
+        where id in <foreach collection="roleIds" separator="," open="(" close=")" item="id">#{id}</foreach>
+    </update>
+
+    <select id="getRoleByRoleNames" resultType="com.coolcollege.intelligent.model.system.SysRoleDO">
+        select
+            id, role_name as roleName, role_auth as roleAuth, `source`, position_type as positionType, app_menu as appMenu, priority
+        from
+            sys_role_${enterpriseId}
+        where
+            source = #{source} and role_name in <foreach collection="roleNameList" separator="," open="(" close=")" item="roleName">#{roleName}</foreach>
+    </select>
+
+    <select id="getRoleIdByThirdUniqueId" resultType="com.coolcollege.intelligent.model.system.SysRoleDO">
+        select
+            id as id,
+            third_unique_id as thirdUniqueId,
+            role_name as roleName,
+            priority
+        from
+            sys_role_${enterpriseId}
+        where
+            third_unique_id = #{thirdUniqueId}
+    </select>
+
+       <select id="getLastedPriority" resultType="java.lang.Integer">
+        select
+            max(priority) + 1
+        from
+            sys_role_${enterpriseId}
+        where priority != 99999999
+    </select>
+
+     <update id="updateThirdUniqueIds">
+        <foreach collection="roleImportDTOList" item="item" separator=";">
+            update sys_role_${enterpriseId}
+            set third_unique_id = #{item.thirdUniqueId}
+            where
+                role_name = #{item.roleName}
+        </foreach>
+    </update>
+
+    <delete id="deleteRoleWithoutUsers">
+        delete from sys_role_${enterpriseId}
+        where
+            id not in (select role_id from enterprise_user_role_${enterpriseId})
+        <if test="isDeleteDefault !=null and !isDeleteDefault">
+            and is_internal in ('0')
+        </if>
+    </delete>
+</mapper>

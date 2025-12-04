@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.homeTemplate.HomeTemplateRoleMappingMappper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.homeTemplate.HomeTemplateRoleMappingDO">
+        <id column="id" property="id" />
+        <result column="template_id" property="templateId"/>
+        <result column="role_id" property="roleId"/>
+        <result column="create_id" property="createId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,template_id,role_id,create_id,create_time,update_id,update_time
+    </sql>
+
+    <insert id="batchInsert" keyColumn="id" keyProperty="list.id" useGeneratedKeys="true">
+        INSERT into home_template_role_mapping_${enterpriseId}
+        (
+        template_id,
+        role_id,
+        create_id,
+        create_time,
+        update_id,
+        update_time
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.templateId},
+            #{item.roleId},
+            #{item.createId},
+            #{item.createTime},
+            #{item.updateId},
+            #{item.updateTime}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deletedByIds">
+        delete from home_template_role_mapping_${enterpriseId}  where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateById" parameterType="com.coolcollege.intelligent.model.homeTemplate.HomeTemplateRoleMappingDO">
+        update home_template_role_mapping_${enterpriseId}
+        SET
+        <trim suffixOverrides=",">
+            <if test="entity.templateId != null and entity.templateId !='' ">
+                `template_id` = #{entity.templateId},
+            </if>
+            <if test="entity.roleId != null and entity.roleId !='' ">
+                `role_id` = #{entity.roleId},
+            </if>
+            <if test="entity.deleted != null and entity.deleted !='' ">
+                `deleted` = #{entity.deleted},
+            </if>
+            <if test="entity.updateId != null and entity.updateId !='' ">
+                `update_id` = #{entity.updateId},
+            </if>
+        </trim>
+        where id = #{entity.id}
+    </update>
+
+    <select id="selectById" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"></include>
+        from home_template_role_mapping_${enterpriseId}
+        where id = #{id}
+    </select>
+
+
+    <delete id="deletedByRoleIds">
+        delete from home_template_role_mapping_${enterpriseId}  where role_id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deletedByTemplateId">
+        delete from home_template_role_mapping_${enterpriseId}  where template_id = #{templateId}
+    </delete>
+
+
+    <select id="selectByHomeTemplateId" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"></include>
+        from home_template_role_mapping_${enterpriseId}
+        where template_id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectByRoleIds" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"></include>
+        from home_template_role_mapping_${enterpriseId}
+        where role_id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+
+
+</mapper>

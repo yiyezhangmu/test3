@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.coolcollege.intelligent.dao.dataCorrection.DataCorrectionMapper">
+
+<select id="countRoleDuble" resultType="java.lang.String">
+    select tem.userId from (SELECT  a.user_id as userId,COUNT(a.user_id) as roleCount from  enterprise_user_${eid} a 
+LEFT JOIN enterprise_user_role_${eid} b 
+on a.user_id=b.user_id  left join sys_role_${eid} c on b.role_id=c.id
+WHERE
+ c.source="create"
+ and a.active = true
+ GROUP BY a.user_id)tem WHERE tem.roleCount>=2
+</select>
+
+<select id="selectRoleFixDuplicate" resultType="com.coolcollege.intelligent.model.dataCorrection.RoleDuplicateDTO">
+ SELECT  b.id,b.user_id as userId,b.role_id as roleId from  enterprise_user_role_${eid} b  left join sys_role_${eid} c on b.role_id=c.id
+WHERE
+ c.source='create'
+ <foreach collection="userIdList" item="userId" open="and  b.user_id in (" separator="," close=")">
+     #{userId}
+ </foreach>
+</select>
+
+
+    <delete id="batchDeleteUserRole">
+        delete from enterprise_user_role_${eid}
+        where
+        <if test="idList!=null and idList.size>0">
+            <foreach collection="idList" open="id in (" item="item" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+    </delete>
+    <insert id="insertRoleFixAdmin">
+        insert ignore into enterprise_user_role_${eid} (role_id,user_id) values (20000000,#{userId})
+    </insert>
+
+    <update id="updateStoreStorePath">
+        update  store_${eid} a
+        left join region_${eid} b on a.region_id=b.id
+        set a.region_path=concat(b.region_path,b.id,'/')
+        WHERE  a.region_id=b.id and a.region_id is not null
+        <if test="storeId!=null and storeId!=''">
+            and a.store_id=#{storeId}
+        </if>
+    </update>
+
+    <update id="updateRootStorePath">
+        update store_${eid}
+        set region_path='/1/' where region_id=1
+        <if test="storeId!=null and storeId!=''">
+            and store_id=#{storeId}
+        </if>
+    </update>
+    <update id="updateTbPatrolStoreRecordStorePath">
+        update  tb_patrol_store_record_${eid} a 
+        left join store_${eid} b on a.store_id=b.store_id
+        set a.region_way=b.region_path,a.region_id=b.region_id
+        WHERE a.store_id=b.store_id and b.region_path is not null and b.region_path !=''
+          <if test="storeId!=null and storeId!=''">
+              and a.store_id=#{storeId}
+          </if>
+          <if test="isRunIncrement != null and isRunIncrement">
+                and a.create_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+          </if>
+    </update>
+    <update id="updateTbDataTableStorePath">
+        update  tb_data_table_${eid} a
+        left join store_${eid} b on a.store_id=b.store_id
+        set a.region_path=b.region_path,a.region_id=b.region_id
+        WHERE
+        a.store_id=b.store_id and b.region_path is not null and b.region_path !=''
+        <if test="storeId!=null and storeId!=''">
+            and a.store_id=#{storeId}
+        </if>
+        <if test="isRunIncrement != null and isRunIncrement">
+            and a.create_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        </if>
+    </update>
+
+    <update id="updateTbDataStaTableColumnStorePath">
+        update  tb_data_sta_table_column_${eid} a
+        left join store_${eid} b on a.store_id=b.store_id
+        set a.region_way=b.region_path,a.region_id=b.region_id
+        WHERE
+        a.store_id=b.store_id and b.region_path is not null and b.region_path !=''
+        <if test="storeId!=null and storeId!=''">
+            and a.store_id=#{storeId}
+        </if>
+        <if test="isRunIncrement != null and isRunIncrement">
+            and a.create_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        </if>
+    </update>
+
+    <update id="updateTbDataDefTableColumnStorePath">
+        update  tb_data_def_table_column_${eid} a
+        left join store_${eid} b on a.store_id=b.store_id
+        set a.region_path=b.region_path,a.region_id=b.region_id
+        WHERE
+        a.store_id=b.store_id and b.region_path is not null and b.region_path !=''
+        <if test="storeId!=null and storeId!=''">
+            and a.store_id=#{storeId}
+        </if>
+        <if test="isRunIncrement != null and isRunIncrement">
+            and a.create_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        </if>
+    </update>
+
+    <update id="updateTbDisplayTableRecordStorePath">
+        update  tb_display_table_record_${eid} a
+        left join store_${eid} b on a.store_id=b.store_id
+        set a.region_path=b.region_path,a.region_id=b.region_id
+        WHERE
+        a.store_id=b.store_id and b.region_path is not null and b.region_path !=''
+        <if test="storeId!=null and storeId!=''">
+            and a.store_id=#{storeId}
+        </if>
+        <if test="isRunIncrement != null and isRunIncrement">
+            and a.create_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        </if>
+    </update>
+
+    <update id="updateTbDisplayTableDataColumnStorePath">
+        update  tb_display_table_data_column_${eid} a
+        left join store_${eid} b on a.store_id=b.store_id
+        set a.region_path=b.region_path,a.region_id=b.region_id
+        WHERE
+        a.store_id=b.store_id and b.region_path is not null and b.region_path !=''
+        <if test="storeId!=null and storeId!=''">
+            and a.store_id=#{storeId}
+        </if>
+        <if test="isRunIncrement != null and isRunIncrement">
+            and a.create_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        </if>
+    </update>
+
+    <update id="updateTbDisplayTableDataContentStorePath">
+        update  tb_display_table_data_content_${eid} a
+        left join store_${eid} b on a.store_id=b.store_id
+        set a.region_path=b.region_path,a.region_id=b.region_id
+        WHERE
+        a.store_id=b.store_id and b.region_path is not null and b.region_path !=''
+        <if test="storeId!=null and storeId!=''">
+            and a.store_id=#{storeId}
+        </if>
+        <if test="isRunIncrement != null and isRunIncrement">
+            and a.create_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        </if>
+    </update>
+
+    <update id="updateUnifyTaskStoreStorePath">
+        update  unify_task_store_${eid} a
+        left join store_${eid} b on a.store_id=b.store_id set a.region_way=b.region_path,a.region_id=b.region_id WHERE
+        a.store_id=b.store_id and b.region_path is not null and b.region_path !=''
+        <if test="storeId!=null and storeId!=''">
+            and a.store_id=#{storeId}
+        </if>
+        <if test="isRunIncrement != null and isRunIncrement">
+            and a.create_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        </if>
+    </update>
+
+    <update id="updateUnifyTaskSubStorePath">
+        update  unify_task_sub_${eid} a
+        left join store_${eid} b on a.store_id=b.store_id
+        set a.store_area=b.region_path,a.region_id=b.region_id
+         WHERE a.store_id=b.store_id and b.region_path is not null and b.region_path !=''
+        <if test="storeId!=null and storeId!=''">
+            and a.store_id=#{storeId}
+        </if>
+        <if test="isRunIncrement != null and isRunIncrement">
+            and DATEDIFF(now() , FROM_UNIXTIME(a.create_time/1000)) &lt; 7
+        </if>
+    </update>
+    <update id="updateVideoEventRecordStorePath">
+        update  video_event_record_${eid} a
+        left join store_${eid} b on a.store_id=b.store_id
+        set a.region_path=b.region_path,a.region_id=b.region_id
+        WHERE
+        a.store_id=b.store_id and b.region_path is not null and b.region_path !=''
+        <if test="storeId!=null and storeId!=''">
+            and a.store_id=#{storeId}
+        </if>
+        <if test="isRunIncrement != null and isRunIncrement">
+            and DATEDIFF(now() , FROM_UNIXTIME(a.create_time/1000)) &lt; 7
+        </if>
+    </update>
+    <update id="updateDeviceStorePath">
+        update  device_${eid} a
+        left join store_${eid} b on a.bind_store_id=b.store_id
+        set a.region_path=b.region_path
+        WHERE
+        a.bind_store_id=b.store_id and b.region_path is not null and b.region_path !=''
+        <if test="storeId!=null and storeId!=''">
+            and a.bind_store_id=#{storeId}
+        </if>
+        <if test="isRunIncrement != null and isRunIncrement">
+            and DATEDIFF(now() , FROM_UNIXTIME(a.create_time/1000)) &lt; 7
+        </if>
+    </update>
+    <update id="updateDeviceBindStoreId">
+        UPDATE device_${eid} d
+            INNER JOIN device_mapping_${eid} de ON de.device_id = d.device_id
+            SET bind_store_id = de.store_id,
+                d.bind_time = de.create_time
+    </update>
+    <select id="selectDeviceBindByAliyun" resultType="java.lang.String">
+        select  device_id
+        from device_${eid}
+        where bind_store_id is not null and resource='ali' and type='video'
+    </select>
+    <select id="selectEnterpriseByRootVdsCorpId" resultType="java.lang.String">
+        select enterprise_id from enterprise_video_setting
+        where root_vds_corp_id=#{rootCorpId}
+        GROUP BY enterprise_id
+    </select>
+    <select id="selectEnterpriseUser"
+            resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select * from enterprise_user_${enterpriseId} where unionid is not null
+    </select>
+    <update id="updateRootCorpIdToNullByRootCorpId">
+        update enterprise_video_setting set root_vds_corp_id=null
+        where root_vds_corp_id=#{rootCorpId}
+    </update>
+    <update id="batchUpdateStoreAdressAndLngLat">
+        update store_${eid}
+        set
+        longitude_latitude =
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.longitudeLatitude,jdbcType=VARCHAR}
+        </foreach>
+        ,
+        latitude =
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.latitude,jdbcType=VARCHAR}
+        </foreach>
+        ,
+        longitude =
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.longitude,jdbcType=VARCHAR}
+        </foreach>
+        ,
+        store_address =
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.storeAddress,jdbcType=VARCHAR}
+        </foreach>
+        ,
+        location_address =
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.locationAddress,jdbcType=VARCHAR}
+        </foreach>,
+        address_point =
+        <foreach collection="stores" item="store" index="index" separator=" " open="case store_id" close="end">
+            when #{store.storeId} then ST_GeomFromText(#{store.addressPoint})
+        </foreach>
+        where store_id in
+        <foreach collection="stores" index="index" item="store"
+                 separator="," open="(" close=")">
+            #{store.storeId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <update id="updateAchievementDetailRegionPath">
+        update  achievement_detail_${eid} a
+        left join store_${eid} b on a.store_id=b.store_id set a.region_path=b.region_path,a.region_id=b.region_id WHERE
+        a.store_id=b.store_id and b.region_path is not null and b.region_path !=''
+        <if test="storeId!=null and storeId!=''">
+            and a.store_id=#{storeId}
+        </if>
+        <if test="isRunIncrement != null and isRunIncrement">
+            and a.create_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        </if>
+    </update>
+
+    <update id="updateAchievementTargetRegionPath">
+        update  achievement_target_${eid} a
+        left join store_${eid} b on a.store_id=b.store_id set a.region_path=b.region_path,a.region_id=b.region_id WHERE
+        a.store_id=b.store_id and b.region_path is not null and b.region_path !=''
+        <if test="storeId!=null and storeId!=''">
+            and a.store_id=#{storeId}
+        </if>
+        <if test="isRunIncrement != null and isRunIncrement">
+            and a.create_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        </if>
+    </update>
+
+    <update id="updateAchievementTargetDetailRegionPath">
+        update  achievement_target_detail_${eid} a
+        left join store_${eid} b on a.store_id=b.store_id set a.region_path=b.region_path,a.region_id=b.region_id WHERE
+        a.store_id=b.store_id and b.region_path is not null and b.region_path !=''
+        <if test="storeId!=null and storeId!=''">
+            and a.store_id=#{storeId}
+        </if>
+        <if test="isRunIncrement != null and isRunIncrement">
+            and a.create_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        </if>
+    </update>
+    <update id="fixDevice">
+        update device_${eid}
+        set
+        device_name=#{deviceDO.deviceName}
+        <if test="deviceDO.deviceStatus!=null">
+            ,device_status=#{deviceDO.deviceStatus}
+        </if>
+        <if test="deviceDO.hasChildDevice!=null">
+            ,has_child_device=#{deviceDO.hasChildDevice}
+        </if>
+        <if test="deviceDO.hasPtz!=null">
+            ,has_ptz=#{deviceDO.hasPtz}
+        </if>
+        <if test="deviceDO.storeSceneId!=null">
+            ,store_scene_id=#{deviceDO.storeSceneId}
+        </if>
+        <if test="deviceDO.supportCapture!=null">
+            ,support_capture=#{deviceDO.supportCapture}
+        </if>
+        where device_id=#{deviceDO.deviceId}
+    </update>
+
+    <update id="updateStoreStorePath2">
+        UPDATE store_${eid} a
+        INNER JOIN region_${eid} b ON a.store_id = b.store_id
+        SET a.region_path = CONCAT(b.region_path, b.id, '/')
+        WHERE
+        b.region_path IS NOT NULL
+        AND b.region_path != ''
+        AND a.region_path != CONCAT(b.region_path,b.id,'/')
+        <if test="storeId!=null and storeId!=''">
+            and a.store_id=#{storeId}
+        </if>
+    </update>
+    <update id="updatePlatformUsers">
+        update enterprise_user
+        set  mobile  =
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case unionid" close="end">
+            when #{item.unionid} then #{item.mobile}
+        </foreach> ,
+        email=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case unionid" close="end">
+            when #{item.unionid} then #{item.email}
+        </foreach>,
+        jobnumber=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case unionid" close="end">
+            when #{item.unionid} then #{item.jobnumber}
+        </foreach>,
+        name=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case unionid" close="end">
+            when #{item.unionid} then #{item.name}
+        </foreach>,
+        remark=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case unionid" close="end">
+            when #{item.unionid} then #{item.remark}
+        </foreach>
+        where unionid in
+        <foreach collection="list" index="index" item="item"
+                 separator="," open="(" close=")">
+            #{item.unionid,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+
+    <update id="updateTbPatrolStoreRecordRegionPath">
+        update tb_patrol_store_record_${enterpriseId}
+        set region_way = #{regionPath},
+            region_id = #{regionId}
+        WHERE store_id=#{storeId}
+    </update>
+    <update id="updateTbDataTableRegionPath">
+        update tb_data_table_${enterpriseId}
+        set region_path = #{regionPath},
+            region_id = #{regionId}
+        WHERE store_id=#{storeId}
+    </update>
+    <update id="updateTbDataStaTableColumnRegionPath">
+        update tb_data_sta_table_column_${enterpriseId}
+        set region_way = #{regionPath},
+            region_id = #{regionId}
+        WHERE store_id=#{storeId}
+    </update>
+    <update id="updateTbDataDefTableColumnRegionPath">
+        update tb_data_def_table_column_${enterpriseId}
+        set region_path = #{regionPath},
+            region_id = #{regionId}
+        WHERE store_id=#{storeId}
+    </update>
+    <update id="updateTbDisplayTableRecordRegionPath">
+        update tb_display_table_record_${enterpriseId}
+        set region_path = #{regionPath},
+            region_id = #{regionId}
+        WHERE store_id=#{storeId}
+    </update>
+    <update id="updateTbDisplayTableDataColumnRegionPath">
+        update tb_display_table_data_column_${enterpriseId}
+        set region_path = #{regionPath},
+            region_id = #{regionId}
+        WHERE store_id=#{storeId}
+    </update>
+    <update id="updateTbDisplayTableDataContentRegionPath">
+        update tb_display_table_data_content_${enterpriseId}
+        set region_path = #{regionPath},
+            region_id = #{regionId}
+        WHERE store_id=#{storeId}
+    </update>
+    <update id="updateUnifyTaskStoreRegionPath">
+        update unify_task_store_${enterpriseId}
+        set region_way = #{regionPath},
+            region_id = #{regionId}
+        WHERE store_id=#{storeId}
+    </update>
+    <update id="updateUnifyTaskSubRegionPath">
+        update unify_task_sub_${enterpriseId}
+        set store_area = #{regionPath},
+            region_id = #{regionId}
+        WHERE store_id=#{storeId}
+    </update>
+    <update id="updateVideoEventRecordRegionPath">
+        update video_event_record_${enterpriseId}
+        set region_path = #{regionPath},
+            region_id = #{regionId}
+        WHERE store_id=#{storeId}
+    </update>
+    <update id="updateDeviceRegionPath">
+        update device_${enterpriseId}
+        set region_path = #{regionPath}
+        WHERE bind_store_id=#{storeId}
+    </update>
+    <update id="updateAchDetailRegionPath">
+        update achievement_detail_${enterpriseId}
+        set region_path = #{regionPath},
+            region_id = #{regionId}
+        WHERE store_id=#{storeId}
+    </update>
+    <update id="updateAchTargetRegionPath">
+        update achievement_target_${enterpriseId}
+        set region_path = #{regionPath},
+            region_id = #{regionId}
+        WHERE store_id=#{storeId}
+    </update>
+    <update id="updateAchTargetDetailRegionPath">
+        update achievement_target_detail_${enterpriseId}
+        set region_path = #{regionPath},
+            region_id = #{regionId}
+        WHERE store_id=#{storeId}
+    </update>
+
+    <select id="getJob"  resultType="com.coolcollege.intelligent.model.scheduler.request.ScheduleJobRequest">
+        select
+            b.id as scheduleId, a.action,  b.eid as eid
+        from
+            job a inner join scheduler b on a.scheduler_id=b.id
+        where
+            (a.action like '%store-api.coolstore.cn%' or a.action like '%store-api.coolcollege.cn%') and b.eid=#{eid} order by a.create_time desc
+    </select>
+    
+    <select id="getJobDistinctEid" resultType="String">
+        select
+            distinct b.eid
+        from
+            job a inner join scheduler b on a.scheduler_id=b.id
+        where
+            (a.action like '%store-api.coolstore.cn%' or a.action like '%store-api.coolcollege.cn%')
+        <if test="eids != null and eids.size() > 0">
+            <foreach item="eid" index="index" collection="eids" separator="," open="and b.eid in (" close=")">
+                #{eid}
+            </foreach>
+        </if>
+    </select>
+
+
+</mapper>

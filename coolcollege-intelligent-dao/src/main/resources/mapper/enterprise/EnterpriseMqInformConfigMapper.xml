@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseMqInformConfigMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.enterprise.EnterpriseMqInformConfigDO" id="EnterpriseMqInformConfigMap">
+        <result property="url" column="url" jdbcType="VARCHAR"/>
+        <result property="enterpriseId" column="enterprise_id" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="md5Key" column="md5_key" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="EnterpriseMqInformConfigMap">
+        select
+          url, enterprise_id, status, md5_key
+        from enterprise_mq_inform_config
+        where enterprise_id = #{eid}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from enterprise_mq_inform_config
+        <where>
+            <if test="url != null and url != ''">
+                and url = #{url}
+            </if>
+            <if test="enterpriseId != null and enterpriseId != ''">
+                and enterprise_id = #{enterpriseId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="md5Key != null and md5Key != ''">
+                and md5_key = #{md5Key}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryByStatus" resultMap="EnterpriseMqInformConfigMap">
+        select
+            url, enterprise_id, status, md5_key
+        from enterprise_mq_inform_config
+        where status = #{status}
+        and enterprise_id = #{eid}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="enterpriseId" useGeneratedKeys="true">
+        insert into enterprise_mq_inform_config(url, status, md5_key)
+        values (#{url}, #{status}, #{md5Key})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update enterprise_mq_inform_config
+        <set>
+            <if test="url != null and url != ''">
+                url = #{url},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="md5Key != null and md5Key != ''">
+                md5_key = #{md5Key},
+            </if>
+        </set>
+        where enterprise_id = #{enterpriseId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from enterprise_mq_inform_config where enterprise_id = #{eid}
+    </delete>
+
+</mapper>
+

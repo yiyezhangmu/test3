@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.device.EnterpriseLiveRecordMapper">
+    <resultMap type="com.coolcollege.intelligent.model.device.EnterpriseLiveRecordDO" id="baseMap">
+        <result property="id" column="id"/>
+        <result property="enterpriseId" column="enterprise_id"/>
+        <result property="liveId" column="live_id"/>
+        <result property="liveStatus" column="live_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="liveTime" column="live_time"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="channelNo" column="channel_no"/>
+        <result property="streamIndex" column="stream_index"/>
+    </resultMap>
+    <insert id="insertOrUpdateEnterpriseLiveRecord">
+		insert into enterprise_live_record
+		(
+			`enterprise_id`,
+			`live_id`,
+			`live_status`,
+			`create_time`,
+			`update_time`,
+			`live_time`,
+			`device_id`,
+			`channel_no`,
+			`stream_index`
+		)
+		values
+		(
+			#{enterpriseLiveRecordDO.enterpriseId},
+			#{enterpriseLiveRecordDO.liveId},
+			#{enterpriseLiveRecordDO.liveStatus},
+			#{enterpriseLiveRecordDO.createTime},
+			#{enterpriseLiveRecordDO.updateTime},
+			#{enterpriseLiveRecordDO.liveTime},
+			#{enterpriseLiveRecordDO.deviceId},
+			#{enterpriseLiveRecordDO.channelNo},
+			#{enterpriseLiveRecordDO.streamIndex}
+		) ON DUPLICATE KEY UPDATE live_status=values(live_status),update_time=values(update_time),live_time=values(live_time)
+	</insert>
+    <select id="listExpireVideoList" resultMap="baseMap">
+        select  *
+        from  enterprise_live_record
+        where live_status=1 and live_time &lt; sysdate()
+    </select>
+    <update id="updateEnterpriseLiveRecordToStatus">
+        update enterprise_live_record
+        set live_status=#{enterpriseLiveRecordDO.liveStatus} ,
+        update_time=sysdate()
+        where enterprise_id=#{enterpriseLiveRecordDO.enterpriseId} and live_id =#{enterpriseLiveRecordDO.liveId}
+    </update>
+
+    <update id="updateEnterpriseLiveRecordToLiveTime">
+        update enterprise_live_record
+        set live_time=#{liveTime}
+        where enterprise_id=#{eid}
+        <foreach collection="liveIdList" item="item" open="and live_id in(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+</mapper>

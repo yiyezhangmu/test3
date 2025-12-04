@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.qyy.QyyWeeklyNewspaperMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.qyy.QyyWeeklyNewspaperDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="monday_of_week" jdbcType="VARCHAR" property="mondayOfWeek" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="user_id" jdbcType="VARCHAR" property="userId" />
+        <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+        <result column="region_id" jdbcType="BIGINT" property="regionId" />
+        <result column="conversation_id" jdbcType="VARCHAR" property="conversationId" />
+        <result column="summary" jdbcType="VARCHAR" property="summary" />
+        <result column="next_week_plan" jdbcType="VARCHAR" property="nextWeekPlan" />
+        <result column="compete_product_collect" jdbcType="VARCHAR" property="competeProductCollect" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+        <result column="file_url" jdbcType="VARCHAR" property="fileUrl"/>
+        <result column="read_num" jdbcType="BIGINT" property="readNum"/>
+        <result column="video_json" jdbcType="VARCHAR" property="videoUrl"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, monday_of_week, username, user_id, store_id, region_id, conversation_id, summary, next_week_plan,
+        compete_product_collect, create_time, update_time,file_url,read_num,video_json
+    </sql>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="record.id" keyColumn="id">
+          insert into qyy_weekly_newspaper_${enterpriseId}
+          <trim prefix="(" suffix=")" suffixOverrides=",">
+              <if test="record.mondayOfWeek != null">
+                monday_of_week,
+              </if>
+              <if test="record.username != null">
+                username,
+              </if>
+              <if test="record.userId != null">
+                user_id,
+              </if>
+              <if test="record.storeId != null">
+                store_id,
+              </if>
+              <if test="record.regionId != null">
+                  region_id,
+              </if>
+              <if test="record.conversationId != null">
+                conversation_id,
+              </if>
+              <if test="record.summary != null">
+                summary,
+              </if>
+              <if test="record.nextWeekPlan != null">
+                next_week_plan,
+              </if>
+              <if test="record.competeProductCollect != null">
+                compete_product_collect,
+              </if>
+              <if test="record.createTime != null">
+                create_time,
+              </if>
+              <if test="record.updateTime != null">
+                update_time,
+              </if>
+              <if test="record.fileUrl != null and record.fileUrl != ''">
+                  file_url,
+              </if>
+              <if test="record.videoUrl != null and record.videoUrl != ''">
+                  video_json,
+              </if>
+          </trim>
+          <trim prefix="values (" suffix=")" suffixOverrides=",">
+              <if test="record.mondayOfWeek != null">
+                #{record.mondayOfWeek},
+              </if>
+              <if test="record.username != null">
+                #{record.username},
+              </if>
+              <if test="record.userId != null">
+                #{record.userId},
+              </if>
+              <if test="record.storeId != null">
+                #{record.storeId},
+              </if>
+              <if test="record.regionId != null">
+                  #{record.regionId},
+              </if>
+              <if test="record.conversationId != null">
+                #{record.conversationId},
+              </if>
+              <if test="record.summary != null">
+                #{record.summary},
+              </if>
+              <if test="record.nextWeekPlan != null">
+                #{record.nextWeekPlan},
+              </if>
+              <if test="record.competeProductCollect != null">
+                #{record.competeProductCollect},
+              </if>
+              <if test="record.createTime != null">
+                #{record.createTime},
+              </if>
+              <if test="record.updateTime != null">
+                #{record.updateTime},
+              </if>
+              <if test="record.fileUrl != null and record.fileUrl != ''">
+                  #{record.fileUrl},
+              </if>
+              <if test="record.videoUrl != null and record.videoUrl != ''">
+                  #{record.videoUrl},
+              </if>
+          </trim>
+      ON DUPLICATE KEY UPDATE
+      username = values(username),
+      conversation_id = values(conversation_id),
+      summary = values(summary),
+      next_week_plan = values(next_week_plan),
+      compete_product_collect = values(compete_product_collect),
+      file_url = values(file_url),
+        video_json = values(video_json)
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update qyy_weekly_newspaper_${enterpriseId}
+        <set>
+            <if test="record.mondayOfWeek != null">
+                monday_of_week = #{record.mondayOfWeek},
+            </if>
+            <if test="record.username != null">
+                username = #{record.username},
+            </if>
+            <if test="record.userId != null">
+                user_id = #{record.userId},
+            </if>
+            <if test="record.storeId != null">
+                store_id = #{record.storeId},
+            </if>
+            <if test="record.regionId != null">
+                region_id = #{record.storeId},
+            </if>
+            <if test="record.conversationId != null">
+                conversation_id = #{record.conversationId},
+            </if>
+            <if test="record.summary != null">
+                summary = #{record.summary},
+            </if>
+            <if test="record.nextWeekPlan != null">
+                next_week_plan = #{record.nextWeekPlan},
+            </if>
+            <if test="record.competeProductCollect != null">
+                compete_product_collect = #{record.competeProductCollect},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime},
+            </if>
+        </set>
+      where id = #{record.id}
+    </update>
+    <delete id="deleteWeeklyNewspaper">
+        DELETE FROM qyy_weekly_newspaper_${enterpriseId}
+        WHERE id = #{id}
+    </delete>
+
+
+    <select id="getWeeklyNewspaperPage" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            qyy_weekly_newspaper_${enterpriseId}
+        <where>
+            <if test="mondayOfWeeks != null and mondayOfWeeks.size() > 0">
+                and monday_of_week in <foreach collection="mondayOfWeeks" separator="," open="(" close=")" item="mondayOfWeek">#{mondayOfWeek}</foreach>
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="conversationId != null">
+                and conversation_id = #{conversationId}
+            </if>
+            <if test="regionId != null and regionId.size() > 0">
+                and region_id in <foreach collection="regionId"  separator="," open="(" close=")" item="rid">#{rid}</foreach>
+            </if>
+            <if test="storeId != null and storeId.size() > 0">
+                and store_id in <foreach collection="storeId"  separator="," open="(" close=")" item="sid">#{sid}</foreach>
+            </if>
+        </where>
+        limit #{pageNum},#{pageSize}
+    </select>
+
+    <select id="getWeeklyNewspaperDetail" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            qyy_weekly_newspaper_${enterpriseId}
+        where
+            id = #{id}
+    </select>
+    <select id="getWeeklyNewspaperDetailByUp" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            qyy_weekly_newspaper_${enterpriseId}
+        where
+            id <![CDATA[ > ]]> #{id}
+        limit 1
+    </select>
+    <select id="getWeeklyNewspaperDetailByDown" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            qyy_weekly_newspaper_${enterpriseId}
+        where
+            id <![CDATA[ < ]]>#{id}
+        ORDER BY id desc
+        limit 1
+    </select>
+    <select id="getWeeklyNewspaper"
+            resultType="com.coolcollege.intelligent.model.achievement.qyy.vo.WeeklyNewspaperDetailVO">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        qyy_weekly_newspaper_${enterpriseId}
+        where
+        monday_of_week = #{mondayOfWeek}
+        and
+        user_id = #{userId}
+        and
+        store_id = #{storeId}
+    </select>
+    <select id="storeWeeklyNewsPaperByPage" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM qyy_weekly_newspaper_${enterpriseId}
+        <where>
+            <if test="regionId != null and regionId.size() > 0">
+                AND region_id IN
+                <foreach collection="regionId" item="rid" separator="," open="(" close=")">
+                    #{rid}
+                </foreach>
+            </if>
+            <if test="storeId != null and storeId.size() > 0">
+                AND store_id IN
+                <foreach collection="storeId" item="id" separator="," open="(" close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="paperDTO.startTime != null and paperDTO.endTime != null and paperDTO.startTime != '' and paperDTO.endTime != ''">
+                AND create_time BETWEEN #{paperDTO.startTime} AND #{paperDTO.endTime}
+            </if>
+        </where>
+    </select>
+    <select id="queryNum" resultType="java.lang.Integer">
+        select count(*)
+        from qyy_weekly_newspaper_${enterpriseId}
+    </select>
+    <select id="getWeeklyNewsPaperAll"
+            resultType="com.coolcollege.intelligent.model.achievement.qyy.vo.QyyNewspaperExportVO">
+--         select
+    </select>
+    <select id="getStoreIdByWeeklyNewspaper" resultType="java.lang.String">
+        select store_id
+        from qyy_weekly_newspaper_${enterpriseId}
+        where monday_of_week = #{monday}
+    </select>
+    <select id="selectById" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from qyy_weekly_newspaper_${enterpriseId}
+        where id = #{businessId}
+    </select>
+    <select id="storeWeeklyNewsPaperByPageNoParam"
+            resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM qyy_weekly_newspaper_${enterpriseId}
+    </select>
+    <select id="countTotalPaper" resultType="java.lang.Long">
+        select count(*)
+        from qyy_weekly_newspaper_${enterpriseId}
+    </select>
+    <select id="getWeeklyNewspaperList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        from qyy_weekly_newspaper_${enterpriseId}
+        where create_time >= #{createDate}
+    </select>
+
+</mapper>

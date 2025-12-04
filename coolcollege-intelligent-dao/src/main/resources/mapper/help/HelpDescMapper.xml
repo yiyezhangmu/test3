@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.help.HelpDescMapper">
+
+    <insert id="insertHelpDesc">
+    insert into sys_help_doc
+    (path, content)
+    values
+    (#{help.path}, #{help.content})
+    </insert>
+
+    <update id="updateHelpDescById">
+        update sys_help_doc
+        set
+        update_time = CURRENT_DATE
+        <if test="help.path !=null">
+            ,path=#{help.path}
+        </if>
+        <if test="help.content !=null">
+            ,content=#{help.content}
+        </if>
+        where id=#{help.id}
+    </update>
+
+    <update id="updateHelpDescByPath">
+        update sys_help_doc
+        set
+        update_time = CURRENT_DATE,
+        content=#{help.content}
+        where path=#{help.path}
+    </update>
+
+    <delete id="deleteHelpDescById">
+        delete from sys_help_doc
+        where id = #{id}
+    </delete>
+
+    <select id="getHelpDesc" resultType="com.coolcollege.intelligent.model.help.HelpDescDO">
+        select
+        a.id,
+        a.path as path,
+        a.content as content,
+        a.create_time as createTime,
+        a.update_time as updateTime
+        from sys_help_doc a
+        where 1=1
+        <if test="help.path != null and help.path != ''">
+            and a.path = #{help.path}
+        </if>
+        <if test="help.id != null and help.id != ''">
+            and a.id = #{help.id}
+        </if>
+    </select>
+</mapper>

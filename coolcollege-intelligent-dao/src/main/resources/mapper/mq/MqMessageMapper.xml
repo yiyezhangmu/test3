@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.mq.MqMessageMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.mq.MqMessageDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="msg_id" jdbcType="VARCHAR" property="msgId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="handle_time" jdbcType="TIMESTAMP" property="handleTime" />
+  </resultMap>
+
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.mq.MqMessageDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mq_message_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.subTaskId != null">
+        sub_task_id,
+      </if>
+      <if test="record.msgId != null">
+        msg_id,
+      </if>
+      <if test="record.message != null">
+        message,
+      </if>
+      <if test="record.status != null">
+        status,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.handleTime != null">
+        handle_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.subTaskId != null">
+        #{record.subTaskId},
+      </if>
+      <if test="record.msgId != null">
+        #{record.msgId},
+      </if>
+      <if test="record.message != null">
+        #{record.message},
+      </if>
+      <if test="record.status != null">
+        #{record.status},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+      <if test="record.handleTime != null">
+        #{record.handleTime},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateMsgStatus">
+    update mq_message_${enterpriseId} set status = #{toStatus} where msg_id = #{msgId} and status = #{fromStatus}
+  </update>
+
+  <select id="getMsgById" resultMap="BaseResultMap">
+    select id, sub_task_id, msg_id, status from mq_message_${enterpriseId} where msg_id = #{msgId} and status = #{status}
+  </select>
+
+  <select id="getMsgMessageBySubTaskId" resultMap="BaseResultMap">
+    select * from mq_message_${enterpriseId} where sub_task_id = #{subTaskId}
+  </select>
+</mapper>

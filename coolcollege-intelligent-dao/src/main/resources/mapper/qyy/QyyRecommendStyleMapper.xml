@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.qyy.QyyRecommendStyleMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.qyy.QyyRecommendStyleDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="goods_num" jdbcType="INTEGER" property="goodsNum" />
+        <result column="goods_ids" jdbcType="VARCHAR" property="goodsIds" />
+        <result column="send_time" jdbcType="TIMESTAMP" property="sendTime" />
+        <result column="send_status" jdbcType="BIT" property="sendStatus" />
+        <result column="send_type" jdbcType="TINYINT" property="sendType" />
+        <result column="store_conversation" jdbcType="VARCHAR" property="storeConversation" />
+        <result column="comp_conversation" jdbcType="VARCHAR" property="compConversation" />
+        <result column="other_conversation" jdbcType="VARCHAR" property="otherConversation" />
+        <result column="deleted" jdbcType="BIT" property="deleted" />
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+        <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.coolcollege.intelligent.model.qyy.QyyRecommendStyleDO">
+        <result column="course_info" jdbcType="LONGVARCHAR" property="courseInfo" />
+        <result column="conversation_info" jdbcType="LONGVARCHAR" property="conversationInfo" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, name, goods_num, goods_ids, send_time, send_status, send_type, store_conversation,
+        comp_conversation, other_conversation, deleted, create_user_id, create_user_name, update_user_id, update_user_name,
+        create_time, update_time
+    </sql>
+    <sql id="Blob_Column_List">
+        course_info, conversation_info
+    </sql>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="record.id">
+        insert into qyy_recommend_style_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.name != null">
+              name,
+            </if>
+            <if test="record.goodsNum != null">
+              goods_num,
+            </if>
+            <if test="record.goodsIds != null">
+              goods_ids,
+            </if>
+            <if test="record.sendTime != null">
+              send_time,
+            </if>
+            <if test="record.sendStatus != null">
+              send_status,
+            </if>
+            <if test="record.sendType != null">
+              send_type,
+            </if>
+            <if test="record.storeConversation != null">
+              store_conversation,
+            </if>
+            <if test="record.compConversationId != null">
+              comp_conversation,
+            </if>
+            <if test="record.otherConversationId != null">
+              other_conversation,
+            </if>
+            <if test="record.deleted != null">
+              deleted,
+            </if>
+            <if test="record.createUserId != null">
+              create_user_id,
+            </if>
+            <if test="record.createUserName != null">
+              create_user_name,
+            </if>
+            <if test="record.createTime != null">
+              create_time,
+            </if>
+            <if test="record.updateTime != null">
+              update_time,
+            </if>
+            <if test="record.courseInfo != null">
+              course_info,
+            </if>
+            <if test="record.conversationInfo != null">
+              conversation_info,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.name != null">
+              #{record.name},
+            </if>
+            <if test="record.goodsNum != null">
+              #{record.goodsNum},
+            </if>
+            <if test="record.goodsIds != null">
+              #{record.goodsIds},
+            </if>
+            <if test="record.sendTime != null">
+              #{record.sendTime},
+            </if>
+            <if test="record.sendStatus != null">
+              #{record.sendStatus},
+            </if>
+            <if test="record.sendType != null">
+              #{record.sendType},
+            </if>
+            <if test="record.storeConversation != null">
+              #{record.storeConversation},
+            </if>
+            <if test="record.compConversationId != null">
+              #{record.compConversationId},
+            </if>
+            <if test="record.otherConversationId != null">
+              #{record.otherConversationId},
+            </if>
+            <if test="record.deleted != null">
+              #{record.deleted},
+            </if>
+            <if test="record.createUserId != null">
+              #{record.createUserId},
+            </if>
+            <if test="record.createUserName != null">
+              #{record.createUserName},
+            </if>
+            <if test="record.createTime != null">
+              #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+              #{record.updateTime},
+            </if>
+            <if test="record.courseInfo != null">
+              #{record.courseInfo},
+            </if>
+            <if test="record.conversationInfo != null">
+              #{record.conversationInfo},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update qyy_recommend_style_${enterpriseId}
+        <set>
+            <if test="record.name != null">
+              name = #{record.name},
+            </if>
+            <if test="record.goodsNum != null">
+              goods_num = #{record.goodsNum},
+            </if>
+            <if test="record.goodsIds != null">
+              goods_ids = #{record.goodsIds},
+            </if>
+            <if test="record.sendTime != null">
+              send_time = #{record.sendTime},
+            </if>
+            <if test="record.sendStatus != null">
+              send_status = #{record.sendStatus},
+            </if>
+            <if test="record.sendType != null">
+              send_type = #{record.sendType},
+            </if>
+            <if test="record.storeConversation != null">
+              store_conversation = #{record.storeConversation},
+            </if>
+            <if test="record.compConversation != null">
+              comp_conversation = #{record.compConversation},
+            </if>
+            <if test="record.otherConversation != null">
+              other_conversation = #{record.otherConversation},
+            </if>
+            <if test="record.deleted != null">
+              deleted = #{record.deleted},
+            </if>
+            <if test="record.createUserId != null">
+              create_user_id = #{record.createUserId},
+            </if>
+            <if test="record.createUserName != null">
+              create_user_name = #{record.createUserName},
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id = #{record.updateUserId},
+            </if>
+            <if test="record.updateUserName != null">
+                update_user_name = #{record.updateUserName},
+            </if>
+            <if test="record.createTime != null">
+              create_time = #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+              update_time = #{record.updateTime},
+            </if>
+            <if test="record.courseInfo != null">
+              course_info = #{record.courseInfo},
+            </if>
+            <if test="record.conversationInfo != null">
+              conversation_info = #{record.conversationInfo},
+            </if>
+        </set>
+      where id = #{record.id}
+    </update>
+    <update id="updateByPrimaryKey">
+        update qyy_recommend_style_${enterpriseId}
+        <set>
+            <if test="record.name != null">
+              name = #{record.name},
+            </if>
+            <if test="record.goodsNum != null">
+              goods_num = #{record.goodsNum},
+            </if>
+            <if test="record.goodsIds != null">
+              goods_ids = #{record.goodsIds},
+            </if>
+            <if test="record.sendTime != null">
+              send_time = #{record.sendTime},
+            </if>
+            <if test="record.sendStatus != null">
+              send_status = #{record.sendStatus},
+            </if>
+            <if test="record.sendType != null">
+              send_type = #{record.sendType},
+            </if>
+            <if test="record.deleted != null">
+              deleted = #{record.deleted},
+            </if>
+            <if test="record.createUserId != null">
+              create_user_id = #{record.createUserId},
+            </if>
+            <if test="record.createUserName != null">
+              create_user_name = #{record.createUserName},
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id = #{record.updateUserId},
+            </if>
+            <if test="record.updateUserName != null">
+                update_user_name = #{record.updateUserName},
+            </if>
+            <if test="record.createTime != null">
+              create_time = #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+              update_time = #{record.updateTime},
+            </if>
+            <if test="record.courseInfo != null">
+              course_info = #{record.courseInfo},
+            </if>
+            <if test="record.conversationInfo != null">
+              conversation_info = #{record.conversationInfo},
+            </if>
+                store_conversation = #{record.storeConversation},
+                comp_conversation = #{record.compConversationId},
+                other_conversation = #{record.otherConversationId}
+        </set>
+      where id = #{record.id}
+    </update>
+    
+    <select id="getRecommendStyleByConversationId" resultMap="BaseResultMap">
+        select
+            id, name, goods_num
+        from
+            qyy_recommend_style_${enterpriseId}
+        where
+            <if test='conversationType == "store"'>
+                (store_conversation = 'ALL' or store_conversation like concat('%', #{conversationId}, '%'))
+            </if>
+            <if test='conversationType == "region"'>
+                (comp_conversation = 'ALL' or comp_conversation like concat('%', #{conversationId}, '%'))
+            </if>
+            <if test='conversationType == "other"'>
+                (other_conversation = 'ALL' or other_conversation like concat('%', #{conversationId}, '%'))
+            </if>
+            and deleted = '0'
+        order by send_time desc
+    </select>
+    
+    <select id="getRecommendStyleDetail" resultMap="ResultMapWithBLOBs">
+        select
+            <include refid="Base_Column_List"/>,
+            <include refid="Blob_Column_List"/>
+        from
+            qyy_recommend_style_${enterpriseId}
+        where
+            id = #{id} and deleted = '0'
+    </select>
+    
+    <select id="getPCRecommendStylePage" resultMap="ResultMapWithBLOBs">
+        select
+            <include refid="Base_Column_List"/>,
+            <include refid="Blob_Column_List"/>
+        from
+            qyy_recommend_style_${enterpriseId}
+        where
+            deleted = '0'
+            <if test="name != null">
+                and name like concat('%', #{name}, '%')
+            </if>
+            order by create_time desc
+    </select>
+
+    <select id="getTimerRecommendStylePage" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>,
+            <include refid="Blob_Column_List"/>
+        from
+            qyy_recommend_style_${enterpriseId}
+        where
+            deleted = '0' and send_type = '1' and send_status = '0' and send_time >= #{beginTime} and #{endTime} >= send_time
+    </select>
+
+    <update id="updateRecommendStyleSendStatus">
+        update qyy_recommend_style_${enterpriseId} set send_status = '1' where id in <foreach collection="ids" item="id" open="(" close=")" separator=",">#{id}</foreach>
+    </update>
+
+</mapper>

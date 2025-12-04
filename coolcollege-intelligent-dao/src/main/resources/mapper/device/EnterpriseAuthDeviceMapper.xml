@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.device.EnterpriseAuthDeviceMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.device.EnterpriseAuthDeviceDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="enterprise_id" jdbcType="VARCHAR" property="enterpriseId" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="third_store_id" jdbcType="VARCHAR" property="thirdStoreId" />
+    <result column="device_id" jdbcType="VARCHAR" property="deviceId" />
+    <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
+    <result column="channel_no" jdbcType="VARCHAR" property="channelNo" />
+    <result column="auth_status" jdbcType="VARCHAR" property="authStatus" />
+    <result column="auth_start_time" jdbcType="TIMESTAMP" property="authStartTime" />
+    <result column="auth_end_time" jdbcType="TIMESTAMP" property="authEndTime" />
+    <result column="cancel_auth_time" jdbcType="TIMESTAMP" property="cancelAuthTime" />
+    <result column="app_id" jdbcType="VARCHAR" property="appId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, enterprise_id, store_id, third_store_id, device_id, device_name, channel_no, 
+    auth_status, auth_start_time, auth_end_time, cancel_auth_time, app_id, create_time,
+    update_time
+  </sql>
+
+  <select id="getAuthDeviceList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from enterprise_auth_device
+    where 
+      enterprise_id = #{enterpriseId} and device_id = #{deviceId}
+    <if test="channelNo != null and channelNo !=''">
+      and channel_no = #{channelNo}
+    </if>
+    <if test="appId != null and appId !=''">
+      and app_id = #{appId}
+    </if>
+    order by id desc
+  </select>
+
+  <insert id="insert">
+    insert into enterprise_auth_device (enterprise_id, store_id, third_store_id, device_id, device_name, channel_no,
+    auth_status, auth_start_time, auth_end_time, app_id, create_time, update_time)
+    values (#{authDevice.enterpriseId}, #{authDevice.storeId}, #{authDevice.thirdStoreId}, #{authDevice.deviceId}, #{authDevice.deviceName}, #{authDevice.channelNo},
+    #{authDevice.authStatus}, #{authDevice.authStartTime}, #{authDevice.authEndTime}, #{authDevice.appId}, #{authDevice.createTime}, #{authDevice.updateTime})
+  </insert>
+
+  <update id="cancelAuth">
+    <foreach collection="cancelList" separator=";" item="cancel">
+      update
+        enterprise_auth_device
+      set
+        auth_status = #{cancel.authStatus}, cancel_auth_time = #{cancel.cancelAuthTime}
+      where id = #{cancel.id}
+    </foreach>
+  </update>
+
+  <select id="getAuthDeviceByAppId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from enterprise_auth_device
+    where
+      device_id = #{deviceId} and channel_no = #{channelNo} and app_id = #{appId}
+    order by id desc
+  </select>
+
+  <select id="getAuthDeviceByThirdStoreId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from enterprise_auth_device
+    where
+      third_store_id = #{thirdStoreId} and app_id = #{appId} and auth_status = '1' and auth_end_time > now()
+    order by id desc
+  </select>
+
+  <select id="getAuthDeviceByEnterpriseId" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List" />
+    from
+      enterprise_auth_device
+    where
+      third_store_id = #{thirdStoreId} and app_id = #{appId} and auth_status = '1' and now() > auth_end_time
+    order by id desc
+  </select>
+
+  <select id="getDeviceAuthPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from
+      enterprise_auth_device
+    where
+      enterprise_id = #{enterpriseId}
+    <if test="param.keywords != null and param.keywords !=''">
+      and (device_id like concat('%',#{param.keywords},'%') or device_name like concat('%',#{param.keywords},'%'))
+    </if>
+   <if test="param.appId != null and param.appId !=''">
+     and app_id = #{param.appId}
+   </if>
+    <if test="param.authStatus != null and param.authStatus !=''">
+      and auth_status = #{param.authStatus}
+    </if>
+    order by id desc
+  </select>
+
+  <select id="getAuthDeviceListByDeviceIds" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List" />
+    from
+      enterprise_auth_device
+    where
+      enterprise_id = #{enterpriseId}
+      and device_id in
+      <foreach item="item" index="index" collection="deviceIds" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    order by id desc
+  </select>
+
+  <select id="getDeviceAuthReport" resultType="com.coolcollege.intelligent.model.enterprise.vo.DeviceAuthReportVO">
+    select
+      enterprise_id,
+      count(distinct case when app_id = 'meituan' then concat(device_id, channel_no) end) as meituanAuthDeviceNum,
+      count(distinct case when app_id = 'meituan' and auth_status = '1' and now() >= auth_start_time and auth_end_time >= now() then concat(device_id, channel_no) end) AS meituanCurrentlyAuthDeviceNum,
+      count(distinct case when app_id = 'meituan' and auth_status = '1' and LAST_DAY(#{param.queryDate}) >= auth_start_time and auth_end_time >= #{param.queryDate} then concat(device_id, channel_no) end) as meituanMonthlyAuthorizedDeviceNum,
+      count(distinct case when app_id = 'eleme' then concat(device_id, channel_no) end) as elemeAuthDeviceNum,
+      count(distinct case when app_id = 'eleme' and auth_status = '1' and now() >= auth_start_time and auth_end_time >= now() then concat(device_id, channel_no) end) AS elemeCurrentlyAuthDeviceNum,
+      count(distinct case when app_id = 'eleme' and auth_status = '1' and LAST_DAY(#{param.queryDate}) >= auth_start_time and auth_end_time >= #{param.queryDate} then concat(device_id, channel_no) end) as elemeMonthlyAuthorizedDeviceNum
+    from
+      enterprise_auth_device
+    where
+      enterprise_id != 'a7e798ac2103400c8dbe92ebe2f67cee'
+      <if test="param.enterpriseIds != null and param.enterpriseIds.size > 0">
+        and enterprise_id in
+        <foreach item="item" collection="param.enterpriseIds" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    group by
+      enterprise_id
+    order by
+      enterprise_id
+  </select>
+
+  <select id="getEnterpriseCallNum" resultType="com.coolcollege.intelligent.model.enterprise.vo.DeviceAuthReportVO">
+    select
+      enterprise_id,
+      sum(case when app_id = 'meituan' then 1 else 0 end) as meituanMonthlyCallNum,
+      sum(case when app_id = 'eleme' then 1 else 0 end) as elemeMonthlyCallNum
+    from
+      enterprise_device_fetch_stream_log
+    <where>
+      <if test="enterpriseIds != null and enterpriseIds.size > 0">
+        enterprise_id in
+        <foreach item="item" collection="enterpriseIds" open="(" close=")" separator=",">
+          #{item}
+        </foreach>
+      </if>
+      <if test="queryDate != null">
+        and create_time >= #{queryDate} and LAST_DAY(#{queryDate}) >= create_time
+      </if>
+    </where>
+    group by
+      enterprise_id
+  </select>
+
+  <select id="getDevicePage" resultType="com.coolcollege.intelligent.model.device.vo.OpenDevicePageVO">
+    select
+     device_id as deviceId, channel_no as channelNo, device_id as deviceName, enterprise_id as enterpriseId
+    from
+      enterprise_auth_device
+    where
+      app_id = 'eleme' and third_store_id = #{param.thirdStoreId} and auth_status = '1'
+    group by
+      device_id, channel_no
+  </select>
+
+</mapper>

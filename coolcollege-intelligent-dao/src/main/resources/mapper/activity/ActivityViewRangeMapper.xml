@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.activity.ActivityViewRangeMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.activity.entity.ActivityViewRangeDO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="activity_id" jdbcType="BIGINT" property="activityId"/>
+        <result column="region_id" jdbcType="VARCHAR" property="regionId"/>
+        <result column="personal_id" jdbcType="VARCHAR" property="personalId"/>
+        <result column="node_type" jdbcType="VARCHAR" property="nodeType"/>
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="create_time" jdbcType="BIGINT" property="createTime"/>
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, activity_id, region_id, personal_id, node_type, create_user_id, create_time, update_user_id,
+        update_time
+    </sql>
+    <insert id="batchInsertSelective">
+        <foreach collection="recordList" separator=";" item="record">
+            insert into activity_view_range_${enterpriseId}
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="record.activityId != null">
+                    activity_id,
+                </if>
+                <if test="record.regionId != null">
+                    region_id,
+                </if>
+                <if test="record.personalId != null">
+                    personal_id,
+                </if>
+                <if test="record.nodeType != null">
+                    node_type,
+                </if>
+                <if test="record.createUserId != null">
+                    create_user_id,
+                </if>
+                <if test="record.createTime != null">
+                    create_time,
+                </if>
+                <if test="record.updateUserId != null">
+                    update_user_id,
+                </if>
+                <if test="record.updateTime != null">
+                    update_time,
+                </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="record.activityId != null">
+                    #{record.activityId},
+                </if>
+                <if test="record.regionId != null">
+                    #{record.regionId},
+                </if>
+                <if test="record.personalId != null">
+                    #{record.personalId},
+                </if>
+                <if test="record.nodeType != null">
+                    #{record.nodeType},
+                </if>
+                <if test="record.createUserId != null">
+                    #{record.createUserId},
+                </if>
+                <if test="record.createTime != null">
+                    #{record.createTime},
+                </if>
+                <if test="record.updateUserId != null">
+                    #{record.updateUserId},
+                </if>
+                <if test="record.updateTime != null">
+                    #{record.updateTime},
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update activity_view_range_${enterpriseId}
+        <set>
+            <if test="record.activityId != null">
+                activity_id = #{record.activityId},
+            </if>
+            <if test="record.regionId != null">
+                region_id = #{record.regionId},
+            </if>
+            <if test="record.personalId != null">
+                personal_id = #{record.personalId},
+            </if>
+            <if test="record.nodeType != null">
+                node_type = #{record.nodeType},
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id = #{record.createUserId},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id = #{record.updateUserId},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <select id="getUserViewActivityIds" resultType="long">
+        select
+            activity_id
+        from
+            activity_view_range_${enterpriseId}
+        where
+            personal_id = #{userId}
+            <if test="regionIds != null and regionIds.size()>0">
+                or region_id in <foreach collection="regionIds" open="(" close=")" item="regionId" separator=",">#{regionId}</foreach>
+            </if>
+    </select>
+
+    <select id="getViewRangeList" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            activity_view_range_${enterpriseId}
+        where
+            activity_id = #{activityId}
+    </select>
+
+    <delete id="deleteViewRangeByActivityId">
+        delete from activity_view_range_${enterpriseId} where activity_id = #{activityId}
+    </delete>
+</mapper>

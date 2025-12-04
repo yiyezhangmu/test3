@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.fsGroup.FsGroupMenuMappingMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.fsGroup.FsGroupMenuMappingDO" id="FsGroupMenuMappingMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="menuId" column="menu_id" jdbcType="INTEGER"/>
+        <result property="chatId" column="chat_id" jdbcType="VARCHAR"/>
+        <result property="levelId" column="level_id" jdbcType="VARCHAR"/>
+        <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    <sql id="baseSql">
+        id as id,menu_id as menuId,chat_id as chatId,level_id as levelId,create_user as createUser,create_time as createTime    </sql>
+
+    <!--查询单个-->
+    <select id="queryById" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupMenuMappingDO">
+        select
+          <include refid="baseSql"></include>
+        from fs_group_menu_mapping_${eid}
+        where id = #{id}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from fs_group_menu_mapping_${eid}
+        <where>
+            <if test="fsGroupMenuMappingDO.id != null">
+                and id = #{fsGroupMenuMappingDO.id}
+            </if>
+            <if test="fsGroupMenuMappingDO.menuId != null">
+                and menu_id = #{fsGroupMenuMappingDO.menuId}
+            </if>
+            <if test="fsGroupMenuMappingDO.chatId != null and fsGroupMenuMappingDO.chatId != ''">
+                and chat_id = #{fsGroupMenuMappingDO.chatId}
+            </if>
+            <if test="fsGroupMenuMappingDO.levelId != null and fsGroupMenuMappingDO.levelId != ''">
+                and level_id = #{fsGroupMenuMappingDO.levelId}
+            </if>
+            <if test="fsGroupMenuMappingDO.createUser != null and fsGroupMenuMappingDO.createUser != ''">
+                and create_user = #{fsGroupMenuMappingDO.createUser}
+            </if>
+            <if test="fsGroupMenuMappingDO.createTime != null">
+                and create_time = #{fsGroupMenuMappingDO.createTime}
+            </if>
+        </where>
+    </select>
+    <select id="queryByChatId" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupMenuMappingDO">
+        select <include refid="baseSql"></include>
+        from fs_group_menu_mapping_${eid}
+        where chat_id = #{chatId}
+    </select>
+    <select id="queryIdAndNameByChatId" resultType="com.coolcollege.intelligent.model.fsGroup.vo.IdAndNameVO">
+        select
+            f.id as id,f.menu_name as name
+        from fs_group_menu_mapping_${eid} fm
+                 inner join fs_group_menu_${eid} f
+                            on f.id=fm.menu_id
+        where fm.chat_id = #{chatId}
+    </select>
+    <select id="queryByMenuId" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupMenuMappingDO">
+        select
+        <include refid="baseSql"></include>
+        from fs_group_menu_mapping_${eid}
+        where menu_id = #{menuId}
+    </select>
+    <select id="queryMenuByChatId" resultType="java.lang.Long">
+        select
+        <include refid="baseSql"></include>
+        from fs_group_menu_mapping_${eid}
+        where chat_id = #{chatId}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="fsGroupMenuMappingDO.id" useGeneratedKeys="true">
+        insert into fs_group_menu_mapping_${eid}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fsGroupMenuMappingDO.menuId != null">
+                menu_id,
+            </if>
+            <if test="fsGroupMenuMappingDO.chatId != null and fsGroupMenuMappingDO.chatId != ''">
+                chat_id,
+            </if>
+            <if test="fsGroupMenuMappingDO.levelId != null and fsGroupMenuMappingDO.levelId != ''">
+                level_id,
+            </if>
+            <if test="fsGroupMenuMappingDO.createUser != null and fsGroupMenuMappingDO.createUser != ''">
+                create_user,
+            </if>
+            <if test="fsGroupMenuMappingDO.createTime != null">
+                create_time,
+            </if>
+     </trim>
+        values 
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fsGroupMenuMappingDO.menuId != null">
+                #{fsGroupMenuMappingDO.menuId},
+            </if>
+            <if test="fsGroupMenuMappingDO.chatId != null and fsGroupMenuMappingDO.chatId != ''">
+                #{fsGroupMenuMappingDO.chatId},
+            </if>
+            <if test="fsGroupMenuMappingDO.levelId != null and fsGroupMenuMappingDO.levelId != ''">
+                #{fsGroupMenuMappingDO.levelId},
+            </if>
+            <if test="fsGroupMenuMappingDO.createUser != null and fsGroupMenuMappingDO.createUser != ''">
+                #{fsGroupMenuMappingDO.createUser},
+            </if>
+            <if test="fsGroupMenuMappingDO.createTime != null">
+                #{fsGroupMenuMappingDO.createTime},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" keyProperty="dos.id" useGeneratedKeys="true">
+        insert into fs_group_menu_mapping_${eid}(menu_id, chat_id, level_id, create_user, create_time)
+        values
+        <foreach collection="dos" item="do" separator=",">
+        (#{do.menuId}, #{do.chatId}, #{do.levelId}, #{do.createUser}, #{do.createTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="dos.id" useGeneratedKeys="true">
+        insert IGNORE into fs_group_menu_mapping_${eid}(menu_id, chat_id, level_id, create_user, create_time)
+        values
+        <foreach collection="dos" item="do" separator=",">
+            (#{do.menuId}, #{do.chatId}, #{do.levelId}, #{do.createUser}, #{do.createTime})
+        </foreach>
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update fs_group_menu_mapping_${eid}
+        <set>
+            <if test="fsGroupMenuMappingDO.menuId != null">
+                menu_id = #{fsGroupMenuMappingDO.menuId},
+            </if>
+            <if test="fsGroupMenuMappingDO.chatId != null and fsGroupMenuMappingDO.chatId != ''">
+                chat_id = #{fsGroupMenuMappingDO.chatId},
+            </if>
+            <if test="fsGroupMenuMappingDO.levelId != null and fsGroupMenuMappingDO.levelId != ''">
+                level_id = #{fsGroupMenuMappingDO.levelId},
+            </if>
+            <if test="fsGroupMenuMappingDO.createUser != null and fsGroupMenuMappingDO.createUser != ''">
+                create_user = #{fsGroupMenuMappingDO.createUser},
+            </if>
+            <if test="fsGroupMenuMappingDO.createTime != null">
+                create_time = #{fsGroupMenuMappingDO.createTime},
+            </if>
+        </set>
+        where id = #{fsGroupMenuMappingDO.id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from fs_group_menu_mapping_${eid} where id = #{id}
+    </delete>
+    <delete id="deleteByChatId">
+        delete from fs_group_menu_mapping_${eid} where chat_id = #{chatId}
+    </delete>
+    <delete id="deleteByMenuId">
+        delete from fs_group_menu_mapping_${eid} where menu_id = #{menuId}
+    </delete>
+
+</mapper>
+

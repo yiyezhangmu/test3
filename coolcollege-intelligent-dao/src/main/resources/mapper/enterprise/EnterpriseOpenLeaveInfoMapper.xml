@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseOpenLeaveInfoMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.enterprise.EnterpriseOpenLeaveInfoDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="mobile" jdbcType="CHAR" property="mobile" />
+    <result column="store_num" jdbcType="INTEGER" property="storeNum" />
+    <result column="corp_id" jdbcType="VARCHAR" property="corpId" />
+    <result column="corp_name" jdbcType="VARCHAR" property="corpName" />
+    <result column="app_type" jdbcType="VARCHAR" property="appType" />
+    <result column="enterprise_id" jdbcType="VARCHAR" property="enterpriseId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, mobile, store_num, corp_id, corp_name, app_type, enterprise_id, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from enterprise_open_leave_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from enterprise_open_leave_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseOpenLeaveInfoDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into enterprise_open_leave_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        name,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="storeNum != null">
+        store_num,
+      </if>
+      <if test="corpId != null">
+        corp_id,
+      </if>
+      <if test="corpName != null">
+        corp_name,
+      </if>
+      <if test="appType != null">
+        app_type,
+      </if>
+      <if test="enterpriseId != null">
+        enterprise_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=CHAR},
+      </if>
+      <if test="storeNum != null">
+        #{storeNum,jdbcType=INTEGER},
+      </if>
+      <if test="corpId != null">
+        #{corpId,jdbcType=VARCHAR},
+      </if>
+      <if test="corpName != null">
+        #{corpName,jdbcType=VARCHAR},
+      </if>
+      <if test="appType != null">
+        #{appType,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseId != null">
+        #{enterpriseId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseOpenLeaveInfoDO">
+    update enterprise_open_leave_info
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=CHAR},
+      </if>
+      <if test="storeNum != null">
+        store_num = #{storeNum,jdbcType=INTEGER},
+      </if>
+      <if test="corpId != null">
+        corp_id = #{corpId,jdbcType=VARCHAR},
+      </if>
+      <if test="corpName != null">
+        corp_name = #{corpName,jdbcType=VARCHAR},
+      </if>
+      <if test="appType != null">
+        app_type = #{appType,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseId != null">
+        enterprise_id = #{enterpriseId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != name">
+         and t.name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="null != mobile">
+         and t.mobile = #{mobile,jdbcType=CHAR}
+      </if>
+      <if test="null != storeNum">
+         and t.store_num = #{storeNum,jdbcType=INTEGER}
+      </if>
+      <if test="null != corpId">
+         and t.corp_id = #{corpId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != corpName">
+         and t.corp_name = #{corpName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != appType">
+         and t.app_type = #{appType,jdbcType=VARCHAR}
+      </if>
+      <if test="null != enterpriseId">
+         and t.enterprise_id = #{enterpriseId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+  </sql>
+
+  <select id="selectByEnterpriseId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from enterprise_open_leave_info where enterprise_id = #{enterpriseId, jdbcType=VARCHAR}
+    </select>
+
+  <select id="listByEnterpriseIds" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from enterprise_open_leave_info
+    <if test="enterpriseIds != null and enterpriseIds.size() > 0">
+      where enterprise_id in <foreach collection="enterpriseIds" item="enterpriseId" separator="," open="(" close=")">#{enterpriseId}</foreach>
+    </if>
+  </select>
+
+</mapper>

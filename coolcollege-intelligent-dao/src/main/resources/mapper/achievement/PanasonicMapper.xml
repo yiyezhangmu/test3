@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.achievement.PanasonicMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.achievement.entity.PanasonicTempDO" id="BaseMap">
+        <result property="id" column="id"/>
+        <result property="storeId" column="store_id"/>
+        <result property="category" column="category"/>
+        <result property="middleClass" column="middle_class"/>
+        <result property="type" column="type"/>
+        <result property="mainClass" column="main_class"/>
+        <result property="goodNum" column="good_num"/>
+        <result property="offOnStatus" column="off_on_status"/>
+        <result property="offTime" column="off_time"/>
+        <result property="onTime" column="on_time"/>
+    </resultMap>
+    <sql id="baseSql">
+        s.id,
+        s.store_id,
+        s.category,
+        s.middle_class,
+        s.`type`,
+        s.main_class,
+        s.good_num,
+        s.off_on_status,
+        s.off_time,
+        s.on_time
+    </sql>
+    <insert id="panasonicAdd">
+        insert into songxia_temp_${enterpriseId}
+        (
+        store_id,
+        category,
+        middle_class,
+        `type`
+        )
+        values
+        <foreach collection="list" item="entity" separator=",">
+        (
+        #{entity.storeId},
+        #{entity.category},
+        #{entity.middleClass},
+        #{entity.type}
+        )
+        </foreach>
+    </insert>
+    <insert id="batchInsertTaskModelsMapping">
+        insert into panasonic_task_models_mapping
+        (
+        task_store_id,
+        product_model,
+        category_code,
+        category_name,
+        middle_class_code,
+        middle_class_name,
+        small_category_code,
+        small_category_name
+        )
+        values
+        <foreach collection="dos" item="do" separator=",">
+            (
+            #{do.taskStoreId},
+            #{do.productModel},
+            #{do.categoryCode},
+            #{do.categoryName},
+            #{do.middleClassCode},
+            #{do.middleClassName},
+            #{do.smallCategoryCode},
+            #{do.smallCategoryName}
+            )
+        </foreach>
+    </insert>
+    <update id="updatePanasonicByTypeId">
+        update songxia_temp_${enterpriseId}
+        set good_num = #{goodNum}
+        where id = #{id}
+    </update>
+    <update id="updatePanasonicStatusByTypeId">
+        update songxia_temp_${enterpriseId}
+        set off_on_status = 0, off_time = now(), good_num = 0
+        where id = #{id}
+    </update>
+    <update id="updatePanasonicOnStatusByTypeId">
+        update songxia_temp_${enterpriseId}
+        set off_on_status = 1, on_time = now()
+        where id = #{id}
+    </update>
+    <update id="updateTaskModelsMappingById">
+        update panasonic_task_models_mapping
+            <set>
+                <if test="taskModelsMappingDO.planGoodTime != null">
+                    plan_good_time = #{taskModelsMappingDO.planGoodTime},
+                </if>
+                <if test="taskModelsMappingDO.planDelistTime != null">
+                    plan_delist_time = #{taskModelsMappingDO.planDelistTime},
+                </if>
+                goods_num= #{taskModelsMappingDO.goodsNum} ,
+                picture = #{taskModelsMappingDO.picture},
+                submit_time = now()
+            </set>
+        where id = #{taskModelsMappingDO.id}
+    </update>
+    <select id="panasonicFind"
+            resultType="com.coolcollege.intelligent.model.achievement.dto.PanasonicFindResponse">
+        select
+        <include refid="baseSql"/>
+        from songxia_temp_${enterpriseId}
+        where store_id = #{storeId}
+        and category = #{category}
+    </select>
+    <select id="panasonicFind2"
+            resultType="com.coolcollege.intelligent.model.achievement.dto.PanasonicFindResponse">
+        select
+        <include refid="baseSql"/>,
+        af.id as aId
+        from songxia_temp_${enterpriseId} s,
+        achievement_formwork_${enterpriseId} af
+        where s.store_id = #{storeId}
+        and s.category = af.name
+        <if test="name != null and name !=''">
+            and s.category = #{name}
+        </if>
+        <if test="middleName != null and middleName !=''">
+            and s.middle_class = #{middleName}
+        </if>
+    </select>
+    <select id="getStructure" resultMap="BaseMap">
+        select
+        <include refid="baseSql"/>
+        from songxia_temp_${enterpriseId} s
+    </select>
+    <select id="queryList" resultType="com.coolcollege.intelligent.model.achievement.entity.PanasonicTempDO">
+        select * from songxia_temp_${enterpriseId} s
+        <where>
+            <if test="query.type != null and query.type !=''">
+                and s.type = #{query.type}
+            </if>
+            <if test="query.offOnStatus != null and query.offOnStatus !=''">
+                and s.off_on_status = #{query.offOnStatus}
+            </if>
+            <if test="query.category!= null and query.category !=''">
+                and s.category = #{query.category}
+            </if>
+            <if test="query.middleClass != null and query.middleClass !=''">
+                and s.middle_class = #{query.middleClass}
+            </if>
+            <if test="query.storeId != null and query.storeId !=''">
+                and s.store_id = #{query.storeId}
+            </if>
+            <if test="query.mainClass != null and query.mainClass != ''">
+                and s.main_class = #{query.mainClass}
+            </if>
+        </where>
+        <if test="query.id != null ">
+           group by s.type
+        </if>
+        <if test="query.group != null and query.group!='' and query.group=='category' ">
+            group by s.category
+        </if>
+    </select>
+    <select id="panasonicFindByType" resultType="java.lang.Long">
+        select s.id
+        from songxia_temp_${enterpriseId} s
+        where s.store_id = #{storeId}
+        and s.type = #{type}
+        limit 1
+    </select>
+    <select id="getAllCategory" resultType="java.lang.String">
+        select distinct category from songxia_temp_${enterpriseId}
+    </select>
+    <select id="getMiddleClassByCategory" resultType="java.lang.String">
+        select distinct middle_class
+        from songxia_temp_${enterpriseId}
+        where category = #{category}
+    </select>
+    <select id="getTypeByCategoryAndMiddleClass" resultType="java.lang.String">
+        select distinct `type`
+        from songxia_temp_${enterpriseId}
+        where category = #{category}
+        and middle_class = #{middleClass}
+    </select>
+
+    <select id="getMiddleClassByMainClass" resultType="java.lang.String">
+        select distinct middle_class
+        from songxia_temp_${enterpriseId}
+        where main_class = #{mainClass}
+    </select>
+    <select id="getMarketStoreList" resultType="java.lang.String">
+        select distinct s.store_name
+        from songxia_temp_${enterpriseId} sx join store_${enterpriseId} s on sx.store_id = s.store_id
+        where sx.type=#{type}
+        and sx.off_on_status = 1
+    </select>
+    <select id="getStoreNum" resultType="java.lang.Long">
+        select count(distinct s.store_id)
+        from songxia_temp_${enterpriseId} sx join store_${enterpriseId} s on sx.store_id = s.store_id
+         where s.region_path  like concat('%/', #{regionId},'/%')
+        <if test="mainClass != null and mainClass != ''">
+            and sx.main_class = #{mainClass}
+        </if>
+    </select>
+    <select id="selectStoreByCategoryCode" resultType="java.lang.String">
+        select store_id
+        from panasonic_actual_store
+        where category_code = #{categoryCode}
+        and store_id = #{storeId}
+        and deleted=0
+        and status=1
+    </select>
+    <select id="selectGoodsNumStoreSampleExtraction" resultType="java.lang.Integer">
+        select goods_num
+        from panasonic_store_sample_extraction
+        where product_model = #{productModel}
+        and store_id = #{storeId}
+        and deleted=0
+        and status=1
+    </select>
+    <select id="selectManageStoreCategoryCode"
+            resultType="com.coolcollege.intelligent.model.achievement.entity.ManageStoreCategoryCodeDO">
+        select *
+        from panasonic_manage_store_category_code
+        <where>
+            <if test="storeId != null and storeId !=''">
+                and store_id = #{storeId}
+            </if>
+            <if test="categoryCode != null and categoryCode !=''">
+                and category_code = #{categoryCode}
+            </if>
+        </where>
+    </select>
+    <select id="selectStoreSampleExtraction" resultType="java.lang.String">
+        select product_model
+        from panasonic_store_sample_extraction
+        where store_id = #{storeId}
+          and deleted=0
+          and status=1
+          and goods_num>0
+        and product_model in
+        <foreach collection="productModels" item="productModel" open="(" separator="," close=")">
+            #{productModel}
+        </foreach>
+    </select>
+    <select id="selectTaskModelsMapping"
+            resultType="com.coolcollege.intelligent.model.achievement.entity.TaskModelsMappingDO">
+        select *
+        from panasonic_task_models_mapping
+        where task_store_id = #{taskStoreId}
+    </select>
+    <select id="selectTaskModelsMappingByIds"
+            resultType="com.coolcollege.intelligent.model.achievement.entity.TaskModelsMappingDO">
+        select *
+        from panasonic_task_models_mapping
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="selectPhysicalNum" resultType="java.lang.String">
+        SELECT physical_store_num FROM `panasonic_actual_store` WHERE `store_id` = #{storeId};
+    </select>
+    <select id="selectStoreByStoreId" resultType="java.lang.Integer">
+        select count(1) from panasonic_actual_store where deleted = 0 and `store_id` = #{storeId};
+    </select>
+</mapper>

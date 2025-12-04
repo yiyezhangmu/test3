@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.video.VideoEventRecordMapper">
+    <resultMap type="com.coolcollege.intelligent.model.video.platform.yushi.DO.VideoEventRecordDO" id="baseMap">
+        <result property="id" column="id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="sourcePicUrl" column="source_pic_url"/>
+        <result property="alarmName" column="alarm_name"/>
+        <result property="eventType" column="event_type"/>
+        <result property="shotTime" column="shot_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="storeId" column="store_id"/>
+        <result property="regionId" column="region_id"/>
+        <result property="regionPath" column="region_path"/>
+
+    </resultMap>
+    <select id="groupVideoEventRecordByStoreId"
+            resultType="com.coolcollege.intelligent.model.video.platform.yushi.vo.VideoEventRecordVO">
+        select
+        id as id,
+        count(store_id) as alarmCount,
+        store_id as storeId
+        from video_event_record_${eid}
+        <where>
+            <if test="storeId!=null and storeId!=''">
+                store_id = #{storeId}
+            </if>
+        </where>
+        group by store_id
+        order by id desc
+    </select>
+    <select id="listVideoEventRecordByStoreId"
+            resultType="com.coolcollege.intelligent.model.video.platform.yushi.vo.VideoEventRecordStoreVO">
+        select
+        id as id,
+        store_id as storeId,
+        device_id as deviceId,
+        source_pic_url as sourcePicUrl,
+        alarm_name as alarmName,
+        event_type as eventType,
+        shot_time as shotTime
+        from video_event_record_${eid}
+        <where>
+
+             (<if test="storeIdList!=null and storeIdList.size>0">
+                <foreach collection="storeIdList" item="storeId" open="store_id in (" close=")" separator=",">
+                    #{storeId}
+                </foreach>
+            </if>
+            <if test="regionPathList!=null and regionPathList.size>0">
+                <if test="storeIdList!=null and storeIdList.size>0">
+                    or
+                </if>
+                <foreach collection="regionPathList" item="regionPath"  separator="or">
+                    region_path like concat( #{regionPath}, '%')
+                </foreach>
+            </if>)
+
+            <if test="alarmType!=null and alarmType!=''">
+                and event_type = #{alarmType}
+            </if>
+            <if test="startTime!=null ">
+                and shot_time >=#{startTime}
+            </if>
+            <if test="endTime!=null ">
+                and shot_time &lt;= #{endTime}
+            </if>
+        </where>
+        order by id desc
+    </select>
+    <insert id="insertVideoEventRecord"
+            parameterType="com.coolcollege.intelligent.model.video.platform.yushi.DO.VideoEventRecordDO">
+		insert into video_event_record_${eid}
+		(
+			`device_id`,
+			`source_pic_url`,
+			`alarm_name`,
+			`event_type`,
+			`shot_time`,
+			`create_time`,
+			`store_id`,
+			`region_path`,
+			region_id
+		)
+		values
+		(
+			#{videoEventDO.deviceId},
+			#{videoEventDO.sourcePicUrl},
+			#{videoEventDO.alarmName},
+			#{videoEventDO.eventType},
+			#{videoEventDO.shotTime},
+			#{videoEventDO.createTime},
+			#{videoEventDO.storeId},
+			#{videoEventDO.regionPath},
+			#{videoEventDO.regionId}
+		)
+	</insert>
+</mapper>

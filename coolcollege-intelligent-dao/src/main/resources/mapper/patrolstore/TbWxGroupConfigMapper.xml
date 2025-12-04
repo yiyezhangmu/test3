@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.patrolstore.TbWxGroupConfigMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.patrolstore.entity.TbWxGroupConfigDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="group_name" jdbcType="VARCHAR" property="groupName" />
+    <result column="push_address" jdbcType="VARCHAR" property="pushAddress" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, group_name, push_address, create_time, create_user_id, update_time, update_user_id, 
+    deleted
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into tb_wx_group_config_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.groupName != null">
+        group_name,
+      </if>
+      <if test="record.pushAddress != null">
+        push_address,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.groupName != null">
+        #{record.groupName},
+      </if>
+      <if test="record.pushAddress != null">
+        #{record.pushAddress},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update tb_wx_group_config_${enterpriseId}
+    <set>
+      <if test="record.groupName != null">
+        group_name = #{record.groupName},
+      </if>
+      <if test="record.pushAddress != null">
+        push_address = #{record.pushAddress},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+
+  <select id="getById" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_wx_group_config_${enterpriseId}
+    where
+    deleted = 0
+    and id= #{id}
+  </select>
+
+  <select id="getGroupConfigList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_wx_group_config_${enterpriseId}
+    where
+    deleted = 0
+  </select>
+</mapper>

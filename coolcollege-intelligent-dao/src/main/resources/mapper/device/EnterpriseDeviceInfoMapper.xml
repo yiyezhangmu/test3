@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.device.EnterpriseDeviceInfoMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.device.EnterpriseDeviceInfoDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="enterprise_id" jdbcType="VARCHAR" property="enterpriseId" />
+    <result column="device_id" jdbcType="VARCHAR" property="deviceId" />
+    <result column="parent_device_id" jdbcType="VARCHAR" property="parentDeviceId" />
+    <result column="channel_no" jdbcType="VARCHAR" property="channelNo" />
+    <result column="device_type" jdbcType="VARCHAR" property="deviceType" />
+    <result column="yun_type" jdbcType="VARCHAR" property="yunType" />
+    <result column="account_type" jdbcType="VARCHAR" property="accountType" />
+    <result column="device_status" jdbcType="VARCHAR" property="deviceStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, enterprise_id, device_id, parent_device_id, channel_no, device_type, yun_type, 
+    account_type, device_status, create_time, update_time
+  </sql>
+  
+  <insert id="batchInsertOrUpdate">
+    <foreach collection="recordList" item="record" separator=";">
+      insert into enterprise_device_info (enterprise_id, device_id, parent_device_id, channel_no, device_type, yun_type, account_type, device_status)
+      values (#{record.enterpriseId}, #{record.deviceId}, #{record.parentDeviceId}, #{record.channelNo}, #{record.deviceType}, #{record.yunType}, #{record.accountType}, #{record.deviceStatus})
+      on duplicate key update parent_device_id = #{record.parentDeviceId}, channel_no = #{record.channelNo}, device_type = #{record.deviceType}, yun_type = #{record.yunType}, account_type = #{record.accountType}, device_status = #{record.deviceStatus}
+    </foreach>
+  </insert>
+
+  <insert id="batchInsertOrUpdateV2">
+    <foreach collection="recordList" item="record" separator=";">
+      insert into enterprise_device_info_v2 (enterprise_id, device_id, parent_device_id, channel_no, device_type, yun_type, account_type, device_status)
+      values (#{record.enterpriseId}, #{record.deviceId}, #{record.parentDeviceId}, #{record.channelNo}, #{record.deviceType}, #{record.yunType}, #{record.accountType}, #{record.deviceStatus})
+      on duplicate key update parent_device_id = #{record.parentDeviceId}, channel_no = #{record.channelNo}, device_type = #{record.deviceType}, yun_type = #{record.yunType}, account_type = #{record.accountType}, device_status = #{record.deviceStatus}
+    </foreach>
+  </insert>
+
+  <select id="getEnterpriseIdsByDeviceId" resultType="java.lang.String">
+    select distinct(enterprise_id) from enterprise_device_info where device_id = #{deviceId}
+  </select>
+
+  <select id="getEnterpriseIdsByDeviceIdV2" resultMap="BaseResultMap">
+    select * from enterprise_device_info_v2 where device_id not in (select device_id from enterprise_device_info_v3 )
+    and enterprise_id = #{enterpriseId}
+    <if test="parentDeviceId != null">
+      and parent_device_id = #{parentDeviceId}
+    </if>
+    order by id asc
+  </select>
+
+  <select id="getEnterpriseIdsByDeviceIdV3" resultMap="BaseResultMap">
+    select * from enterprise_device_info_v3 where parent_device_id = #{deviceId} or device_id = #{deviceId}
+  </select>
+  
+</mapper>

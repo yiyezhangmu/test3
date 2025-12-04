@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseUserMappingMapper">
+
+    <insert id="save" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserMappingDO">
+        insert into enterprise_user_mapping
+        (
+            `id`,
+            `user_id`,
+            `enterprise_id`,
+            `enterprise_name`,
+            `is_admin`,
+            `create_time`,
+            `update_time`,
+            `user_status`,
+            `unionid`
+        )
+        values
+        (
+            #{entity.id},
+            #{entity.userId},
+            #{entity.enterpriseId},
+            #{entity.enterpriseName},
+            #{entity.isAdmin},
+            #{entity.createTime},
+            #{entity.updateTime},
+            #{entity.userStatus},
+            #{entity.unionid}
+        )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserMappingDO">
+        update enterprise_user_mapping
+        <set>
+            <if test="userId != null and userId !=''" >`user_id` = #{userId}, </if>
+            <if test="enterpriseId != null and enterpriseId !=''" >`enterprise_id` = #{enterpriseId}, </if>
+            <if test="enterpriseName != null and enterpriseName !=''" >`enterprise_name` = #{enterpriseName}, </if>
+            <if test="isAdmin != null and isAdmin !=''" >`is_admin` = #{isAdmin}, </if>
+            <if test="createTime != null" >`create_time` = #{createTime}, </if>
+            <if test="updateTime != null" >`update_time` = #{updateTime}</if>
+            <if test="userStatus != null" >`user_status` = #{userStatus}, </if>
+            <if test="unionid != null" >`unionid` = #{unionid}</if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="selectByEidAndUserId"
+            resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserMappingDO">
+        select id,
+               user_id AS userId,
+              `enterprise_id` AS  enterpriseId,
+              `enterprise_name` AS enterpriseName,
+              `is_admin` AS isAdmin,
+              `create_time` AS createTime,
+              `update_time` AS updateTime
+        from enterprise_user_mapping
+        where enterprise_id = #{eid}
+        and user_id = #{userId}
+    </select>
+
+    <insert id="batchInsertOrUpdate" parameterType="java.util.List">
+        insert into enterprise_user_mapping (
+        id,
+        user_id,
+        enterprise_id,
+        create_time,
+        update_time,
+        user_status,
+        unionid
+        ) values
+
+        <foreach collection="list" item="it" separator=",">
+            (
+            #{it.id, jdbcType=VARCHAR},
+            #{it.userId, jdbcType=VARCHAR},
+            #{it.enterpriseId, jdbcType=VARCHAR},
+            sysdate(),
+            sysdate(),
+            #{it.userStatus, jdbcType=VARCHAR},
+            #{it.unionid, jdbcType=VARCHAR}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE create_time=sysdate(), update_time=sysdate()
+    </insert>
+
+    <delete id="batchDeleteUserByUserIds" parameterType="java.util.List">
+
+        delete from enterprise_user_mapping where enterprise_id = #{eid} and
+        user_id in
+        <foreach collection="list"  item="item" open="(" separator="," close=")"  >
+            #{item}
+        </foreach>
+    </delete>
+    
+    <select id="getUserAllEnterpriseIdsByUserIds" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserMappingDO">
+        select
+            user_id as userId, enterprise_id as enterpriseId, user_status as userStatus
+        from
+            enterprise_user_mapping
+        where
+            user_id in <foreach collection="userIds" open="(" close=")" item="userId" separator=",">#{userId}</foreach>
+            <if test="enterpriseId != null">
+                and enterprise_id = #{enterpriseId}
+            </if>
+        limit 200
+    </select>
+
+    <update id="updateEnterpriseUserStatus">
+        update enterprise_user_mapping set user_status = #{userStatus} where enterprise_id= #{enterpriseId} and unionid in <foreach
+            collection="unionids" item="unionid" separator="," open="(" close=")">#{unionid}</foreach>
+    </update>
+
+    <select id="selectByEnterpriseIdAndUnionid" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserMappingDO">
+        select id,
+            user_id AS userId,
+            `enterprise_id` AS  enterpriseId,
+            `enterprise_name` AS enterpriseName,
+            `is_admin` AS isAdmin,
+            `create_time` AS createTime,
+            `update_time` AS updateTime,
+            `user_status` as userStatus,
+            `unionid` as unionid
+        from
+            enterprise_user_mapping
+        where
+            enterprise_id = #{enterpriseId}  and unionid = #{unionid}
+    </select>
+
+    <delete id="deleteUserMappingById">
+        delete from enterprise_user_mapping where id = #{id}
+    </delete>
+
+    <select id="getUserMappingListByEnterpriseId" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserMappingDO">
+        select id,
+            user_id AS userId,
+            `enterprise_id` AS  enterpriseId,
+            `enterprise_name` AS enterpriseName,
+            `is_admin` AS isAdmin,
+            `create_time` AS createTime,
+            `update_time` AS updateTime,
+            `user_status` as userStatus,
+            `unionid` as unionid
+        from
+        enterprise_user_mapping
+        where
+            enterprise_id = #{enterpriseId}
+        order by create_time asc, id asc
+    </select>
+
+    <delete id="deleteUserMappingByUnionid">
+        delete from enterprise_user_mapping where enterprise_id = #{enterpriseId} and unionid = #{unionid}
+    </delete>
+
+    <delete id="deleteUserMappingByUnionids">
+        delete from enterprise_user_mapping where enterprise_id = #{enterpriseId} and unionid in <foreach collection="unionids" open="(" close=")" separator="," item="unionid" >#{unionid}</foreach>
+    </delete>
+
+    <update id="updateUserMappingUnionid">
+        update enterprise_user_mapping  a
+            inner join enterprise_user b  on a.user_id  = b.id
+                set a.unionid =  b.unionid where a.unionid is null
+    </update>
+
+    <select id="getUserAllEnterpriseIdsByUserId" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserMappingDO">
+        select id,
+            user_id AS userId,
+            `enterprise_id` AS  enterpriseId,
+            `enterprise_name` AS enterpriseName,
+            `is_admin` AS isAdmin,
+            `create_time` AS createTime,
+            `update_time` AS updateTime,
+            `user_status` as userStatus,
+            `unionid` as unionid
+        from
+            enterprise_user_mapping
+        where
+            user_id = #{userId}
+        order by create_time asc, id asc
+    </select>
+</mapper>

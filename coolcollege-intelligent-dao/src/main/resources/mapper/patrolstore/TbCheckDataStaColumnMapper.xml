@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.patrolstore.TbCheckDataStaColumnMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.patrolstore.CheckDataStaColumnDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="task_id" jdbcType="BIGINT" property="taskId" />
+    <result column="business_id" jdbcType="BIGINT" property="businessId" />
+    <result column="data_table_id" jdbcType="BIGINT" property="dataTableId" />
+    <result column="check_data_table_id" jdbcType="BIGINT" property="checkDataTableId" />
+    <result column="data_sta_column_id" jdbcType="BIGINT" property="dataStaColumnId" />
+    <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId" />
+    <result column="meta_column_id" jdbcType="BIGINT" property="metaColumnId" />
+    <result column="meta_column_name" jdbcType="VARCHAR" property="metaColumnName" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="supervisor_id" jdbcType="VARCHAR" property="supervisorId" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="check_result" jdbcType="VARCHAR" property="checkResult" />
+    <result column="check_result_id" jdbcType="BIGINT" property="checkResultId" />
+    <result column="check_result_name" jdbcType="VARCHAR" property="checkResultName" />
+    <result column="check_text" jdbcType="VARCHAR" property="checkText" />
+    <result column="check_score" jdbcType="DECIMAL" property="checkScore" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="reward_penalt_money" jdbcType="DECIMAL" property="rewardPenaltMoney" />
+    <result column="patrol_store_time" jdbcType="TIMESTAMP" property="patrolStoreTime" />
+    <result column="score_times" jdbcType="DECIMAL" property="scoreTimes" />
+    <result column="award_times" jdbcType="DECIMAL" property="awardTimes" />
+    <result column="weight_percent" jdbcType="DECIMAL" property="weightPercent" />
+    <result column="column_max_score" jdbcType="DECIMAL" property="columnMaxScore" />
+    <result column="column_max_award" jdbcType="DECIMAL" property="columnMaxAward" />
+    <result column="column_type" jdbcType="BIT" property="columnType" />
+    <result column="patrol_type" jdbcType="VARCHAR" property="patrolType" />
+    <result column="check_result_reason" jdbcType="VARCHAR" property="checkResultReason" />
+    <result column="check_type" jdbcType="INTEGER" property="checkType" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.coolcollege.intelligent.model.patrolstore.CheckDataStaColumnDO">
+    <result column="check_pics" jdbcType="LONGVARCHAR" property="checkPics" />
+    <result column="check_video" jdbcType="LONGVARCHAR" property="checkVideo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, task_id, business_id, data_table_id, check_data_table_id, data_sta_column_id,
+    meta_table_id, meta_column_id, meta_column_name, description, supervisor_id, category_name,
+    check_result, check_result_id, check_result_name, check_text, check_score, deleted,
+    reward_penalt_money, patrol_store_time, score_times, award_times, weight_percent,
+    column_max_score, column_max_award, column_type, patrol_type, check_result_reason,
+    check_type
+  </sql>
+  <sql id="Blob_Column_List">
+    check_pics, check_video
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_check_data_sta_column_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_check_data_sta_column_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.patrolstore.CheckDataStaColumnDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_check_data_sta_column_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="businessId != null">
+        business_id,
+      </if>
+      <if test="dataTableId != null">
+        data_table_id,
+      </if>
+      <if test="checkDataTableId != null">
+        check_data_table_id,
+      </if>
+      <if test="dataStaColumnId != null">
+        data_sta_column_id,
+      </if>
+      <if test="metaTableId != null">
+        meta_table_id,
+      </if>
+      <if test="metaColumnId != null">
+        meta_column_id,
+      </if>
+      <if test="metaColumnName != null">
+        meta_column_name,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="supervisorId != null">
+        supervisor_id,
+      </if>
+      <if test="categoryName != null">
+        category_name,
+      </if>
+      <if test="checkResult != null">
+        check_result,
+      </if>
+      <if test="checkResultId != null">
+        check_result_id,
+      </if>
+      <if test="checkResultName != null">
+        check_result_name,
+      </if>
+      <if test="checkText != null">
+        check_text,
+      </if>
+      <if test="checkScore != null">
+        check_score,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="rewardPenaltMoney != null">
+        reward_penalt_money,
+      </if>
+      <if test="patrolStoreTime != null">
+        patrol_store_time,
+      </if>
+      <if test="scoreTimes != null">
+        score_times,
+      </if>
+      <if test="awardTimes != null">
+        award_times,
+      </if>
+      <if test="weightPercent != null">
+        weight_percent,
+      </if>
+      <if test="columnMaxScore != null">
+        column_max_score,
+      </if>
+      <if test="columnMaxAward != null">
+        column_max_award,
+      </if>
+      <if test="columnType != null">
+        column_type,
+      </if>
+      <if test="patrolType != null">
+        patrol_type,
+      </if>
+      <if test="checkResultReason != null">
+        check_result_reason,
+      </if>
+      <if test="checkType != null">
+        check_type,
+      </if>
+      <if test="checkPics != null">
+        check_pics,
+      </if>
+      <if test="checkVideo != null">
+        check_video,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskId != null">
+        #{taskId,jdbcType=BIGINT},
+      </if>
+      <if test="businessId != null">
+        #{businessId,jdbcType=BIGINT},
+      </if>
+      <if test="dataTableId != null">
+        #{dataTableId,jdbcType=BIGINT},
+      </if>
+      <if test="checkDataTableId != null">
+        #{checkDataTableId,jdbcType=BIGINT},
+      </if>
+      <if test="dataStaColumnId != null">
+        #{dataStaColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="metaTableId != null">
+        #{metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="metaColumnId != null">
+        #{metaColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="metaColumnName != null">
+        #{metaColumnName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="supervisorId != null">
+        #{supervisorId,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryName != null">
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkResult != null">
+        #{checkResult,jdbcType=VARCHAR},
+      </if>
+      <if test="checkResultId != null">
+        #{checkResultId,jdbcType=BIGINT},
+      </if>
+      <if test="checkResultName != null">
+        #{checkResultName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkText != null">
+        #{checkText,jdbcType=VARCHAR},
+      </if>
+      <if test="checkScore != null">
+        #{checkScore,jdbcType=DECIMAL},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="rewardPenaltMoney != null">
+        #{rewardPenaltMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="patrolStoreTime != null">
+        #{patrolStoreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="scoreTimes != null">
+        #{scoreTimes,jdbcType=DECIMAL},
+      </if>
+      <if test="awardTimes != null">
+        #{awardTimes,jdbcType=DECIMAL},
+      </if>
+      <if test="weightPercent != null">
+        #{weightPercent,jdbcType=DECIMAL},
+      </if>
+      <if test="columnMaxScore != null">
+        #{columnMaxScore,jdbcType=DECIMAL},
+      </if>
+      <if test="columnMaxAward != null">
+        #{columnMaxAward,jdbcType=DECIMAL},
+      </if>
+      <if test="columnType != null">
+        #{columnType,jdbcType=BIT},
+      </if>
+      <if test="patrolType != null">
+        #{patrolType,jdbcType=VARCHAR},
+      </if>
+      <if test="checkResultReason != null">
+        #{checkResultReason,jdbcType=VARCHAR},
+      </if>
+      <if test="checkType != null">
+        #{checkType,jdbcType=INTEGER},
+      </if>
+      <if test="checkPics != null">
+        #{checkPics,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="checkVideo != null">
+        #{checkVideo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.patrolstore.CheckDataStaColumnDO">
+    update tb_check_data_sta_column_${enterpriseId}
+    <set>
+      <if test="taskId != null">
+        task_id = #{taskId,jdbcType=BIGINT},
+      </if>
+      <if test="businessId != null">
+        business_id = #{businessId,jdbcType=BIGINT},
+      </if>
+      <if test="dataTableId != null">
+        data_table_id = #{dataTableId,jdbcType=BIGINT},
+      </if>
+      <if test="checkDataTableId != null">
+        check_data_table_id = #{checkDataTableId,jdbcType=BIGINT},
+      </if>
+      <if test="dataStaColumnId != null">
+        data_sta_column_id = #{dataStaColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="metaTableId != null">
+        meta_table_id = #{metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="metaColumnId != null">
+        meta_column_id = #{metaColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="metaColumnName != null">
+        meta_column_name = #{metaColumnName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="supervisorId != null">
+        supervisor_id = #{supervisorId,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryName != null">
+        category_name = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkResult != null">
+        check_result = #{checkResult,jdbcType=VARCHAR},
+      </if>
+      <if test="checkResultId != null">
+        check_result_id = #{checkResultId,jdbcType=BIGINT},
+      </if>
+      <if test="checkResultName != null">
+        check_result_name = #{checkResultName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkText != null">
+        check_text = #{checkText,jdbcType=VARCHAR},
+      </if>
+      <if test="checkScore != null">
+        check_score = #{checkScore,jdbcType=DECIMAL},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="rewardPenaltMoney != null">
+        reward_penalt_money = #{rewardPenaltMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="patrolStoreTime != null">
+        patrol_store_time = #{patrolStoreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="scoreTimes != null">
+        score_times = #{scoreTimes,jdbcType=DECIMAL},
+      </if>
+      <if test="awardTimes != null">
+        award_times = #{awardTimes,jdbcType=DECIMAL},
+      </if>
+      <if test="weightPercent != null">
+        weight_percent = #{weightPercent,jdbcType=DECIMAL},
+      </if>
+      <if test="columnMaxScore != null">
+        column_max_score = #{columnMaxScore,jdbcType=DECIMAL},
+      </if>
+      <if test="columnMaxAward != null">
+        column_max_award = #{columnMaxAward,jdbcType=DECIMAL},
+      </if>
+      <if test="columnType != null">
+        column_type = #{columnType,jdbcType=BIT},
+      </if>
+      <if test="patrolType != null">
+        patrol_type = #{patrolType,jdbcType=VARCHAR},
+      </if>
+      <if test="checkResultReason != null">
+        check_result_reason = #{checkResultReason,jdbcType=VARCHAR},
+      </if>
+      <if test="checkType != null">
+        check_type = #{checkType,jdbcType=INTEGER},
+      </if>
+      <if test="checkPics != null">
+        check_pics = #{checkPics,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="checkVideo != null">
+        check_video = #{checkVideo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != taskId">
+         and t.task_id = #{taskId,jdbcType=BIGINT}
+      </if>
+      <if test="null != businessId">
+         and t.business_id = #{businessId,jdbcType=BIGINT}
+      </if>
+      <if test="null != dataTableId">
+         and t.data_table_id = #{dataTableId,jdbcType=BIGINT}
+      </if>
+      <if test="null != checkDataTableId">
+         and t.check_data_table_id = #{checkDataTableId,jdbcType=BIGINT}
+      </if>
+      <if test="null != dataStaColumnId">
+         and t.data_sta_column_id = #{dataStaColumnId,jdbcType=BIGINT}
+      </if>
+      <if test="null != metaTableId">
+         and t.meta_table_id = #{metaTableId,jdbcType=BIGINT}
+      </if>
+      <if test="null != metaColumnId">
+         and t.meta_column_id = #{metaColumnId,jdbcType=BIGINT}
+      </if>
+      <if test="null != metaColumnName">
+         and t.meta_column_name = #{metaColumnName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != description">
+         and t.description = #{description,jdbcType=VARCHAR}
+      </if>
+      <if test="null != supervisorId">
+         and t.supervisor_id = #{supervisorId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != categoryName">
+         and t.category_name = #{categoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkResult">
+         and t.check_result = #{checkResult,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkResultId">
+         and t.check_result_id = #{checkResultId,jdbcType=BIGINT}
+      </if>
+      <if test="null != checkResultName">
+         and t.check_result_name = #{checkResultName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkText">
+         and t.check_text = #{checkText,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkScore">
+         and t.check_score = #{checkScore,jdbcType=DECIMAL}
+      </if>
+      <if test="null != deleted">
+         and t.deleted = #{deleted,jdbcType=TINYINT}
+      </if>
+      <if test="null != rewardPenaltMoney">
+         and t.reward_penalt_money = #{rewardPenaltMoney,jdbcType=DECIMAL}
+      </if>
+      <if test="null != patrolStoreTime">
+         and t.patrol_store_time = #{patrolStoreTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != scoreTimes">
+         and t.score_times = #{scoreTimes,jdbcType=DECIMAL}
+      </if>
+      <if test="null != awardTimes">
+         and t.award_times = #{awardTimes,jdbcType=DECIMAL}
+      </if>
+      <if test="null != weightPercent">
+         and t.weight_percent = #{weightPercent,jdbcType=DECIMAL}
+      </if>
+      <if test="null != columnMaxScore">
+         and t.column_max_score = #{columnMaxScore,jdbcType=DECIMAL}
+      </if>
+      <if test="null != columnMaxAward">
+         and t.column_max_award = #{columnMaxAward,jdbcType=DECIMAL}
+      </if>
+      <if test="null != columnType">
+         and t.column_type = #{columnType,jdbcType=BIT}
+      </if>
+      <if test="null != patrolType">
+         and t.patrol_type = #{patrolType,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkResultReason">
+         and t.check_result_reason = #{checkResultReason,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkType">
+         and t.check_type = #{checkType,jdbcType=INTEGER}
+      </if>
+      <if test="null != checkPics">
+         and t.check_pics = #{checkPics,jdbcType=LONGVARCHAR}
+      </if>
+      <if test="null != checkVideo">
+         and t.check_video = #{checkVideo,jdbcType=LONGVARCHAR}
+      </if>
+    </trim>
+  </sql>
+
+  <select id="getFailReason" resultMap="BaseResultMap">
+    select check_result_reason,check_type from tb_check_data_sta_column_${enterpriseId}
+    where business_id = #{businessId}
+      and data_table_id = #{dataTableId}
+      and deleted = 0
+  </select>
+
+  <select id="selectDataColumn" resultMap="BaseResultMap">
+    select * from tb_check_data_sta_column_${enterpriseId}
+    where data_table_id in
+    <foreach collection="dataTableIdList" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+    and deleted = 0
+    and check_type = 1
+    </select>
+  <!-- 批量插入所有字段 -->
+  <insert id="batchInsert" parameterType="java.util.List">
+    INSERT INTO tb_check_data_sta_column_${enterpriseId}
+    (task_id, business_id, data_table_id, check_data_table_id, data_sta_column_id,
+    meta_table_id, meta_column_id, meta_column_name, description, supervisor_id, category_name,
+    check_result, check_result_id, check_result_name, check_pics, check_text, check_video,
+    check_score, deleted, reward_penalt_money, patrol_store_time, score_times, award_times,
+    weight_percent, column_max_score, column_max_award, column_type, patrol_type,
+    check_result_reason, check_type)
+    VALUES
+    <foreach collection="list" item="item" index="index" open="" close="" separator=",">
+      ( #{item.taskId}, #{item.businessId}, #{item.dataTableId}, #{item.checkDataTableId},
+      #{item.dataStaColumnId}, #{item.metaTableId}, #{item.metaColumnId}, #{item.metaColumnName},
+      #{item.description}, #{item.supervisorId}, #{item.categoryName}, #{item.checkResult},
+      #{item.checkResultId}, #{item.checkResultName}, #{item.checkPics}, #{item.checkText},
+      #{item.checkVideo}, #{item.checkScore}, #{item.deleted}, #{item.rewardPenaltMoney},
+      #{item.patrolStoreTime}, #{item.scoreTimes}, #{item.awardTimes}, #{item.weightPercent},
+      #{item.columnMaxScore}, #{item.columnMaxAward}, #{item.columnType}, #{item.patrolType},
+      #{item.checkResultReason}, #{item.checkType})
+    </foreach>
+  </insert>
+  <update id="batchUpdate">
+    update tb_check_data_sta_column_${enterpriseId}
+    <set>
+      check_result = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.checkResult},check_result)
+      </foreach>
+      END,
+      check_result_id = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.checkResultId},check_result_id)
+      </foreach>
+      END,
+      check_result_name = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.checkResultName},check_result_name)
+      </foreach>
+      END,
+      check_pics = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.checkPics},check_pics)
+      </foreach>
+      END,
+      check_video = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.checkVideo},check_video)
+      </foreach>
+      END,
+      check_text = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.checkText},check_text)
+      </foreach>
+      END,
+      check_score = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.checkScore},check_score)
+      </foreach>
+      END,
+      reward_penalt_money = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.rewardPenaltMoney},reward_penalt_money)
+      </foreach>
+      END,
+      score_times = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.scoreTimes},score_times)
+      </foreach>
+      END,
+      award_times = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.awardTimes},award_times)
+      </foreach>
+      END,
+      weight_percent = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.weightPercent},weight_percent)
+      </foreach>
+      END,
+      column_max_score = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.columnMaxScore},column_max_score)
+      </foreach>
+      END,
+      column_max_award = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.columnMaxAward},column_max_award)
+      </foreach>
+      END,
+      check_result_reason = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.checkResultReason},check_result_reason)
+      </foreach>
+      END,
+      patrol_store_time = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.patrolStoreTime},patrol_store_time)
+      </foreach>
+      END,
+    </set>
+    where
+    id in (
+    <foreach collection="list" item="item" separator=",">
+      #{item.id}
+    </foreach>
+    )
+    and business_id = #{businessId}
+    and check_data_table_id = #{checkDataTableId}
+    and deleted = 0
+  </update>
+
+  <select id="checkDataStaColumnDOList" resultMap="BaseResultMap">
+    select * from tb_check_data_sta_column_${enterpriseId}
+    where data_sta_column_id in
+      <foreach collection="dataStaColumnIds" item="item" open="(" separator="," close=")">
+              #{item}
+      </foreach>
+    and deleted = 0
+    and check_type = 1
+  </select>
+
+  <select id="selectWarDataColumn" resultMap="BaseResultMap">
+    select * from tb_check_data_sta_column_${enterpriseId}
+    where data_table_id in
+    <foreach collection="dataTableIdList" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+    and deleted = 0
+    and check_type = 2
+  </select>
+
+  <select id="warCheckDataStaColumnDOList" resultMap="BaseResultMap">
+    select * from tb_check_data_sta_column_${enterpriseId}
+    where data_sta_column_id in
+    <foreach collection="dataStaColumnIds" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+    and deleted = 0
+    and check_type = 2
+  </select>
+
+  <select id="selectByBusinessId" resultMap="BaseResultMap">
+    select * from tb_check_data_sta_column_${enterpriseId}
+    where business_id in
+      <foreach collection="businessIds" item="item" open="(" separator="," close=")">
+              #{item}
+      </foreach>
+    and check_type = #{checkType}
+    </select>
+
+  <select id="selectCategoryStatisticsListByBusinessId"
+          resultType="com.coolcollege.intelligent.model.metatable.vo.CategoryStatisticsVO">
+    select
+      data_table_id as dataTableId,
+      category_name as categoryName,
+      count(*) as totalNum,
+      sum(if(check_result='PASS',1,0)) as passNum,
+      sum(if(check_result='FAIL',1,0)) as failNum,
+      sum(if(check_result='INAPPLICABLE',1,0)) as inapplicableNum,
+      sum(check_score) as totalCheckScore,
+      sum(column_max_score) as totalScore
+    from tb_check_data_sta_column_${enterpriseId}
+    where business_id = #{businessId}
+      and check_type = #{checkType}
+      and deleted = 0
+    group by data_table_id, category_name
+  </select>
+
+  <select id="selectDataColumnById" resultMap="BaseResultMap">
+    select * from tb_check_data_sta_column_${enterpriseId}
+    where data_table_id in
+    <foreach collection="dataTableIds" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+    and deleted = 0
+    and check_type = #{checkType}
+  </select>
+
+  <select id="statisticsColumnCountByBusinessIdGroupByDataTableId"
+          resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsDataStaTableCountDTO">
+    select
+    data_table_id as dataTableId,
+    business_id as businessId,
+    count(*) as totalColumnCount,
+    ifnull( sum(check_score) , 0 )as checkScore
+    from tb_check_data_sta_column_${enterpriseId}
+    where business_id in (
+    <foreach collection="list" separator="," item="item">
+      #{item}
+    </foreach>
+    )
+    group by data_table_id
+  </select>
+
+  <update id="batchUpdateColumn">
+    <foreach collection="list" item="record" separator=";">
+      update tb_check_data_sta_column_${enterpriseId}
+      <set>
+          <if test="record.taskId != null">
+              task_id = #{record.taskId},
+          </if>
+          <if test="record.businessId != null">
+              business_id = #{record.businessId},
+          </if>
+          <if test="record.dataTableId != null">
+              data_table_id = #{record.dataTableId},
+          </if>
+          <if test="record.checkDataTableId != null">
+              check_data_table_id = #{record.checkDataTableId},
+          </if>
+          <if test="record.dataStaColumnId != null">
+              data_sta_column_id = #{record.dataStaColumnId},
+          </if>
+          <if test="record.metaTableId != null">
+              meta_table_id = #{record.metaTableId},
+          </if>
+          <if test="record.metaColumnId != null">
+              meta_column_id = #{record.metaColumnId},
+          </if>
+          <if test="record.metaColumnName != null">
+              meta_column_name = #{record.metaColumnName},
+          </if>
+          <if test="record.description != null">
+              description = #{record.description},
+          </if>
+          <if test="record.supervisorId != null">
+              supervisor_id = #{record.supervisorId},
+          </if>
+          <if test="record.categoryName != null">
+              category_name = #{record.categoryName},
+          </if>
+          <if test="record.checkResult != null">
+              check_result = #{record.checkResult},
+          </if>
+          <if test="record.checkResultId != null">
+              check_result_id = #{record.checkResultId},
+          </if>
+          <if test="record.checkResultName != null">
+              check_result_name = #{record.checkResultName},
+          </if>
+          <if test="record.checkText != null">
+              check_text = #{record.checkText},
+          </if>
+          <if test="record.checkScore != null">
+              check_score = #{record.checkScore},
+          </if>
+          <if test="record.deleted != null">
+              deleted = #{record.deleted},
+          </if>
+          <if test="record.rewardPenaltMoney != null">
+              reward_penalt_money = #{record.rewardPenaltMoney},
+          </if>
+          <if test="record.patrolStoreTime != null">
+              patrol_store_time = #{record.patrolStoreTime},
+          </if>
+          <if test="record.scoreTimes != null">
+              score_times = #{record.scoreTimes},
+          </if>
+          <if test="record.awardTimes != null">
+              award_times = #{record.awardTimes},
+          </if>
+          <if test="record.weightPercent != null">
+              weight_percent = #{record.weightPercent},
+          </if>
+          <if test="record.columnMaxScore != null">
+              column_max_score = #{record.columnMaxScore},
+          </if>
+          <if test="record.columnMaxAward != null">
+              column_max_award = #{record.columnMaxAward},
+          </if>
+          <if test="record.columnType != null">
+              column_type = #{record.columnType},
+          </if>
+          <if test="record.patrolType != null">
+              patrol_type = #{record.patrolType},
+          </if>
+          <if test="record.checkResultReason != null">
+              check_result_reason = #{record.checkResultReason},
+          </if>
+          <if test="record.checkType != null">
+              check_type = #{record.checkType},
+          </if>
+          <if test="record.checkPics != null">
+              check_pics = #{record.checkPics},
+          </if>
+          <if test="record.checkVideo != null">
+              check_video = #{record.checkVideo},
+          </if>
+      </set>
+      where id = #{record.id}
+    </foreach>
+  </update>
+</mapper>

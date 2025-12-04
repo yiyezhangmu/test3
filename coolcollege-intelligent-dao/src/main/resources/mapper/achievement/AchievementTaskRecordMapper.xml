@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.achievement.AchievementTaskRecordMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.achievement.entity.AchievementTaskRecordDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
+    <result column="sub_begin_time" jdbcType="TIMESTAMP" property="subBeginTime" />
+    <result column="sub_end_time" jdbcType="TIMESTAMP" property="subEndTime" />
+    <result column="unify_task_id" jdbcType="BIGINT" property="unifyTaskId" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="loop_count" jdbcType="BIGINT" property="loopCount" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="region_id" jdbcType="BIGINT" property="regionId" />
+    <result column="region_path" jdbcType="VARCHAR" property="regionPath" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="produce_user_id" jdbcType="VARCHAR" property="produceUserId" />
+    <result column="produce_user_name" jdbcType="VARCHAR" property="produceUserName" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="plan_delist_time" jdbcType="TIMESTAMP" property="planDelistTime" />
+    <result column="goods_num" jdbcType="INTEGER" property="goodsNum" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
+    <result column="product_category" jdbcType="VARCHAR" property="productCategory" />
+    <result column="product_middle_class" jdbcType="VARCHAR" property="productMiddleClass" />
+    <result column="product_type" jdbcType="VARCHAR" property="productType" />
+    <result column="task_type" jdbcType="VARCHAR" property="taskType" />
+    <result column="task_store_id" jdbcType="BIGINT" property="taskStoreId" />
+    <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_time, edit_time, sub_begin_time, sub_end_time, unify_task_id, task_name, 
+    loop_count, store_id, store_name, region_id, region_path, create_user_id, create_user_name, 
+    produce_user_id, produce_user_name, deleted, status, plan_delist_time, goods_num, 
+    picture, product_category, product_middle_class, product_type,task_type,task_store_id,submit_time,product_category_name,
+    product_middle_class_name,product_small_category_code,product_small_category_name,product_model_number,plan_good_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from achievement_task_record_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectList"
+          resultType="com.coolcollege.intelligent.model.achievement.entity.AchievementTaskRecordDO">
+    select
+    <include refid="Base_Column_List"/>
+    from achievement_task_record_${enterpriseId}
+    where deleted = 0
+    <if test="query.storeName != null and query.storeName != ''">
+      and store_name like concat('%',#{query.storeName},'%')
+    </if>
+    <if test="query.status != null">
+      and status = #{query.status}
+    </if>
+    <if test="query.report != null and query.report == true">
+      and plan_delist_time is not null
+    </if>
+    <if test="query.report != null and query.report == false">
+      and plan_delist_time is null
+    </if>
+    <if test="query.unifyTaskId != null">
+      and unify_task_id = #{query.unifyTaskId}
+    </if>
+    <if test="query.taskType != null">
+      and task_type = #{query.taskType}
+    </if>
+    <if test="query.regionPathList !=null and query.regionPathList.size() > 0">
+      AND
+      <foreach collection="query.regionPathList" separator="or" close=")" open=" (" item="region">
+        region_path like concat(#{region}, '%')
+      </foreach>
+    </if>
+    order by id desc
+  </select>
+  <select id="selectDetail"
+          resultType="com.coolcollege.intelligent.model.achievement.entity.AchievementTaskRecordDO">
+    select
+    <include refid="Base_Column_List" />
+    from achievement_task_record_${enterpriseId}
+    where unify_task_id = #{taskId}
+      and store_id = #{storeId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from achievement_task_record_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.achievement.entity.AchievementTaskRecordDO">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into achievement_task_record_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.editTime != null">
+        edit_time,
+      </if>
+      <if test="record.subBeginTime != null">
+        sub_begin_time,
+      </if>
+      <if test="record.subEndTime != null">
+        sub_end_time,
+      </if>
+      <if test="record.unifyTaskId != null">
+        unify_task_id,
+      </if>
+      <if test="record.taskName != null">
+        task_name,
+      </if>
+      <if test="record.loopCount != null">
+        loop_count,
+      </if>
+      <if test="record.storeId != null">
+        store_id,
+      </if>
+      <if test="record.storeName != null">
+        store_name,
+      </if>
+      <if test="record.regionId != null">
+        region_id,
+      </if>
+      <if test="record.regionPath != null">
+        region_path,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.createUserName != null">
+        create_user_name,
+      </if>
+      <if test="record.produceUserId != null">
+        produce_user_id,
+      </if>
+      <if test="record.produceUserName != null">
+        produce_user_name,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+      <if test="record.status != null">
+        status,
+      </if>
+      <if test="record.planDelistTime != null">
+        plan_delist_time,
+      </if>
+      <if test="record.goodsNum != null">
+        goods_num,
+      </if>
+      <if test="record.picture != null">
+        picture,
+      </if>
+      <if test="record.productCategory != null">
+        product_category,
+      </if>
+      <if test="record.productMiddleClass != null">
+        product_middle_class,
+      </if>
+      <if test="record.productType != null">
+        product_type,
+      </if>
+      <if test="record.taskType != null">
+        task_type,
+      </if>
+      <if test="record.taskStoreId != null">
+        task_store_id,
+      </if>
+      <if test="record.productCategoryName != null">
+        product_category_name,
+      </if>
+      <if test="record.productMiddleClassName != null">
+        product_middle_class_name,
+      </if>
+      <if test="record.productSmallCategoryCode != null">
+        product_small_category_code,
+      </if>
+      <if test="record.productSmallCategoryName != null">
+        product_small_category_name,
+      </if>
+      <if test="record.productModelNumber != null">
+        product_model_number,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.createTime != null">
+        #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.editTime != null">
+        #{record.editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.subBeginTime != null">
+        #{record.subBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.subEndTime != null">
+        #{record.subEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.unifyTaskId != null">
+        #{record.unifyTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="record.taskName != null">
+        #{record.taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loopCount != null">
+        #{record.loopCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.storeId != null">
+        #{record.storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeName != null">
+        #{record.storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regionId != null">
+        #{record.regionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.regionPath != null">
+        #{record.regionPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUserName != null">
+        #{record.createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.produceUserId != null">
+        #{record.produceUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.produceUserName != null">
+        #{record.produceUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted,jdbcType=TINYINT},
+      </if>
+      <if test="record.status != null">
+        #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.planDelistTime != null">
+        #{record.planDelistTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.goodsNum != null">
+        #{record.goodsNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.picture != null">
+        #{record.picture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productCategory != null">
+        #{record.productCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productMiddleClass != null">
+        #{record.productMiddleClass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productType != null">
+        #{record.productType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskType != null">
+        #{record.taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskStoreId != null">
+        #{record.taskStoreId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productCategoryName != null">
+        #{record.productCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productMiddleClassName != null">
+        #{record.productMiddleClassName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productSmallCategoryCode != null">
+        #{record.productSmallCategoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productSmallCategoryName != null">
+        #{record.productSmallCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productModelNumber != null">
+        #{record.productModelNumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.achievement.entity.AchievementTaskRecordDO">
+    update achievement_task_record_${enterpriseId}
+    <set>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.editTime != null">
+        edit_time = #{record.editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.subBeginTime != null">
+        sub_begin_time = #{record.subBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.subEndTime != null">
+        sub_end_time = #{record.subEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.unifyTaskId != null">
+        unify_task_id = #{record.unifyTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="record.taskName != null">
+        task_name = #{record.taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loopCount != null">
+        loop_count = #{record.loopCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeName != null">
+        store_name = #{record.storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regionId != null">
+        region_id = #{record.regionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.regionPath != null">
+        region_path = #{record.regionPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUserName != null">
+        create_user_name = #{record.createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.produceUserId != null">
+        produce_user_id = #{record.produceUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.produceUserName != null">
+        produce_user_name = #{record.produceUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=TINYINT},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.planDelistTime != null">
+        plan_delist_time = #{record.planDelistTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.goodsNum != null">
+        goods_num = #{record.goodsNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.picture != null">
+        picture = #{record.picture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productCategory != null">
+        product_category = #{record.productCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productMiddleClass != null">
+        product_middle_class = #{record.productMiddleClass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productType != null">
+        product_type = #{record.productType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.submitTime != null">
+        submit_time = #{record.submitTime},
+      </if>
+      <if test="record.planGoodTime != null">
+        plan_good_time = #{record.planGoodTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != editTime">
+         and t.edit_time = #{editTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != subBeginTime">
+         and t.sub_begin_time = #{subBeginTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != subEndTime">
+         and t.sub_end_time = #{subEndTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != unifyTaskId">
+         and t.unify_task_id = #{unifyTaskId,jdbcType=BIGINT}
+      </if>
+      <if test="null != taskName">
+         and t.task_name = #{taskName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != loopCount">
+         and t.loop_count = #{loopCount,jdbcType=BIGINT}
+      </if>
+      <if test="null != storeId">
+         and t.store_id = #{storeId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != storeName">
+         and t.store_name = #{storeName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != regionId">
+         and t.region_id = #{regionId,jdbcType=BIGINT}
+      </if>
+      <if test="null != regionPath">
+         and t.region_path = #{regionPath,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createUserId">
+         and t.create_user_id = #{createUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createUserName">
+         and t.create_user_name = #{createUserName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != produceUserId">
+         and t.produce_user_id = #{produceUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != produceUserName">
+         and t.produce_user_name = #{produceUserName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != deleted">
+         and t.deleted = #{deleted,jdbcType=TINYINT}
+      </if>
+      <if test="null != status">
+         and t.status = #{status,jdbcType=TINYINT}
+      </if>
+      <if test="null != planDelistTime">
+         and t.plan_delist_time = #{planDelistTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != goodsNum">
+         and t.goods_num = #{goodsNum,jdbcType=INTEGER}
+      </if>
+      <if test="null != picture">
+         and t.picture = #{picture,jdbcType=VARCHAR}
+      </if>
+      <if test="null != productCategory">
+         and t.product_category = #{productCategory,jdbcType=VARCHAR}
+      </if>
+      <if test="null != productMiddleClass">
+         and t.product_middle_class = #{productMiddleClass,jdbcType=VARCHAR}
+      </if>
+      <if test="null != productType">
+         and t.product_type = #{productType,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <update id="deleteByTaskId">
+    update achievement_task_record_${enterpriseId} set deleted = 1 where unify_task_id = #{taskId}
+  </update>
+  <select id="selectTaskRecordList"
+          resultType="com.coolcollege.intelligent.model.achievement.entity.AchievementTaskRecordDO">
+    select
+    <include refid="Base_Column_List" />
+    from achievement_task_record_${enterpriseId}
+    where product_type = #{productType}
+    and store_id = #{storeId}
+    and deleted = 0
+    and goods_num is not null
+    and status = 0
+    and task_type = 'ACHIEVEMENT_OLD_PRODUCTS_OFF'
+  </select>
+  <select id="selectRemindList"
+          resultType="com.coolcollege.intelligent.model.achievement.entity.AchievementTaskRecordDO">
+select
+    <include refid="Base_Column_List" />
+    from achievement_task_record_${enterpriseId}
+    where deleted = 0
+    and status = 0
+    and task_type = 'ACHIEVEMENT_OLD_PRODUCTS_OFF'
+    and plan_delist_time >= #{now}
+    and #{beginTime} >= plan_delist_time
+  </select>
+
+  <select id="getIdByUnifyTaskIdAndStoreIdAndLoopCount" resultType="com.coolcollege.intelligent.model.achievement.entity.AchievementTaskRecordDO">
+    select id from achievement_task_record_${enterpriseId} where unify_task_id = #{unifyTaskId} and store_id = #{storeId} and loop_count = #{loopCount}
+  </select>
+
+</mapper>

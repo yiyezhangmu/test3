@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseCluesMapper">
+
+    <insert id="save" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseCluesDO"  keyProperty="id" useGeneratedKeys="true">
+        INSERT into boss_enterprise_clues
+        (
+        enterprise_id,name,original_name,mobile,province,city,status,logo,is_vip,auth_type,
+        auth_user_id,industry,corp_logo_url,is_authenticated,auth_level,create_time,update_time,package_begin_date,
+        package_end_date,create_id,create_name,update_id,update_name,app_type,user_ids,sales_stage,store_num
+        ) VALUES (
+        #{enterpriseId},
+        #{name},
+        #{originalName},
+        #{mobile},
+        #{province},
+        #{city},
+        #{status},
+        #{logo},
+        #{isVip},
+        #{authType},
+        #{authUserId},
+        #{industry},
+        #{corpLogoUrl},
+        #{isAuthenticated},
+        #{authLevel},
+        sysdate(),
+        sysdate(),
+        sysdate(),
+        date_add(sysdate(),interval 30 day),
+        #{createId},
+        #{createName},
+        #{updateId},
+        #{updateName},
+        #{appType},
+        #{userIds},
+        #{salesStage},
+        #{storeNum}
+        )
+    </insert>
+
+    <insert id="batchSave" >
+
+        insert into boss_enterprise_clues
+        (
+        id,enterprise_id,name,original_name,mobile,province,city,status,logo,is_vip,auth_type,
+        auth_user_id,industry,corp_logo_url,is_authenticated,auth_level,create_time,update_time,package_begin_date,
+        package_end_date,create_id,create_name,update_id,update_name,app_type,user_ids,sales_stage,store_num,is_pay,contact
+        )
+        values
+        <foreach collection="list" item="entity" separator=",">
+            (
+            #{entity.id},
+            #{entity.enterpriseId},
+            #{entity.name},
+            #{entity.originalName},
+            #{entity.mobile},
+            #{entity.province},
+            #{entity.city},
+            #{entity.status},
+            #{entity.logo},
+            #{entity.isVip},
+            #{entity.authType},
+            #{entity.authUserId},
+            #{entity.industry},
+            #{entity.corpLogoUrl},
+            #{entity.isAuthenticated},
+            #{entity.authLevel},
+            sysdate(),
+            sysdate(),
+            #{entity.packageBeginDate},
+            #{entity.packageEndDate},
+            #{entity.createId},
+            #{entity.createName},
+            #{entity.updateId},
+            #{entity.updateName},
+            #{entity.appType},
+            #{entity.userIds},
+            #{entity.salesStage},
+            #{entity.storeNum},
+            #{entity.isPay},
+            #{entity.contact}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE store_num=values(store_num),mobile=values(mobile),enterprise_id = values(enterprise_id),
+        province=values(province),city=values(city),app_type=values(app_type),is_vip=values(is_vip),auth_level=values(auth_level),
+        is_authenticated=values(is_authenticated),sales_stage=values(sales_stage),update_time=values(update_time),update_id=values(update_id),
+        update_name=values(update_name),package_begin_date=values(package_begin_date),package_end_date=values(package_end_date),is_pay=values(is_pay),
+        contact=values(contact)
+    </insert>
+
+    <update id="update" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseCluesDO">
+        update boss_enterprise_clues
+        <trim prefix="set" suffixOverrides=",">
+            <if test="entity.appType != null">
+                app_type=#{entity.appType},
+            </if>
+            <if test="entity.userIds != null">
+                user_ids=#{entity.userIds},
+            </if>
+            <if test="entity.salesStage != null">
+                sales_stage=#{entity.salesStage},
+            </if>
+            <if test="entity.isPay != null">
+                is_pay=#{entity.isPay},
+            </if>
+            <if test="entity.updateName != null">
+                update_name=#{entity.updateName},
+            </if>
+            <if test="entity.updateId != null">
+                update_id=#{entity.updateId},
+            </if>
+            <if test="entity.updateTime != null">
+                update_time=#{entity.updateTime},
+            </if>
+        </trim>
+        where id = #{entity.id}
+    </update>
+
+    <update id="batchUpdate">
+        UPDATE boss_enterprise_clues
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="app_type =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.appType!=null">
+                        when #{item.id} then #{item.appType}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="user_ids =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.userIds!=null">
+                        when #{item.id} then #{item.userIds}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sales_stage =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.salesStage!=null">
+                        when #{item.id} then #{item.salesStage}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_name =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.updateName!=null">
+                        when #{item.id} then #{item.updateName}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_id =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.updateId!=null">
+                        when #{item.id} then #{item.updateId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_time =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.updateTime!=null">
+                        when #{item.id} then #{item.updateTime}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </update>
+    <delete id="deleteById">
+        delete
+        from boss_enterprise_clues
+        where id = #{id}
+    </delete>
+
+    <select id="list" parameterType="com.coolcollege.intelligent.model.enterprise.request.EnterpriseCluesRequest" resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseCluesDTO">
+        select
+        a.id,
+        a.enterprise_id,
+        a.name,
+        a.original_name,
+        a.mobile,
+        a.province,
+        a.city,
+        a.status,
+        a.logo,
+        a.is_vip,
+        a.auth_type,
+        a.auth_user_id,
+        a.industry,
+        a.corp_logo_url,
+        a.is_authenticated,
+        a.auth_level,
+        a.create_time,
+        a.update_time,
+        a.package_begin_date,
+        a.update_id,
+        a.update_name,
+        a.create_id,
+        a.create_name,
+        a.package_end_date,
+        a.app_type,
+        a.sales_stage,
+        a.store_num,
+        a.is_pay,
+        a.user_ids,
+        a.contact,
+        b.ding_corp_id,
+        b.db_name,
+        b.main_corp_id
+        from boss_enterprise_clues a
+        left join  enterprise_config b on a.enterprise_id=b.enterprise_id
+        <where>
+            <if test="request.enterpriseId!=null">
+                and a.enterprise_id = #{request.enterpriseId}
+            </if>
+            <if test="request.status!=null">
+                and a.status = #{request.status}
+            </if>
+            <if test="request.name!=null">
+                and name like concat( #{request.name}, '%')
+            </if>
+            <if test="request.isPersonal!=null and request.isPersonal">
+                and main_corp_id  is not null
+            </if>
+            <if test="request.isPersonal!=null and !request.isPersonal">
+                and main_corp_id  is null
+            </if>
+            <if test="request.isAuthenticated!=null">
+                and is_authenticated = #{request.isAuthenticated}
+            </if>
+            <if test="request.appType!=null">
+                and a.app_type = #{request.appType}
+            </if>
+            <if test="request.isVip!=null">
+                and a.is_vip = #{request.isVip}
+            </if>
+            <if test="request.industry!=null">
+                and a.industry like concat( #{request.industry}, '%')
+            </if>
+            <if test="request.beginDate!=null">
+                and a.package_begin_date &gt;= #{request.beginDate}
+            </if>
+            <if test="request.endDate!=null">
+                and a.package_begin_date &lt;= #{request.endDate}
+            </if>
+            <if test="request.userId!=null and request.userId != 1">
+                and a.user_ids like concat('%' , #{request.userId}, '%')
+            </if>
+        </where>
+        ORDER BY a.create_time desc
+    </select>
+
+    <select id="count" parameterType="com.coolcollege.intelligent.model.enterprise.request.EnterpriseCluesRequest" resultType="long">
+        select
+        count(1)
+        from boss_enterprise_clues
+        <where>
+            <if test="request.enterpriseId!=null">
+                and enterprise_id = #{request.enterpriseId}
+            </if>
+            <if test="request.name!=null">
+                and name = #{request.name}
+            </if>
+            <if test="request.isPersonal!=null and request.isPersonal">
+                and main_corp_id  is not null
+            </if>
+            <if test="request.isPersonal!=null and !request.isPersonal">
+                and main_corp_id  is null
+            </if>
+            <if test="request.appType!=null">
+                and app_type = #{request.appType}
+            </if>
+            <if test="request.isVip!=null">
+                and is_vip = #{request.isVip}
+            </if>
+            <if test="request.industry!=null">
+                and industry = #{request.industry}
+            </if>
+            <if test="request.beginDate!=null">
+                and package_begin_date &gt;= #{request.beginDate}
+            </if>
+            <if test="request.endDate!=null">
+                and package_begin_date &lt;= #{request.endDate}
+            </if>
+        </where>
+    </select>
+</mapper>

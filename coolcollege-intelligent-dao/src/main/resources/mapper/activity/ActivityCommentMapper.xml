@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.activity.ActivityCommentMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.activity.entity.ActivityCommentDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="activity_id" jdbcType="BIGINT" property="activityId"/>
+        <result column="comment_user_id" jdbcType="VARCHAR" property="commentUserId"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="content_pics" jdbcType="VARCHAR" property="contentPics"/>
+        <result column="content_video" jdbcType="VARCHAR" property="contentVideo"/>
+        <result column="is_contains_pic" jdbcType="BIT" property="isContainsPic"/>
+        <result column="is_contains_video" jdbcType="BIT" property="isContainsVideo"/>
+        <result column="reply_count" jdbcType="INTEGER" property="replyCount"/>
+        <result column="like_count" jdbcType="INTEGER" property="likeCount"/>
+        <result column="is_top" jdbcType="BIT" property="isTop"/>
+        <result column="floor_num" jdbcType="INTEGER" property="floorNum"/>
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, activity_id, comment_user_id, content, content_pics, content_video, is_contains_pic, is_contains_video, reply_count, like_count, is_top, floor_num,
+        create_user_id, update_user_id, create_time, update_time, deleted
+    </sql>
+    <select id="selectByPrimaryKeySelective" resultMap="BaseResultMap">
+        select * from activity_comment_${enterpriseId} where id = #{id}
+    </select>
+    <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into activity_comment_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.activityId != null">
+                activity_id,
+            </if>
+            <if test="record.commentUserId != null">
+                comment_user_id,
+            </if>
+            <if test="record.content != null">
+                content,
+            </if>
+            <if test="record.contentPics != null">
+                content_pics,
+            </if>
+            <if test="record.contentVideo != null">
+                content_video,
+            </if>
+            <if test="record.isContainsPic != null">
+                is_contains_pic,
+            </if>
+            <if test="record.isContainsVideo != null">
+                is_contains_video,
+            </if>
+            <if test="record.replyCount != null">
+                reply_count,
+            </if>
+            <if test="record.likeCount != null">
+                like_count,
+            </if>
+            <if test="record.isTop != null">
+                is_top,
+            </if>
+            <if test="record.floorNum != null">
+                floor_num,
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id,
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id,
+            </if>
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.updateTime != null">
+                update_time,
+            </if>
+            <if test="record.deleted != null">
+                deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.activityId != null">
+                #{record.activityId},
+            </if>
+            <if test="record.commentUserId != null">
+                #{record.commentUserId},
+            </if>
+            <if test="record.content != null">
+                #{record.content},
+            </if>
+            <if test="record.contentPics != null">
+                #{record.contentPics},
+            </if>
+            <if test="record.contentVideo != null">
+                #{record.contentVideo},
+            </if>
+            <if test="record.isContainsPic != null">
+                #{record.isContainsPic},
+            </if>
+            <if test="record.isContainsVideo != null">
+                #{record.isContainsVideo},
+            </if>
+            <if test="record.replyCount != null">
+                #{record.replyCount},
+            </if>
+            <if test="record.likeCount != null">
+                #{record.likeCount},
+            </if>
+            <if test="record.isTop != null">
+                #{record.isTop},
+            </if>
+            <if test="record.floorNum != null">
+                #{record.floorNum},
+            </if>
+            <if test="record.createUserId != null">
+                #{record.createUserId},
+            </if>
+            <if test="record.updateUserId != null">
+                #{record.updateUserId},
+            </if>
+            <if test="record.createTime != null">
+                #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+                #{record.updateTime},
+            </if>
+            <if test="record.deleted != null">
+                #{record.deleted},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update activity_comment_${enterpriseId}
+        <set>
+            <if test="record.activityId != null">
+                activity_id = #{record.activityId},
+            </if>
+            <if test="record.commentUserId != null">
+                comment_user_id = #{record.commentUserId},
+            </if>
+            <if test="record.content != null">
+                content = #{record.content},
+            </if>
+            <if test="record.contentPics != null">
+                content_pics = #{record.contentPics},
+            </if>
+            <if test="record.contentVideo != null">
+                content_video = #{record.contentVideo},
+            </if>
+            <if test="record.isContainsPic != null">
+                is_contains_pic = #{record.isContainsPic},
+            </if>
+            <if test="record.isContainsVideo != null">
+                is_contains_video = #{record.isContainsVideo},
+            </if>
+            <if test="record.replyCount != null">
+                reply_count = #{record.replyCount},
+            </if>
+            <if test="record.likeCount != null">
+                like_count = #{record.likeCount},
+            </if>
+            <if test="record.isTop != null">
+                is_top = #{record.isTop},
+            </if>
+            <if test="record.floorNum != null">
+                floor_num = #{record.floorNum},
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id = #{record.createUserId},
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id = #{record.updateUserId},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime},
+            </if>
+            <if test="record.deleted != null">
+                deleted = #{record.deleted},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <select id="getActivityCommentPage" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            activity_comment_${enterpriseId}
+        where
+            deleted = '0' and activity_id = #{activityId}
+        <if test="commentIds !=null and commentIds.size()>0">
+            and id in <foreach collection="commentIds" open="(" close=")" separator="," item="commentId">#{commentId}</foreach>
+        </if>
+        <if test="isContainsPic != null and isContainsPic">
+            and (is_contains_pic = '1' or is_contains_video = '1')
+        </if>
+        <if test="orderField == null or orderField =='createTime'">
+            order by is_top desc, create_time desc
+        </if>
+        <if test="orderField != null and orderField =='likeCount'">
+            order by is_top desc, like_count desc
+        </if>
+    </select>
+
+    <select id="getActivityCommentList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        activity_comment_${enterpriseId}
+        where
+        deleted = '0' and activity_id = #{activityId}
+        order by id asc
+    </select>
+
+    <select id="getActivityCommentCount" resultType="com.coolcollege.intelligent.model.activity.dto.ActivityCommentCountDTO">
+        select
+            activity_id as activityId,
+            count(1) as commentsCount,
+            count(distinct(comment_user_id)) as commentsUserCount
+        from
+            activity_comment_${enterpriseId}
+        where
+            deleted = '0' and activity_id = #{activityId}
+    </select>
+
+    <select id="queryCommentUserCommentCount" resultType="com.coolcollege.intelligent.model.activity.dto.CommentCountDTO">
+        select
+            comment_user_id as commentUserId,
+            count(1) as commentCount
+        from activity_comment_${enterpriseId}
+        where activity_id = #{activityId} and deleted = 0
+        group by comment_user_id
+    </select>
+
+    <select id="queryActivityCommentCount" resultType="java.lang.Long">
+        select count(1) from  activity_comment_${enterpriseId} where activity_id  = #{activityId} and deleted = 0
+    </select>
+
+    <select id="getNextFloorNum" resultType="integer">
+        select count(1) + 1 from  activity_comment_${enterpriseId} where activity_id  = #{activityId}
+    </select>
+
+    <select id="getActivityCommentIdsByUserId" resultType="long">
+        select id from activity_comment_${enterpriseId} where activity_id  = #{activityId} and comment_user_id= #{userId} and deleted = 0
+    </select>
+
+    <update id="topAndUnTop">
+        update activity_comment_${enterpriseId} set is_top = not is_top where activity_id = #{activityId} and id = #{commentId}
+    </update>
+</mapper>

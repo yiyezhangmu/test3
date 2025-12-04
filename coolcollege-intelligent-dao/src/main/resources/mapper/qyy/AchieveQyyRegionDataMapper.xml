@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.qyy.AchieveQyyRegionDataMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.qyy.AchieveQyyRegionDataDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="region_id" jdbcType="BIGINT" property="regionId" />
+        <result column="third_dept_id" jdbcType="VARCHAR" property="thirdDeptId" />
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+        <result column="node_type" jdbcType="VARCHAR" property="nodeType" />
+        <result column="time_type" jdbcType="VARCHAR" property="timeType" />
+        <result column="time_value" jdbcType="VARCHAR" property="timeValue" />
+        <result column="sales_amt" jdbcType="DECIMAL" property="salesAmt" />
+        <result column="sales_amt_zzl" jdbcType="DECIMAL" property="salesAmtZzl" />
+        <result column="cus_price" jdbcType="DECIMAL" property="cusPrice" />
+        <result column="cus_price_zzl" jdbcType="DECIMAL" property="cusPriceZzl" />
+        <result column="profit_rate" jdbcType="DECIMAL" property="profitRate" />
+        <result column="profit_rate_zzl" jdbcType="DECIMAL" property="profitZzl" />
+        <result column="joint_rate" jdbcType="DECIMAL" property="jointRate" />
+        <result column="joint_rate_zzl" jdbcType="DECIMAL" property="jointRateZzl" />
+        <result column="top_comp" jdbcType="INTEGER" property="topComp" />
+        <result column="top_tot" jdbcType="INTEGER" property="topTot" />
+        <result column="sales_rate" jdbcType="DECIMAL" property="salesRate" />
+        <result column="yoy_sales_zzl" jdbcType="DECIMAL" property="yoySalesZzl" />
+        <result column="bill_num" jdbcType="INTEGER" property="billNum" />
+        <result column="etl_tm" jdbcType="TIMESTAMP" property="etlTm" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, region_id, third_dept_id, dept_name, node_type, time_type, time_value, sales_amt, sales_amt_zzl, cus_price,
+        cus_price_zzl, profit_rate, profit_rate_zzl, joint_rate, joint_rate_zzl, top_comp, top_tot,
+        sales_rate, yoy_sales_zzl, bill_num, etl_tm, create_time, update_time
+    </sql>
+    <insert id="batchInsertSelective" >
+        <foreach collection="insertList" separator=";" item="record">
+          insert into achieve_qyy_region_data_${enterpriseId}
+          <trim prefix="(" suffix=")" suffixOverrides=",">
+              <if test="record.regionId != null">
+                  region_id,
+              </if>
+              <if test="record.thirdDeptId != null">
+                  third_dept_id,
+              </if>
+              <if test="record.deptName != null">
+                  dept_name,
+              </if>
+              <if test="record.nodeType != null">
+                  node_type,
+              </if>
+              <if test="record.timeType != null">
+                  time_type,
+              </if>
+              <if test="record.timeValue != null">
+                  time_value,
+              </if>
+              <if test="record.salesAmt != null">
+                  sales_amt,
+              </if>
+              <if test="record.salesAmtZzl != null">
+                  sales_amt_zzl,
+              </if>
+              <if test="record.cusPrice != null">
+                  cus_price,
+              </if>
+              <if test="record.cusPriceZzl != null">
+                  cus_price_zzl,
+              </if>
+              <if test="record.profitRate != null">
+                  profit_rate,
+              </if>
+              <if test="record.profitZzl != null">
+                  profit_rate_zzl,
+              </if>
+              <if test="record.jointRate != null">
+                  joint_rate,
+              </if>
+              <if test="record.jointRateZzl != null">
+                  joint_rate_zzl,
+              </if>
+              <if test="record.topComp != null">
+                  top_comp,
+              </if>
+              <if test="record.topTot != null">
+                  top_tot,
+              </if>
+              <if test="record.salesRate != null">
+                  sales_rate,
+              </if>
+              <if test="record.yoySalesZzl != null">
+                  yoy_sales_zzl,
+              </if>
+              <if test="record.billNum != null">
+                  bill_num,
+              </if>
+              <if test="record.etlTm != null">
+                  etl_tm,
+              </if>
+              <if test="record.createTime != null">
+                  create_time,
+              </if>
+              <if test="record.updateTime != null">
+                  update_time,
+              </if>
+          </trim>
+          <trim prefix="values (" suffix=")" suffixOverrides=",">
+              <if test="record.regionId != null">
+                  #{record.regionId},
+              </if>
+              <if test="record.thirdDeptId != null">
+                  #{record.thirdDeptId},
+              </if>
+              <if test="record.deptName != null">
+                  #{record.deptName},
+              </if>
+              <if test="record.nodeType != null">
+                  #{record.nodeType},
+              </if>
+              <if test="record.timeType != null">
+                  #{record.timeType},
+              </if>
+              <if test="record.timeValue != null">
+                  #{record.timeValue},
+              </if>
+              <if test="record.salesAmt != null">
+                  #{record.salesAmt},
+              </if>
+              <if test="record.salesAmtZzl != null">
+                  #{record.salesAmtZzl},
+              </if>
+              <if test="record.cusPrice != null">
+                  #{record.cusPrice},
+              </if>
+              <if test="record.cusPriceZzl != null">
+                  #{record.cusPriceZzl},
+              </if>
+              <if test="record.profitRate != null">
+                  #{record.profitRate},
+              </if>
+              <if test="record.profitZzl != null">
+                  #{record.profitZzl},
+              </if>
+              <if test="record.jointRate != null">
+                  #{record.jointRate},
+              </if>
+              <if test="record.jointRateZzl != null">
+                  #{record.jointRateZzl},
+              </if>
+              <if test="record.topComp != null">
+                  #{record.topComp},
+              </if>
+              <if test="record.topTot != null">
+                  #{record.topTot},
+              </if>
+              <if test="record.salesRate != null">
+                  #{record.salesRate},
+              </if>
+              <if test="record.yoySalesZzl != null">
+                  #{record.yoySalesZzl},
+              </if>
+              <if test="record.billNum != null">
+                  #{record.billNum},
+              </if>
+              <if test="record.etlTm != null">
+                  #{record.etlTm},
+              </if>
+              <if test="record.createTime != null">
+                  #{record.createTime},
+              </if>
+              <if test="record.updateTime != null">
+                  #{record.updateTime},
+              </if>
+          </trim>
+            ON DUPLICATE KEY UPDATE
+                <if test="record.deptName != null">
+                    dept_name = values(dept_name),
+                </if>
+                <if test="record.nodeType != null">
+                    node_type = values(node_type),
+                </if>
+                <if test="record.salesAmt != null">
+                    sales_amt = values(sales_amt),
+                </if>
+                <if test="record.salesAmtZzl != null">
+                    sales_amt_zzl = values(sales_amt_zzl),
+                </if>
+                <if test="record.cusPrice != null">
+                    cus_price = values(cus_price),
+                </if>
+                <if test="record.cusPriceZzl != null">
+                    cus_price_zzl = values(cus_price_zzl),
+                </if>
+                <if test="record.profitRate != null">
+                    profit_rate = values(profit_rate),
+                </if>
+                <if test="record.profitZzl != null">
+                    profit_rate_zzl = values(profit_rate_zzl),
+                </if>
+                <if test="record.jointRate != null">
+                    joint_rate = values(joint_rate),
+                </if>
+                <if test="record.jointRateZzl != null">
+                    joint_rate_zzl = values(joint_rate_zzl),
+                </if>
+                <if test="record.topComp != null">
+                    top_comp = values(top_comp),
+                </if>
+                <if test="record.topTot != null">
+                    top_tot = values(top_tot),
+                </if>
+                <if test="record.salesRate != null">
+                    sales_rate = values(sales_rate),
+                </if>
+                <if test="record.yoySalesZzl != null">
+                    yoy_sales_zzl = values(yoy_sales_zzl),
+                </if>
+                <if test="record.billNum != null">
+                    bill_num = values(bill_num),
+                </if>
+                <if test="record.etlTm != null">
+                    etl_tm = values(etl_tm),
+                </if>
+            update_time = now()
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" >
+        update achieve_qyy_region_data_${enterpriseId}
+        <set>
+            <if test="record.regionId != null">
+              region_id = #{record.regionId},
+            </if>
+            <if test="record.nodeType != null">
+                node_type = #{record.nodeType},
+            </if>
+            <if test="record.timeType != null">
+              time_type = #{record.timeType},
+            </if>
+            <if test="record.timeValue != null">
+              time_value = #{record.timeValue},
+            </if>
+            <if test="record.salesAmt != null">
+              sales_amt = #{record.salesAmt},
+            </if>
+            <if test="record.salesAmtZzl != null">
+                sales_amt_zzl = #{record.salesAmtZzl},
+            </if>
+            <if test="record.cusPrice != null">
+              cus_price = #{record.cusPrice},
+            </if>
+            <if test="record.cusPriceZzl != null">
+              cus_price_zzl = #{record.cusPriceZzl},
+            </if>
+            <if test="record.profitRate != null">
+              profit_rate = #{record.profitRate},
+            </if>
+            <if test="record.profitZzl != null">
+              profit_rate_zzl = #{record.profitZzl},
+            </if>
+            <if test="record.jointRate != null">
+              joint_rate = #{record.jointRate},
+            </if>
+            <if test="record.jointRateZzl != null">
+                joint_rate_zzl = #{record.jointRateZzl},
+            </if>
+            <if test="record.topComp != null">
+              top_comp = #{record.topComp},
+            </if>
+            <if test="record.topTot != null">
+              top_tot = #{record.topTot},
+            </if>
+            <if test="record.salesRate != null">
+              sales_rate = #{record.salesRate},
+            </if>
+            <if test="record.yoySalesZzl != null">
+              yoy_sales_zzl = #{record.yoySalesZzl},
+            </if>
+            <if test="record.billNum != null">
+              bill_num = #{record.billNum},
+            </if>
+            <if test="record.etlTm != null">
+              etl_tm = #{record.etlTm},
+            </if>
+            <if test="record.createTime != null">
+              create_time = #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+              update_time = #{record.updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getBillingRank" resultMap="BaseResultMap">
+        select
+            region_id,
+            bill_num,
+            etl_tm,
+            dept_name
+        from
+            achieve_qyy_region_data_${enterpriseId}
+        where
+            region_id in <foreach collection="regionIds" item="regionId" separator="," open="(" close=")">#{regionId}</foreach>
+        and
+            time_type = #{timeType}
+        and
+            time_value = #{timeValue}
+        order by bill_num desc
+        limit 1500
+    </select>
+    <select id="getBillingRankOfOpen" resultMap="BaseResultMap">
+        select
+            region_id,
+            bill_num,
+            etl_tm,
+            dept_name
+        from
+            achieve_qyy_region_data_${enterpriseId}
+        where
+            region_id in <foreach collection="regionIds" item="regionId" separator="," open="(" close=")">#{regionId}</foreach>
+        and
+            time_type = #{timeType}
+        and
+            time_value = #{timeValue}
+        and bill_num > 0
+        order by bill_num desc
+        limit 1500
+    </select>
+    <select id="getBillingRankOfClose" resultMap="BaseResultMap">
+        select
+            region_id,
+            bill_num,
+            etl_tm,
+            dept_name
+        from
+            achieve_qyy_region_data_${enterpriseId}
+        where
+            region_id in <foreach collection="regionIds" item="regionId" separator="," open="(" close=")">#{regionId}</foreach>
+        and
+            time_type = #{timeType}
+        and
+            time_value = #{timeValue}
+        and bill_num = 0
+        order by bill_num desc
+        limit 1500
+    </select>
+
+    <select id="getRegionDataByRegionIdAndTime" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            achieve_qyy_region_data_${enterpriseId}
+        where
+            region_id = #{regionId} and time_type = #{timeType} and time_value = #{timeValue}
+    </select>
+
+    <select id="getRegionDataByRegionIdAndTimeTimeType" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            achieve_qyy_region_data_${enterpriseId}
+        where
+            region_id = #{regionId}
+            and time_type = #{timeType}
+            and node_type = 'HQ'
+            limit 1
+    </select>
+
+    <select id="getSalesRank" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            achieve_qyy_region_data_${enterpriseId}
+        where
+            region_id in <foreach collection="regionIds" item="regionId" separator="," open="(" close=")">#{regionId}</foreach>
+        and
+            time_type = #{timeType}
+        and
+            time_value = #{timeValue}
+        <if test="tag == true">
+            and (sales_amt_zzl != null
+            or sales_amt_zzl != 0
+            )
+        </if>
+        order by sales_amt desc
+        limit 1500
+    </select>
+
+    <select id="getCompSalesRank" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            achieve_qyy_region_data_${enterpriseId}
+        where
+            time_type = #{timeType} and  time_value = #{timeValue} and node_type = 'COMP'
+        order by sales_amt desc
+        limit 1500
+    </select>
+
+    <select id="getFinishRateRank" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            achieve_qyy_region_data_${enterpriseId}
+        where
+            region_id in <foreach collection="regionIds" item="regionId" separator="," open="(" close=")">#{regionId}</foreach>
+        and
+            time_type = #{timeType}
+        and
+            time_value = #{timeValue}
+        limit 1500
+    </select>
+
+    <select id="getCompFinishRateRank" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            achieve_qyy_region_data_${enterpriseId}
+        where
+            time_type = #{timeType} and  time_value = #{timeValue} and node_type = 'COMP'
+        order by sales_rate desc,sales_amt_zzl desc
+        limit 1500
+    </select>
+
+    <select id="getRegionDataByRegionIdsAndTimes" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            achieve_qyy_region_data_${enterpriseId}
+        where
+            region_id in <foreach collection="regionIds" item="regionId" separator="," open="(" close=")">#{regionId}</foreach>
+        and
+            time_type = #{timeType}
+        and
+            time_value in <foreach collection="timeValues" item="timeValue" separator="," open="(" close=")">#{timeValue}</foreach>
+    </select>
+
+    <select id="getRegionDataList" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            achieve_qyy_region_data_${enterpriseId}
+        where
+            region_id in <foreach collection="regionIds" item="regionId" separator="," open="(" close=")">#{regionId}</foreach>
+        and
+            time_type = #{timeType}
+        and
+            time_value = #{timeValue}
+    </select>
+
+    <select id="getRegionDataRankLimitThree" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            achieve_qyy_region_data_${enterpriseId}
+        where
+            region_id in <foreach collection="regionIds" item="regionId" separator="," open="(" close=")">#{regionId}</foreach>
+        and
+            time_type = #{timeType}
+        and
+            time_value = #{timeValue}
+        <if test='orderField == "sales_amt"'>
+            order by sales_amt desc
+        </if>
+        <if test='orderField == "sales_rate"'>
+            order by sales_rate desc
+        </if>
+        limit 3
+    </select>
+
+
+    <select id="getHPSubCompRankLimitThree" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            achieve_qyy_region_data_${enterpriseId}
+        where
+            time_type = #{timeType} and  time_value = #{timeValue} and node_type = 'COMP'
+            <if test='orderField == "sales_amt"'>
+                order by sales_amt desc,sales_amt_zzl desc
+            </if>
+            <if test='orderField == "sales_rate"'>
+                order by sales_rate desc,sales_amt_zzl desc
+            </if>
+        limit 3
+    </select>
+    <select id="countOpenAndNoNum"
+            resultType="com.coolcollege.intelligent.model.achievement.qyy.vo.StoreBillingRankVO">
+        select
+        COUNT(CASE WHEN bill_num = 0 THEN 1 END) AS noSalesStoreNum, -- 统计bill_num为0的数量
+        COUNT(CASE WHEN bill_num > 0 THEN 1 END) AS salesStoreNum -- 统计bill_num不为0的数量
+        from
+        achieve_qyy_region_data_${enterpriseId}
+        where
+        region_id in <foreach collection="regionIds" item="regionId" separator="," open="(" close=")">#{regionId}</foreach>
+        and
+        time_type = #{timeType}
+        and
+        time_value = #{timeValue}
+        order by bill_num desc
+        limit 1500
+    </select>
+    <select id="getBillNumByStoreId" resultType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM achieve_qyy_region_data_${enterpriseId}
+        WHERE region_id = #{storeId}
+        AND time_type = #{dayCode}
+        AND time_value = #{date}
+    </select>
+</mapper>

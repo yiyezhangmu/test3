@@ -1,0 +1,1463 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.achievement.AchievementDetailMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.achievement.entity.AchievementDetailDO" id="BaseMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="produceTime" column="produce_time"/>
+        <result property="editTime" column="edit_time"/>
+        <result property="storeId" column="store_id"/>
+        <result property="storeName" column="store_name"/>
+        <result property="regionId" column="region_id"/>
+        <result property="regionPath" column="region_path"/>
+        <result property="achievementTypeId" column="achievement_type_id"/>
+        <result property="achievementAmount" column="achievement_amount"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="createUserName" column="create_user_name"/>
+        <result property="produceUserId" column="produce_user_id"/>
+        <result property="produceUserName" column="produce_user_name"/>
+        <result property="produceUserName" column="produce_user_name"/>
+        <result property="achievementFormworkId" column="achievement_formwork_id"/>
+        <result property="achievementFormworkType" column="achievement_formwork_type"/>
+
+        <result property="achievementFormworkId" column="achievement_formwork_id"/>
+        <result property="achievementFormworkType" column="achievement_formwork_type"/>
+    </resultMap>
+    <sql id="baseSql">
+        id,create_time,produce_time,edit_time,store_id,store_name,region_id,region_path,achievement_type_id,
+        achievement_amount,create_user_id,create_user_name,produce_user_id,produce_user_name,deleted,achievement_formwork_id,achievement_formwork_type
+    </sql>
+
+    <insert id="batchInsert"  keyProperty="entity.id" useGeneratedKeys="true" >
+        insert into achievement_detail_${enterpriseId}
+        (
+        create_time,
+        produce_time,
+        edit_time,
+        store_id,
+        store_name,
+        region_id,
+        region_path,
+        achievement_type_id,
+        achievement_amount,
+        create_user_id,
+        create_user_name,
+        produce_user_id,
+        produce_user_name,
+        deleted,
+        achievement_formwork_id,
+        achievement_formwork_type
+        )
+        values
+            (
+            #{entity.createTime},
+            #{entity.produceTime},
+            current_time,
+            #{entity.storeId},
+            #{entity.storeName},
+            #{entity.regionId},
+            #{entity.regionPath},
+            #{entity.achievementTypeId},
+            #{entity.achievementAmount},
+            #{entity.createUserId},
+            #{entity.createUserName},
+            #{entity.produceUserId},
+            #{entity.produceUserName},
+            #{entity.deleted},
+            #{entity.achievementFormworkId},
+            #{entity.achievementFormworkType}
+            )
+    </insert>
+
+    <insert id="insertBatchDetail" useGeneratedKeys="true" keyProperty="list.id">
+        insert into achievement_detail_${eid}
+        (
+        produce_time,
+        store_id,
+        store_name,
+        region_id,
+        region_path,
+        achievement_type_id,
+        achievement_amount,
+        create_user_id,
+        create_user_name,
+        produce_user_id,
+        produce_user_name,
+        achievement_formwork_id,
+        achievement_formwork_type,
+        goods_type,
+        extend_param,
+        goods_num
+        )
+        values
+        <foreach collection="list" item="entity" separator=",">
+            (
+            #{entity.produceTime},
+            #{entity.storeId},
+            #{entity.storeName},
+            #{entity.regionId},
+            #{entity.regionPath},
+            #{entity.achievementTypeId},
+            #{entity.achievementAmount},
+            #{entity.createUserId},
+            #{entity.createUserName},
+            #{entity.produceUserId},
+            #{entity.produceUserName},
+            #{entity.achievementFormworkId},
+            #{entity.achievementFormworkType},
+            #{entity.goodsType},
+            #{entity.extendParam},
+            #{entity.goodsNum}
+            )
+        </foreach>
+
+    </insert>
+
+
+    <delete id="deleteAchievementDetail">
+        update
+        achievement_detail_${enterpriseId}
+        set deleted = 1
+        where id = #{id}
+    </delete>
+    <select id="listAchievementDetail"
+            resultMap="BaseMap">
+        select
+        <include refid="baseSql"></include>
+        from achievement_detail_${enterpriseId}
+        where deleted = 0
+        and produce_time >= #{beginDate}
+        and produce_time &lt;= #{endDate}
+        <if test="createUserId != null and createUserId != ''">
+            and create_user_id = #{createUserId}
+        </if>
+        <if test="storeIds != null and storeIds.size()>0">
+            and store_id in (
+            <foreach collection="storeIds" item="storeId" separator=",">
+                #{storeId}
+            </foreach>
+            )
+        </if>
+        order by produce_time desc,id desc
+    </select>
+    <select id="achievementDetailList"
+            resultMap="BaseMap">
+        select
+        <include refid="baseSql"></include>
+        from achievement_detail_${enterpriseId}
+        where deleted = 0
+        and produce_time >= #{beginDate}
+        and produce_time &lt;= #{endDate}
+        <if test="storeIds != null and storeIds.size()>0">
+            and store_id in (
+            <foreach collection="storeIds" item="storeId" separator=",">
+                #{storeId}
+            </foreach>
+            )
+        </if>
+        <choose>
+        <when test="isNullProduceUser != null and isNullProduceUser">
+            and produce_user_id is null
+        </when>
+        <otherwise>
+            <if test="produceUserIds != null and produceUserIds.size()>0">
+                and produce_user_id in (
+                <foreach collection="produceUserIds" item="produceUserId" separator=",">
+                    #{produceUserId}
+                </foreach>
+                )
+            </if>
+        </otherwise>
+        </choose>
+
+        <if test="typeIds != null and typeIds.size()>0">
+            and achievement_type_id in (
+            <foreach collection="typeIds" item="typeId" separator=",">
+                #{typeId}
+            </foreach>
+            )
+        </if>
+        <if test="formworkId!=null">
+            and achievement_formwork_id=#{formworkId}
+        </if>
+        <if test="createUserId != null and createUserId != ''">
+            and create_user_id = #{createUserId}
+        </if>
+        <if test="achievementFormworkType!=null and achievementFormworkType!=''">
+           and  achievement_formwork_type= #{achievementFormworkType}
+        </if>
+
+        order by produce_time desc, id desc
+    </select>
+
+    <select id="achievementDetailListGroupByStore"
+            resultMap="BaseMap">
+        select
+        id,
+        store_id,
+        store_name,
+        region_id,
+        region_path,
+        sum(achievement_amount) as achievement_amount,
+        achievement_formwork_type
+        from achievement_detail_${enterpriseId}
+        where deleted = 0
+        and produce_time >= #{beginDate}
+        and produce_time &lt;= #{endDate}
+        <if test="storeIds != null and storeIds.size()>0">
+            and store_id in (
+            <foreach collection="storeIds" item="storeId" separator=",">
+                #{storeId}
+            </foreach>
+            )
+        </if>
+        <choose>
+            <when test="isNullProduceUser != null and isNullProduceUser">
+                and produce_user_id is null
+            </when>
+            <otherwise>
+                <if test="produceUserIds != null and produceUserIds.size()>0">
+                    and produce_user_id in (
+                    <foreach collection="produceUserIds" item="produceUserId" separator=",">
+                        #{produceUserId}
+                    </foreach>
+                    )
+                </if>
+            </otherwise>
+        </choose>
+
+        <if test="typeIds != null and typeIds.size()>0">
+            and achievement_type_id in (
+            <foreach collection="typeIds" item="typeId" separator=",">
+                #{typeId}
+            </foreach>
+            )
+        </if>
+        <if test="formworkId!=null">
+            and achievement_formwork_id=#{formworkId}
+        </if>
+        <if test="createUserId != null and createUserId != ''">
+            and create_user_id = #{createUserId}
+        </if>
+        <if test="formworkType!=null and formworkType!=''">
+            and achievement_formwork_type=#{formworkType}
+        </if>
+        group by store_id
+        order by produce_time desc, id desc
+    </select>
+
+    <select id="pageAchievementDetail" resultType="com.coolcollege.intelligent.model.achievement.vo.AchievementDetailVO">
+        select
+        id,
+        edit_time as editTime,
+        produce_time as produceTime,
+        store_id as storeId,
+        store_name as storeName,
+        region_id as regionId,
+        region_path as regionPath,
+        achievement_formwork_id as formworkId,
+        achievement_type_id as achievementTypeId ,
+        achievement_amount as achievementAmount,
+        create_user_id as createUserId,
+        create_user_name as createUserName,
+        produce_user_id as produceUserId,
+        produce_user_name as produceUserName,
+        goods_type as goodsType,
+        extend_param as extendParam
+        from achievement_detail_${enterpriseId}
+        where deleted = 0
+        and produce_time >= #{beginDate}
+        and produce_time &lt;= #{endDate}
+        <if test="storeIds != null and storeIds.size()>0">
+            and store_id in (
+            <foreach collection="storeIds" item="storeId" separator=",">
+                #{storeId}
+            </foreach>
+            )
+        </if>
+        <if test="!showCurrent">
+            <if test="regionPath!=null and regionPath!=''">
+                and  region_path like concat(#{regionPath},'%')
+            </if>
+        </if>
+        <if test="showCurrent">
+            <if test="regionId!=null">
+                and  region_id =#{regionId}
+            </if>
+        </if>
+        <choose>
+            <when test="isNullProduceUser != null and isNullProduceUser">
+                and produce_user_id is null
+            </when>
+            <otherwise>
+                <if test="produceUserIds != null and produceUserIds.size()>0">
+                    and produce_user_id in (
+                    <foreach collection="produceUserIds" item="produceUserId" separator=",">
+                        #{produceUserId}
+                    </foreach>
+                    )
+                </if>
+            </otherwise>
+        </choose>
+
+        <if test="typeIds != null and typeIds.size()>0">
+            and achievement_type_id in (
+            <foreach collection="typeIds" item="typeId" separator=",">
+                #{typeId}
+            </foreach>
+            )
+        </if>
+        <if test="formworkId!=null">
+            and achievement_formwork_id=#{formworkId}
+        </if>
+        <if test="createUserId != null and createUserId != ''">
+            and create_user_id = #{createUserId}
+        </if>
+        <if test="storeName != null and storeName != ''">
+            and store_name like concat(#{storeName},'%')
+        </if>
+
+        order by produce_time desc, id desc
+    </select>
+
+    <select id="countAchievementDetail" resultType="java.lang.Integer">
+        select
+        count(1)
+        from achievement_detail_${enterpriseId}
+        where deleted = 0
+        and produce_time >= #{beginDate}
+        and produce_time &lt;= #{endDate}
+        <if test="storeIds != null and storeIds.size()>0">
+            and store_id in (
+            <foreach collection="storeIds" item="storeId" separator=",">
+                #{storeId}
+            </foreach>
+            )
+        </if>
+        <if test="!showCurrent">
+            <if test="regionPath!=null and regionPath!=''">
+                and  region_path like concat(#{regionPath},'%')
+            </if>
+        </if>
+        <if test="showCurrent">
+            <if test="regionId!=null">
+                and  region_id =#{regionId}
+            </if>
+        </if>
+        <choose>
+            <when test="isNullProduceUser != null and isNullProduceUser">
+                and produce_user_id is null
+            </when>
+            <otherwise>
+                <if test="produceUserIds != null and produceUserIds.size()>0">
+                    and produce_user_id in (
+                    <foreach collection="produceUserIds" item="produceUserId" separator=",">
+                        #{produceUserId}
+                    </foreach>
+                    )
+                </if>
+            </otherwise>
+        </choose>
+
+        <if test="typeIds != null and typeIds.size()>0">
+            and achievement_type_id in (
+            <foreach collection="typeIds" item="typeId" separator=",">
+                #{typeId}
+            </foreach>
+            )
+        </if>
+        <if test="formworkId!=null">
+            and achievement_formwork_id=#{formworkId}
+        </if>
+        <if test="createUserId != null and createUserId != ''">
+            and create_user_id = #{createUserId}
+        </if>
+        <if test="storeName != null and storeName != ''">
+            and store_name like concat(#{storeName},'%')
+        </if>
+    </select>
+
+    <select id="achievementDetailGroupByAchievementType" resultType="com.coolcollege.intelligent.model.achievement.vo.AchievementDetailVO">
+        select
+        id,
+        edit_time as editTime,
+        produce_time as produceTime,
+        store_id as storeId,
+        store_name as storeName,
+        region_id as regionId,
+        region_path as regionPath,
+        achievement_formwork_id as formworkId,
+        achievement_type_id as achievementTypeId ,
+        sum(achievement_amount) as achievementAmount,
+        create_user_id as createUserId,
+        create_user_name as createUserName,
+        produce_user_id as produceUserId,
+        produce_user_name as produceUserName
+        from achievement_detail_${enterpriseId}
+        where deleted = 0
+        and produce_time >= #{beginDate}
+        and produce_time &lt;= #{endDate}
+        <if test="storeIds != null and storeIds.size()>0">
+            and store_id in (
+            <foreach collection="storeIds" item="storeId" separator=",">
+                #{storeId}
+            </foreach>
+            )
+        </if>
+        <choose>
+            <when test="isNullProduceUser != null and isNullProduceUser">
+                and produce_user_id is null
+            </when>
+            <otherwise>
+                <if test="produceUserIds != null and produceUserIds.size()>0">
+                    and produce_user_id in (
+                    <foreach collection="produceUserIds" item="produceUserId" separator=",">
+                        #{produceUserId}
+                    </foreach>
+                    )
+                </if>
+            </otherwise>
+        </choose>
+
+        <if test="typeIds != null and typeIds.size()>0">
+            and achievement_type_id in (
+            <foreach collection="typeIds" item="typeId" separator=",">
+                #{typeId}
+            </foreach>
+            )
+        </if>
+        <if test="formworkId!=null">
+            and achievement_formwork_id=#{formworkId}
+        </if>
+        <if test="createUserId != null and createUserId != ''">
+            and create_user_id = #{createUserId}
+        </if>
+        group by achievement_formwork_id,achievement_type_id,store_id
+        order by produce_time desc, id desc
+    </select>
+
+
+
+    <select id="selectById" resultMap="BaseMap">
+        select
+        <include refid="baseSql"></include>
+        from achievement_detail_${enterpriseId}
+        where id = #{id}
+    </select>
+
+    <select id="getAchievementSame" resultType="java.lang.Integer">
+        SELECT
+            count(*)
+        FROM
+            achievement_detail_${eid}
+        WHERE
+            produce_time = #{produceTime}
+          AND store_id = #{storeId}
+          AND achievement_type_id = #{achievementTypeId}
+          AND achievement_amount = #{achievementAmount}
+    </select>
+
+    <select id="getStoreAmount" resultMap="BaseMap">
+        SELECT
+            sum( achievement_amount ) AS achievement_amount,store_name
+        FROM
+            achievement_detail_${eid}
+        WHERE
+            store_id=#{storeId}
+          AND deleted = 0
+           and achievement_formwork_type='normal'
+          AND produce_time BETWEEN #{beginTime} and #{endTime}
+    </select>
+
+    <select id="getRegionAmount" resultMap="BaseMap">
+        SELECT
+        achievement_formwork_id,achievement_type_id,sum(achievement_amount) AS achievement_amount
+        FROM
+            achievement_detail_${eid}
+        WHERE
+            deleted = 0
+        and achievement_formwork_type='normal'
+        <if test="!showCurrent">
+            AND region_path LIKE concat(#{regionPath},'%')
+        </if>
+        <if test="showCurrent">
+            AND region_id =#{regionId}
+        </if>
+          AND produce_time BETWEEN #{beginTime} and #{endTime}
+        GROUP BY achievement_formwork_id,achievement_type_id
+    </select>
+
+    <select id="getRegionDayAmount" resultMap="BaseMap">
+        SELECT
+            sum(achievement_amount) AS achievement_amount,
+            produce_time
+        FROM
+            achievement_detail_${eid}
+        WHERE
+            deleted = 0
+        and achievement_formwork_type='normal'
+        <if test="achievementTypeId != null ">
+          	AND achievement_type_id = #{achievementTypeId}
+          </if>
+        <if test="achievementFormworkId != null ">
+            AND achievement_formwork_id = #{achievementFormworkId}
+        </if>
+          <if test="!showCurrent">
+              AND region_path LIKE concat(#{regionPath},'%')
+          </if>
+          <if test="showCurrent">
+              AND region_id =#{regionId}
+          </if>
+          AND produce_time BETWEEN #{beginTime}  AND #{endTime}
+        GROUP BY
+            produce_time
+    </select>
+    <select id="countExportList" resultType="java.lang.Long">
+        select
+        count(0)
+        from achievement_detail_${enterpriseId}
+        where deleted = 0
+        and produce_time >= #{beginDate}
+        and produce_time &lt;= #{endDate}
+        <if test="storeIds != null and storeIds.size()>0">
+            and store_id in (
+            <foreach collection="storeIds" item="storeId" separator=",">
+                #{storeId}
+            </foreach>
+            )
+        </if>
+        <choose>
+            <when test="isNullProduceUser != null and isNullProduceUser">
+                and produce_user_id is null
+            </when>
+            <otherwise>
+                <if test="produceUserIds != null and produceUserIds.size()>0">
+                    and produce_user_id in (
+                    <foreach collection="produceUserIds" item="produceUserId" separator=",">
+                        #{produceUserId}
+                    </foreach>
+                    )
+                </if>
+            </otherwise>
+        </choose>
+        <if test="typeIds != null and typeIds.size()>0">
+            and achievement_type_id in (
+            <foreach collection="typeIds" item="typeId" separator=",">
+                #{typeId}
+            </foreach>
+            )
+        </if>
+    </select>
+    <select id="exportList"
+            resultType="com.coolcollege.intelligent.model.achievement.dto.AchievementDetailExportDTO">
+        select
+        produce_time as produceTime,
+        achievement_amount as achievementAmount,
+        achievement_type_id as typeId,
+        produce_user_name as produceUserName,
+        create_user_name as createUserName,
+        create_time as createTime,
+        store_name as storeName
+        from achievement_detail_${enterpriseId}
+        where deleted = 0
+        and produce_time >= #{beginDate}
+        and produce_time &lt;= #{endDate}
+
+        <choose>
+            <when test="isNullProduceUser != null and isNullProduceUser">
+                and produce_user_id is null
+            </when>
+            <otherwise>
+                <if test="produceUserIds != null and produceUserIds.size()>0">
+                    and produce_user_id in (
+                    <foreach collection="produceUserIds" item="produceUserId" separator=",">
+                        #{produceUserId}
+                    </foreach>
+                    )
+                </if>
+            </otherwise>
+        </choose>
+        <if test="typeIds != null and typeIds.size()>0">
+            and achievement_type_id in (
+            <foreach collection="typeIds" item="typeId" separator=",">
+                #{typeId}
+            </foreach>
+            )
+        </if>
+        order by produce_time desc, id desc
+    </select>
+
+    <select id="getAmountByStores" resultType="com.coolcollege.intelligent.model.achievement.dto.AchievementStoreAmountDTO">
+        SELECT
+        COALESCE(sum( achievement_amount ),0) AS achievementAmount,
+        store_name as storeName,
+        store_id as storeId
+        FROM
+        achievement_detail_${eid}
+        WHERE
+        deleted = 0
+        and produce_time BETWEEN #{beginTime} and #{endTime}
+        <if test="storeIds != null and storeIds.size()>0">
+            and store_id in (
+            <foreach collection="storeIds" item="storeId" separator=",">
+                #{storeId}
+            </foreach>
+            )
+        </if>
+        and achievement_formwork_type='normal'
+        GROUP BY store_id
+    </select>
+
+    <select id="listGroupByUser" resultType="com.coolcollege.intelligent.model.achievement.dto.AchievementStoreAmountDTO">
+        SELECT
+        sum( achievement_amount ) AS achievement_Amount,
+        produce_user_name as produceUserName,
+        produce_user_id as produceUserId
+        FROM
+        achievement_detail_${eid}
+        WHERE
+        deleted = 0
+        and produce_time BETWEEN #{beginTime} and #{endTime}
+        <if test="storeIds != null and storeIds.size()>0">
+            and store_id in (
+            <foreach collection="storeIds" item="storeId" separator=",">
+                #{storeId}
+            </foreach>
+            )
+        </if>
+        and achievement_formwork_type='normal'
+        GROUP BY produce_user_id
+        ORDER BY sum( achievement_amount ) desc
+    </select>
+    <select id="getAchievementTotalAmount" resultType="com.coolcollege.intelligent.model.achievement.dto.AchievementTotalAmountDTO">
+        SELECT
+        count( 1 ) as orderNum,
+        sum( achievement_amount ) AS totalAmount
+        FROM
+        achievement_detail_${eid}
+        WHERE
+        deleted = 0
+        and produce_time BETWEEN #{beginTime} and #{endTime}
+        <if test="storeIds != null and storeIds.size()>0">
+            and store_id in (
+            <foreach collection="storeIds" item="storeId" separator=",">
+                #{storeId}
+            </foreach>
+            )
+        </if>
+        <if test="regionPath != null">
+            and region_path like concat(#{regionPath},'%')
+        </if>
+        and achievement_formwork_type='normal'
+    </select>
+    <select id="salesProfile" resultType="com.coolcollege.intelligent.model.achievement.dto.AchieveCountDTO">
+         SELECT
+                'daily' AS periodType,
+                CURDATE() AS period,
+                IFNULL(SUM(achievement_amount), 0) AS totalAmount,
+                'N/A' as totalAchievementTarget
+            FROM
+                achievement_detail_${eid}
+            WHERE
+                DATE(produce_time) = CURDATE()
+                and deleted = 0
+                <if test="mainClass !=null and mainClass !=''">
+                   and  goods_type in(select `type` from songxia_temp_${eid}  where main_class = #{mainClass})
+                </if>
+
+            UNION ALL
+
+            SELECT
+                'yesterday' AS periodType,
+                DATE_SUB(CURDATE(), INTERVAL 1 DAY) AS period,
+                IFNULL(SUM(achievement_amount), 0) AS totalAmount,
+                'N/A' as totalAchievementTarget
+            FROM
+                achievement_detail_${eid}
+            WHERE
+                DATE(produce_time) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+                and deleted = 0
+                <if test="mainClass !=null and mainClass !=''">
+                  and  goods_type in(select `type` from songxia_temp_${eid}  where main_class = #{mainClass})
+                </if>
+
+            UNION ALL
+
+            SELECT
+                'last_year_today' AS periodType,
+                DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AS period,
+                IFNULL(SUM(achievement_amount), 0) AS totalAmount,
+                'N/A' as totalAchievementTarget
+            FROM
+                achievement_detail_${eid}
+            WHERE
+                DATE(produce_time) = DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+            AND deleted = 0
+            <if test="mainClass != null and mainClass != ''">
+                AND goods_type in(select `type` from songxia_temp_${eid}  where main_class = #{mainClass})
+            </if>
+
+            UNION ALL
+
+            SELECT
+                'weekly' AS periodType,
+                YEARWEEK(produce_time, 1) AS period,
+                IFNULL(SUM(achievement_amount), 0) AS totalAmount,
+                'N/A' as totalAchievementTarget
+            FROM
+                achievement_detail_${eid}
+            WHERE
+                YEARWEEK(produce_time, 1) = YEARWEEK(CURDATE(), 1)
+                and deleted = 0
+                <if test="mainClass !=null and mainClass !=''">
+                    and goods_type in(select `type` from songxia_temp_${eid}  where main_class = #{mainClass})
+                </if>
+
+            UNION ALL
+
+            SELECT
+                'last_week' AS periodType,
+                'N/A' AS period,
+                IFNULL(SUM(achievement_amount), 0) AS totalAmount,
+                'N/A' as totalAchievementTarget
+            FROM
+                achievement_detail_${eid}
+            WHERE
+                YEARWEEK(produce_time, 1) = YEARWEEK(DATE_SUB(CURDATE(), INTERVAL 1 WEEK), 1)
+                and deleted = 0
+                <if test="mainClass !=null and mainClass !=''">
+                    and goods_type in(select `type` from songxia_temp_${eid}  where main_class = #{mainClass})
+                </if>
+            UNION ALL
+
+            SELECT
+            'last_year_week' AS periodType,
+            'N/A' AS period,
+            IFNULL(SUM(achievement_amount), 0) AS totalAmount,
+            'N/A' as totalAchievementTarget
+            FROM
+            achievement_detail_${eid}
+            WHERE
+            YEARWEEK(produce_time, 1) = YEARWEEK(DATE_SUB(CURDATE(), INTERVAL 1 YEAR), 1)
+            AND deleted = 0
+            <if test="mainClass != null and mainClass != ''">
+                AND goods_type in(select `type` from songxia_temp_${eid}  where main_class = #{mainClass})
+            </if>
+            UNION ALL
+
+            SELECT
+                'monthly' AS periodType,
+                DATE_FORMAT(produce_time, '%Y-%m') AS period,
+                IFNULL(SUM(achievement_amount), 0) AS totalAmount,
+                IFNULL((SELECT
+                    SUM(`achievement_target`) AS totalAchievementTarget
+                FROM
+                    `achievement_target_detail_${eid}`
+                WHERE
+                    `time_type` = 'month'
+                AND MONTH(CURDATE()) = MONTH(`begin_date`)
+                AND YEAR(CURDATE()) = YEAR(`begin_date`)),0)AS totalAchievementTarget
+            FROM
+                achievement_detail_${eid}
+            WHERE
+                DATE_FORMAT(produce_time, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')
+                and deleted = 0
+                <if test="mainClass !=null and mainClass !=''">
+                    and goods_type in(select `type` from songxia_temp_${eid}  where main_class = #{mainClass})
+                </if>
+
+            UNION ALL
+
+            SELECT
+                'last_month' AS periodType,
+                'N/A' AS period,
+                IFNULL(SUM(achievement_amount), 0) AS totalAmount,
+                'N/A' as totalAchievementTarget
+            FROM
+                achievement_detail_${eid}
+            WHERE
+                PERIOD_DIFF(DATE_FORMAT(NOW(), '%Y%m'), DATE_FORMAT(produce_time, '%Y%m')) = 1
+                and deleted = 0
+                <if test="mainClass !=null and mainClass !=''">
+                    and goods_type in(select `type` from songxia_temp_${eid}  where main_class = #{mainClass})
+                </if>
+
+            UNION ALL
+
+            SELECT
+                'last_year_month' AS periodType,
+                DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 YEAR), '%Y-%m') AS period,
+                IFNULL(SUM(achievement_amount), 0) AS totalAmount,
+                'N/A' as totalAchievementTarget
+            FROM
+                achievement_detail_${eid}
+            WHERE
+            YEAR(produce_time) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))
+            AND MONTH(produce_time) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))
+            AND deleted = 0
+            <if test="mainClass != null and mainClass != ''">
+                AND goods_type in(select `type` from songxia_temp_${eid}  where main_class = #{mainClass})
+            </if>
+
+            UNION ALL
+
+            SELECT
+                'quarterly' AS periodType,
+                CONCAT(YEAR(produce_time),"-Q", QUARTER(produce_time)) AS period,
+                IFNULL(SUM(achievement_amount), 0) AS totalAmount,
+                IFNULL((SELECT
+                    SUM(`achievement_target`) AS totalAchievementTarget
+                    FROM
+                    `achievement_target_detail_${eid}`
+                    WHERE
+                    `time_type` = 'quarter'
+                    AND QUARTER(`begin_date`) = QUARTER(CURDATE())
+                    AND YEAR(`begin_date`) = YEAR(CURDATE())),0)AS totalAchievementTarget
+            FROM
+                achievement_detail_${eid}
+            WHERE
+                YEAR(produce_time) = YEAR(CURDATE())
+            AND
+                QUARTER(produce_time) = QUARTER(CURDATE())
+            AND
+                deleted = 0
+                <if test="mainClass !=null and mainClass !=''">
+                    and goods_type in(select `type` from songxia_temp_${eid}  where main_class = #{mainClass})
+                </if>
+
+            UNION ALL
+
+            SELECT
+                'last_quarter' AS periodType,
+                'N/A' AS period,
+                IFNULL(SUM(achievement_amount), 0) AS totalAmount,
+                'N/A' as totalAchievementTarget
+            FROM
+                achievement_detail_${eid}
+            WHERE
+                YEAR(produce_time) = YEAR(CURDATE())
+            AND
+                QUARTER(produce_time) = QUARTER(CURDATE()) - 1
+            AND
+                deleted = 0
+            <if test="mainClass !=null and mainClass !=''">
+                and goods_type in(select `type` from songxia_temp_${eid}  where main_class = #{mainClass})
+            </if>
+
+            union all
+
+            SELECT
+                'last_year_quarter' AS periodType,
+                CONCAT(YEAR(produce_time),"-Q", QUARTER(produce_time)) AS period,
+                IFNULL(SUM(achievement_amount), 0) AS totalAmount,
+                'N/A' as totalAchievementTarget
+            FROM
+                achievement_detail_${eid}
+            WHERE
+                YEAR(produce_time) = YEAR(CURDATE()) - 1
+            AND QUARTER(produce_time) = QUARTER(CURDATE()) - 1
+            AND deleted = 0
+            <if test="mainClass != null and mainClass != ''">
+                AND goods_type in(select `type` from songxia_temp_${eid}  where main_class = #{mainClass})
+            </if>
+
+            UNION ALL
+
+            SELECT
+                'yearly' AS periodType,
+                YEAR(produce_time) AS period,
+                IFNULL(SUM(achievement_amount), 0) AS totalAmount,
+                IFNULL((SELECT
+                            SUM(`achievement_target`) as totalAchievementTarget
+                        FROM
+                            `achievement_target_detail_${eid}`
+                        WHERE
+                            `time_type` = 'year'
+                            AND YEAR(`begin_date`) = YEAR(CURDATE())
+                        ), 0)
+                        AS totalAchievementTarget
+            FROM
+                achievement_detail_${eid}
+            WHERE
+                YEAR(produce_time) = YEAR(CURDATE())
+            AND deleted = 0
+            <if test="mainClass !=null and mainClass !=''">
+                AND goods_type IN (SELECT `type` FROM songxia_temp_${eid} WHERE main_class = #{mainClass})
+            </if>
+
+            union all
+
+            SELECT
+                'last_year' AS periodType,
+                YEAR(produce_time) AS period,
+                IFNULL(SUM(achievement_amount), 0) AS totalAmount,
+                'N/A' as totalAchievementTarget
+            FROM
+                achievement_detail_${eid}
+            WHERE
+                YEAR(produce_time) = YEAR(CURDATE()) - 1
+            AND deleted = 0
+            <if test="mainClass !=null and mainClass !=''">
+                AND goods_type IN (SELECT `type` FROM songxia_temp_${eid} WHERE main_class = #{mainClass})
+            </if>
+
+
+        ORDER BY
+                periodType ASC;
+
+
+
+
+    </select>
+    <select id="getNumByFormwork"
+            resultType="com.coolcollege.intelligent.model.achievement.dto.AchieveMonthTop5Response">
+        SELECT
+            SUM( ade.goods_num ) AS totalNum,
+            afe.`name`
+        FROM
+            achievement_detail_${enterpriseId} ade JOIN achievement_formwork_${enterpriseId} afe
+        ON ade.achievement_formwork_id = afe.id
+        WHERE
+--             YEAR ( ade.produce_time ) = YEAR (CURRENT_DATE ())
+--         AND
+--             MONTH ( ade.produce_time ) = MONTH (CURRENT_DATE ())
+--         and
+            ade.deleted = 0
+        and
+            ade.produce_time BETWEEN #{startTime} and #{endTime}
+        <if test="mainClass!=null and mainClass!=''">
+            and ade.goods_type in(select `type` from songxia_temp_${enterpriseId} where main_class = #{mainClass})
+        </if>
+        GROUP BY
+            ade.achievement_formwork_id
+        ORDER BY
+            totalNum DESC
+            LIMIT 5;
+    </select>
+    <select id="monthMiddleTop5"
+            resultType="com.coolcollege.intelligent.model.achievement.dto.AchieveMonthMiddleTop5Response">
+        SELECT
+            afe.`name`,
+			JSON_UNQUOTE(JSON_EXTRACT(ade.extend_param, '$.middle')) AS middleValue,
+			JSON_UNQUOTE(JSON_EXTRACT(ade.extend_param, '$.catrgory')) AS catrgory,
+			SUM(ade.goods_num) as goodsNum
+        FROM
+            achievement_detail_${enterpriseId} ade,
+            achievement_formwork_${enterpriseId} afe
+        WHERE
+            ade.achievement_formwork_id = afe.id
+--             and
+--             YEAR ( ade.produce_time ) = YEAR (
+--             CURRENT_DATE ())
+--             AND MONTH ( ade.produce_time ) = MONTH (
+--             CURRENT_DATE ())
+            and ade.deleted = 0
+	        and ade.achievement_formwork_id = #{categoryId}
+            and ade.produce_time BETWEEN #{startTime} and #{endTime}
+            <if test="mainClass!=null and mainClass!=''">
+                and ade.goods_type in(select `type` from songxia_temp_${enterpriseId} where main_class = #{mainClass})
+            </if>
+        GROUP BY
+            JSON_UNQUOTE(JSON_EXTRACT(ade.extend_param, '$.middle'))
+		ORDER BY
+		    ade.goods_num desc,
+			JSON_UNQUOTE(JSON_EXTRACT(ade.extend_param, '$.middle'))
+        limit 5
+    </select>
+    <select id="regionTop5" resultType="com.coolcollege.intelligent.model.achievement.dto.RegionTop5Response">
+        SELECT
+            r.name,
+            r.region_path,
+            r.id,
+            sum( atd.achievement_target ) achievementTarget,
+            totalAchievementAmount,
+            ad.goods_num as goodsNum,
+            ROUND(
+            IF
+            ( sum( atd.achievement_target ) > 0, SUM(totalAchievementAmount) / sum( atd.achievement_target ) * 100, 0 )) AS completionRate
+        FROM
+            achievement_target_detail_${enterpriseId} atd
+        JOIN ( SELECT goods_type,region_id, produce_time,sum( achievement_amount ) totalAchievementAmount,sum(goods_num)goods_num FROM achievement_detail_${enterpriseId} WHERE deleted = 0 and produce_time BETWEEN #{startTime} and #{endTime} GROUP BY region_id ) ad
+            join region_${enterpriseId} r
+            ON atd.region_id = ad.region_id and atd.region_id = r.id
+        WHERE
+            1=1
+        <if test="mainClass!=null and mainClass!=''">
+            and ad.goods_type in(select `type` from songxia_temp_${enterpriseId} where main_class = #{mainClass})
+        </if>
+        <if test="timeType!= null and timeType!='' and timeType=='month'">
+            AND YEAR ( begin_date ) = YEAR (CURRENT_DATE ())
+            AND MONTH ( begin_date ) = MONTH (CURRENT_DATE ())
+        </if>
+        <if test="timeType!= null and timeType!='' and timeType=='quarter'">
+            AND YEAR ( begin_date ) = YEAR (CURRENT_DATE ())
+            AND QUARTER ( begin_date ) = QUARTER (CURRENT_DATE ())
+        </if>
+        <if test="timeType!= null and timeType!='' and timeType=='year'">
+            AND YEAR ( begin_date ) = YEAR (CURRENT_DATE ())
+        </if>
+        GROUP BY
+        r.name
+        ORDER BY
+        completionRate DESC
+        LIMIT 5
+
+    </select>
+    <select id="storeTop5" resultType="com.coolcollege.intelligent.model.achievement.dto.RegionTop5Response">
+        SELECT
+        r.name,
+        sum( atd.achievement_target ) achievementTarget,
+        ad.goods_num as goodsNum,
+        totalAchievementAmount,
+        ROUND(
+        IF
+        ( sum( atd.achievement_target ) > 0, SUM(totalAchievementAmount) / sum( atd.achievement_target ) * 100, 0 )) AS completionRate
+        FROM
+        achievement_target_detail_${enterpriseId} atd
+        JOIN ( SELECT goods_type,region_id,store_id, produce_time,sum( achievement_amount ) totalAchievementAmount,sum(goods_num)goods_num FROM achievement_detail_${enterpriseId} WHERE deleted = 0 and produce_time BETWEEN #{startTime} and #{endTime} GROUP BY store_id ) ad
+        join region_${enterpriseId} r
+        ON atd.store_id = ad.store_id and atd.store_id = r.store_id
+        WHERE
+        1=1
+        <if test="mainClass!=null and mainClass!=''">
+            and ad.goods_type in(select `type` from songxia_temp_${enterpriseId} where main_class = #{mainClass})
+        </if>
+        <if test="timeType!= null and timeType!='' and timeType=='month'">
+            AND YEAR ( begin_date ) = YEAR (CURRENT_DATE ())
+            AND MONTH ( begin_date ) = MONTH (CURRENT_DATE ())
+        </if>
+        <if test="timeType!= null and timeType!='' and timeType=='quarter'">
+            AND YEAR ( begin_date ) = YEAR (CURRENT_DATE ())
+            AND QUARTER ( begin_date ) = QUARTER (CURRENT_DATE ())
+        </if>
+        <if test="timeType!= null and timeType!='' and timeType=='year'">
+            AND YEAR ( begin_date ) = YEAR (CURRENT_DATE ())
+        </if>
+        GROUP BY
+        r.name
+        ORDER BY
+        completionRate DESC
+        LIMIT 5
+    </select>
+    <select id="getNewProductDataList"
+            resultType="com.coolcollege.intelligent.model.achievement.vo.NewProductDataVO">
+        select
+            st.category ,
+            st.middle_class,
+            st.type,
+            IFNULL(sum(a.achievement_amount),0) as salesAmount
+        from songxia_temp_${enterpriseId} st left join achievement_detail_${enterpriseId} a
+        on st.type = a.goods_type
+        where a.deleted = 0
+        <if test="category != null and category != ''">
+            and a.extend_param->"$.catrgory" = #{category}
+        </if>
+        <if test="middleClass != null and middleClass != ''">
+            and a.extend_param->"$.middle" = #{middleClass}
+        </if>
+        <if test="type != null and type != ''">
+            and a.extend_param->"$.model" like concat('%',#{type},'%')
+        </if>
+        group by st.type
+        order by st.category,st.middle_class,st.type
+    </select>
+    <select id="getTopTenList" resultType="com.coolcollege.intelligent.model.achievement.vo.TOPTenVO">
+        select
+            JSON_UNQUOTE(extend_param->"$.catrgory") as category ,
+            JSON_UNQUOTE(extend_param->"$.middle") as middleClass,
+            JSON_UNQUOTE(extend_param->"$.model") as type,
+            sum(a.achievement_amount) as achievementAmount,
+            sum(a.goods_num) as goodsNum
+        from achievement_detail_${enterpriseId} a
+        where deleted = 0
+        AND produce_time BETWEEN #{startTime} and #{endTime}
+        <if test="mainClass != null and mainClass != ''">
+            and goods_type in(select `type` from songxia_temp_${enterpriseId} where main_class = #{mainClass})
+        </if>
+        <if test="storeId != null and storeId != ''">
+            and store_id = #{storeId}
+        </if>
+        group by type
+        order by ${sortField} desc
+        limit #{limit}
+    </select>
+    <select id="getAchievementAmountByType" resultType="java.lang.Long">
+        SELECT
+            IFNULL(SUM(achievement_amount), 0)
+        FROM
+            achievement_detail_${enterpriseId}
+        WHERE
+            deleted = 0
+        <if test="type != null and type != ''">
+            and goods_type in( #{type} )
+        </if>
+    </select>
+    <select id="getNewSalesProfile"
+            resultType="com.coolcollege.intelligent.model.achievement.dto.NewSalesProfileResponse">
+        SELECT
+        -- 当前销售额和销售数量
+        (SELECT IFNULL(SUM(achievement_amount),0) FROM achievement_detail_${enterpriseId} WHERE deleted = 0 AND
+        <choose>
+            <when test="timeType =='day'">
+                DATE(produce_time) = CURDATE()
+            </when>
+            <when test="timeType =='week'">
+                YEARWEEK(produce_time) = YEARWEEK(NOW())
+            </when>
+            <when test="timeType =='month'">
+                YEAR(produce_time) = YEAR(NOW()) AND MONTH(produce_time) = MONTH(NOW())
+            </when>
+            <when test="timeType =='quarter'">
+                QUARTER(produce_time) = QUARTER(NOW()) AND YEAR(produce_time) = YEAR(NOW())
+            </when>
+            <when test="timeType =='year'">
+                YEAR(produce_time) = YEAR(NOW())
+            </when>
+        </choose>
+        <if test="mainClass !=null and mainClass !=''">
+            and  goods_type in(select `type` from songxia_temp_${enterpriseId}  where main_class = #{mainClass})
+        </if>
+        ) AS todaySales,
+        (SELECT IFNULL(SUM(goods_num),0) FROM achievement_detail_${enterpriseId} WHERE deleted = 0 AND
+        <choose>
+            <when test="timeType =='day'">
+                DATE(produce_time) = CURDATE()
+            </when>
+            <when test="timeType =='week'">
+                YEARWEEK(produce_time) = YEARWEEK(NOW())
+            </when>
+            <when test="timeType =='month'">
+                YEAR(produce_time) = YEAR(NOW()) AND MONTH(produce_time) = MONTH(NOW())
+            </when>
+            <when test="timeType =='quarter'">
+                QUARTER(produce_time) = QUARTER(NOW()) AND YEAR(produce_time) = YEAR(NOW())
+            </when>
+            <when test="timeType =='year'">
+                YEAR(produce_time) = YEAR(NOW())
+            </when>
+        </choose>
+        <if test="mainClass !=null and mainClass !=''">
+            and  goods_type in(select `type` from songxia_temp_${enterpriseId}  where main_class = #{mainClass})
+        </if>
+        ) AS todaySalesNum,
+        -- 昨日销售额和销售数量
+        (SELECT IFNULL(SUM(achievement_amount),0) FROM achievement_detail_${enterpriseId} WHERE deleted = 0 AND
+        <choose>
+            <when test="timeType =='day'">
+                DATE(produce_time) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+            </when>
+            <when test="timeType =='week'">
+                YEARWEEK(produce_time) = YEARWEEK(DATE_SUB(NOW(), INTERVAL 1 WEEK))
+            </when>
+            <when test="timeType =='month'">
+                YEAR(produce_time) = YEAR(NOW()) AND MONTH(produce_time) = MONTH(DATE_SUB(NOW(), INTERVAL 1 MONTH))
+            </when>
+            <when test="timeType =='quarter'">
+                QUARTER(produce_time) = QUARTER(NOW()) AND YEAR(produce_time) = YEAR(DATE_SUB(NOW(), INTERVAL 1 QUARTER))
+            </when>
+            <when test="timeType =='year'">
+                YEAR(produce_time) = YEAR(DATE_SUB(NOW(), INTERVAL 1 YEAR))
+            </when>
+        </choose>
+        <if test="mainClass !=null and mainClass !=''">
+            and  goods_type in(select `type` from songxia_temp_${enterpriseId}  where main_class = #{mainClass})
+        </if>
+        ) AS yesterdaySales,
+        (SELECT IFNULL(SUM(goods_num),0) FROM achievement_detail_${enterpriseId} WHERE deleted = 0 AND
+        <choose>
+            <when test="timeType =='day'">
+                DATE(produce_time) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+            </when>
+            <when test="timeType =='week'">
+                YEARWEEK(produce_time) = YEARWEEK(DATE_SUB(NOW(), INTERVAL 1 WEEK))
+            </when>
+            <when test="timeType =='month'">
+                YEAR(produce_time) = YEAR(NOW()) AND MONTH(produce_time) = MONTH(DATE_SUB(NOW(), INTERVAL 1 MONTH))
+            </when>
+            <when test="timeType =='quarter'">
+                QUARTER(produce_time) = QUARTER(NOW()) AND YEAR(produce_time) = YEAR(DATE_SUB(NOW(), INTERVAL 1 QUARTER))
+            </when>
+            <when test="timeType =='year'">
+                YEAR(produce_time) = YEAR(DATE_SUB(NOW(), INTERVAL 1 YEAR))
+            </when>
+        </choose>
+        <if test="mainClass !=null and mainClass !=''">
+            and  goods_type in(select `type` from songxia_temp_${enterpriseId}  where main_class = #{mainClass})
+        </if>
+        ) AS yesterdaySalesNum,
+        -- 去年今日销售额
+        (SELECT IFNULL(SUM(achievement_amount),0) FROM achievement_detail_${enterpriseId} WHERE deleted = 0 AND
+        <choose>
+            <when test="timeType =='day'">
+                DATE(produce_time) = DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+            </when>
+            <when test="timeType =='week'">
+                YEARWEEK(produce_time) = YEARWEEK(DATE_SUB(NOW(), INTERVAL 1 YEAR))
+            </when>
+            <when test="timeType =='month'">
+                YEAR(produce_time) = YEAR(DATE_SUB(NOW(), INTERVAL 1 YEAR)) AND MONTH(produce_time) = MONTH(DATE_SUB(NOW(), INTERVAL 1 YEAR))
+            </when>
+            <when test="timeType =='quarter'">
+                QUARTER(produce_time) = QUARTER(DATE_SUB(NOW(), INTERVAL 1 YEAR)) AND YEAR(produce_time) = YEAR(DATE_SUB(NOW(), INTERVAL 1 YEAR))
+            </when>
+            <when test="timeType =='year'">
+                YEAR(produce_time) = YEAR(DATE_SUB(NOW(), INTERVAL 1 YEAR))
+            </when>
+        </choose>
+        <if test="mainClass !=null and mainClass !=''">
+            and  goods_type in(select `type` from songxia_temp_${enterpriseId}  where main_class = #{mainClass})
+        </if>
+        ) AS lastYearTodaySales,
+        -- 去年今日销售数量
+        (SELECT IFNULL(SUM(goods_num),0) FROM achievement_detail_${enterpriseId} WHERE deleted = 0 AND
+        <choose>
+            <when test="timeType =='day'">
+                DATE(produce_time) = DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+            </when>
+            <when test="timeType =='week'">
+                YEARWEEK(produce_time) = YEARWEEK(DATE_SUB(NOW(), INTERVAL 1 YEAR))
+            </when>
+            <when test="timeType =='month'">
+                YEAR(produce_time) = YEAR(DATE_SUB(NOW(), INTERVAL 1 YEAR)) AND MONTH(produce_time) = MONTH(DATE_SUB(NOW(), INTERVAL 1 YEAR))
+            </when>
+            <when test="timeType =='quarter'">
+                QUARTER(produce_time) = QUARTER(DATE_SUB(NOW(), INTERVAL 1 YEAR)) AND YEAR(produce_time) = YEAR(DATE_SUB(NOW(), INTERVAL 1 YEAR))
+            </when>
+            <when test="timeType =='year'">
+                YEAR(produce_time) = YEAR(DATE_SUB(NOW(), INTERVAL 1 YEAR))
+            </when>
+        </choose>
+        <if test="mainClass !=null and mainClass !=''">
+            and  goods_type in(select `type` from songxia_temp_${enterpriseId}  where main_class = #{mainClass})
+        </if>
+        ) AS lastYearTodaySalesNum
+        FROM DUAL
+    </select>
+    <select id="getHomeSalesProfile"
+            resultType="com.coolcollege.intelligent.model.achievement.dto.HomeSalesProfileResponse">
+        select
+            (select IFNULL(sum(achievement_amount),0) from achievement_detail_${enterpriseId} where deleted = 0 and DATE(produce_time) = CURDATE()) as todaySales,
+            (select IFNULL(sum(achievement_amount),0) from achievement_detail_${enterpriseId} where deleted = 0 and DATE(produce_time) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)) as yesterdaySales,
+            (select IFNULL(sum(achievement_amount),0) from achievement_detail_${enterpriseId} where deleted = 0 and DATE(produce_time) = DATE_SUB(CURDATE(), INTERVAL 1 YEAR)) as lastYearTodaySales,
+            (select IFNULL(sum(achievement_amount),0) from achievement_detail_${enterpriseId} where deleted = 0 and YEARWEEK(produce_time) = YEARWEEK(NOW())) as weekSales,
+            (select IFNULL(sum(achievement_amount),0) from achievement_detail_${enterpriseId} where deleted = 0 and YEARWEEK(produce_time) = YEARWEEK(DATE_SUB(NOW(), INTERVAL 1 WEEK))) as afterWeekSales,
+            (select IFNULL(sum(achievement_amount),0) from achievement_detail_${enterpriseId} where deleted = 0 and YEARWEEK(produce_time) = YEARWEEK(DATE_SUB(NOW(), INTERVAL 1 YEAR))) as lastYearWeekSales,
+            (select IFNULL(sum(achievement_amount),0) from achievement_detail_${enterpriseId} where deleted = 0 and YEAR(produce_time) = YEAR(NOW()) AND MONTH(produce_time) = MONTH(NOW())) as monthSales,
+            (select IFNULL(sum(achievement_amount),0) from achievement_detail_${enterpriseId} where deleted = 0 and YEAR(produce_time) = YEAR(NOW()) AND MONTH(produce_time) = MONTH(DATE_SUB(NOW(), INTERVAL 1 MONTH))) as afterMonthSales,
+            (select IFNULL(sum(achievement_amount),0) from achievement_detail_${enterpriseId} where deleted = 0 and YEAR(produce_time) = YEAR(DATE_SUB(NOW(), INTERVAL 1 YEAR)) AND MONTH(produce_time) = MONTH(DATE_SUB(NOW(), INTERVAL 1 YEAR))) as lastYearMonthSales,
+            (select IFNULL(sum(goods_num),0) from achievement_detail_${enterpriseId} where deleted = 0 and DATE(produce_time) = CURDATE()) as todaySalesNum,
+            (select IFNULL(sum(goods_num),0) from achievement_detail_${enterpriseId} where deleted = 0 and DATE(produce_time) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)) as yesterdaySalesNum,
+            (select IFNULL(sum(goods_num),0) from achievement_detail_${enterpriseId} where deleted = 0 and DATE(produce_time) = DATE_SUB(CURDATE(), INTERVAL 1 YEAR)) as lastYearTodaySalesNum,
+            (select IFNULL(sum(goods_num),0) from achievement_detail_${enterpriseId} where deleted = 0 and YEARWEEK(produce_time) = YEARWEEK(NOW())) as weekSalesNum,
+            (select IFNULL(sum(goods_num),0) from achievement_detail_${enterpriseId} where deleted = 0 and YEARWEEK(produce_time) = YEARWEEK(DATE_SUB(NOW(), INTERVAL 1 WEEK))) as afterWeekSalesNum,
+            (select IFNULL(sum(goods_num),0) from achievement_detail_${enterpriseId} where deleted = 0 and YEARWEEK(produce_time) = YEARWEEK(DATE_SUB(NOW(), INTERVAL 1 YEAR))) as lastYearWeekSalesNum,
+            (select IFNULL(sum(goods_num),0) from achievement_detail_${enterpriseId} where deleted = 0 and YEAR(produce_time) = YEAR(NOW()) AND MONTH(produce_time) = MONTH(NOW())) as monthSalesNum,
+            (select IFNULL(sum(goods_num),0) from achievement_detail_${enterpriseId} where deleted = 0 and YEAR(produce_time) = YEAR(NOW()) AND MONTH(produce_time) = MONTH(DATE_SUB(NOW(), INTERVAL 1 MONTH))) as lastMonthSalesNum,
+            (select IFNULL(sum(goods_num),0) from achievement_detail_${enterpriseId} where deleted = 0 and YEAR(produce_time) = YEAR(DATE_SUB(NOW(), INTERVAL 1 YEAR)) AND MONTH(produce_time) = MONTH(DATE_SUB(NOW(), INTERVAL 1 YEAR))) as lastYearMonthSalesNum
+            FROM DUAL
+    </select>
+
+    <select id="getRegionProductData"
+            resultType="com.coolcollege.intelligent.model.achievement.vo.RegionReportVO">
+        select
+        ifnull(sum(a.achievement_amount), 0) as achievementAmount,
+        ifnull(sum(a.goods_num), 0) as goodsNum
+        from achievement_detail_${enterpriseId} a
+        where a.deleted = 0
+        <if test="category != null and category != ''">
+            and a.extend_param->"$.catrgory" = #{category}
+        </if>
+        <if test="middleClass != null and middleClass != ''">
+            and a.extend_param->"$.middle" = #{middleClass}
+        </if>
+        <if test="mainClass != null and mainClass != ''">
+            and a.goods_type in(select `type` from songxia_temp_${enterpriseId} where main_class = #{mainClass})
+        </if>
+        <if test="beginTime!= null and beginTime!='' and endTime!= null and endTime!=''">
+            and a.produce_time BETWEEN #{beginTime} and #{endTime}
+        </if>
+        <if test="regionPath != null and regionPath != ''">
+            and a.region_path  like concat('%/', #{regionPath},'/%')
+        </if>
+        <if test="storeId != null and storeId != ''">
+            and a.store_id =  #{storeId}
+        </if>
+    </select>
+
+    <select id="getRegionProductDataGroupList"
+            resultType="com.coolcollege.intelligent.model.achievement.vo.RegionReportVO">
+        select
+        ifnull(sum(a.achievement_amount), 0) as achievementAmount,
+        DATE(a.produce_time) as dayTime,
+        DATE(a.produce_time) as monthTime,
+        ifnull(sum(a.goods_num), 0) as goodsNum
+        from achievement_detail_${enterpriseId} a
+        where a.deleted = 0
+        <if test="category != null and category != ''">
+            and a.extend_param->"$.catrgory" = #{category}
+        </if>
+        <if test="middleClass != null and middleClass != ''">
+            and a.extend_param->"$.middle" = #{middleClass}
+        </if>
+        <if test="beginTime!= null and beginTime!='' and endTime!= null and endTime!=''">
+            and a.produce_time BETWEEN #{beginTime} and #{endTime}
+        </if>
+        <if test="regionPath != null and regionPath != ''">
+            and a.region_path  like concat('%/', #{regionPath},'/%')
+        </if>
+        <if test="storeId != null and storeId != ''">
+            and a.store_id  = #{storeId}
+        </if>
+        <if test="type != null and type != ''">
+            and a.goods_type  = #{type}
+        </if>
+        <if test="reportType != null and reportType == 'DAY'">
+            group by DATE(a.produce_time)
+        </if>
+        <if test="reportType != null and reportType == 'MONTH'">
+            group by MONTH(a.produce_time)
+        </if>
+    </select>
+    <select id="getProductTypeDataGroupList"
+            resultType="com.coolcollege.intelligent.model.achievement.vo.RegionReportVO">
+        select
+        ifnull(sum(a.achievement_amount), 0) as achievementAmount,
+        ifnull(sum(a.goods_num), 0) as goodsNum,
+        a.goods_type as goodsType
+        from achievement_detail_${enterpriseId} a
+        where a.deleted = 0
+        <if test="beginTime!= null and beginTime!='' and endTime!= null and endTime!=''">
+            and a.produce_time BETWEEN #{beginTime} and #{endTime}
+        </if>
+        <if test="storeId != null and storeId != ''">
+            and a.store_id  = #{storeId}
+        </if>
+        <if test="goodsTypeList !=null and goodsTypeList.size() > 0">
+            and  a.goods_type in
+            <foreach collection="goodsTypeList" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        group by a.goods_type
+    </select>
+
+    <select id="getInfoGroupByCategory"
+            resultType="com.coolcollege.intelligent.model.achievement.vo.RegionReportVO">
+        select
+        ifnull(sum(a.achievement_amount), 0) as achievementAmount,
+        ifnull(sum(a.goods_num), 0) as goodsNum,
+        JSON_UNQUOTE(JSON_EXTRACT(a.extend_param, '$.catrgory')) AS category
+        from achievement_detail_${enterpriseId} a
+        where a.deleted = 0
+        <if test="beginTime!= null and beginTime!='' and endTime!= null and endTime!=''">
+            and a.produce_time BETWEEN #{beginTime} and #{endTime}
+        </if>
+        group by category
+    </select>
+    <select id="queryMiddleClassInfoByCategory"
+            resultType="com.coolcollege.intelligent.model.achievement.dto.AchieveGoodTypeReportDTO">
+        select
+        ifnull(sum(a.achievement_amount), 0) as achievementAmount,
+        ifnull(sum(a.goods_num), 0) as goodsNum,
+        JSON_UNQUOTE(JSON_EXTRACT(a.extend_param, '$.middle')) AS middleClass
+        from achievement_detail_${enterpriseId} a
+        where a.deleted = 0
+        <if test="beginTime!= null and beginTime!='' and endTime!= null and endTime!=''">
+            and a.produce_time BETWEEN #{beginTime} and #{endTime}
+        </if>
+        <if test="query.category != null and query.category != ''">
+            and JSON_UNQUOTE(JSON_EXTRACT(a.extend_param, '$.catrgory')) = #{query.category}
+        </if>
+        <if test="query.mainClass != null and query.mainClass != ''">
+            and a.goods_type in(select `type` from songxia_temp_${enterpriseId} where main_class = #{query.mainClass})
+        </if>
+        group by middleClass
+        order by achievementAmount desc
+    </select>
+    <select id="queryPersonalAchievement"
+            resultType="com.coolcollege.intelligent.model.achievement.vo.PersonalAchievementVO">
+        SELECT
+            a.produce_user_id as userId,
+            a.produce_user_name as userName,
+            a.store_name as storeName,
+            (SELECT `name` from  region_${enterpriseId} where id =a.region_id) as regionName,
+            IFNULL(SUM(a.achievement_amount), 0) AS achievementAmount,
+            IFNULL(SUM(a.goods_num), 0) AS goodsNum
+        FROM
+            achievement_detail_${enterpriseId} a
+        WHERE
+            a.deleted = 0
+        <if test="query.positionId !=null and query.positionId!=''">
+            and	a.produce_user_id in (SELECT user_id from enterprise_user_role_${enterpriseId} where role_id =#{query.positionId})
+        </if>
+        <if test="query.mainClass != null and query.mainClass != ''">
+            and a.goods_type in(select `type` from songxia_temp_${enterpriseId} where main_class = #{query.mainClass})
+        </if>
+        <if test="query.category != null and query.category != ''">
+            and JSON_UNQUOTE(JSON_EXTRACT(a.extend_param, '$.catrgory')) = #{query.category}
+        </if>
+        <if test="query.middleClass != null and query.middleClass != ''">
+            and JSON_UNQUOTE(JSON_EXTRACT(a.extend_param, '$.middle')) = #{query.middleClass}
+        </if>
+        <if test="query.userName != null and query.userName != ''">
+            and a.produce_user_name like concat('%',#{query.userName},'%')
+        </if>
+        <if test="query.startDate!= null  and query.endDate!= null ">
+            and a.produce_time BETWEEN #{query.startDate} and #{query.endDate}
+        </if>
+        GROUP BY
+            a.produce_user_id
+        order by achievementAmount desc
+    </select>
+    <select id="getStoreRealData"
+            resultType="com.coolcollege.intelligent.model.achievement.vo.StoreRealDataVO">
+        SELECT
+            a.store_id AS storeId,
+            ifnull( sum( a.achievement_amount ), 0 ) AS achievementAmount,
+            ifnull( sum( a.goods_num ), 0 ) AS goodsNum,
+                (
+                SELECT
+                ifnull( sum( atd.achievement_target ), 0 )
+                FROM
+                achievement_target_detail_${enterpriseId} atd
+                WHERE
+                    <if test="storeId != null and storeId != ''">
+                        atd.store_id = #{storeId}
+                    </if>
+                    <if test="beginDate!= null and endDate!= null">
+                        and atd.begin_date BETWEEN #{beginDate} and #{endDate}
+                    </if>
+                ) achievementTarget
+        FROM
+            achievement_detail_${enterpriseId} a
+        WHERE
+            a.deleted = 0
+        <if test="beginDate!= null and endDate!= null">
+            and a.produce_time BETWEEN #{beginDate} and #{endDate}
+        </if>
+        <if test="storeId != null and storeId != ''">
+            and a.store_id  = #{storeId}
+        </if>
+
+    </select>
+    <select id="queryPersonalTypeAchievement"
+            resultType="com.coolcollege.intelligent.model.achievement.dto.AchieveGoodTypeReportDTO">
+        SELECT
+            goods_type as type,
+            SUM(achievement_amount) as achievementAmount,
+            SUM(goods_num) as goodsNum
+        FROM
+            achievement_detail_${enterpriseId}
+        WHERE
+            deleted=0
+          <if test="query.userId != null and query.userId != ''">
+            and produce_user_id = #{query.userId}
+          </if>
+          <if test="query.startDate != null and query.endDate!=null ">
+            and produce_time BETWEEN #{query.startDate} and #{query.endDate}
+          </if>
+        GROUP BY type
+        ORDER BY achievementAmount desc
+    </select>
+</mapper>

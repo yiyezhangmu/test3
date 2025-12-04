@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.question.TbQuestionRecordExpandMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.question.TbQuestionRecordExpandDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="record_id" jdbcType="BIGINT" property="recordId"/>
+        <result column="unify_task_id" jdbcType="BIGINT" property="unifyTaskId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+        <result column="handle_photo" jdbcType="VARCHAR" property="handlePhoto"/>
+        <result column="handle_video" jdbcType="VARCHAR" property="handleVideo"/>
+        <result column="approve_photo" jdbcType="VARCHAR" property="approvePhoto"/>
+        <result column="approve_video" jdbcType="VARCHAR" property="approveVideo"/>
+        <result column="task_info" jdbcType="VARCHAR" property="taskInfo"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , record_id, unify_task_id, create_time, update_time, deleted, handle_photo, handle_video,
+    approve_photo, approve_video,task_info
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_question_record_expand_${enterpriseId}
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectByQuestionRecordIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_question_record_expand_${enterpriseId}
+        where
+        record_id in
+        <foreach collection="questionRecordIds" item="recordId" open="(" separator="," close=")">
+            #{recordId}
+        </foreach>
+    </select>
+    <select id="selectByRecordId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_question_record_expand_${enterpriseId}
+        where
+        record_id = #{recordId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from tb_question_record_expand_${enterpriseId}
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.question.TbQuestionRecordExpandDO"
+            keyProperty="record.id" useGeneratedKeys="true">
+        insert into tb_question_record_expand_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.recordId != null">
+                record_id,
+            </if>
+            <if test="record.unifyTaskId != null">
+                unify_task_id,
+            </if>
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.updateTime != null">
+                update_time,
+            </if>
+            <if test="record.deleted != null">
+                deleted,
+            </if>
+            <if test="record.handlePhoto != null">
+                handle_photo,
+            </if>
+            <if test="record.handleVideo != null">
+                handle_video,
+            </if>
+            <if test="record.approvePhoto != null">
+                approve_photo,
+            </if>
+            <if test="record.approveVideo != null">
+                approve_video,
+            </if>
+            <if test="record.taskInfo != null">
+                task_info,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.recordId != null">
+                #{record.recordId,jdbcType=BIGINT},
+            </if>
+            <if test="record.unifyTaskId != null">
+                #{record.unifyTaskId,jdbcType=BIGINT},
+            </if>
+            <if test="record.createTime != null">
+                #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateTime != null">
+                #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.deleted != null">
+                #{record.deleted,jdbcType=BIT},
+            </if>
+            <if test="record.handlePhoto != null">
+                #{record.handlePhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="record.handleVideo != null">
+                #{record.handleVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.approvePhoto != null">
+                #{record.approvePhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="record.approveVideo != null">
+                #{record.approveVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.taskInfo != null">
+                #{record.taskInfo,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.coolcollege.intelligent.model.question.TbQuestionRecordExpandDO">
+        update tb_question_record_expand_${enterpriseId}
+        <set>
+            <if test="record.recordId != null">
+                record_id = #{record.recordId,jdbcType=BIGINT},
+            </if>
+            <if test="record.unifyTaskId != null">
+                unify_task_id = #{record.unifyTaskId,jdbcType=BIGINT},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.deleted != null">
+                deleted = #{record.deleted,jdbcType=BIT},
+            </if>
+            <if test="record.handlePhoto != null">
+                handle_photo = #{record.handlePhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="record.handleVideo != null">
+                handle_video = #{record.handleVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.approvePhoto != null">
+                approve_photo = #{record.approvePhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="record.approveVideo != null">
+                approve_video = #{record.approveVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.taskInfo != null">
+                task_info = #{record.taskInfo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{record.id,jdbcType=BIGINT}
+    </update>
+    <sql id="dynamicQuery">
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="null != id">
+                and t.id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="null != recordId">
+                and t.record_id = #{recordId,jdbcType=BIGINT}
+            </if>
+            <if test="null != unifyTaskId">
+                and t.unify_task_id = #{unifyTaskId,jdbcType=BIGINT}
+            </if>
+            <if test="null != createTime">
+                and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="null != updateTime">
+                and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="null != deleted">
+                and t.deleted = #{deleted,jdbcType=BIT}
+            </if>
+            <if test="null != handlePhoto">
+                and t.handle_photo = #{handlePhoto,jdbcType=VARCHAR}
+            </if>
+            <if test="null != handleVideo">
+                and t.handle_video = #{handleVideo,jdbcType=VARCHAR}
+            </if>
+            <if test="null != approvePhoto">
+                and t.approve_photo = #{approvePhoto,jdbcType=VARCHAR}
+            </if>
+            <if test="null != approveVideo">
+                and t.approve_video = #{approveVideo,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+</mapper>

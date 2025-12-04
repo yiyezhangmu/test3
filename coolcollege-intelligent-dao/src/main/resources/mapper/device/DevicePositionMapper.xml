@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.device.DevicePositionMapper">
+    <resultMap type="com.coolcollege.intelligent.model.device.DevicePositionDO" id="baseMap">
+        <result property="id" column="id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="channelNo" column="channel_no"/>
+        <result property="devicePositionName" column="device_position_name"/>
+        <result property="positionIndex" column="position_index"/>
+        <result property="yunType" column="yun_type"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+    <insert id="insertDevicePosition">
+		insert into device_position_${eid}
+		(
+			`device_id`,
+			`channel_no`,
+			`device_position_name`,
+			`position_index`,
+			`yun_type`,
+			`create_time`,
+			`update_time`,
+			`create_user`
+		)
+		values
+		(
+			#{devicePositionDO.deviceId},
+			#{devicePositionDO.channelNo},
+			#{devicePositionDO.devicePositionName},
+			#{devicePositionDO.positionIndex},
+			#{devicePositionDO.yunType},
+			sysdate(),
+			sysdate(),
+			#{devicePositionDO.createUser}
+		)
+
+	</insert>
+
+    <insert id="batchInsertDevicePosition">
+		insert into device_position_${eid}
+		(
+			`device_id`,
+			`channel_no`,
+			`device_position_name`,
+			`position_index`,
+			`yun_type`,
+			`create_time`,
+			`update_time`,
+			`create_user`
+		)
+		values
+        <foreach collection="devicePositionDOList" item="devicePositionDO" separator=",">
+        (
+			#{devicePositionDO.deviceId},
+			#{devicePositionDO.channelNo},
+			#{devicePositionDO.devicePositionName},
+			#{devicePositionDO.positionIndex},
+			#{devicePositionDO.yunType},
+			sysdate(),
+			sysdate(),
+			#{devicePositionDO.createUser}
+        )
+        </foreach>
+
+	</insert>
+    <update id="updateDevicePosition">
+        update device_position_${eid} set
+        device_position_name=#{devicePositionDO.devicePositionName},
+        update_time=sysdate(),
+        update_user=#{devicePositionDO.updateUser}
+        where id=#{devicePositionDO.id}
+    </update>
+
+    <delete id="deleteDevicePosition">
+        delete from device_position_${eid} where id = #{id}
+    </delete>
+
+    <select id="selectDevicePositionById" resultMap="baseMap">
+		select * from device_position_${eid} where id = #{id}
+	</select>
+    <select id="listDevicePositionByDeviceAndChannel" resultMap="baseMap">
+        select * from device_position_${eid} where device_id = #{deviceId}
+        <if test="channelNo!=null">
+            and channel_no=#{channelNo}
+        </if>
+		order by position_index desc
+    </select>
+    <select id="maxIndex" resultType="java.lang.Integer">
+        select position_index from device_position_${eid} where device_id = #{deviceId}
+        <if test="channelNo!=null">
+            and channel_no=#{channelNo}
+        </if>
+    </select>
+
+
+
+</mapper>

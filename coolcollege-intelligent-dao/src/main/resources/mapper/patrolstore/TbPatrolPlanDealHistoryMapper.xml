@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.patrolstore.TbPatrolPlanDealHistoryMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.patrolstore.entity.TbPatrolPlanDealHistoryDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="plan_id" jdbcType="BIGINT" property="planId" />
+    <result column="handle_user_id" jdbcType="VARCHAR" property="handleUserId" />
+    <result column="node_name" jdbcType="VARCHAR" property="nodeName" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, plan_id, handle_user_id, node_name, status, remark, create_time, create_user_id, update_time,
+    update_user_id, deleted
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into tb_patrol_plan_deal_history_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.planId != null">
+        plan_id,
+      </if>
+      <if test="record.handleUserId != null">
+        handle_user_id,
+      </if>
+      <if test="record.nodeName != null">
+        node_name,
+      </if>
+      <if test="record.status != null">
+        status,
+      </if>
+      <if test="record.remark != null">
+        remark,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.planId != null">
+        #{record.planId},
+      </if>
+      <if test="record.handleUserId != null">
+        #{record.handleUserId},
+      </if>
+      <if test="record.nodeName != null">
+        #{record.nodeName},
+      </if>
+      <if test="record.status != null">
+        #{record.status},
+      </if>
+      <if test="record.remark != null">
+        #{record.remark},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update tb_patrol_plan_deal_history_${enterpriseId}
+    <set>
+      <if test="record.planId != null">
+        plan_id = #{record.planId},
+      </if>
+      <if test="record.handleUserId != null">
+        handle_user_id = #{record.handleUserId},
+      </if>
+      <if test="record.nodeName != null">
+        node_name = #{record.nodeName},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+
+  <select id="getProcessHistoryList" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from
+      tb_patrol_plan_deal_history_${enterpriseId}
+    where
+      plan_id = #{planId} and deleted = 0
+    order by id asc
+  </select>
+
+</mapper>

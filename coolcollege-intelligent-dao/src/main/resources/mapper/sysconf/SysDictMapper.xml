@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.sysconf.SysDictMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.system.sysconf.SysDictDO"
+               id="BaseMap">
+        <result property="id" column="id" jdbcType="BIGINT"/>
+        <result property="businessType" column="business_type" jdbcType="VARCHAR"/>
+        <result property="dictKey" column="dict_key" jdbcType="VARCHAR"/>
+        <result property="dictValue" column="dict_value" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="hasDelete" column="is_deleted" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="BaseSql">
+        id,business_type,dict_key,dict_value,remark,is_deleted,create_time,update_time
+    </sql>
+    <update id="updateValueByIdOrKeyType">
+        update sys_dict
+        set dict_value = #{dict.dictValue},
+        update_time = CURRENT_DATE
+        where 1 = 1
+        <if test="dict.id != null">
+            and id = #{dict.id}
+        </if>
+        <if test="dict.dictKey != null and dict.businessType!=null and dict.dictKey != '' and dict.businessType!= ''">
+            and dict_key = #{dict.dictKey}
+            and business_type = #{dict.businessType}
+        </if>
+    </update>
+    <delete id="deleteById">
+        delete
+        from
+        sys_dict
+        where id = #{id}
+    </delete>
+    <select id="batchInsert" resultType="java.lang.Integer">
+        insert into  sys_dict
+        (
+        <include refid="BaseSql"></include>
+        )
+        values
+        <foreach collection="dictList" item="dict" separator=",">
+            (
+            #{dict.id},
+            #{dict.businessType},
+            #{dict.dictKey},
+            #{dict.dictValue},
+            #{dict.remark},
+            #{dict.hasDelete},
+            CURRENT_DATE,
+            CURRENT_DATE
+            )
+        </foreach>
+    </select>
+    <select id="listByTypeKey" resultMap="BaseMap">
+        select *
+        from sys_dict
+        where 1=1
+        <if test="type != null and type !=''">
+            and business_type = #{type}
+        </if>
+        <if test="key != null and key !=''">
+            and dict_key = #{key}
+        </if>
+        order by id desc
+    </select>
+
+</mapper>

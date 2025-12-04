@@ -1,0 +1,1786 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.region.RegionMapper">
+
+    <sql id="fields">
+        id                     ,
+            id          as regionId,
+            name                   ,
+            parent_id   as parentId,
+            group_id    as groupId,
+            store_id    as storeId,
+            create_time as createTime,
+            create_name as createName,
+            update_time as updateTime,
+            update_name as updateName,
+            syn_ding_dept_id as synDingDeptId,
+            region_type as regionType,
+            region_path as regionPath,
+            deleted as deleted,
+            third_dept_id as thirdDeptId,
+            store_stat_num as storeStatNum
+    </sql>
+
+    <insert id="ignoreInsert" keyColumn="id" keyProperty="region.id" useGeneratedKeys="true">
+        insert ignore into region_${eid}
+        (
+        region_id,
+        name,
+        parent_id,
+        group_id,
+        create_time,
+        create_name
+        <if test="region.regionPath !=null and region.regionPath!=''">
+            ,region_path
+        </if>
+        <if test="region.regionType !=null and region.regionType!=''">
+            ,region_type
+        </if>
+        <if test="region.storeId !=null and region.storeId!=''">
+            ,store_id
+        </if>
+        <if test="region.synDingDeptId !=null and region.synDingDeptId!=''">
+            ,syn_ding_dept_id
+        </if>
+        <if test="region.isExternalNode !=null">
+            ,is_external_node
+        </if>
+        <if test="region.thirdRegionType !=null">
+            ,third_region_type
+        </if>
+        <if test="region.thirdDeptId !=null">
+            ,third_dept_id
+        </if>
+        <if test="region.deleted !=null">
+            ,deleted
+        </if>
+        ,order_num
+        )
+        values
+        (
+        #{region.regionId, jdbcType=VARCHAR},
+        #{region.name, jdbcType=VARCHAR},
+        #{region.parentId, jdbcType=VARCHAR},
+        #{region.groupId, jdbcType=VARCHAR},
+        #{region.createTime, jdbcType=BIGINT},
+        #{region.createName, jdbcType=VARCHAR}
+        <if test="region.regionPath !=null and region.regionPath!=''">
+            ,#{region.regionPath}
+        </if>
+        <if test="region.regionType !=null and region.regionType!=''">
+            ,#{region.regionType}
+        </if>
+        <if test="region.storeId !=null and region.storeId!=''">
+            ,#{region.storeId}
+        </if>
+        <if test="region.synDingDeptId !=null and region.synDingDeptId!=''">
+            ,#{region.synDingDeptId}
+        </if>
+        <if test="region.isExternalNode !=null">
+            ,#{region.isExternalNode}
+        </if>
+        <if test="region.thirdRegionType !=null">
+            ,#{region.thirdRegionType}
+        </if>
+        <if test="region.thirdDeptId !=null">
+            ,#{region.thirdDeptId}
+        </if>
+        <if test="region.deleted !=null">
+            ,#{region.deleted}
+        </if>
+        ,(SELECT max(order_num)+1 FROM region_${eid} AS num)
+        ) ON DUPLICATE KEY UPDATE
+        update_time=now()
+        <if test="region.regionPath !=null and region.regionPath!=''">
+           , region_path=#{region.regionPath}
+        </if>
+        <if test="region.name !=null and region.name!=''">
+            ,name=#{region.name}
+        </if>
+        <if test="region.regionId !=null and region.regionId!=''">
+            ,region_id=#{region.regionId}
+        </if>
+        <if test="region.parentId !=null and region.parentId!=''">
+            ,parent_id=#{region.parentId}
+        </if>
+        <if test="region.regionType !=null and region.regionType!=''">
+           , region_type=#{region.regionType}
+        </if>
+        <if test="region.storeId !=null and region.storeId!=''">
+            ,store_id = #{region.storeId}
+        </if>
+        <if test="region.synDingDeptId !=null and region.synDingDeptId!=''">
+            ,syn_ding_dept_id = #{region.synDingDeptId}
+        </if>
+        <if test="region.isExternalNode !=null">
+            ,is_external_node = #{region.isExternalNode}
+        </if>
+        <if test="region.thirdRegionType !=null">
+            ,third_region_type = #{region.thirdRegionType}
+        </if>
+        <if test="region.thirdDeptId !=null">
+           , third_dept_id = #{region.thirdDeptId}
+        </if>
+        <if test="region.deleted !=null">
+            ,deleted = #{region.deleted}
+        </if>
+    </insert>
+    <insert id="batchInsertRegion">
+        insert into region_${eid}
+        (
+            id,
+            name,
+            parent_id,
+            group_id,
+            create_time,
+            create_name,
+            is_external_node
+        )
+        values
+        <foreach collection="regions" item="region" separator=",">
+            (
+                #{region.id},
+                #{region.name},
+                #{region.parentId},
+                #{region.groupId},
+                #{region.createTime},
+                #{region.createName},
+                #{region.isExternalNode}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertRegionsByDepartments">
+        insert into region_${eid}
+        (
+            id,
+            name,
+            parent_id,
+            group_id,
+            create_time,
+            syn_ding_dept_id,
+            region_path,
+            region_type,
+            order_num,
+            create_name,
+            store_id
+        )
+        values
+        <foreach collection="regions" item="region" separator=",">
+            (
+                #{region.id},
+                #{region.name},
+                #{region.parentId},
+                #{region.groupId},
+                #{region.createTime},
+                #{region.synDingDeptId},
+                #{region.regionPath},
+                #{region.regionType},
+                #{region.orderNum},
+                #{region.createName},
+                #{region.storeId}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        name=values(name), parent_id=values(parent_id), region_path=values(region_path),region_type=values(region_type),order_num=values(order_num)
+    </insert>
+
+    <insert id="insertRoot">
+        insert ignore into region_${eid}
+        (
+        id,
+        region_id,
+        name,
+        parent_id,
+        group_id,
+        create_time,
+        syn_ding_dept_id,
+        create_name,
+        region_type,
+        region_path,
+        store_num,
+        unclassified_flag)
+        values
+        (
+        #{region.id, jdbcType=BIGINT},
+        #{region.regionId, jdbcType=VARCHAR},
+        #{region.name, jdbcType=VARCHAR},
+        #{region.parentId, jdbcType=VARCHAR},
+        #{region.groupId, jdbcType=VARCHAR},
+        #{region.createTime, jdbcType=BIGINT},
+        #{region.synDingDeptId, jdbcType=VARCHAR},
+        #{region.createName, jdbcType=VARCHAR},
+        #{region.regionType, jdbcType=VARCHAR},
+        #{region.regionPath},
+        #{region.storeNum},
+        #{region.unclassifiedFlag}
+        )
+    </insert>
+
+    <delete id="batchDeleteRegion">
+        delete from region_${eid} where id in
+        <foreach collection="regionIds" index="index" item="regionId"
+                 separator="," open="(" close=")">
+            #{regionId, jdbcType=BIGINT}
+        </foreach>
+
+    </delete>
+
+    <select id="selectMaxRegionId" resultType="java.lang.Long">
+        select  max(id)   from region_${eid}
+
+    </select>
+
+    <update id="updateRegion">
+        update region_${eid}
+        <set>
+            name = #{region.name, jdbcType=VARCHAR},
+            parent_id = #{region.parentId, jdbcType=VARCHAR},
+            update_time = #{region.updateTime, jdbcType=BIGINT},
+            <if test="region.regionPath!=null and region.regionPath != ''">
+                region_path = #{region.regionPath},
+            </if>
+            <if test="region.updateName!=null and region.updateName != ''">
+                update_name = #{region.updateName, jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{region.regionId, jdbcType=BIGINT}
+    </update>
+
+    <update id="updateStoreNum">
+        update region_${eid}
+        set store_num = #{storeNum}
+        where id = #{regionId}
+    </update>
+
+    <update id="updateStoreNumStatNum">
+        update region_${eid}
+        set store_num = #{storeNum}, store_stat_num = #{storeStatNum}
+        where id = #{regionId}
+    </update>
+
+    <update id="updateStoreStatNumByStoreIds">
+        update region_${eid}
+        set store_stat_num = 1
+        where region_type = 'store'
+        and store_id in
+        <foreach collection="storeIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="batchUpdateStoreNum" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update region_${eid} set store_num = #{item.storeNum}
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <select id="getAllRegion" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            id          ,
+            id          as regionId,
+            name        ,
+            parent_id   as parentId,
+            group_id    as groupId,
+            create_time as createTime,
+            create_name as createName,
+            update_time as updateTime,
+            update_name as updateName,
+            syn_ding_dept_id as synDingDeptId,
+            region_type as regionType,
+            region_path as regionPath,
+            deleted as deleted,
+            third_dept_id as thirdDeptId,
+            is_external_node as isExternalNode
+        from region_${eid}
+        where deleted = 0
+        and region_type != 'store'
+    </select>
+
+    <select id="getAllStore" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            id          ,
+            id          as regionId,
+            name        ,
+            parent_id   as parentId,
+            group_id    as groupId,
+            create_time as createTime,
+            create_name as createName,
+            update_time as updateTime,
+            update_name as updateName,
+            syn_ding_dept_id as synDingDeptId,
+            region_type as regionType,
+            region_path as regionPath,
+            deleted as deleted,
+            third_dept_id as thirdDeptId,
+            is_external_node as isExternalNode,
+            store_id as storeId
+        from region_${eid}
+        where deleted = 0
+        and region_type = 'store'
+    </select>
+
+    <select id="getAllRegionIdAndDeptId" resultType="com.coolcollege.intelligent.model.region.dto.RegionSyncDTO">
+        select
+            id          ,
+            syn_ding_dept_id as synDingDeptId
+        from region_${eid}
+        where  (id > 0 or id = -3) and (deleted = 0 or syn_ding_dept_id is not null) and is_external_node = 0
+    </select>
+    <select id="getSpecifiedRegionIdAndDeptId" resultType="com.coolcollege.intelligent.model.region.dto.RegionSyncDTO">
+        select
+        id          ,
+        syn_ding_dept_id as synDingDeptId
+        from region_${eid}
+        where  (id > 0 or id = -3) and (deleted = 0 or syn_ding_dept_id is not null) and is_external_node = 0
+        <if test="parentId!=null">
+            and region_path like concat('%/',#{parentId},'/%')
+        </if>
+    </select>
+    <select id="getRegionByRegionIdsForMap" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+        id          ,
+        id          as regionId,
+        name
+        from region_${eid} where id in
+        <foreach collection="regionIds" index="index" item="regionId"
+                 separator="," open="(" close=")">
+            #{regionId, jdbcType=BIGINT}
+        </foreach>
+    </select>
+    <select id="getRegionListByName" resultType="com.coolcollege.intelligent.model.region.dto.RegionNode">
+        select
+            id          ,
+            id          as regionId,
+            name        ,
+            parent_id   as parentId,
+            create_time as createTime,
+            create_name as createName,
+            update_time as updateTime,
+            syn_ding_dept_id as synDingDeptId,
+            update_name as updateName,
+            region_type as regionType
+        from region_${eid} where name like concat('%',#{name, jdbcType=VARCHAR},'%')
+        <if test="regionIds != null and regionIds.size() > 0">
+            and id in
+            <foreach collection="regionIds" item="id" open="(" separator="," close=")">
+                #{id, jdbcType=BIGINT}
+            </foreach>
+        </if>
+        and region_type != 'store'
+        and deleted = 0
+    </select>
+
+    <select id="getRegionByRegionId" resultType="com.coolcollege.intelligent.model.region.dto.RegionNode">
+        select
+            id          ,
+            id          as regionId,
+            name        as name ,
+            parent_id   as parentId,
+            group_id    as groupId,
+            create_time as createTime,
+            create_name as createName,
+            update_time as updateTime,
+            update_name as updateName,
+            syn_ding_dept_id as synDingDeptId,
+            region_type as regionType,
+            region_path as regionPath,
+            store_num   as storeCount,
+            is_external_node as isExternalNode
+        from region_${eid} where id = #{regionId, jdbcType=BIGINT} and deleted = 0
+    </select>
+    <select id="getRegionDoByRegionId" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            id          ,
+            id          as regionId,
+            name        ,
+            parent_id   as parentId,
+            group_id    as groupId,
+            create_time as createTime,
+            create_name as createName,
+            update_time as updateTime,
+            update_name as updateName,
+            syn_ding_dept_id as synDingDeptId,
+            region_type as regionType,
+            region_path as regionPath,
+            deleted as deleted,
+            third_dept_id as thirdDeptId,
+            is_external_node as isExternalNode,
+            store_id as storeId
+        from region_${eid} where id = #{regionId, jdbcType=BIGINT} and deleted = 0
+    </select>
+
+    <select id="getRegionByRegionIds" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            id          ,
+            id          as regionId,
+            name        ,
+            parent_id   as parentId,
+            group_id    as groupId,
+            create_time as createTime,
+            create_name as createName,
+            syn_ding_dept_id as synDingDeptId,
+            update_time as updateTime,
+            update_name as updateName,
+            region_path as regionPath,
+            store_num   as storeNum,
+            store_id   as storeId,
+            region_type as regionType,
+            is_external_node as isExternalNode,
+        third_dept_id as thirdDeptId,
+        store_stat_num as storeStatNum
+        from region_${eid} where id in
+        <foreach collection="regionIds" index="index" item="regionId"
+                 separator="," open="(" close=")">
+            #{regionId, jdbcType=BIGINT}
+        </foreach>
+        and deleted = 0
+    </select>
+    <select id="getRegionByParentId" resultType="com.coolcollege.intelligent.model.region.dto.RegionChildDTO">
+        select
+        parent_id   as pid,
+        id   as id,
+        name as name,
+        unclassified_flag as unclassifiedFlag,
+        syn_ding_dept_id as synDingDeptId
+        from region_${eid} where parent_id in
+        <foreach collection="regionIds" index="index" item="regionId"
+                 separator="," open="(" close=")">
+            #{regionId, jdbcType=BIGINT}
+        </foreach>
+        <if test="isRegion != null and isRegion == true">
+            and region_type != 'store'
+        </if>
+        and deleted = 0
+        ORDER BY region_type
+    </select>
+
+    <select id="getByIds" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+        id          ,
+        id   as regionId,
+        name        ,
+        parent_id   as parentId,
+        group_id    as groupId,
+        create_time as createTime,
+        create_name as createName,
+        update_time as updateTime,
+        update_name as updateName,
+        store_id as storeId,
+        order_num   as orderNum,
+        deleted     as deleted,
+        region_path as regionPath
+        from region_${eid}
+        where id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="getByRegionId" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            id          ,
+            id          as regionId,
+            name        as name ,
+            parent_id   as parentId,
+            group_id    as groupId,
+            create_time as createTime,
+            create_name as createName,
+            update_time as updateTime,
+            update_name as updateName,
+            syn_ding_dept_id as synDingDeptId,
+            store_id as storeId,
+            region_type as regionType,
+            region_path as regionPath,
+            deleted,
+            store_num   as storeNum
+        from region_${eid}
+        where id = #{regionId}
+    </select>
+
+    <select id="getAllRegionForFlush" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            id          ,
+            region_id    as regionId,
+            name        ,
+            parent_id   as parentId,
+            group_id    as groupId,
+            create_time as createTime,
+            create_name as createName,
+            update_time as updateTime,
+            update_name as updateName
+        from region_${eid}
+        and deleted = 0
+    </select>
+    <select id="getRegionsByParentId" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            id          ,
+            region_id    as regionId,
+            name        ,
+            parent_id   as parentId,
+            group_id    as groupId,
+            create_time as createTime,
+            create_name as createName,
+            update_time as updateTime,
+            update_name as updateName,
+            region_path as regionPath,
+            region_type as regionType,
+            store_num   as storeNum,
+            store_id   as storeId
+        from region_${eid}
+        where parent_id = #{parentId} and deleted = 0
+        order by region_type
+    </select>
+    <select id="getRegionIdListByParentId" resultType="java.lang.Long">
+        select
+            id
+        from region_${eid}
+        where parent_id = #{parentId} and deleted = 0 and region_type != 'store'
+    </select>
+
+
+    <insert id="insertOrUpdate" useGeneratedKeys="true" keyProperty="record.id">
+        insert into region_${eid}
+        (
+        id,
+        name,
+        <if test="record.parentId != null">
+            parent_id,
+        </if>
+        region_type,
+        create_time,
+        syn_ding_dept_id,
+        unclassified_flag,
+        third_dept_id
+        ) value
+            (
+            #{record.id, jdbcType=BIGINT},
+            #{record.name, jdbcType=VARCHAR},
+            <if test="record.parentId != null">
+                #{record.parentId, jdbcType=BIGINT},
+            </if>
+            #{record.regionType, jdbcType=VARCHAR},
+            #{record.createTime, jdbcType=BIGINT},
+            #{record.synDingDeptId, jdbcType=VARCHAR},
+            #{record.unclassifiedFlag},
+            #{record.thirdDeptId}
+            )
+        ON DUPLICATE KEY UPDATE name=values(name), parent_id=values(parent_id), syn_ding_dept_id=values(syn_ding_dept_id),third_dept_id=values(third_dept_id),
+                update_time = values(update_time), region_type = values(region_type), deleted = values(deleted)
+    </insert>
+
+    <insert id="batchInsert"   parameterType="java.util.ArrayList" useGeneratedKeys="true" keyProperty="list.id">
+        insert into region_${eid}
+        (
+        name,
+        parent_id,
+        create_time,
+        syn_ding_dept_id,
+        store_id,
+        region_path
+        ) values
+        <foreach collection="list" item="it" separator=",">
+            (
+            #{it.name, jdbcType=VARCHAR},
+            #{it.parentId, jdbcType=BIGINT},
+            #{it.createTime, jdbcType=BIGINT},
+            #{it.synDingDeptId, jdbcType=VARCHAR},
+            #{it.storeId, jdbcType=VARCHAR},
+            #{it.regionPath, jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertOrUpdate">
+        <foreach collection="list" item="record" separator=";">
+            insert into region_${eid}
+            (
+                id,
+                name,
+                parent_id,
+                region_type,
+                region_path,
+                create_time,
+                syn_ding_dept_id,
+                unclassified_flag,
+                third_dept_id,
+                is_external_node,
+                deleted
+            ) value
+            (
+                #{record.id},
+                #{record.name},
+                #{record.parentId},
+                #{record.regionType},
+                #{record.regionPath},
+                #{record.createTime},
+                #{record.synDingDeptId},
+                #{record.unclassifiedFlag},
+                #{record.thirdDeptId},
+                #{record.isExternalNode},
+                #{record.deleted}
+            )
+            ON DUPLICATE KEY UPDATE name=values(name), parent_id=values(parent_id), syn_ding_dept_id=values(syn_ding_dept_id),third_dept_id=values(third_dept_id),
+            update_time = now(), region_type = values(region_type), deleted = values(deleted), is_external_node = values(is_external_node)
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertStoreRegionByImport" useGeneratedKeys="true" keyProperty="storeRegionList.id">
+        insert into region_${eid}
+        (
+        name,
+        parent_id,
+        create_time,
+        create_name,
+        region_path,
+        region_type,
+        store_id
+        ) values
+        <foreach collection="storeRegionList" item="storeRegion" separator=",">
+            (
+            #{storeRegion.name, jdbcType=VARCHAR},
+            #{storeRegion.parentId, jdbcType=BIGINT},
+            #{storeRegion.createTime, jdbcType=BIGINT},
+            #{storeRegion.createName, jdbcType=VARCHAR},
+            #{storeRegion.regionPath, jdbcType=VARCHAR},
+            #{storeRegion.regionType, jdbcType=VARCHAR},
+            #{storeRegion.storeId, jdbcType=VARCHAR}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        name=values(name), parent_id=values(parent_id), region_path=values(region_path),region_type=values(region_type), deleted=0
+    </insert>
+
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update region_${eid} set `parent_id` = #{item.parentId},  `name` = #{item.name},  `region_type` = #{item.regionType},  `deleted` = #{item.deleted},
+            `syn_ding_dept_id` = #{item.synDingDeptId}, `update_time` = #{item.updateTime}, `region_path` = #{item.regionPath}
+            where id = #{item.id}
+        </foreach>
+    </update>
+    <update id="batchUpdatePath" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update region_${eid} set `region_path` = #{item.regionPath}
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <update id="batchUpdateIgnoreRegionType" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update region_${eid} set `parent_id` = #{item.parentId},  `name` = #{item.name},  `deleted` = #{item.deleted},
+            `syn_ding_dept_id` = #{item.synDingDeptId}, `update_time` = #{item.updateTime}, `region_path` = #{item.regionPath}, `region_type` = #{item.regionType}
+            <if test="item.thirdDeptId != null and item.thirdDeptId != ''">
+                ,third_dept_id = #{item.thirdDeptId}
+            </if>
+            <if test="item.storeId != null and item.storeId != ''">
+                ,store_id = #{item.storeId}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+
+    <insert id="batchInsertOrUpdateRegion" useGeneratedKeys="true" keyProperty="list.id">
+        <foreach collection="list" item="record" index="index" open="" close="" separator=";">
+            insert into region_${eid}
+            (
+                name,
+                parent_id,
+                region_type,
+                region_path,
+                create_time,
+                syn_ding_dept_id,
+                order_num,
+                deleted
+            ) value
+            (
+                #{record.name},
+                #{record.parentId},
+                #{record.regionType},
+                #{record.regionPath},
+                #{record.createTime},
+                #{record.synDingDeptId},
+                #{record.orderNum},
+                #{record.deleted}
+            )
+            ON DUPLICATE KEY UPDATE name=values(name), parent_id=values(parent_id), region_type = values(region_type), region_path = values(region_path),
+            syn_ding_dept_id=values(syn_ding_dept_id), update_time = now(), deleted = values(deleted), order_num = values(order_num)
+            <if test="record.regionType == 'path'">
+                ,store_id = null
+            </if>
+        </foreach>
+    </insert>
+
+    <update id="updateSyncRegion" >
+        update region_${eid}
+        set `parent_id` = #{item.parentId},
+            `name` = #{item.name},
+             <if test="item.regionType != null and item.regionType != ''">
+              `region_type` = #{item.regionType},
+             </if>
+            <if test="item.thirdRegionType != null and item.thirdRegionType != ''">
+                `third_region_type` = #{item.thirdRegionType},
+            </if>
+            `deleted` = #{item.deleted},
+            `update_time` = #{item.updateTime},
+            <if test="item.storeId != null and item.storeId != ''">
+                store_id = #{item.storeId},
+            </if>
+            `region_path` = #{item.regionPath}
+        where id = #{item.id}
+    </update>
+
+    <update id="removeRegions">
+        update region_${eid}
+        set
+        deleted = 1,
+        parent_id = -1
+        where id in
+        <foreach collection="regionIds" index="index" item="regionId"
+                 separator="," open="(" close=")">
+            #{regionId, jdbcType=BIGINT}
+        </foreach>
+        and id != 1
+    </update>
+
+    <update id="updateTestRegion">
+        update region_${eid}
+        set
+        deleted = 0,
+        parent_id = #{parentId}
+        where id = #{id}
+    </update>
+
+    <update id="batchUpdateRegionType">
+        update region_${eid}
+        <set>
+            <if test="regionType != null and regionType!=''">
+                region_type = #{regionType},
+            </if>
+            <if test="storeId != null and storeId!=''">
+                store_id = #{storeId},
+            </if>
+        </set>
+        where id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item.id}
+        </foreach>
+        )
+    </update>
+    <update id="updateRegionPath">
+        update region_${eid}
+        set
+        region_path = #{regionPath,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=BIGINT}
+        where id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </update>
+
+    <select id="getRegionByDingDeptIds" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            id          ,
+            region_id   as regionId,
+            name        as name ,
+            parent_id   as parentId,
+            group_id    as groupId,
+            create_time as createTime,
+            create_name as createName,
+            update_time as updateTime,
+            update_name as updateName,
+            syn_ding_dept_id as synDingDeptId,
+            region_type as regionType,
+            region_path as regionPath,
+            deleted as deleted
+        from region_${eid}
+        where deleted = 0
+        and syn_ding_dept_id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+    <select id="listRegionByIds" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+        id          ,
+        region_id   as regionId,
+        name        as name ,
+        parent_id   as parentId,
+        group_id    as groupId,
+        create_time as createTime,
+        create_name as createName,
+        update_time as updateTime,
+        update_name as updateName,
+        vds_group_corp_id as vdsGroupCorpId,
+        syn_ding_dept_id as synDingDeptId,
+        region_type as regionType,
+        deleted as deleted,
+        region_path as regionPath,
+        store_num as storeNum
+        from region_${eid}
+        where deleted = 0
+        and id in (
+        <foreach collection="regionIds" item="regionId" separator=",">
+            #{regionId}
+        </foreach>
+        )
+    </select>
+    <update id="updateRootDeptId">
+        update region_${eid}
+        set syn_ding_dept_id = #{syncDingRootId}
+        <if test="thirdDeptId != null and thirdDeptId != ''">
+            , third_dept_id = #{thirdDeptId}
+        </if>
+        <if test="deptName != null and deptName != ''">
+            , name = #{deptName}
+        </if>
+        where id = 1
+    </update>
+    <update id="updateRegionPathByDO">
+        update region_${eid}
+        set region_path = #{region.regionPath}
+        where id = #{region.id}
+    </update>
+    <select id="getRootVdsCorpId" resultType="java.lang.String">
+        select  vds_group_corp_id from region_${eid} where id=1
+    </select>
+
+    <select id="listRegionByRegionPath" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+        id          ,
+        region_id   as regionId,
+        name        as name ,
+        parent_id   as parentId,
+        group_id    as groupId,
+        create_time as createTime,
+        create_name as createName,
+        update_time as updateTime,
+        update_name as updateName,
+        vds_group_corp_id as vdsGroupCorpId,
+        syn_ding_dept_id as synDingDeptId,
+        region_type as regionType,
+        deleted as deleted
+        from region_${eid}
+        where deleted = 0
+        and region_path like concat(#{regionPath},'%')
+    </select>
+    <update id="batchUpdateRegionPathTraversalDown">
+      update region_${eid}
+      set region_path=concat(#{newRegionPath},#{keyNode},'/',SUBSTRING_INDEX(region_path, concat('/',#{keyNode},'/'), -1))
+      WHERE region_path like concat(#{oldRegionPath},'%')
+    </update>
+
+    <select id="getRegionPathByIds" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+        id,
+        name,
+        region_path
+        from region_${eid}
+        where id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <update id="updateRootRegionName">
+        update region_${eid} set name=#{newName} where id=1
+    </update>
+
+    <select id="getBySynDingDeptId" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            id          ,
+            id          as regionId,
+            name        as name ,
+            parent_id   as parentId,
+            group_id    as groupId,
+            create_time as createTime,
+            create_name as createName,
+            update_time as updateTime,
+            update_name as updateName,
+            syn_ding_dept_id as synDingDeptId,
+            store_id as storeId,
+            region_type as regionType,
+            region_path as regionPath,
+            deleted,
+            store_num   as storeNum
+        from region_${eid}
+        where syn_ding_dept_id = #{synDingDeptId}
+    </select>
+
+    <select id="isHaveSameName" resultType="int">
+        select
+            count(1)
+        from
+            region_${enterpriseId}
+        where
+            name = #{name}
+            and deleted = 0
+            <if test="parentId != null">
+                and parent_id =#{parentId}
+            </if>
+            <if test="excludeId != null">
+                and id != #{excludeId}
+            </if>
+    </select>
+    <select id="getRegionsByKeyword" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+        id          ,
+        id          as regionId,
+        name        ,
+        parent_id   as parentId,
+        group_id    as groupId,
+        create_time as createTime,
+        create_name as createName,
+        syn_ding_dept_id as synDingDeptId,
+        update_time as updateTime,
+        update_name as updateName,
+        region_path as regionPath,
+        store_num   as storeNum
+        from region_${eid}
+        where `name` like concat('%', #{keyword, jdbcType=VARCHAR},'%')
+        <choose>
+            <when test="isAdmin!=null and isAdmin" />
+            <otherwise>
+                and(<if test="regionIds!=null and regionIds.size>0">
+                <foreach collection="regionIds" item="id" open="id in (" close=")" separator=",">
+                    #{id, jdbcType=BIGINT}
+                </foreach>
+            </if>
+                <if test="authFullRegionPathList!=null and authFullRegionPathList.size>0">
+                    <if test="regionIds!=null and regionIds.size>0">
+                        or
+                    </if>
+                    <foreach collection="authFullRegionPathList" item="regionPath"  separator="or">
+                        CONCAT(region_path, id, '/') like concat(#{regionPath}, '%')
+                    </foreach>
+                </if>)
+            </otherwise>
+        </choose>
+
+        and region_type != 'store'
+        and deleted = 0
+    </select>
+
+    <select id="getByStoreId" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            id          ,
+            id          as regionId,
+            name        as name ,
+            parent_id   as parentId,
+            group_id    as groupId,
+            create_time as createTime,
+            create_name as createName,
+            update_time as updateTime,
+            update_name as updateName,
+            syn_ding_dept_id as synDingDeptId,
+            region_type as regionType,
+            region_path as regionPath,
+            deleted,
+            store_num   as storeNum,
+            store_id   as storeId,
+            third_dept_id as thirdDeptId
+        from region_${eid}
+        where store_id = #{storeId}
+    </select>
+
+    <select id="listRegionByStoreIds" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+        id          ,
+        id   as regionId,
+        name        as name ,
+        parent_id   as parentId,
+        group_id    as groupId,
+        create_time as createTime,
+        create_name as createName,
+        update_time as updateTime,
+        update_name as updateName,
+        vds_group_corp_id as vdsGroupCorpId,
+        syn_ding_dept_id as synDingDeptId,
+        region_type as regionType,
+        deleted as deleted,
+        region_path as regionPath,
+        store_num as storeNum,
+        store_id as storeId,
+        third_dept_id as thirdDeptId
+        from region_${eid}
+        where deleted = 0
+        and store_id in (
+        <foreach collection="storeIds" item="storeId" separator=",">
+            #{storeId}
+        </foreach>
+        )
+    </select>
+
+    <select id="listStoreRegionByIds" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+        id          ,
+        region_id   as regionId,
+        name        as name ,
+        parent_id   as parentId,
+        group_id    as groupId,
+        create_time as createTime,
+        create_name as createName,
+        update_time as updateTime,
+        update_name as updateName,
+        syn_ding_dept_id as synDingDeptId,
+        region_type as regionType,
+        deleted as deleted,
+        store_id as storeId
+        from region_${eid}
+        where region_type = 'store'
+        and id in (
+        <foreach collection="regionIds" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="countByParentId" resultType="java.lang.Integer">
+        select count(1) from region_${eid}
+        where parent_id = #{parentId} and deleted = 0
+    </select>
+    <update id="batchMoveRegionStore">
+        update region_${eid}
+        set  parent_id =#{parentId},
+        region_path=#{regionPath}
+        where store_id in
+        <foreach collection="storeIds" index="index" item="store"
+                 separator="," open="(" close=")">
+            #{store}
+        </foreach>
+    </update>
+    <update id="batchUpdateOrder">
+        update region_${eid}
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="order_num =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.orderNum != null">
+                        when syn_ding_dept_id=#{item.synDingDeptId}
+                        then #{item.orderNum}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where syn_ding_dept_id in
+        <foreach collection="list" index="index" item="item"
+                 separator="," open="(" close=")">
+            #{item.synDingDeptId}
+        </foreach>
+    </update>
+    <select id="selectRegionIdsBySynDingDeptIds" resultType="java.lang.Long">
+        select
+        id
+        from region_${eid}
+        where deleted = 0 and syn_ding_dept_id in (
+        <foreach collection="synDingDeptIds" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="selectStoreRegionIdsBySynDingDeptIds" resultType="java.lang.Long">
+        select
+        id
+        from region_${eid}
+        where region_type = 'store' and deleted = 0 and syn_ding_dept_id in (
+        <foreach collection="synDingDeptIds" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="retainStoreTypeBySynDingDeptIds" resultType="java.lang.String">
+        select
+        syn_ding_dept_id
+        from region_${eid}
+        where region_type = 'store' and deleted = 0 and syn_ding_dept_id in (
+        <foreach collection="synDingDeptIds" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="getUnclassifiedRegionDO" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+        id          ,
+        id   as regionId,
+        name        as name ,
+        parent_id   as parentId,
+        group_id    as groupId,
+        create_time as createTime,
+        create_name as createName,
+        update_time as updateTime,
+        update_name as updateName,
+        vds_group_corp_id as vdsGroupCorpId,
+        syn_ding_dept_id as synDingDeptId,
+        region_type as regionType,
+        deleted as deleted,
+        region_path as regionPath,
+        store_num as storeNum,
+        unclassified_flag as unclassifiedFlag
+        from region_${enterpriseId}
+        where deleted = 0 and unclassified_flag = 1
+          and (name = #{name} or id = 1) limit 1
+    </select>
+
+    <select id="getStoresByParentId" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+        a.parent_id   as parentId,
+        a.id  ,
+        a.name as name,
+        a.store_id as storeId,
+        a.unclassified_flag as unclassifiedFlag
+        from region_${eid} a left join store_${eid} b  on a.store_id = b.store_id where
+        a.region_type = 'store'
+        <if test="currentRegionData==true">
+            and a.parent_id in
+            <foreach collection="regionIds" index="index" item="regionId" separator="," open="(" close=")">
+                #{regionId, jdbcType=BIGINT}
+            </foreach>
+        </if>
+        <if test="currentRegionData==false and regionPath != null">
+            and a.region_path like concat(#{regionPath},'%')
+        </if>
+        <if test="storeStatus!=null and storeStatus!=''">
+            and b.store_status = #{storeStatus}
+        </if>
+        and a.deleted = 0
+        <if test="storeName!=null and storeName!=''">
+            and b.store_name like concat('%', #{storeName, jdbcType=VARCHAR},'%')
+        </if>
+        <if test="storeNum!=null and storeNum!=''">
+            and b.store_num like concat('%', #{storeNum, jdbcType=VARCHAR},'%')
+        </if>
+        <if test="currentRegionData==false and regionPathList != null and regionPathList.size() > 0">
+            <foreach collection="regionPathList" separator="or" close=")" open="and (" item="region">
+                b.region_path like concat(#{region}, '%')
+            </foreach>
+        </if>
+        <if test="brandId != null">
+            AND b.brand_id = #{brandId}
+        </if>
+    </select>
+
+    <select id="getRegionAndStoreByParentId" resultType="com.coolcollege.intelligent.model.region.dto.RegionChildDTO">
+        select
+        parent_id   as pid,
+        id   as id,
+        name as name,
+        store_id as storeId,
+        region_type as regionType,
+        region_path as regionPath,
+        unclassified_flag as unclassifiedFlag,
+        is_external_node as isExternalNode
+        from region_${eid} where parent_id in
+        <foreach collection="regionIds" index="index" item="regionId"
+                 separator="," open="(" close=")">
+            #{regionId, jdbcType=BIGINT}
+        </foreach>
+        <if test="hasStore==false">
+            and region_type != 'store'
+        </if>
+        <if test="isExternalNode">
+            and is_external_node = '1'
+        </if>
+        <if test="isExternalNode == false">
+            and is_external_node = '0'
+        </if>
+        and deleted = 0
+        order by region_type asc, if(isnull(order_num), 1, 0) asc,order_num asc
+    </select>
+    <select id="getRegionAndStoreByIdList" resultType="com.coolcollege.intelligent.model.region.dto.RegionChildDTO">
+        select
+        parent_id   as pid,
+        id   as id,
+        name as name,
+        store_id as storeId,
+        region_type as regionType,
+        region_path as regionPath,
+        unclassified_flag as unclassifiedFlag
+        from region_${eid} where id in
+        <foreach collection="regionIds" index="index" item="regionId"
+                 separator="," open="(" close=")">
+            #{regionId, jdbcType=BIGINT}
+        </foreach>
+        <if test="hasStore==false">
+            and region_type != 'store'
+        </if>
+        <if test="isExternalNode">
+            and is_external_node = '1'
+        </if>
+        <if test="isExternalNode == false">
+            and is_external_node = '0'
+        </if>
+        and deleted = 0
+        order by region_type asc, if(isnull(order_num), 1, 0) asc,order_num asc
+    </select>
+    <select id="selectRegionBySynDingDeptIds" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+        id,
+        syn_ding_dept_id as synDingDeptId
+        from region_${eid}
+        where deleted = 0 and syn_ding_dept_id in (
+        <foreach collection="synDingDeptIds" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <update id="updateOrderNum">
+        update region_${eid}
+        set  order_num =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.regionId} then #{item.orderNum}
+        </foreach>
+        where id in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.regionId}
+        </foreach>
+    </update>
+    <update id="removeRegionsBySyncDeptId">
+        update region_${eid}
+        set
+        deleted = 1,
+        parent_id = -1
+        where syn_ding_dept_id in
+        <foreach collection="syncDeptIds" index="index" item="syncDeptId"
+                 separator="," open="(" close=")">
+            #{syncDeptId}
+        </foreach>
+        and id != 1
+    </update>
+
+    <select id="getRegionAndStoreListByKeyword" resultType="com.coolcollege.intelligent.model.region.dto.RegionAndStoreNode">
+        select
+        id,
+        name as name,
+        parent_id as parentId
+        from region_${eid}
+        where id != 1
+        <if test="name != null and name != ''">
+            and name like concat('%',#{name, jdbcType=VARCHAR},'%')
+        </if>
+        <if test="regionIdList != null and regionIdList.size > 0">
+            and id in
+            <foreach collection="regionIdList" item="regionId" separator="," open="(" close=")">
+                #{regionId}
+            </foreach>
+        </if>
+        and deleted = 0
+
+    </select>
+    <select id="getRegionsByEid" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            id          ,
+            region_id   as regionId,
+            name        ,
+            parent_id   as parentId,
+            create_time as createTime,
+            update_time as updateTime,
+            order_num   as orderNum,
+            deleted     as deleted
+        from region_${eid} where id != 1
+        <if test="regionId!=null">
+            and region_path like concat('%/',#{regionId},'/%')
+        </if>
+        order by id
+    </select>
+    <select id="selectRootRegionId" resultType="java.lang.Long">
+        select
+            id
+        from region_${eid}
+        where
+            region_type = 'root'
+    </select>
+    <select id="selectBySynDingDeptId" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            parent_id   as parentId,
+            id   as id,
+            name as name,
+            store_id as storeId,
+            region_type as regionType,
+            region_path as regionPath,
+            unclassified_flag as unclassifiedFlag,
+            syn_ding_dept_id as synDingDeptId
+        from region_${eid}
+        where deleted = 0 and syn_ding_dept_id = #{synDingDeptId}
+    </select>
+
+
+    <select id="selectByThirdDeptId" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            parent_id   as parentId,
+            id   as id,
+            id as regionId,
+            name as name,
+            store_id as storeId,
+            region_type as regionType,
+            region_path as regionPath,
+            unclassified_flag as unclassifiedFlag,
+            syn_ding_dept_id as synDingDeptId
+        from
+            region_${eid}
+        where
+            deleted = 0 and third_dept_id = #{thirdDeptId}
+    </select>
+    <select id="selectSubRegionNumByRegionPath" resultType="java.lang.Integer">
+        select
+            count(*)
+        from region_${eid}
+        where deleted = 0 and region_path like concat(#{regionPath}, '%')
+    </select>
+
+    <insert id="batchInsertRegionsNotExistDuplicate"  useGeneratedKeys="true" keyProperty="list.id">
+        insert into region_${eid}
+        (
+        name,
+        parent_id,
+        group_id,
+        create_time,
+        syn_ding_dept_id,
+        region_path,
+        region_type,
+        order_num,
+        create_name,
+        store_id,
+        third_dept_id
+        )
+        values
+        <foreach collection="list" item="region" separator=",">
+            (
+            #{region.name},
+            #{region.parentId},
+            #{region.groupId},
+            #{region.createTime},
+            #{region.synDingDeptId},
+            #{region.regionPath},
+            #{region.regionType},
+            #{region.orderNum},
+            #{region.createName},
+            #{region.storeId},
+            #{region.thirdDeptId}
+            )
+        </foreach>
+    </insert>
+
+    <select id="getSubRegion" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            id          ,
+            id          as regionId,
+            name        ,
+            parent_id   as parentId,
+            group_id    as groupId,
+            create_time as createTime,
+            create_name as createName,
+            syn_ding_dept_id as synDingDeptId,
+            update_time as updateTime,
+            update_name as updateName,
+            region_path as regionPath,
+            store_num   as storeNum,
+            store_id   as storeId,
+            region_type as regionType,
+            syn_ding_dept_id as synDingDeptId
+        from region_${eid}
+        where deleted = 0 and parent_id = #{parentId}
+    </select>
+
+    <select id="getByRegionIdExcludeDeleted" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+        id          ,
+        id          as regionId,
+        name        as name ,
+        parent_id   as parentId,
+        group_id    as groupId,
+        create_time as createTime,
+        create_name as createName,
+        update_time as updateTime,
+        update_name as updateName,
+        syn_ding_dept_id as synDingDeptId,
+        store_id as storeId,
+        region_type as regionType,
+        region_path as regionPath,
+        deleted,
+        store_num   as storeNum
+        from region_${eid}
+        where id = #{regionId} and deleted = 0;
+    </select>
+
+    <select id="getAllRegionInfo" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            *,
+            id  as regionId
+        from region_${eid}
+        where deleted = 0 and ifnull(parent_id, "") != -1
+    </select>
+
+    <select id="getSubIdsByRegionIds" resultType="string">
+        select
+            id
+        from
+            region_${eid}
+        where
+            deleted = 0
+        and
+            <foreach collection="regionPaths" separator=" or " open="(" close=")" item="region" > region_path like concat(#{region}, "%")</foreach>
+    </select>
+
+    <select id="getSubIdsByRegionpaths" resultType="string">
+        select
+        id
+        from
+        region_${eid}
+        where
+        deleted = 0
+        and region_type = 'path'
+        and
+        <foreach collection="regionPaths" separator=" or " open="(" close=")" item="region" > region_path like concat('%',#{region}, "%")</foreach>
+    </select>
+
+    <select id="getStoreIdByRegionIds" resultType="string">
+        select
+            store_id
+        from
+            region_${eid}
+        where
+            deleted = 0
+        and
+            region_type = 'store'
+        and
+            id in <foreach collection="regionIds" separator="," open="(" close=")" item="region" > #{region}</foreach>
+    </select>
+
+    <select id="getRegionIdByStoreIds" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            id ,id as regionId, store_id as storeId,region_path as regionPath
+        from
+            region_${eid}
+        where
+            deleted = 0
+        and
+            store_id in <foreach collection="storeIds" separator="," open="(" close=")" item="store" > #{store}</foreach>
+    </select>
+
+    <select id="getRegionIdByThirdDeptIds" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            id, id as regionId, third_dept_id as thirdDeptId, store_id as storeId, name, region_type as regionType, syn_ding_dept_id as synDingDeptId, region_path as regionPath
+        from
+            region_${eid}
+        where
+            deleted = 0
+        and
+            third_dept_id in <foreach collection="thirdUniqueIds" separator="," open="(" close=")" item="thirdUniqueId" > #{thirdUniqueId}</foreach>
+    </select>
+
+
+    <select id="getAllStoreRegionIdsByRegionId" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            id,
+            id as regionId,
+            store_id as storeId,
+            name as name,
+            third_dept_id as thirdDeptId
+        from
+            region_${eid}
+        where
+            deleted = 0
+        and
+            region_path like concat("%/",#{regionId}, "/%")
+        and
+            region_type = 'store'
+    </select>
+
+    <select id="listRegionIdsByNames" resultType="java.lang.Long">
+        select id
+        from region_${eid}
+        where deleted = 0 and name in (
+        <foreach collection="nameList" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="listRegionsByNames" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+        <include refid="fields"/>
+        from region_${eid}
+        where deleted = 0 and name in (
+        <foreach collection="nameList" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+
+    <select id="selectStoresByRegionId" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+            <include refid="fields"></include>
+        from region_${eid}
+        where
+            deleted = 0
+        AND
+            (region_path like concat("%/",#{regionId}, "/%") AND region_type='store')
+        OR
+            (id=#{regionId} AND region_type='store')
+    </select>
+    <select id="findWeeklyNewspaper" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+        <include refid="fields"/>
+        from region_${enterpriseId}
+        where id in (
+        select region_id from qyy_weekly_newspaper_${enterpriseId}
+        )
+    </select>
+    <select id="countStoreWeeklypaper" resultType="java.lang.Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            region_${enterpriseId}
+        WHERE
+            region_path LIKE  concat('%/',#{regionId},'/%')
+            AND store_id IS NOT NULL
+            AND store_id NOT IN (
+            SELECT
+                store_id
+            FROM
+                qyy_weekly_newspaper_${enterpriseId}
+            WHERE
+                monday_of_week = #{monday}
+        )
+    </select>
+    <select id="countTotalStoreWeeklypaper" resultType="java.lang.Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            region_${enterpriseId}
+        WHERE
+            region_path LIKE  concat('%/',#{regionId},'/%')
+            AND store_id IS NOT NULL
+    </select>
+    <select id="countWeeklyNewspaperOpen" resultType="java.lang.String">
+        SELECT
+            `name`
+        FROM
+            region_${enterpriseId}
+        WHERE
+            region_path LIKE concat('%/',#{synDeptId},'/%')
+            AND store_id IS NOT NULL
+            AND store_id IN (
+            SELECT
+                store_id
+            FROM
+                qyy_weekly_newspaper_${enterpriseId}
+            WHERE
+                monday_of_week = #{monday}
+        )
+    </select>
+    <select id="countWeeklyNewspaperClose" resultType="java.lang.String">
+        SELECT
+            `name`
+        FROM
+            region_${enterpriseId}
+        WHERE
+            region_path LIKE concat('%/',#{synDeptId},'/%')
+            AND store_id IS NOT NULL
+            AND store_id NOT IN (
+            SELECT
+                store_id
+            FROM
+                qyy_weekly_newspaper_${enterpriseId}
+            WHERE
+                monday_of_week = #{monday}
+        )
+    </select>
+    <select id="getStoreIdBythirdDeptId" resultType="java.lang.Long">
+        select syn_ding_dept_id
+        from region_${enterpriseId}
+        where third_dept_id = #{thirdDeptId}
+        and deleted = 0
+    </select>
+    <select id="getRegionOfDingDeptIdByRegionLikePath" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+        <include refid="fields"></include>
+        from region_${enterpriseId}
+        where region_type = 'store'
+        and deleted = 0
+        and (
+        region_path like
+        <foreach collection="stringCompParentIdList" item="id" separator="or region_path like" close="">
+            concat('%/',#{id},'/%')
+        </foreach>
+        )
+    </select>
+    <select id="getRegionBySynDingDeptId" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select  <include refid="fields"></include>
+        from region_${enterpriseId}
+        where deleted = 0
+        and syn_ding_dept_id = #{synDingDeptId}
+    </select>
+    <select id="getCompRegionByRegionIds" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select
+        <include refid="fields"></include>
+        from region_${enterpriseId}
+        where region_type = 'path'
+        and deleted = 0
+        and (
+        region_path like
+        <foreach collection="stringCompParentIdList" item="id" separator="or region_path like" close="">
+            concat('%/',#{id},'/%')
+        </foreach>
+        )
+    </select>
+    <select id="countByRegionIdList" resultType="java.lang.Integer">
+        select
+        count(0)
+        from region_${enterpriseId}
+        where id in (
+        <foreach collection="regionIdList" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+    </select>
+    <select id="getNameByIds" resultType="java.lang.String">
+        select
+        name
+        from region_${enterpriseId}
+        where id in (
+        <foreach collection="regionIdList" separator="," item="id">
+            #{id}
+        </foreach>
+        )
+        order by id;
+    </select>
+
+    <select id="getStoreByParentIds" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select <include refid="fields"></include>
+        from region_${enterpriseId}
+        where region_path like concat('%/',#{regionId},'/%')
+        and deleted = 0
+        and region_type = 'store'
+    </select>
+
+    <select id="getStoresByParentIds" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select <include refid="fields"/>
+        from region_${enterpriseId}
+        where region_type = 'store'
+        and deleted = 0
+        and (
+        region_path like
+        <foreach collection="regionIds" item="id" separator="or region_path like" close="">
+            concat('%/',#{id},'/%')
+        </foreach>
+        )
+    </select>
+    <select id="getSubStoreByPath" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select <include refid="fields"/>
+        from region_${enterpriseId}
+        where region_type = 'store'
+        and deleted = 0
+        <if test="regionDO.regionPath!=null and regionDO.regionPath!=''">
+            and region_path like  concat(#{regionDO.regionPath},'%')
+        </if>
+    </select>
+    <select id="getRegionByParentIds" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select <include refid="fields"/>
+        from region_${enterpriseId}
+        WHERE
+        deleted = 0
+        AND parent_id in (
+        <foreach collection="regionIdList" separator="," item="id">
+            #{id}
+        </foreach>
+        )
+    </select>
+
+    <select id="getExternalRegionCount" resultType="long">
+        select count(1) from region_${enterpriseId} where deleted = 0 and is_external_node = '1'
+    </select>
+
+    <select id="getExternalRegionList" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select <include refid="fields"/> from region_${enterpriseId} where deleted = 0 and is_external_node = '1'
+    </select>
+
+    <select id="getRegionByIdIgnoreDelete" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select <include refid="fields"/> from region_${enterpriseId} where id = #{regionId}
+    </select>
+    <select id="getStoresByRegionIdList" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select <include refid="fields"/>
+        from region_${eid}
+        where region_type = 'store'
+        and deleted = 0
+        and (
+        region_path like
+        <foreach collection="regionIds" item="id" separator="or region_path like" close="">
+            concat('%/',#{id},'/%')
+        </foreach>
+            or id in (
+        <foreach collection="regionIds" item="id" separator="," close="">
+            #{id}
+        </foreach>)
+        )
+    </select>
+    <select id="getStoreIdsByRegionIds" resultType="java.lang.String">
+        select store_id
+        from region_${eid}
+        where region_type = 'store'
+        and deleted = 0
+        and (
+            region_path like concat('%/',#{regionId},'/%')
+        or
+            id = #{regionId}
+        )
+    </select>
+
+    <delete id="deleteRegionsByIds">
+        update region_${eid} set deleted = '1' where id in
+        <foreach collection="regionIds" index="index" item="regionId"
+                 separator="," open="(" close=")">
+            #{regionId}
+        </foreach>
+    </delete>
+
+    <update id="updateByPrimaryKeySelective">
+        update region_${eid}
+        <set>
+            <if test="record.regionId != null">region_id = #{record.regionId}, </if>
+            <if test="record.name != null">name = #{record.name}, </if>
+            <if test="record.parentId != null">parent_id = #{record.parentId}, </if>
+            <if test="record.groupId != null">group_id = #{record.groupId}, </if>
+            <if test="record.createTime != null">create_time = #{record.createTime}, </if>
+            <if test="record.createName != null">create_name = #{record.createName}, </if>
+            <if test="record.updateTime != null">update_time = #{record.updateTime}, </if>
+            <if test="record.updateName != null">update_name = #{record.updateName}, </if>
+            <if test="record.synDingDeptId != null">syn_ding_dept_id = #{record.synDingDeptId}, </if>
+            <if test="record.regionType != null">region_type = #{record.regionType}, </if>
+            <if test="record.regionPath != null">region_path = #{record.regionPath}, </if>
+            <if test="record.deleted != null">deleted = #{record.deleted}, </if>
+            <if test="record.storeNum != null">store_num = #{record.storeNum}, </if>
+            <if test="record.storeId != null">store_id = #{record.storeId}, </if>
+            <if test="record.unclassifiedFlag != null">unclassified_flag = #{record.unclassifiedFlag}, </if>
+            <if test="record.orderNum != null">order_num = #{orderNum}, </if>
+            <if test="record.thirdDeptId != null">third_dept_id = #{record.thirdDeptId}, </if>
+            <if test="record.isExternalNode != null">is_external_node = #{record.isExternalNode}, </if>
+            <if test="record.thirdRegionType != null">third_region_type = #{record.thirdRegionType}, </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <select id="getRegionName" resultType="java.lang.String">
+        select  name from region_${eid} where id = #{regionId} and deleted = 0
+    </select>
+    
+    <select id="getFullPathByIds" resultType="string">
+        select
+            concat(if(region_path='' or region_path is null, "/", region_path), id, "/")
+        from
+            region_${enterpriseId}
+        where
+            deleted = 0
+        and
+            id in <foreach collection="regionIds" separator="," open="(" close=")" item="region" > #{region}</foreach>
+    </select>
+</mapper>

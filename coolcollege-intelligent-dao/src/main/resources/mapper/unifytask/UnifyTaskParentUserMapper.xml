@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.unifytask.UnifyTaskParentUserMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.unifytask.UnifyTaskParentUserDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="unify_task_id" jdbcType="BIGINT" property="unifyTaskId" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="task_type" jdbcType="VARCHAR" property="taskType" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="begin_time" jdbcType="BIGINT" property="beginTime" />
+    <result column="end_time" jdbcType="BIGINT" property="endTime" />
+    <result column="parent_status" jdbcType="VARCHAR" property="parentStatus" />
+    <result column="parent_create_time" jdbcType="BIGINT" property="parentCreateTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, unify_task_id, task_name, task_type, user_id, begin_time, end_time, parent_status, 
+    parent_create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from unify_task_parent_user_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectByUserId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from unify_task_parent_user_${enterpriseId}
+    where
+    task_type = #{query.taskType}
+    and
+    user_id = #{userId}
+    <if test="query.queryType != null and query.queryType != ''">
+      <choose>
+        <when test="query.queryType=='nostart'">
+          AND begin_time &gt;= UNIX_TIMESTAMP(now())*1000
+        </when>
+        <when test="query.queryType=='ongoing'">
+          and parent_status = 'ongoing'
+          AND begin_time &lt; UNIX_TIMESTAMP(now())*1000
+        </when>
+        <when test="query.queryType=='complete'">
+          and parent_status = 'complete'
+          AND begin_time &lt; UNIX_TIMESTAMP(now())*1000
+        </when>
+        <otherwise>
+          and parent_status is not null
+        </otherwise>
+      </choose>
+    </if>
+    <if test="query.taskName != null and query.taskName != ''">
+      and task_name like concat('%',trim(#{query.taskName,jdbcType=VARCHAR}),'%')
+    </if>
+    order by parent_create_time desc
+  </select>
+  <select id="selectDisplayParentStatistics" resultType="java.lang.Integer">
+    select count(a.id)
+    from unify_task_parent_user_${enterpriseId} a
+    where a.task_type = #{taskType}
+    and a.user_id = #{userId}
+    <if test="status != null and status != ''">
+      <choose>
+        <when test="status=='nostart'">
+          AND a.begin_time &gt;= UNIX_TIMESTAMP(now())*1000
+        </when>
+        <otherwise>
+          and a.parent_status = #{status}
+          AND a.begin_time &lt; UNIX_TIMESTAMP(now())*1000
+        </otherwise>
+      </choose>
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from unify_task_parent_user_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <delete id="deleteByUnifyTaskId">
+      delete from unify_task_parent_user_${enterpriseId}
+      where unify_task_id = #{unifyTaskId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.unifytask.UnifyTaskParentUserDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into unify_task_parent_user_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.unifyTaskId != null">
+        unify_task_id,
+      </if>
+      <if test="record.taskName != null">
+        task_name,
+      </if>
+      <if test="record.taskType != null">
+        task_type,
+      </if>
+      <if test="record.userId != null">
+        user_id,
+      </if>
+      <if test="record.beginTime != null">
+        begin_time,
+      </if>
+      <if test="record.endTime != null">
+        end_time,
+      </if>
+      <if test="record.parentStatus != null">
+        parent_status,
+      </if>
+      <if test="record.parentCreateTime != null">
+        parent_create_time,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.unifyTaskId != null">
+        #{record.unifyTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="record.taskName != null">
+        #{record.taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskType != null">
+        #{record.taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginTime != null">
+        #{record.beginTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.endTime != null">
+        #{record.endTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.parentStatus != null">
+        #{record.parentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentCreateTime != null">
+        #{record.parentCreateTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+    <insert id="batchInsertOrUpdate">
+      insert into unify_task_parent_user_${enterpriseId}
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+          unify_task_id,
+          task_name,
+          task_type,
+          user_id,
+          begin_time,
+          end_time,
+          parent_status,
+          parent_create_time,
+          update_time,
+      </trim>
+      values
+      <foreach collection="list" item="record" separator=",">
+        (
+          #{record.unifyTaskId,jdbcType=BIGINT},
+          #{record.taskName,jdbcType=VARCHAR},
+          #{record.taskType,jdbcType=VARCHAR},
+          #{record.userId,jdbcType=VARCHAR},
+          #{record.beginTime,jdbcType=BIGINT},
+          #{record.endTime,jdbcType=BIGINT},
+          #{record.parentStatus,jdbcType=VARCHAR},
+          #{record.parentCreateTime,jdbcType=BIGINT},
+          #{record.updateTime,jdbcType=TIMESTAMP}
+        )
+      </foreach>
+      ON DUPLICATE KEY UPDATE
+        task_name = values(task_name),
+        begin_time = values(begin_time),
+        end_time = values(end_time),
+        update_time = values(update_time)
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.unifytask.UnifyTaskParentUserDO">
+    update unify_task_parent_user_${enterpriseId}
+    <set>
+      <if test="record.unifyTaskId != null">
+        unify_task_id = #{record.unifyTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="record.taskName != null">
+        task_name = #{record.taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskType != null">
+        task_type = #{record.taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginTime != null">
+        begin_time = #{record.beginTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.endTime != null">
+        end_time = #{record.endTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.parentStatus != null">
+        parent_status = #{record.parentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentCreateTime != null">
+        parent_create_time = #{record.parentCreateTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+  <update id="updateParentStatusByUnifyTaskId">
+    update unify_task_parent_user_${enterpriseId}
+    <set>
+        parent_status = #{parentStatus,jdbcType=VARCHAR},
+    </set>
+    where unify_task_id = #{unifyTaskId,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != unifyTaskId">
+         and t.unify_task_id = #{unifyTaskId,jdbcType=BIGINT}
+      </if>
+      <if test="null != taskName">
+         and t.task_name = #{taskName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != taskType">
+         and t.task_type = #{taskType,jdbcType=VARCHAR}
+      </if>
+      <if test="null != userId">
+         and t.user_id = #{userId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != beginTime">
+         and t.begin_time = #{beginTime,jdbcType=BIGINT}
+      </if>
+      <if test="null != endTime">
+         and t.end_time = #{endTime,jdbcType=BIGINT}
+      </if>
+      <if test="null != parentStatus">
+         and t.parent_status = #{parentStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="null != parentCreateTime">
+         and t.parent_create_time = #{parentCreateTime,jdbcType=BIGINT}
+      </if>
+      <if test="null != updateTime">
+         and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+  </sql>
+</mapper>

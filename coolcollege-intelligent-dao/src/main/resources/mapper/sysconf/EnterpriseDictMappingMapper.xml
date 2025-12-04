@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.sysconf.EnterpriseDictMappingMapper" >
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.system.sysconf.EnterpriseDictMappingDO">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="dictId" column="dict_id" jdbcType="BIGINT"/>
+        <result property="businessType" column="business_type" jdbcType="VARCHAR"/>
+        <result property="dictKey" column="dict_key" jdbcType="VARCHAR"/>
+        <result property="dictValue" column="dict_value" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="enterpriseId" column="enterprise_id" jdbcType="VARCHAR"/>
+        <result property="dingCorpId" column="ding_corp_id" jdbcType="VARCHAR"/>
+        <result property="hasDelete" column="is_deleted" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="BaseSql">
+        id,dict_id,business_type,dict_key,dict_value,remark,enterprise_id,ding_corp_id,is_deleted,create_time,update_time
+    </sql>
+    <sql id="enterpriseOrCorpId">
+        <choose>
+            <when test="enterpriseId != null and enterpriseId != ''">
+                enterprise_id = #{enterpriseId}
+            </when>
+            <otherwise>
+                ding_corp_id = #{dingCorpId}
+            </otherwise>
+        </choose>
+    </sql>
+    <insert id="batchInsert">
+        insert into enterprise_dict_mapping
+        (
+        <include refid="BaseSql"></include>
+        )
+        values
+        <foreach collection="mappingList" separator="," item="mapping">
+            (
+            #{mapping.id,jdbcType = BIGINT},
+            #{mapping.dictId,jdbcType = BIGINT},
+            #{mapping.businessType,jdbcType = VARCHAR},
+            #{mapping.dictKey,jdbcType = VARCHAR},
+            #{mapping.dictValue,jdbcType = VARCHAR},
+            #{mapping.remark,jdbcType = VARCHAR},
+            #{mapping.enterpriseId,jdbcType = VARCHAR},
+            #{mapping.dingCorpId,jdbcType = VARCHAR},
+            #{mapping.hasDelete,jdbcType = TINYINT},
+            CURRENT_DATE,
+            CURRENT_DATE
+            )
+        </foreach>
+    </insert>
+    <update id="deleteKeyAndType">
+        update 1=1,
+        update_time = CURRENT_DATE;
+        where
+        <include refid="enterpriseOrCorpId"/>
+        <if test="dictKey != null and dictKey != ''">
+            and dict_key = #{dictKey}
+        </if>
+        <if test="businessType != null and businessType != ''">
+            and business_type = #{businessType}
+        </if>
+    </update>
+    <update id="updateValueByKeyAndType">
+        update  enterprise_dict_mapping set
+        update_time = CURRENT_DATE,
+        dict_value = #{dictValue}
+        where
+        <include refid="enterpriseOrCorpId"/>
+        and id = #{id}
+    </update>
+    <delete id="deleteByDictId">
+        delete from enterprise_dict_mapping
+        where dict_id = #{dictId}
+    </delete>
+    <update id="deleteById">
+        delete from enterprise_dict_mapping
+        where id = #{id}
+    </update>
+    <select id="listMappingByKeyAndType"
+            resultMap="BaseResultMap">
+        select *
+        from enterprise_dict_mapping where
+        <include refid="enterpriseOrCorpId"/>
+        <if test="dictKey != null and dictKey != ''">
+            and dict_key = #{dictKey}
+        </if>
+        <if test="businessType != null and businessType != ''">
+            and business_type = #{businessType}
+        </if>
+        order by id desc
+    </select>
+
+
+</mapper>

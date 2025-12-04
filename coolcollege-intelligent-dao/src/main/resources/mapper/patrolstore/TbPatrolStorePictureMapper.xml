@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.patrolstore.TbPatrolStorePictureMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.patrolstore.TbPatrolStorePictureDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="business_id" jdbcType="BIGINT" property="businessId"/>
+        <result column="device_id" jdbcType="BIGINT" property="deviceId"/>
+        <result column="device_channel_id" jdbcType="BIGINT" property="deviceChannelId"/>
+        <result column="store_scene_id" jdbcType="BIGINT" property="storeSceneId"/>
+        <result column="picture" jdbcType="VARCHAR" property="picture"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="remark" jdbcType="BIGINT" property="remark"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, business_id, device_id, device_channel_id, store_scene_id, picture, create_time, update_time, remark, deleted
+    </sql>
+
+    <insert id="insert"  keyProperty="picture.id" useGeneratedKeys="true">
+        insert into tb_patrol_store_picture_${enterpriseId}
+        (
+         business_id,
+         device_id,
+         device_channel_id,
+         store_scene_id,
+         picture,
+         create_time,
+         update_time,
+         remark,
+         deleted,
+        capture_picture_type
+        )
+        values
+        (
+        #{picture.businessId},
+        #{picture.deviceId},
+        #{picture.deviceChannelId},
+        #{picture.storeSceneId},
+        #{picture.picture},
+        #{picture.createTime},
+        #{picture.updateTime},
+        #{picture.remark},
+        #{picture.deleted},
+        #{picture.capturePictureType})
+    </insert>
+    <insert id="batchInsert" keyColumn="id" keyProperty="list.id" useGeneratedKeys="true">
+        insert into tb_patrol_store_picture_${enterpriseId}
+        (
+        business_id,
+        device_id,
+        device_channel_id,
+        store_scene_id,
+        picture,
+        create_time,
+        update_time,
+        remark,
+        deleted
+         )
+        values
+        <foreach collection="list" item="item" separator=",">
+           (
+            #{item.businessId},
+            #{item.deviceId},
+            #{item.deviceChannelId},
+            #{item.storeSceneId},
+            #{item.picture},
+            #{item.createTime},
+            #{item.updateTime},
+            #{item.remark},
+            #{item.deleted}
+            )
+        </foreach>
+    </insert>
+    <select id="getStoreScenePictureList"
+            resultType="com.coolcollege.intelligent.model.patrolstore.TbPatrolStorePictureDO">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_patrol_store_picture_${enterpriseId}
+        where deleted = 0
+        <if test="businessId != null">
+            and business_id = #{businessId}
+        </if>
+        <if test="storeSceneId != null">
+            and store_scene_id = #{storeSceneId}
+        </if>
+    </select>
+    <select id="selectByBusinessIdList"
+            resultType="com.coolcollege.intelligent.model.patrolstore.TbPatrolStorePictureDO">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_patrol_store_picture_${enterpriseId}
+        where deleted = 0
+        <if test="businessIdList != null and businessIdList.size()>0">
+            and business_id in (
+            <foreach collection="businessIdList" item="businessId" separator=",">
+                #{businessId}
+            </foreach>
+            )
+        </if>
+    </select>
+    <select id="selectIdOne" resultType="java.lang.Long">
+        select id
+        from tb_patrol_store_picture_${enterpriseId}
+        where deleted = 0
+        and business_id = #{businessId}
+        limit 1
+    </select>
+    <select id="selectPictureIdOne" resultType="java.lang.Long">
+        select id
+        from tb_patrol_store_picture_${enterpriseId}
+        where deleted = 0
+          and business_id = #{businessId}
+          and store_scene_id = #{storeSceneId}
+            limit 1
+    </select>
+</mapper>

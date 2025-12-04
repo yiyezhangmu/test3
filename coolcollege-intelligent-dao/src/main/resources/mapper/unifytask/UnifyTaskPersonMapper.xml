@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.unifytask.UnifyTaskPersonMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.unifytask.UnifyTaskPersonDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="task_id" jdbcType="BIGINT" property="taskId" />
+    <result column="sub_task_id" jdbcType="BIGINT" property="subTaskId" />
+    <result column="handle_user_id" jdbcType="VARCHAR" property="handleUserId" />
+    <result column="loop_count" jdbcType="INTEGER" property="loopCount" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="sub_status" jdbcType="VARCHAR" property="subStatus" />
+    <result column="sub_begin_time" jdbcType="TIMESTAMP" property="subBeginTime"/>
+    <result column="sub_end_time" jdbcType="TIMESTAMP" property="subEndTime"/>
+    <result column="complete_time" jdbcType="TIMESTAMP" property="completeTime"/>
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.coolcollege.intelligent.model.unifytask.UnifyTaskPersonDO">
+    <result column="execute_demand" jdbcType="LONGVARCHAR" property="executeDemand" />
+    <result column="store_ids" jdbcType="LONGVARCHAR" property="storeIds" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_time, update_time, task_id, sub_task_id, handle_user_id, loop_count, task_name, 
+    create_user_id, sub_status, sub_begin_time, sub_end_time, complete_time
+  </sql>
+  <sql id="Blob_Column_List">
+    execute_demand, store_ids
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from unify_task_person_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+    <select id="selectBySubTaskId" resultType="com.coolcollege.intelligent.model.unifytask.UnifyTaskPersonDO">
+      select
+      <include refid="Base_Column_List" />
+      ,
+      <include refid="Blob_Column_List" />
+      from unify_task_person_${enterpriseId}
+      <where>
+        sub_task_id = #{subTaskId}
+      </where>
+    </select>
+    <select id="selectMiddlePageData"
+            resultType="com.coolcollege.intelligent.model.unifytask.UnifyTaskPersonDO">
+      select
+      <include refid="Base_Column_List"/>
+      ,
+      <include refid="Blob_Column_List"/>
+      from unify_task_person_${enterpriseId}
+      <where>
+        task_id = #{params.unifyTaskId}
+        <if test="params.userIds != null and params.userIds.size > 0">
+          and handle_user_id in
+          <foreach collection="params.userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+          </foreach>
+        </if>
+        <if test="params.subStatus != null and params.subStatus != ''">
+            and sub_status = #{params.subStatus}
+        </if>
+      </where>
+
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from unify_task_person_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByUnifyTaskId">
+    delete from unify_task_person_${enterpriseId}
+    where task_id = #{unifyTaskId}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.unifytask.UnifyTaskPersonDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into unify_task_person_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.taskId != null">
+        task_id,
+      </if>
+      <if test="record.subTaskId != null">
+        sub_task_id,
+      </if>
+      <if test="record.handleUserId != null">
+        handle_user_id,
+      </if>
+      <if test="record.loopCount != null">
+        loop_count,
+      </if>
+      <if test="record.taskName != null">
+        task_name,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.subStatus != null">
+        sub_status,
+      </if>
+      <if test="record.executeDemand != null">
+        execute_demand,
+      </if>
+      <if test="record.storeIds != null">
+        store_ids,
+      </if>
+      <if test="record.subBeginTime != null">
+        sub_begin_time,
+      </if>
+      <if test="record.subEndTime != null">
+        sub_end_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.createTime != null">
+        #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskId != null">
+        #{record.taskId,jdbcType=BIGINT},
+      </if>
+      <if test="record.subTaskId != null">
+        #{record.subTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="record.handleUserId != null">
+        #{record.handleUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loopCount != null">
+        #{record.loopCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskName != null">
+        #{record.taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subStatus != null">
+        #{record.subStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.executeDemand != null">
+        #{record.executeDemand,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.storeIds != null">
+        #{record.storeIds,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.subBeginTime != null">
+        #{record.subBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.subEndTime != null">
+        #{record.subEndTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.unifytask.UnifyTaskPersonDO">
+    update unify_task_person_${enterpriseId}
+    <set>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskId != null">
+        task_id = #{record.taskId,jdbcType=BIGINT},
+      </if>
+      <if test="record.subTaskId != null">
+        sub_task_id = #{record.subTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="record.handleUserId != null">
+        handle_user_id = #{record.handleUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loopCount != null">
+        loop_count = #{record.loopCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskName != null">
+        task_name = #{record.taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subStatus != null">
+        sub_status = #{record.subStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.executeDemand != null">
+        execute_demand = #{record.executeDemand,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.storeIds != null">
+        store_ids = #{record.storeIds,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != updateTime">
+         and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != taskId">
+         and t.task_id = #{taskId,jdbcType=BIGINT}
+      </if>
+      <if test="null != subTaskId">
+         and t.sub_task_id = #{subTaskId,jdbcType=BIGINT}
+      </if>
+      <if test="null != handleUserId">
+         and t.handle_user_id = #{handleUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != loopCount">
+         and t.loop_count = #{loopCount,jdbcType=INTEGER}
+      </if>
+      <if test="null != taskName">
+         and t.task_name = #{taskName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createUserId">
+         and t.create_user_id = #{createUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != subStatus">
+         and t.sub_status = #{subStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="null != executeDemand">
+         and t.execute_demand = #{executeDemand,jdbcType=LONGVARCHAR}
+      </if>
+      <if test="null != storeIds">
+         and t.store_ids = #{storeIds,jdbcType=LONGVARCHAR}
+      </if>
+    </trim>
+  </sql>
+
+  <update id="updateTaskPersonStoreIds">
+		update unify_task_person_${enterpriseId}
+		set store_ids = #{storeIds}
+		where sub_task_id = #{subTaskId}
+	</update>
+
+  <update id="updateTaskPersonCompleteStatus">
+		update unify_task_person_${enterpriseId}
+		set sub_status=#{subStatus}, complete_time = #{completeTime}
+		where sub_task_id = #{subTaskId}  and sub_status = 'ongoing'
+	</update>
+
+  <select id="countByTaskIdAndStatus" resultType="java.lang.Integer">
+        select count(*)
+        from unify_task_person_${enterpriseId}
+        where task_id = #{taskId}  and loop_count = #{loopCount}  and sub_status = #{subStatus}
+    </select>
+
+  <select id="listBySubTaskIdList" resultType="com.coolcollege.intelligent.model.unifytask.UnifyTaskPersonDO">
+    select
+    <include refid="Base_Column_List"/>
+    ,
+    <include refid="Blob_Column_List"/>
+    from unify_task_person_${enterpriseId}
+    where sub_task_id in
+    <foreach collection="subTaskIdList" item="subTaskId" open="(" close=")" separator=",">
+      #{subTaskId}
+    </foreach>
+  </select>
+    <select id="countByTaskIdAndCreateTime" resultType="java.lang.Integer">
+      select count(*)
+      from unify_task_person_${enterpriseId}
+      where task_id = #{taskId}  and create_time between #{beginDate} and #{endTime}
+    </select>
+  <select id="selectByUserIdAndLoopCount" resultType="com.coolcollege.intelligent.model.unifytask.UnifyTaskPersonDO">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from unify_task_person_${enterpriseId}
+    where task_id = #{taskId}
+    and handle_user_id = #{handleUserId}
+    and loop_count = #{loopCount}
+  </select>
+  <update id="updateTaskPersonById">
+    update unify_task_person_${enterpriseId}
+    set sub_task_id = #{subTaskId}, handle_user_id = #{handleUserId}
+    where id = #{id}
+  </update>
+  <select id="selectList"
+          resultType="com.coolcollege.intelligent.model.unifytask.UnifyTaskPersonDO">
+    select
+    <include refid="Base_Column_List"/>
+    ,
+    <include refid="Blob_Column_List"/>
+    from unify_task_person_${enterpriseId}
+    where handle_user_id = #{handleUserId}
+    and sub_status = #{subStatus}
+  </select>
+</mapper>

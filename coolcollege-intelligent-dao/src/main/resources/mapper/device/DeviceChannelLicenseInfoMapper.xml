@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.device.DeviceChannelLicenseInfoMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.device.DeviceChannelLicenseInfoDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="channel_serial" jdbcType="VARCHAR" property="channelSerial" />
+    <result column="channel_name" jdbcType="VARCHAR" property="channelName" />
+    <result column="channel_no" jdbcType="INTEGER" property="channelNo" />
+    <result column="device_code" jdbcType="VARCHAR" property="deviceCode" />
+    <result column="license_id" jdbcType="BIGINT" property="licenseId" />
+    <result column="create_name" jdbcType="VARCHAR" property="createName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_name" jdbcType="VARCHAR" property="updateName" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="binding_time" jdbcType="TIMESTAMP" property="bindingTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, channel_serial, channel_name, channel_no, device_code, license_id, create_name, 
+    create_time, update_name, update_time, binding_time
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into device_channel_license_info_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.channelSerial != null">
+        channel_serial,
+      </if>
+      <if test="record.channelName != null">
+        channel_name,
+      </if>
+      <if test="record.channelNo != null">
+        channel_no,
+      </if>
+      <if test="record.deviceCode != null">
+        device_code,
+      </if>
+      <if test="record.licenseId != null">
+        license_id,
+      </if>
+      <if test="record.createName != null">
+        create_name,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.updateName != null">
+        update_name,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.bindingTime != null">
+        binding_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.channelSerial != null">
+        #{record.channelSerial},
+      </if>
+      <if test="record.channelName != null">
+        #{record.channelName},
+      </if>
+      <if test="record.channelNo != null">
+        #{record.channelNo},
+      </if>
+      <if test="record.deviceCode != null">
+        #{record.deviceCode},
+      </if>
+      <if test="record.licenseId != null">
+        #{record.licenseId},
+      </if>
+      <if test="record.createName != null">
+        #{record.createName},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+      <if test="record.updateName != null">
+        #{record.updateName},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime},
+      </if>
+      <if test="record.bindingTime != null">
+        #{record.bindingTime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update device_channel_license_info_{enterpriseId}
+    <set>
+      <if test="record.channelSerial != null">
+        channel_serial = #{record.channelSerial},
+      </if>
+      <if test="record.channelName != null">
+        channel_name = #{record.channelName},
+      </if>
+      <if test="record.channelNo != null">
+        channel_no = #{record.channelNo},
+      </if>
+      <if test="record.deviceCode != null">
+        device_code = #{record.deviceCode},
+      </if>
+      <if test="record.licenseId != null">
+        license_id = #{record.licenseId},
+      </if>
+      <if test="record.createName != null">
+        create_name = #{record.createName},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime},
+      </if>
+      <if test="record.updateName != null">
+        update_name = #{record.updateName},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime},
+      </if>
+      <if test="record.bindingTime != null">
+        binding_time = #{record.bindingTime},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+
+  <update id="update">
+    update device_channel_license_info_${eid}
+    set channel_name =#{channelName}
+    where id = #{id}
+  </update>
+
+  <delete id="delete">
+    delete from device_channel_license_info_${eid}
+    where id in
+    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <select id="selectList" resultType="com.coolcollege.intelligent.model.device.DeviceChannelLicenseInfoDO">
+    select *
+    from device_channel_license_info_${eid}
+    where license_id = #{id}
+  </select>
+  <select id="selectById" resultType="com.coolcollege.intelligent.model.device.DeviceChannelLicenseInfoDO">
+    select *
+    from device_channel_license_info_${eid}
+    where id = #{id}
+  </select>
+
+  <select id="selectListByIds"
+          resultType="com.coolcollege.intelligent.model.device.DeviceChannelLicenseInfoDO">
+    select * from device_channel_license_info_${eid} where id in
+    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </select>
+  <select id="selectByLicenseIds"
+          resultType="com.coolcollege.intelligent.model.device.DeviceChannelLicenseInfoDO">
+    select * from device_channel_license_info_${eid} where license_id in
+    <foreach collection="licenseIds" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </select>
+  <select id="selectByChannelSerial"
+          resultType="com.coolcollege.intelligent.model.device.DeviceChannelLicenseInfoDO">
+    select * from device_channel_license_info_${eid} where channel_serial=#{channelSerial}
+  </select>
+</mapper>

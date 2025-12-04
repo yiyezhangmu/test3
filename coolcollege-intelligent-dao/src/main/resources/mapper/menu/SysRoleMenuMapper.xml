@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.menu.SysRoleMenuMapper">
+
+    <resultMap id="baseResult" type="com.coolcollege.intelligent.model.menu.SysRoleMenuDO">
+        <result property="id" column="id"/>
+        <result property="menuId" column="menu_id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="platform" column="platform"/>
+
+    </resultMap>
+   <insert  id="batchInsertSysRoleMenu">
+            insert into sys_role_menu_v2_${eid}
+            (
+            menu_id,
+            role_id
+            )
+            VALUES
+            <foreach collection="roleMenuList" item="item" separator=",">
+                (
+                #{item.menuId},
+                #{item.roleId}
+                )
+            </foreach>
+    </insert>
+    <select id="listSysRoleMenuByRoleIdOld" resultMap="baseResult">
+        select  * from
+        sys_role_menu_${eid}
+        where role_id=#{roleId} and platform=#{platform}
+    </select>
+    <select id="listSysRoleMenuByRoleId" resultMap="baseResult">
+        select  * from
+        sys_role_menu_v2_${eid}
+        where role_id=#{roleId} and platform=#{platform}
+    </select>
+
+    <select id="listSysRoleMenuAll" resultMap="baseResult">
+        select  * from
+        sys_role_menu_v2_${eid}
+
+    </select>
+
+    <select id="listSysRoleMenuByPlatform" resultMap="baseResult">
+        select  * from
+        sys_role_menu_v2_${eid}
+        where platform=#{platform}
+        order by id asc
+    </select>
+
+    <insert  id="batchInsertRoleMenu">
+        insert into sys_role_menu_v2_${eid}
+        (
+        menu_id,
+        role_id,
+        platform
+        )
+        VALUES
+        <foreach collection="roleMenuList" item="item" separator=",">
+            (
+            #{item.menuId},
+            #{item.roleId},
+            #{item.platform}
+            )
+        </foreach>
+    </insert>
+    <select id="listSysRoleMenuIdByMenuId" resultType="java.lang.Long">
+        select  DISTINCT role_id from
+            sys_role_menu_v2_${eid}
+        where menu_id=#{menuId} and platform=#{platform}
+
+    </select>
+    
+    <select id="listRoleMenuIdByMenuIds" resultMap="baseResult">
+        select  * from
+        sys_role_menu_${eid}
+        where
+        menu_id in
+        <foreach collection="menuIds" open="(" close=")" separator="," item="menuId">#{menuId}</foreach>
+        order by id asc
+    </select>
+
+    <delete id="deleteAuthByMenuIds">
+        delete from sys_role_menu_${eid} where id in <foreach collection="ids" open="(" close=")" separator="," item="id">#{id}</foreach>
+    </delete>
+</mapper>

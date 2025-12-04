@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.fsGroup.FsGroupMappingMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.fsGroup.FsGroupMappingDO" id="FsGroupMappingMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="chatId" column="chat_id" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    <sql id="baseSql">
+        id as id,chat_id as chatId,user_id as userId,create_time as createTime    </sql>
+
+    <!--查询单个-->
+    <select id="queryById" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupMappingDO">
+        select
+          <include refid="baseSql"></include>
+        from fs_group_mapping_${eid}
+        where id = #{id}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from fs_group_mapping_${eid}
+        <where>
+            <if test="fsGroupMappingDO.id != null">
+                and id = #{fsGroupMappingDO.id}
+            </if>
+            <if test="fsGroupMappingDO.chatId != null and fsGroupMappingDO.chatId != ''">
+                and chat_id = #{fsGroupMappingDO.chatId}
+            </if>
+            <if test="fsGroupMappingDO.userId != null and fsGroupMappingDO.userId != ''">
+                and user_id = #{fsGroupMappingDO.userId}
+            </if>
+            <if test="fsGroupMappingDO.createTime != null">
+                and create_time = #{fsGroupMappingDO.createTime}
+            </if>
+        </where>
+    </select>
+    <select id="queryByChatIds" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupMappingDO">
+        select <include refid="baseSql"></include>
+            from fs_group_mapping_${eid}
+        where chat_id in
+        <foreach collection="chatIds" item="chatId" open="(" separator="," close=")">
+            #{chatId}
+        </foreach>
+    </select>
+    <select id="queryByChatId" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupMappingDO">
+        select <include refid="baseSql"></include>
+        from fs_group_mapping_${eid}
+        where chat_id = #{chatId}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="fsGroupMappingDO.id" useGeneratedKeys="true">
+        insert into fs_group_mapping_${eid}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fsGroupMappingDO.chatId != null and fsGroupMappingDO.chatId != ''">
+                chat_id,
+            </if>
+            <if test="fsGroupMappingDO.userId != null and fsGroupMappingDO.userId != ''">
+                user_id,
+            </if>
+            <if test="fsGroupMappingDO.createTime != null">
+                create_time,
+            </if>
+     </trim>
+        values 
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fsGroupMappingDO.chatId != null and fsGroupMappingDO.chatId != ''">
+                #{fsGroupMappingDO.chatId},
+            </if>
+            <if test="fsGroupMappingDO.userId != null and fsGroupMappingDO.userId != ''">
+                #{fsGroupMappingDO.userId},
+            </if>
+            <if test="fsGroupMappingDO.createTime != null">
+                #{fsGroupMappingDO.createTime},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" keyProperty="dos.id" useGeneratedKeys="true">
+        insert into fs_group_mapping_${eid}(chat_id, user_id, create_time)
+        values
+        <foreach collection="dos" item="do" separator=",">
+        (#{do.chatId}, #{do.userId}, #{do.createTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="dos.id" useGeneratedKeys="true">
+        insert into fs_group_mapping_${eid}(chat_id, user_id, create_time)
+        values
+        <foreach collection="dos" item="do" separator=",">
+            (#{do.chatId}, #{do.userId}, #{do.createTime})
+        </foreach>
+        on duplicate key update
+        chat_id = values(chat_id),
+        user_id = values(user_id),
+        create_time = values(create_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update fs_group_mapping_${eid}
+        <set>
+            <if test="fsGroupMappingDO.chatId != null and fsGroupMappingDO.chatId != ''">
+                chat_id = #{fsGroupMappingDO.chatId},
+            </if>
+            <if test="fsGroupMappingDO.userId != null and fsGroupMappingDO.userId != ''">
+                user_id = #{fsGroupMappingDO.userId},
+            </if>
+            <if test="fsGroupMappingDO.createTime != null">
+                create_time = #{fsGroupMappingDO.createTime},
+            </if>
+        </set>
+        where id = #{fsGroupMappingDO.id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from fs_group_mapping_${eid} where id = #{id}
+    </delete>
+    <delete id="deleteByChatId">
+        delete from fs_group_mapping_${eid} where chat_id = #{chatId}
+    </delete>
+
+</mapper>
+

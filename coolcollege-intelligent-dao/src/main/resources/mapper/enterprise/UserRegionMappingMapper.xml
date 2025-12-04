@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.UserRegionMappingMapper">
+    <resultMap type="com.coolcollege.intelligent.model.enterprise.UserRegionMappingDO" id="BaseMap">
+        <result property="id" column="id"/>
+        <result property="regionId" column="region_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="createId" column="create_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateId" column="update_id"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="source" column="source"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, region_id, user_id, create_id, create_time, update_id, update_time, source
+    </sql>
+
+    <select id="selectById" resultMap="BaseMap" >
+        select
+        <include refid="Base_Column_List"></include>
+        from user_region_mapping_${enterpriseId}
+        where id = #{id}
+    </select>
+
+    <delete id="deletedByUserIdAndRegionId">
+        delete  from
+        user_region_mapping_${enterpriseId}
+        where
+        user_id = #{userId}
+        <if test="regionIds !=null and regionIds.size >0">
+            and region_id in
+            <foreach collection="regionIds" open="(" close=")" separator="," item="regionId">
+                #{regionId}
+            </foreach>
+        </if>
+    </delete>
+    <delete id="deletedByUserIds">
+        delete from user_region_mapping_${enterpriseId} where user_id in
+        <foreach collection="userIds" open="(" close=")" separator="," item="userId">
+            #{userId}
+        </foreach>
+    </delete>
+
+    <delete id="deletedExcludeCreateByUserIds">
+        delete from user_region_mapping_${enterpriseId} where user_id in
+        <foreach collection="userIds" open="(" close=")" separator="," item="userId">
+            #{userId}
+        </foreach>
+        and source != 'create'
+    </delete>
+
+    <delete id="deletedByIds">
+        delete from user_region_mapping_${enterpriseId}  where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="batchInsertRegionMapping">
+        insert into user_region_mapping_${enterpriseId}
+        (
+        region_id,
+        user_id,
+        create_time,
+        update_time,
+        create_id,
+        update_id,
+        source
+        )
+        values
+        <foreach collection="userRegionMappingDOS" item="entity" separator=",">
+            (
+            #{entity.regionId},
+            #{entity.userId},
+            #{entity.createTime},
+            #{entity.updateTime},
+            #{entity.createId},
+            #{entity.updateId},
+            #{entity.source}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.coolcollege.intelligent.model.enterprise.UserRegionMappingDO">
+        update user_region_mapping_${enterpriseId}
+        SET
+        <trim suffixOverrides=",">
+            <if test="entity.regionId != null and entity.regionId !='' ">
+                `region_id` = #{entity.regionId},
+            </if>
+            <if test="entity.userId != null and entity.userId !='' ">
+                `user_id` = #{entity.userId},
+            </if>
+            <if test="entity.updateId != null and entity.updateId !='' ">
+                `update_id` = #{entity.updateId},
+            </if>
+            <if test="entity.updateTime != null and entity.updateTime !='' ">
+                `update_time` = now(),
+            </if>
+        </trim>
+        where id = #{entity.id}
+    </update>
+
+    <insert id="batchInsert" keyColumn="id" keyProperty="list.id" useGeneratedKeys="true">
+        INSERT into user_region_mapping_${enterpriseId}
+        (
+        region_id,
+        user_id,
+        create_id,
+        create_time,
+        update_id,
+        update_time,
+        source
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.regionId},
+            #{item.userId},
+            #{item.createId},
+            UNIX_TIMESTAMP(NOW())*1000,
+            #{item.updateId},
+            UNIX_TIMESTAMP(NOW())*1000,
+            #{item.source}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="addUserRegionMapping" keyColumn="id" keyProperty="entity.id" useGeneratedKeys="true">
+        INSERT into user_region_mapping_${enterpriseId}
+        (
+        region_id,user_id,create_id,create_time,update_id,update_time,source
+        ) VALUES (
+        #{entity.regionId, jdbcType=VARCHAR},
+        #{entity.userId, jdbcType=VARCHAR},
+        #{entity.createId, jdbcType=VARCHAR},
+        UNIX_TIMESTAMP(NOW())*1000,
+        #{entity.updateId, jdbcType=VARCHAR},
+        UNIX_TIMESTAMP(NOW())*1000,
+        #{entity.source, jdbcType=VARCHAR}
+        )
+    </insert>
+    
+    <select id="listUserRegionMappingByUserId" resultMap="BaseMap">
+        select 
+        <include refid="Base_Column_List"/>
+        from user_region_mapping_${enterpriseId}
+        <if test="userIds !=null and userIds.size >0">
+            where user_id in
+            <foreach collection="userIds" open="(" close=")" separator="," item="userId">
+                #{userId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="selectUserListByRegionIds" resultMap="BaseMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_region_mapping_${enterpriseId}
+        <if test="regionIds !=null and regionIds.size >0">
+            where region_id in
+            <foreach collection="regionIds" open="(" close=")" separator="," item="regionId">
+                #{regionId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="selectUserCountByRegionIds" resultType="integer">
+        select
+        count(1) as userNum
+        from user_region_mapping_${enterpriseId}
+        <if test="regionIds !=null and regionIds.size >0">
+            where region_id in
+            <foreach collection="regionIds" open="(" close=")" separator="," item="regionId">
+                #{regionId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getRegionUserCount" resultType="java.util.HashMap">
+        select region_id as regionId , count(*) as userCount
+         from user_region_mapping_${enterpriseId}
+        <if test="regionIds !=null and regionIds.size >0">
+            where region_id in
+            <foreach collection="regionIds" open="(" close=")" separator="," item="regionId">
+                #{regionId}
+            </foreach>
+        </if>
+        group by regionId;
+    </select>
+
+
+    <delete id="batchDeletedByUserIdsAndRegionIds">
+        delete  from
+        user_region_mapping_${enterpriseId}
+        where 1= 1
+        <if test="userIds !=null and userIds.size >0">
+            and user_id in
+            <foreach collection="userIds" open="(" close=")" separator="," item="userId">
+                #{userId}
+            </foreach>
+        </if>
+        <if test="regionIds !=null and regionIds.size >0">
+            and region_id in
+            <foreach collection="regionIds" open="(" close=")" separator="," item="regionId">
+                #{regionId}
+            </foreach>
+        </if>
+    </delete>
+
+    <select id="listByUserIdsAndRegionIds" resultType="com.coolcollege.intelligent.model.enterprise.UserRegionMappingDO">
+        select
+        user_id as userId,
+        region_id as regionId
+        from
+        user_region_mapping_${enterpriseId}
+        where 1= 1
+        <if test="userIds !=null and userIds.size >0">
+            and user_id in
+            <foreach collection="userIds" open="(" close=")" separator="," item="userId">
+                #{userId}
+            </foreach>
+        </if>
+        <if test="regionIds !=null and regionIds.size >0">
+            and region_id in
+            <foreach collection="regionIds" open="(" close=")" separator="," item="regionId">
+                #{regionId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getRegionIdsByUserIds" resultMap="BaseMap">
+        select
+           id, user_id, region_id
+        from
+            user_region_mapping_${enterpriseId}
+        where
+            user_id in
+            <foreach collection="userIds" open="(" close=")" separator="," item="userId">
+                #{userId}
+            </foreach>
+    </select>
+
+
+    <select id="getUserIdsByRegionIds" resultType="string">
+        select
+            distinct(urm.user_id)
+        from
+            user_region_mapping_${enterpriseId} urm
+            LEFT JOIN enterprise_user_${enterpriseId}  eu
+            ON eu.`user_id` = urm.`user_id`
+        where
+            eu.active = 1
+        AND
+            urm.region_id in
+                <foreach collection="regionIds" open="(" close=")" separator="," item="regionId">
+                    #{regionId}
+                </foreach>
+    </select>
+
+
+</mapper>

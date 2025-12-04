@@ -1,0 +1,1173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.storework.SwStoreWorkDataTableColumnMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.storework.SwStoreWorkDataTableColumnDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="tc_business_id" jdbcType="VARCHAR" property="tcBusinessId" />
+    <result column="store_work_id" jdbcType="BIGINT" property="storeWorkId" />
+    <result column="work_cycle" jdbcType="VARCHAR" property="workCycle" />
+    <result column="store_work_date" jdbcType="DATE" property="storeWorkDate" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="region_id" jdbcType="BIGINT" property="regionId" />
+    <result column="region_path" jdbcType="VARCHAR" property="regionPath" />
+    <result column="data_table_id" jdbcType="BIGINT" property="dataTableId" />
+    <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId" />
+    <result column="table_name" jdbcType="VARCHAR" property="tableName" />
+    <result column="meta_column_id" jdbcType="BIGINT" property="metaColumnId" />
+    <result column="meta_column_name" jdbcType="VARCHAR" property="metaColumnName" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="check_result" jdbcType="VARCHAR" property="checkResult" />
+    <result column="check_result_id" jdbcType="BIGINT" property="checkResultId" />
+    <result column="check_result_name" jdbcType="VARCHAR" property="checkResultName" />
+    <result column="check_pics" jdbcType="LONGVARCHAR" property="checkPics" />
+    <result column="check_text" jdbcType="VARCHAR" property="checkText" />
+    <result column="check_score" jdbcType="DECIMAL" property="checkScore" />
+    <result column="check_video" jdbcType="VARCHAR" property="checkVideo" />
+    <result column="handler_user_id" jdbcType="VARCHAR" property="handlerUserId" />
+    <result column="task_question_status" jdbcType="VARCHAR" property="taskQuestionStatus" />
+    <result column="task_question_id" jdbcType="BIGINT" property="taskQuestionId" />
+    <result column="submit_status" jdbcType="TINYINT" property="submitStatus" />
+    <result column="reward_penalt_money" jdbcType="DECIMAL" property="rewardPenaltMoney" />
+    <result column="score_times" jdbcType="DECIMAL" property="scoreTimes" />
+    <result column="award_times" jdbcType="DECIMAL" property="awardTimes" />
+    <result column="weight_percent" jdbcType="DECIMAL" property="weightPercent" />
+    <result column="column_max_score" jdbcType="DECIMAL" property="columnMaxScore" />
+    <result column="column_max_award" jdbcType="DECIMAL" property="columnMaxAward" />
+    <result column="column_type" jdbcType="BIT" property="columnType" />
+    <result column="actual_comment_user_id" jdbcType="VARCHAR" property="actualCommentUserId" />
+    <result column="comment_content" jdbcType="VARCHAR" property="commentContent" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="value1" jdbcType="VARCHAR" property="value1" />
+    <result column="value2" jdbcType="VARCHAR" property="value2" />
+    <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime" />
+    <result column="table_mapping_id" jdbcType="BIGINT" property="tableMappingId" />
+    <result column="is_ai_check" jdbcType="TINYINT" property="isAiCheck" />
+    <result column="ai_check_result" jdbcType="VARCHAR" property="aiCheckResult" />
+    <result column="ai_check_result_id" jdbcType="BIGINT" property="aiCheckResultId" />
+    <result column="ai_check_result_name" jdbcType="VARCHAR" property="aiCheckResultName" />
+    <result column="ai_comment_content" jdbcType="VARCHAR" property="aiCommentContent" />
+    <result column="ai_check_score" jdbcType="DECIMAL" property="aiCheckScore" />
+    <result column="ai_status" jdbcType="TINYINT" property="aiStatus" />
+    <result column="ai_fail_reason" jdbcType="VARCHAR" property="aiFailReason" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, tc_business_id, store_work_id, work_cycle, store_work_date, store_id, store_name, region_id, region_path,
+    data_table_id, meta_table_id, table_name, meta_column_id, meta_column_name, description, 
+    category_name, check_result, check_result_id, check_result_name, check_pics, check_text, 
+    check_score, check_video, handler_user_id, task_question_status, task_question_id, 
+    submit_status, reward_penalt_money, score_times, award_times, weight_percent, column_max_score, 
+    column_max_award, column_type, actual_comment_user_id, comment_content,
+    create_time, create_user_id, update_time, update_user_id, deleted, value1, value2, submit_time, table_mapping_id,is_ai_check,
+    ai_check_result,ai_check_result_id,ai_check_result_name,ai_comment_content,ai_check_score,ai_status,ai_fail_reason
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_column_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sw_store_work_data_table_column_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.storework.SwStoreWorkDataTableColumnDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sw_store_work_data_table_column_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.tcBusinessId != null">
+        tc_business_id,
+      </if>
+      <if test="record.storeWorkId != null">
+        store_work_id,
+      </if>
+      <if test="record.workCycle != null">
+        work_cycle,
+      </if>
+      <if test="record.storeWorkDate != null">
+        store_work_date,
+      </if>
+      <if test="record.storeId != null">
+        store_id,
+      </if>
+      <if test="record.storeName != null">
+        store_name,
+      </if>
+      <if test="record.regionId != null">
+        region_id,
+      </if>
+      <if test="record.regionPath != null">
+        region_path,
+      </if>
+      <if test="record.dataTableId != null">
+        data_table_id,
+      </if>
+      <if test="record.metaTableId != null">
+        meta_table_id,
+      </if>
+      <if test="record.tableName != null">
+        table_name,
+      </if>
+      <if test="record.metaColumnId != null">
+        meta_column_id,
+      </if>
+      <if test="record.metaColumnName != null">
+        meta_column_name,
+      </if>
+      <if test="record.description != null">
+        description,
+      </if>
+      <if test="record.categoryName != null">
+        category_name,
+      </if>
+      <if test="record.checkResult != null">
+        check_result,
+      </if>
+      <if test="record.checkResultId != null">
+        check_result_id,
+      </if>
+      <if test="record.checkResultName != null">
+        check_result_name,
+      </if>
+      <if test="record.checkPics != null">
+        check_pics,
+      </if>
+      <if test="record.checkText != null">
+        check_text,
+      </if>
+      <if test="record.checkScore != null">
+        check_score,
+      </if>
+      <if test="record.checkVideo != null">
+        check_video,
+      </if>
+      <if test="record.handlerUserId != null">
+        handler_user_id,
+      </if>
+      <if test="record.taskQuestionStatus != null">
+        task_question_status,
+      </if>
+      <if test="record.taskQuestionId != null">
+        task_question_id,
+      </if>
+      <if test="record.submitStatus != null">
+        submit_status,
+      </if>
+      <if test="record.rewardPenaltMoney != null">
+        reward_penalt_money,
+      </if>
+      <if test="record.scoreTimes != null">
+        score_times,
+      </if>
+      <if test="record.awardTimes != null">
+        award_times,
+      </if>
+      <if test="record.weightPercent != null">
+        weight_percent,
+      </if>
+      <if test="record.columnMaxScore != null">
+        column_max_score,
+      </if>
+      <if test="record.columnMaxAward != null">
+        column_max_award,
+      </if>
+      <if test="record.columnType != null">
+        column_type,
+      </if>
+      <if test="record.actualCommentUserId != null">
+        actual_comment_user_id,
+      </if>
+      <if test="record.commentContent != null">
+        comment_content,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+      <if test="record.value1 != null">
+        value1,
+      </if>
+      <if test="record.value2 != null">
+        value2,
+      </if>
+      <if test="record.submitTime != null">
+        submit_time,
+      </if>
+      <if test="record.tableMappingId != null">
+        table_mapping_id,
+      </if>
+      <if test="record.aiCheckResult != null">
+        ai_check_result,
+      </if>
+      <if test="record.aiCheckResultId != null">
+        ai_check_result_id,
+      </if>
+      <if test="record.aiCheckResultName != null">
+        ai_check_result_name,
+      </if>
+      <if test="record.aiCommentContent != null">
+        ai_comment_content,
+      </if>
+      <if test="record.aiCheckScore != null">
+        ai_check_score,
+      </if>
+      <if test="record.aiStatus != null">
+        ai_status,
+      </if>
+      <if test="record.aiFailReason != null">
+        ai_fail_reason,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.tcBusinessId != null">
+        #{record.tcBusinessId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeWorkId != null">
+        #{record.storeWorkId,jdbcType=BIGINT},
+      </if>
+      <if test="record.workCycle != null">
+        #{record.workCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeWorkDate != null">
+        #{record.storeWorkDate,jdbcType=DATE},
+      </if>
+      <if test="record.storeId != null">
+        #{record.storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeName != null">
+        #{record.storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regionId != null">
+        #{record.regionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.regionPath != null">
+        #{record.regionPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataTableId != null">
+        #{record.dataTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaTableId != null">
+        #{record.metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.tableName != null">
+        #{record.tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.metaColumnId != null">
+        #{record.metaColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaColumnName != null">
+        #{record.metaColumnName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.categoryName != null">
+        #{record.categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkResult != null">
+        #{record.checkResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkResultId != null">
+        #{record.checkResultId,jdbcType=BIGINT},
+      </if>
+      <if test="record.checkResultName != null">
+        #{record.checkResultName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkPics != null">
+        #{record.checkPics,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkText != null">
+        #{record.checkText,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkScore != null">
+        #{record.checkScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.checkVideo != null">
+        #{record.checkVideo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.handlerUserId != null">
+        #{record.handlerUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskQuestionStatus != null">
+        #{record.taskQuestionStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskQuestionId != null">
+        #{record.taskQuestionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.submitStatus != null">
+        #{record.submitStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.rewardPenaltMoney != null">
+        #{record.rewardPenaltMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.scoreTimes != null">
+        #{record.scoreTimes,jdbcType=DECIMAL},
+      </if>
+      <if test="record.awardTimes != null">
+        #{record.awardTimes,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightPercent != null">
+        #{record.weightPercent,jdbcType=DECIMAL},
+      </if>
+      <if test="record.columnMaxScore != null">
+        #{record.columnMaxScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.columnMaxAward != null">
+        #{record.columnMaxAward,jdbcType=DECIMAL},
+      </if>
+      <if test="record.columnType != null">
+        #{record.columnType,jdbcType=BIT},
+      </if>
+      <if test="record.actualCommentUserId != null">
+        #{record.actualCommentUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentContent != null">
+        #{record.commentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUserId != null">
+        #{record.updateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.value1 != null">
+        #{record.value1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.value2 != null">
+        #{record.value2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.submitTime != null">
+        #{record.submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.tableMappingId != null">
+        #{record.tableMappingId,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.aiCheckResult != null">
+        #{record.aiCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aiCheckResultId != null">
+        #{record.aiCheckResultId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aiCheckResultName != null">
+        #{record.aiCheckResultName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aiCommentContent != null">
+        #{record.aiCommentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aiCheckScore != null">
+        #{record.aiCheckScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.aiStatus != null">
+        #{record.aiStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.aiFailReason != null">
+        #{record.aiFailReason,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.storework.SwStoreWorkDataTableColumnDO">
+    update sw_store_work_data_table_column_${enterpriseId}
+    <set>
+      <if test="record.tcBusinessId != null">
+        tc_business_id = #{record.tcBusinessId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeWorkId != null">
+        store_work_id = #{record.storeWorkId,jdbcType=BIGINT},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeName != null">
+        store_name = #{record.storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regionId != null">
+        region_id = #{record.regionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.regionPath != null">
+        region_path = #{record.regionPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataTableId != null">
+        data_table_id = #{record.dataTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaTableId != null">
+        meta_table_id = #{record.metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.tableName != null">
+        table_name = #{record.tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.metaColumnId != null">
+        meta_column_id = #{record.metaColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaColumnName != null">
+        meta_column_name = #{record.metaColumnName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.categoryName != null">
+        category_name = #{record.categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkResult != null">
+        check_result = #{record.checkResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkResultId != null">
+        check_result_id = #{record.checkResultId,jdbcType=BIGINT},
+      </if>
+      <if test="record.checkResultName != null">
+        check_result_name = #{record.checkResultName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkPics != null">
+        check_pics = #{record.checkPics,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkText != null">
+        check_text = #{record.checkText,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkScore != null">
+        check_score = #{record.checkScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.checkVideo != null">
+        check_video = #{record.checkVideo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.handlerUserId != null">
+        handler_user_id = #{record.handlerUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskQuestionStatus != null">
+        task_question_status = #{record.taskQuestionStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskQuestionId != null">
+        task_question_id = #{record.taskQuestionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.submitStatus != null">
+        submit_status = #{record.submitStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.rewardPenaltMoney != null">
+        reward_penalt_money = #{record.rewardPenaltMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.scoreTimes != null">
+        score_times = #{record.scoreTimes,jdbcType=DECIMAL},
+      </if>
+      <if test="record.awardTimes != null">
+        award_times = #{record.awardTimes,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightPercent != null">
+        weight_percent = #{record.weightPercent,jdbcType=DECIMAL},
+      </if>
+      <if test="record.columnMaxScore != null">
+        column_max_score = #{record.columnMaxScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.columnMaxAward != null">
+        column_max_award = #{record.columnMaxAward,jdbcType=DECIMAL},
+      </if>
+      <if test="record.columnType != null">
+        column_type = #{record.columnType,jdbcType=BIT},
+      </if>
+      <if test="record.actualCommentUserId != null">
+        actual_comment_user_id = #{record.actualCommentUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentContent != null">
+        comment_content = #{record.commentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = #{record.updateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.value1 != null">
+        value1 = #{record.value1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.value2 != null">
+        value2 = #{record.value2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.submitTime != null">
+        submit_time = #{record.submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.tableMappingId != null">
+        table_mapping_id = #{record.tableMappingId},
+      </if>
+      <if test="record.aiCheckResult != null">
+        ai_check_result = #{record.aiCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aiCheckResultId != null">
+        ai_check_result_id = #{record.aiCheckResultId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aiCheckResultName != null">
+        ai_check_result_name = #{record.aiCheckResultName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aiCommentContent != null">
+        ai_comment_content = #{record.aiCommentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aiCheckScore != null">
+        ai_check_score = #{record.aiCheckScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.aiStatus != null">
+        ai_status = #{record.aiStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.aiFailReason != null">
+        ai_fail_reason = #{record.aiFailReason,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != tcBusinessId">
+         and t.tc_business_id = #{tcBusinessId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != storeWorkId">
+         and t.store_work_id = #{storeWorkId,jdbcType=BIGINT}
+      </if>
+      <if test="null != storeId">
+         and t.store_id = #{storeId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != storeName">
+         and t.store_name = #{storeName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != regionId">
+         and t.region_id = #{regionId,jdbcType=BIGINT}
+      </if>
+      <if test="null != regionPath">
+         and t.region_path = #{regionPath,jdbcType=VARCHAR}
+      </if>
+      <if test="null != dataTableId">
+         and t.data_table_id = #{dataTableId,jdbcType=BIGINT}
+      </if>
+      <if test="null != metaTableId">
+         and t.meta_table_id = #{metaTableId,jdbcType=BIGINT}
+      </if>
+      <if test="null != tableName">
+         and t.table_name = #{tableName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != metaColumnId">
+         and t.meta_column_id = #{metaColumnId,jdbcType=BIGINT}
+      </if>
+      <if test="null != metaColumnName">
+         and t.meta_column_name = #{metaColumnName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != description">
+         and t.description = #{description,jdbcType=VARCHAR}
+      </if>
+      <if test="null != categoryName">
+         and t.category_name = #{categoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkResult">
+         and t.check_result = #{checkResult,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkResultId">
+         and t.check_result_id = #{checkResultId,jdbcType=BIGINT}
+      </if>
+      <if test="null != checkResultName">
+         and t.check_result_name = #{checkResultName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkPics">
+         and t.check_pics = #{checkPics,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkText">
+         and t.check_text = #{checkText,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkScore">
+         and t.check_score = #{checkScore,jdbcType=DECIMAL}
+      </if>
+      <if test="null != checkVideo">
+         and t.check_video = #{checkVideo,jdbcType=VARCHAR}
+      </if>
+      <if test="null != handlerUserId">
+         and t.handler_user_id = #{handlerUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != taskQuestionStatus">
+         and t.task_question_status = #{taskQuestionStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="null != taskQuestionId">
+         and t.task_question_id = #{taskQuestionId,jdbcType=BIGINT}
+      </if>
+      <if test="null != submitStatus">
+         and t.submit_status = #{submitStatus,jdbcType=TINYINT}
+      </if>
+      <if test="null != rewardPenaltMoney">
+         and t.reward_penalt_money = #{rewardPenaltMoney,jdbcType=DECIMAL}
+      </if>
+      <if test="null != scoreTimes">
+         and t.score_times = #{scoreTimes,jdbcType=DECIMAL}
+      </if>
+      <if test="null != awardTimes">
+         and t.award_times = #{awardTimes,jdbcType=DECIMAL}
+      </if>
+      <if test="null != weightPercent">
+         and t.weight_percent = #{weightPercent,jdbcType=DECIMAL}
+      </if>
+      <if test="null != columnMaxScore">
+         and t.column_max_score = #{columnMaxScore,jdbcType=DECIMAL}
+      </if>
+      <if test="null != columnMaxAward">
+         and t.column_max_award = #{columnMaxAward,jdbcType=DECIMAL}
+      </if>
+      <if test="null != columnType">
+         and t.column_type = #{columnType,jdbcType=BIT}
+      </if>
+      <if test="null != actualCommentUserId">
+         and t.actual_comment_user_id = #{actualCommentUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != commentContent">
+         and t.comment_content = #{commentContent,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != createUserId">
+         and t.create_user_id = #{createUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != updateTime">
+         and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != updateUserId">
+         and t.update_user_id = #{updateUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != deleted">
+         and t.deleted = #{deleted,jdbcType=BIT}
+      </if>
+    </trim>
+  </sql>
+
+
+  <insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.ArrayList" keyProperty="entityList.id">
+    insert into sw_store_work_data_table_column_${enterpriseId}
+    (
+    tc_business_id,
+    store_work_id,
+    work_cycle,
+    store_work_date,
+    store_id,
+    store_name,
+    region_id,
+    region_path,
+    data_table_id,
+    meta_table_id,
+    table_name,
+    meta_column_id,
+    meta_column_name,
+    description,
+    category_name,
+    weight_percent,
+    column_max_score,
+    column_max_award,
+    column_type,
+    create_time,
+    create_user_id,
+    update_time,
+    update_user_id,
+    table_mapping_id,
+    is_ai_check
+    )values
+    <foreach collection="entityList" separator="," item="entity">
+      (
+      #{entity.tcBusinessId},
+      #{entity.storeWorkId},
+      #{entity.workCycle},
+      #{entity.storeWorkDate},
+      #{entity.storeId},
+      #{entity.storeName},
+      #{entity.regionId},
+      #{entity.regionPath},
+      #{entity.dataTableId},
+      #{entity.metaTableId},
+      #{entity.tableName},
+      #{entity.metaColumnId},
+      #{entity.metaColumnName},
+      #{entity.description},
+      #{entity.categoryName},
+      #{entity.weightPercent},
+      #{entity.columnMaxScore},
+      #{entity.columnMaxAward},
+      #{entity.columnType},
+      #{entity.createTime},
+      #{entity.createUserId},
+      #{entity.updateTime},
+      #{entity.updateUserId},
+      #{entity.tableMappingId},
+      #{entity.isAiCheck}
+      )
+    </foreach>
+  </insert>
+
+  <select id="selectColumnByDataTableId"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_column_${enterpriseId}
+    where deleted = 0
+    and data_table_id in
+    <foreach collection="dataTableIds" separator="," open="(" close=")" item="dataTableId">
+      #{dataTableId}
+    </foreach>
+    <if test="checkResultList!=null and checkResultList.size>0">
+      <foreach collection="checkResultList" separator="," open="and check_result in(" close=")" item="checkResult">
+        #{checkResult}
+      </foreach>
+    </if>
+    <if test="submitStatus!=null">
+      and submit_status = #{submitStatus}
+    </if>
+    <if test="aiCheckResultList != null and aiCheckResultList.size > 0">
+      <foreach collection="aiCheckResultList" separator="," open="and ai_check_result in(" close=")" item="aiCheckResult">
+        #{aiCheckResult}
+      </foreach>
+    </if>
+  </select>
+
+  <select id="selectByDataTableId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sw_store_work_data_table_column_${enterpriseId}
+    where data_table_id = #{dataTableId}
+    and deleted = 0
+  </select>
+  <select id="countFailRank" resultType="com.coolcollege.intelligent.model.storework.vo.StoreWorkColumnRankDataVO">
+    select
+      sum(case when check_result = 'FAIL' then 1 else 0 end) as failNum,
+      meta_column_id as metaColumnId,
+      meta_column_name as metaColumnName
+    from sw_store_work_data_table_column_${enterpriseId}
+    where  deleted = 0
+    and work_cycle = #{workCycle}
+    and store_work_date between #{storeWorkBeginDate} and #{storeWorkEndDate}
+    <if test="regionPathList !=null and regionPathList.size() > 0">
+      and
+      <foreach collection="regionPathList" separator="or" close=")" open=" (" item="region">
+        region_path like concat(#{region}, '%')
+      </foreach>
+    </if>
+    group by meta_column_id
+    order by failNum desc
+    limit 5
+  </select>
+  <select id="completeRateRank"
+          resultType="com.coolcollege.intelligent.model.storework.vo.ColumnCompleteRateRankDataVO">
+    select
+    meta_column_id as metaColumnId,
+    meta_column_name as metaColumnName,
+    sum(case when submit_status = 0 then 1 else 0 end) unFinishColumnNum,
+    sum(case when submit_status = 1 then 1 else 0 end) / count(1) completeRate
+    FROM sw_store_work_data_table_column_${enterpriseId}
+    WHERE deleted = 0
+    and work_cycle = #{workCycle}
+    and store_work_date between #{storeWorkBeginDate} and #{storeWorkEndDate}
+    <if test="regionPathList !=null and regionPathList.size() > 0">
+      and
+      <foreach collection="regionPathList" separator="or" close=")" open=" (" item="region">
+        region_path like concat(#{region}, '%')
+      </foreach>
+    </if>
+    group by meta_column_id
+    <if test="sortField != null and sortField != '' and sortType != null and sortType != ''">
+      order by ${sortField} ${sortType}
+    </if>
+    limit 5
+  </select>
+
+  <update id="batchUpdate">
+    update sw_store_work_data_table_column_${enterpriseId}
+    set
+    check_pics = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.checkPics},check_pics)
+    </foreach>
+    END,
+    check_result = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.checkResult},check_result)
+    </foreach>
+    END,
+    actual_comment_user_id = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.actualCommentUserId},actual_comment_user_id)
+    </foreach>
+    END,
+    check_result_id = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.checkResultId},check_result_id)
+    </foreach>
+    END,
+    check_result_name = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.checkResultName},check_result_name)
+    </foreach>
+    END,
+    comment_content = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.commentContent},comment_content)
+    </foreach>
+    END,
+    score_times = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.scoreTimes},score_times)
+    </foreach>
+    END,
+    award_times = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.awardTimes},award_times)
+    </foreach>
+    END,
+    check_score = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.checkScore},check_score)
+    </foreach>
+    END,
+    weight_percent = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.weightPercent},weight_percent)
+    </foreach>
+    END,
+    column_max_score = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.columnMaxScore},column_max_score)
+    </foreach>
+    END,
+    column_max_award = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.columnMaxAward},column_max_award)
+    </foreach>
+    END,
+    reward_penalt_money = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.rewardPenaltMoney},reward_penalt_money)
+    </foreach>
+    END,
+    ai_check_result = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.aiCheckResult},ai_check_result)
+    </foreach>
+    END,
+    ai_check_result_id = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.aiCheckResultId},ai_check_result_id)
+    </foreach>
+    END,
+    ai_check_result_name = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.aiCheckResultName},ai_check_result_name)
+    </foreach>
+    END,
+    ai_comment_content = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.aiCommentContent},ai_comment_content)
+    </foreach>
+    END,
+    ai_check_score = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.aiCheckScore},ai_check_score)
+    </foreach>
+    END,
+    ai_status = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.aiStatus},ai_status)
+    </foreach>
+    END,
+    ai_fail_reason = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.aiFailReason},ai_fail_reason)
+    </foreach>
+    END
+    where
+    id in
+    <foreach collection="list" item="record" open="(" separator="," close=")">
+      #{record.id}
+    </foreach>
+  </update>
+  <select id="statisticsByDataTableId"
+          resultType="com.coolcollege.intelligent.model.storework.SwStoreWorkDataTableDO">
+    select
+        data_table_id as id,
+        sum(if(check_result='PASS',1,0)) as passColumnNum,
+        sum(if(check_result='FAIL',1,0)) as failColumnNum,
+        sum(if(check_result='INAPPLICABLE',1,0)) as inapplicableColumnNum,
+        sum(case when submit_status = 1 then 1 else 0 end) as finishColumnNum,
+        count(1) as totalColumnNum,
+        min(submit_time) as beginHandleTime
+    from sw_store_work_data_table_column_${enterpriseId}
+    where deleted = 0 and data_table_id = #{dataTableId}
+  </select>
+
+  <select id="selectByBusinessId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sw_store_work_data_table_column_${enterpriseId}
+    where tc_business_id = #{businessId}
+    and task_question_id != 0
+    and deleted = 0
+  </select>
+
+
+  <select id="selectByBusinessIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sw_store_work_data_table_column_${enterpriseId}
+    where deleted = 0
+    <if test="businessIds!=null and businessIds.size>0">
+      <foreach collection="businessIds" item="businessId" open=" and tc_business_id in (" close=")" separator=",">
+        #{businessId}
+      </foreach>
+    </if>
+  </select>
+
+
+  <select id="selectStoreWorkDataColumnList"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_column_${enterpriseId}
+    <where>
+      <if test="fullRegionPathList !=null and fullRegionPathList.size() > 0">
+        <foreach collection="fullRegionPathList" separator="or" close=")" open="and (" item="region">
+          region_path like concat(#{region}, '%')
+        </foreach>
+      </if>
+      <if test="workCycle!=null and workCycle!=''">
+        and work_cycle = #{workCycle}
+      </if>
+      <if test="beginStoreWorkDate != null and endStoreWorkDate != null and beginStoreWorkDate != '' and endStoreWorkDate != ''">
+        and store_work_date between #{beginStoreWorkDate} and #{endStoreWorkDate}
+      </if>
+      <if test="storeWorkId!=null">
+        and store_work_id = #{storeWorkId}
+      </if>
+      <if test="tableMappingId!=null and tableMappingId!=''">
+        and table_mapping_id  = #{tableMappingId}
+      </if>
+      <if test="dataTableId!=null">
+        and data_table_id  = #{dataTableId}
+      </if>
+    </where>
+
+  </select>
+
+  <select id="countStoreWorkDataColumnList"  resultType="java.lang.Long">
+    select
+    count(1)
+    from sw_store_work_data_table_column_${enterpriseId}
+    where  deleted = 0
+    <if test="fullRegionPathList !=null and fullRegionPathList.size() > 0">
+      <foreach collection="fullRegionPathList" separator="or" close=")" open="and (" item="region">
+        region_path like concat(#{region}, '%')
+      </foreach>
+    </if>
+    <if test="workCycle!=null and workCycle!=''">
+      and work_cycle = #{workCycle}
+    </if>
+    <if test="beginStoreWorkDate != null and endStoreWorkDate != null and beginStoreWorkDate != '' and endStoreWorkDate != ''">
+      and store_work_date between #{beginStoreWorkDate} and #{endStoreWorkDate}
+    </if>
+    <if test="storeWorkId!=null">
+      and store_work_id = #{storeWorkId}
+    </if>
+    <if test="tableMappingId!=null">
+      and table_mapping_id  = #{tableMappingId}
+    </if>
+    <if test="dataTableId!=null">
+      and data_table_id  = #{dataTableId}
+    </if>
+  </select>
+  <select id="columnCompleteRateList"
+          resultType="com.coolcollege.intelligent.model.storework.vo.StoreWorkDataTableColumnListVO">
+    select
+    meta_column_id as metaColumnId,
+    meta_column_name as metaColumnName,
+    category_name as categoryName,
+    count(1) as totalColumnNum,
+    meta_table_id as metaTableId,
+    table_name as tableName,
+    sum(if(check_result='PASS',1,0)) as passColumnNum,
+    sum(if(check_result='FAIL',1,0)) as failColumnNum,
+    sum(case when submit_status = 1 then 1 else 0 end) as finishColumnNum,
+    sum(case when submit_status = 0 then 1 else 0 end) as unFinishColumnNum,
+    ROUND(sum(case when submit_status = 1 then 1 else 0 end) /count(1),4) as finishPercent,
+    ROUND(sum(if(check_result='PASS',1,0)) /count(1),4) as passRate,
+    ROUND(sum(if(check_result='FAIL',1,0)) /count(1),4) as failRate
+    from sw_store_work_data_table_column_${enterpriseId}
+    where deleted = 0
+    <if test="params.regionPathList !=null and params.regionPathList.size() > 0">
+      <foreach collection="params.regionPathList" separator=" or " close=" )" open="and (" item="region">
+        region_path like concat(#{region}, '%')
+      </foreach>
+    </if>
+    and work_cycle = #{params.workCycle}
+    and store_work_date between #{params.beginStoreWorkDate} and #{params.endStoreWorkDate}
+    <if test="params.storeWorkId!=null">
+      and store_work_id = #{params.storeWorkId}
+    </if>
+    <if test="params.tableMappingId!=null">
+      and table_mapping_id = #{params.tableMappingId}
+    </if>
+    group by meta_column_id
+    <if test="params.sortField != null and params.sortType != null">
+      order by ${params.sortField} ${params.sortType} , meta_column_id desc
+    </if>
+  </select>
+  <select id="columnStoreCompleteList"
+          resultType="com.coolcollege.intelligent.model.storework.vo.StoreWorkColumnStoreListVO">
+    select
+    meta_column_id as metaColumnId,
+    meta_column_name as metaColumnName,
+    store_id as storeId,
+    store_name as storeName,
+    region_id as regionId,
+    region_path as regionPath,
+    store_work_date as storeWorkDate,
+    submit_status as submitStatus,
+    check_result as checkResult
+    from sw_store_work_data_table_column_${enterpriseId}
+    where deleted = 0
+    and meta_column_id = #{params.metaColumnId}
+    <if test="params.regionPathList !=null and params.regionPathList.size() > 0">
+      <foreach collection="params.regionPathList" separator=" or " close=" )" open="and (" item="region">
+        region_path like concat(#{region}, '%')
+      </foreach>
+    </if>
+    and work_cycle = #{params.workCycle}
+    and store_work_date between #{params.beginStoreWorkDate} and #{params.endStoreWorkDate}
+    and store_work_id = #{params.storeWorkId}
+    <if test="params.tableMappingId!=null">
+      and table_mapping_id = #{params.tableMappingId}
+    </if>
+    <if test="params.checkResult!=null and params.checkResult!=''">
+      and check_result = #{params.checkResult}
+    </if>
+    <if test="params.submitStatus!=null">
+      and submit_status = #{params.submitStatus}
+    </if>
+  </select>
+  <select id="failColumnStoreList"
+          resultType="com.coolcollege.intelligent.model.storework.vo.StoreWorkFailColumnStoreListVO">
+    select
+    meta_column_id as metaColumnId,
+    meta_column_name as metaColumnName,
+    store_id as storeId,
+    store_name as storeName,
+    sum(if(check_result='FAIL',1,0)) as failColumnNum
+    from sw_store_work_data_table_column_${enterpriseId}
+    where deleted = 0
+    <if test="params.regionIdList != null and params.regionIdList.size >0 ">
+      <foreach collection="params.regionIdList" item="regionId" separator=" or " open="and (" close=" )">
+        region_path like concat('%/', #{regionId}, '/%')
+      </foreach>
+    </if>
+    and work_cycle = #{params.workCycle}
+    and store_work_date between #{params.beginStoreWorkDate} and #{params.endStoreWorkDate}
+    <if test="params.storeWorkId!=null">
+      and store_work_id = #{params.storeWorkId}
+    </if>
+    <if test="params.tableMappingId!=null">
+      and table_mapping_id = #{params.tableMappingId}
+    </if>
+    <if test="params.metaColumnId!=null">
+      and meta_column_id = #{params.metaColumnId}
+    </if>
+    group by storeId
+    order by failColumnNum desc
+  </select>
+
+  <update id="delStoreWorkQuestion">
+    update sw_store_work_data_table_column_${enterpriseId}
+    set task_question_id = 0,
+    task_question_status = ""
+    where task_question_id = #{taskQuestionId}
+    and id = #{id}
+    and deleted = 0
+  </update>
+
+  <select id="tableQuestionDate" resultType="com.coolcollege.intelligent.model.storework.dto.StoreWorkQuestionDataDTO">
+    select
+    ifnull(sum(CASE WHEN  task_question_status = 'HANDLE' THEN 1 ELSE 0 END), 0)  as handleCount,
+    ifnull(sum(CASE WHEN  task_question_status = 'RECHECK' THEN 1 ELSE 0 END), 0) as recheckCount,
+    ifnull(sum(CASE WHEN  task_question_status = 'FINISH' THEN 1 ELSE 0 END), 0) as finishCount
+    from sw_store_work_data_table_column_${enterpriseId}
+    where data_table_id  = #{dataTableId}
+  </select>
+
+  <select id="selectFailColumnByDataTableId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sw_store_work_data_table_column_${enterpriseId}
+    where data_table_id = #{dataTableId}
+    and check_result = 'FAIL'
+    and deleted = 0
+  </select>
+
+  <update id="updateDelByStoreWorkId">
+    delete from sw_store_work_data_table_column_${enterpriseId}
+    where store_work_id = #{storeWorkId}
+  </update>
+
+  <select id="selectByIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sw_store_work_data_table_column_${enterpriseId}
+    where id in
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </select>
+
+  <!--$var enterpriseId=e17cd2dc350541df8a8b0af9bd27f77d -->
+  <delete id="delByStoreWorkIdAndStoreIdAndDate">
+    delete
+    from sw_store_work_data_table_column_${enterpriseId}
+    where store_work_id = #{storeWorkId}
+      and store_work_date = #{storeWorkDate}
+      and store_id in
+    <foreach collection="storeIds" item="item" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+  </delete>
+
+  <select id="selectAiColumnByDataTableId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sw_store_work_data_table_column_${enterpriseId}
+    WHERE data_table_id = #{dataTableId} AND deleted = 0 AND is_ai_check = 1
+  </select>
+
+  <select id="selectAiColumn" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sw_store_work_data_table_column_${enterpriseId}
+    WHERE deleted = 0 AND is_ai_check = 1
+  </select>
+
+</mapper>

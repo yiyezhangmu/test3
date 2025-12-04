@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.BizMarketBuyServiceMapper">
+
+    <select id="getCorpId" resultType="com.coolcollege.intelligent.model.enterprise.BizMarketBuyDO">
+        select
+            id,
+            event_type as eventType,
+            suite_key as suiteKey,
+            buy_corpId as buyCorpId,
+            good_code as goodCode,
+            item_code as itemCode,
+            item_name as itemName,
+            max_of_people as maxOfPeople,
+            min_of_people as minOfPeople,
+            order_id as orderId,
+            paidtime,
+            service_stop_time as serviceStopTime,
+            pay_fee as payFee,
+            order_create_source as orderCreateSour,
+            nominal_pay_fee as nominalPayFee,
+            discount_fee as discountFee,
+            discount,
+            distributor_corp_id as distributorCorpId,
+            distributor_corp_name as distributorCorpName,
+            enterprise_id as enterpriseId,
+            type,
+            sub_quantity as subQuantity,
+            goods_code as goodsCode,
+            goods_name as goodsName,
+            main_article_code as mainArticleCode,
+            main_article_name as mainArticleName
+        from biz_market_buy where buy_corpId = #{corpId, jdbcType=VARCHAR} order by paidtime desc
+    </select>
+
+    <update id="updateBizMarketBuy" parameterType="com.coolcollege.intelligent.model.enterprise.BizMarketBuyDO">
+        update biz_market_buy set enterprise_id = #{enterpriseId, jdbcType=VARCHAR} where buy_corpId = #{buyCorpId, jdbcType=VARCHAR}
+    </update>
+
+
+</mapper>

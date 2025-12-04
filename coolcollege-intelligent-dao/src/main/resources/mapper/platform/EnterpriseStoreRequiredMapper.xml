@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.platform.EnterpriseStoreRequiredMapper">
+
+    <insert id="batchInsertStoreRequired">
+        insert into enterprise_store_required
+        (enterprise_id, field, field_name)
+        values
+        <foreach collection="fields" item="fl" separator=",">
+            (#{id},
+            #{fl.field},
+            #{fl.fieldName})
+        </foreach>
+    </insert>
+    <insert id="batchInsertStoreRequiredByInit">
+        insert into enterprise_store_required
+        (enterprise_id, field, field_name)
+        values
+        <foreach collection="fields" item="fl" separator=",">
+            (#{fl.enterpriseId},
+            #{fl.field},
+            #{fl.fieldName})
+        </foreach>
+    </insert>
+
+    <select id="getStoreRequired"
+            resultType="com.coolcollege.intelligent.model.platform.EnterpriseStoreRequiredDO">
+        select field, field_name fieldName from enterprise_store_required where enterprise_id = #{id}
+    </select>
+
+    <delete id="deleteStoreRequired">
+        delete from enterprise_store_required where enterprise_id = #{id}
+    </delete>
+
+    <select id="selectStoreRequiredAll"
+            resultType="com.coolcollege.intelligent.model.platform.EnterpriseStoreRequiredDO">
+        SELECT enterprise_id enterpriseId,field, field_name fieldName
+        FROM enterprise_store_required
+    </select>
+</mapper>

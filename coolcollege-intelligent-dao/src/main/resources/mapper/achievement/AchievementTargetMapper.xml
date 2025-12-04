@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.achievement.AchievementTargetMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.achievement.entity.AchievementTargetDO"
+               autoMapping="true">
+    </resultMap>
+
+
+
+    <insert id="insertAchievementTarget" useGeneratedKeys="true" keyProperty="entity.id">
+        insert ignore into achievement_target_${eid}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="entity.createUserId != null">
+                create_user_id,
+            </if>
+            <if test="entity.createUserName != null">
+                create_user_name,
+            </if>
+            <if test="entity.updateUserId != null">
+                update_user_id,
+            </if>
+            <if test="entity.updateUserName != null">
+                update_user_name,
+            </if>
+            <if test="entity.editTime != null">
+                edit_time,
+            </if>
+            <if test="entity.storeId != null">
+                store_id,
+            </if>
+            <if test="entity.storeName != null">
+                store_name,
+            </if>
+            <if test="entity.regionId != null">
+                region_id,
+            </if>
+            <if test="entity.regionPath != null">
+                region_path,
+            </if>
+            <if test="entity.achievementYear != null">
+                achievement_year,
+            </if>
+            <if test="entity.yearAchievementTarget != null">
+                year_achievement_target,
+            </if>
+            <if test="entity.storeNum != null">
+                store_num,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="entity.createUserId != null">
+                #{entity.createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.createUserName != null">
+                #{entity.createUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.updateUserId != null">
+                #{entity.updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.updateUserName != null">
+                #{entity.updateUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.editTime != null">
+                #{entity.editTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entity.storeId != null">
+                #{entity.storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.storeName != null">
+                #{entity.storeName,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.regionId != null">
+                #{entity.regionId,jdbcType=BIGINT},
+            </if>
+            <if test="entity.regionPath != null">
+                #{entity.regionPath,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.achievementYear != null">
+                #{entity.achievementYear,jdbcType=INTEGER},
+            </if>
+            <if test="entity.yearAchievementTarget != null">
+                #{entity.yearAchievementTarget,jdbcType=DECIMAL},
+            </if>
+            <if test="entity.storeNum != null">
+                #{entity.storeNum,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="batchInsertAchievementTarget" useGeneratedKeys="true" parameterType="java.util.ArrayList" keyProperty="list.id">
+        insert into achievement_target_${eid}
+        (create_user_id,
+        create_user_name,
+        update_user_id,
+        update_user_name,
+        store_id,
+        store_name,
+        region_id,
+        region_path,
+        achievement_year,
+        year_achievement_target,
+        store_num)
+        values
+        <foreach collection="list" item="entity" separator=",">
+            (
+            #{entity.createUserId},
+            #{entity.createUserName},
+            #{entity.updateUserId},
+            #{entity.updateUserName},
+            #{entity.storeId},
+            #{entity.storeName},
+            #{entity.regionId},
+            #{entity.regionPath},
+            #{entity.achievementYear},
+            #{entity.yearAchievementTarget},
+            #{entity.storeNum}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        year_achievement_target=values(year_achievement_target),edit_time=values(edit_time),update_user_id=values(update_user_id),update_user_name=values(update_user_name)
+    </insert>
+
+    <update id="updateTarget">
+        update achievement_target_${eid}
+        <trim prefix="set" suffixOverrides=",">
+            <if test="entity.yearAchievementTarget != null">
+                year_achievement_target=#{entity.yearAchievementTarget,jdbcType=DECIMAL},
+            </if>
+            <if test="entity.updateUserName != null">
+                update_user_name=#{entity.updateUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.updateUserId != null">
+                update_user_id=#{entity.updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.editTime != null">
+                edit_time=#{entity.editTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entity.storeName != null">
+                store_name=#{entity.storeName,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.storeNum != null">
+                store_num=#{entity.storeNum,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        where id = #{entity.id}
+    </update>
+
+    <update id="updateTargetBatch">
+        UPDATE achievement_target_${eid}
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="year_achievement_target =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.yearAchievementTarget!=null">
+                        when #{item.id,jdbcType=BIGINT} then #{item.yearAchievementTarget,jdbcType=DECIMAL}
+                    </if>
+                </foreach>
+                when '000' then year_achievement_target
+                else year_achievement_target
+            </trim>
+            <trim prefix="edit_time =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.editTime!=null">
+                        when #{item.id,jdbcType=BIGINT} then #{item.editTime,jdbcType=TIMESTAMP}
+                    </if>
+                </foreach>
+                when '000' then edit_time
+                else edit_time
+            </trim>
+            <trim prefix="update_user_id =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.updateUserId!=null">
+                        when #{item.id,jdbcType=BIGINT} then #{item.updateUserId,jdbcType=VARCHAR}
+                    </if>
+                </foreach>
+                when '000' then update_user_id
+                else update_user_id
+            </trim>
+            <trim prefix="update_user_name =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.updateUserName!=null">
+                        when #{item.id,jdbcType=BIGINT} then #{item.updateUserName,jdbcType=VARCHAR}
+                    </if>
+                </foreach>
+                when '000' then update_user_name
+                else update_user_name
+            </trim>
+            <trim prefix="store_name =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.storeName!=null">
+                        when #{item.id,jdbcType=BIGINT} then #{item.storeName,jdbcType=VARCHAR}
+                    </if>
+                </foreach>
+                when '000' then store_name
+                else store_name
+            </trim>
+            <trim prefix="store_num =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.storeNum!=null">
+                        when #{item.id,jdbcType=BIGINT} then #{item.storeNum,jdbcType=VARCHAR}
+                    </if>
+                </foreach>
+                when '000' then store_num
+                else store_num
+            </trim>
+        </trim>
+        where id in
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <select id="listTargetQuery" resultType="com.coolcollege.intelligent.model.achievement.dto.AchievementTargetDTO">
+        SELECT
+        id,
+        #{eid} as eid,
+        store_id,
+        store_name,
+        achievement_year,
+        year_achievement_target,
+        edit_time,
+        region_id
+        FROM
+        achievement_target_${eid}
+        <where>
+            <if test="storeIds !=null  and  storeIds.size()>0">
+                store_id in
+                <foreach collection="storeIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="regionPath!=null">
+                <if test="!showCurrent">
+                    AND region_path LIKE concat(#{regionPath},'%')
+                </if>
+                <if test="showCurrent">
+                    AND region_id =#{regionId}
+                </if>
+            </if>
+            <if test="achievementYear!=null">
+                AND achievement_year=#{achievementYear}
+            </if>
+            <if test="storeName!=null">
+                AND (store_name LIKE concat('%',#{storeName},'%') or store_num LIKE concat('%',#{storeName},'%'))
+            </if>
+        </where>
+        order by edit_time desc
+    </select>
+
+    <select id="listByTargetIdList" resultType="com.coolcollege.intelligent.model.achievement.dto.AchievementTargetDTO">
+        SELECT
+        id,
+        store_id,
+        store_name,
+        achievement_year,
+        year_achievement_target,
+        edit_time
+        FROM
+        achievement_target_${eid}
+        <where>
+            <if test="targetIdList !=null  and  targetIdList.size()>0">
+                id in
+                <foreach collection="targetIdList" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by edit_time desc
+    </select>
+
+    <select id="getDetailByTargerId" parameterType="java.util.Map" resultType="com.coolcollege.intelligent.model.achievement.dto.AchievementTargetDetailDTO">
+        SELECT
+        id,
+        achievement_target,
+        begin_date,
+        end_date,
+        time_type,
+        target_id
+        FROM
+        achievement_target_detail_${eid}
+        <where>
+            <if test="targetIdList !=null  and  targetIdList.size()>0">
+                target_id in
+                <foreach collection="targetIdList" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY begin_date
+    </select>
+
+    <delete id="deleteTargetById">
+        delete
+        from achievement_target_${eid}
+        where id = #{id}
+    </delete>
+
+    <select id="getByStoreIdAndYear" resultType="com.coolcollege.intelligent.model.achievement.dto.AchievementTargetDTO">
+        SELECT
+        id,
+        #{eid} as eid,
+        store_id,
+        store_name,
+        achievement_year,
+        year_achievement_target,
+        edit_time
+        FROM
+        achievement_target_${eid}
+        where
+        store_id = #{storeId}
+        and achievement_year = #{achievementYear}
+    </select>
+
+    <select id="getByStoreIdsAndYear" resultType="com.coolcollege.intelligent.model.achievement.dto.AchievementTargetDTO">
+        SELECT
+        id,
+        #{eid} as eid,
+        store_id,
+        store_name,
+        achievement_year,
+        year_achievement_target,
+        edit_time
+        FROM
+        achievement_target_${eid}
+        where
+        achievement_year = #{achievementYear}
+        and store_id in
+        <foreach collection="storeIds" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="updateYearAchievementTarget">
+        UPDATE achievement_target_${eid} t
+        SET t.year_achievement_target = ( SELECT ifnull( sum( d.achievement_target ) , 0 ) FROM achievement_target_detail_${eid} d WHERE d.target_id = t.id);
+    </update>
+</mapper>

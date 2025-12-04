@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.importexcel.ImportTaskMapper">
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="task.id" >
+        insert into import_task_${eid}
+        (file_name, file_type, is_import, status, file_url, create_user_id, create_name, create_time, remark)
+        values
+        (
+            #{task.fileName},
+            #{task.fileType},
+            #{task.isImport},
+            #{task.status},
+            #{task.fileUrl},
+            #{task.createUserId},
+            #{task.createName},
+            #{task.createTime},
+            #{task.remark}
+        )
+    </insert>
+    <update id="update">
+        update import_task_${eid}
+        set status = #{task.status}
+        <if test="task.fileUrl != null and task.fileUrl != '' ">
+            , file_url = #{task.fileUrl}
+        </if>
+        <if test="task.remark != null and task.remark != '' ">
+            , remark = #{task.remark}
+        </if>
+        <if test="task.successNum != null ">
+            , success_num = #{task.successNum}
+        </if>
+        <if test="task.totalNum != null ">
+            , total_num = #{task.totalNum}
+        </if>
+        <if test="task.fileName != null and task.fileName != '' ">
+            , file_name = #{task.fileName}
+        </if>
+        where id = #{task.id}
+    </update>
+    <select id="getAllImportTask" resultType="com.coolcollege.intelligent.model.impoetexcel.ImportTaskDO">
+        select
+            id,
+            file_name as fileName,
+            status,
+            file_type as fileType,
+            is_import as isImport,
+            file_url  as fileUrl,
+            create_name as createName,
+            create_time as createTime,
+            remark,
+            success_num as successNum,
+            total_num as totalNum
+        from import_task_${eid}
+        where create_user_id = #{userId}
+        <if test="fileType != null and fileType != '' ">
+            and file_type = #{fileType}
+        </if>
+        <if test="isImport != null">
+            and is_import = #{isImport}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        order by create_time desc
+    </select>
+    <select id="getUniqueFieldByType" resultType="com.coolcollege.intelligent.model.impoetexcel.dto.ImportDistinctDTO">
+        select
+            unique_field as uniqueField,
+            unique_name as uniqueName
+        from import_distinct_${eid}
+        where file_type = #{fileType}
+    </select>
+
+    <select id="getImportTaskById"  resultType="com.coolcollege.intelligent.model.impoetexcel.ImportTaskDO">
+        select
+        id,
+        file_name as fileName,
+        status,
+        file_type as fileType,
+        is_import as isImport,
+        file_url  as fileUrl,
+        create_name as createName,
+        create_time as createTime,
+        remark,
+        success_num as successNum,
+        total_num as totalNum
+        from import_task_${eid}
+        where id = #{id}
+    </select>
+
+</mapper>

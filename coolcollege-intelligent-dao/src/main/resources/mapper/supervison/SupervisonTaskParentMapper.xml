@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.supervision.SupervisionTaskParentMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.supervision.SupervisionTaskParentDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="business_id" jdbcType="VARCHAR" property="businessId" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="task_start_time" jdbcType="TIMESTAMP" property="taskStartTime" />
+    <result column="task_end_time" jdbcType="TIMESTAMP" property="taskEndTime" />
+    <result column="execute_persons" jdbcType="VARCHAR" property="executePersons" />
+    <result column="priority" jdbcType="VARCHAR" property="priority" />
+    <result column="check_code" jdbcType="VARCHAR" property="checkCode" />
+    <result column="handle_way" jdbcType="VARCHAR" property="handleWay" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="check_store_ids" jdbcType="VARCHAR" property="checkStoreIds" />
+    <result column="business_type" jdbcType="VARCHAR" property="businessType" />
+    <result column="tags" jdbcType="VARCHAR" property="tags" />
+    <result column="form_id" jdbcType="VARCHAR" property="formId" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="cancel_status" jdbcType="BIT" property="cancelStatus" />
+    <result column="sop_ids" jdbcType="VARCHAR" property="sopIds" />
+    <result column="failure_state" jdbcType="BIT" property="failureState" />
+    <result column="task_grouping" jdbcType="VARCHAR" property="taskGrouping" />
+    <result column="process_info" jdbcType="VARCHAR" property="processInfo" />
+    <result column="timing_info" jdbcType="VARCHAR" property="timingInfo" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, business_id, task_name, task_start_time, task_end_time, execute_persons, priority, 
+    check_code, handle_way, remark,description, check_store_ids, business_type, tags, form_id,
+    create_user_id, update_user_id, create_time, update_time, deleted, cancel_status,sop_ids,
+    failure_state,task_grouping,process_info,timing_info,create_user_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from supervision_task_parent_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from supervision_task_parent_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.supervision.SupervisionTaskParentDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into supervision_task_parent_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.id != null">
+        id,
+      </if>
+      <if test="record.businessId != null">
+        business_id,
+      </if>
+      <if test="record.taskName != null">
+        task_name,
+      </if>
+      <if test="record.taskStartTime != null">
+        task_start_time,
+      </if>
+      <if test="record.taskEndTime != null">
+        task_end_time,
+      </if>
+      <if test="record.executePersons != null">
+        execute_persons,
+      </if>
+      <if test="record.priority != null">
+        priority,
+      </if>
+      <if test="record.checkCode != null">
+        check_code,
+      </if>
+      <if test="record.handleWay != null">
+        handle_way,
+      </if>
+      <if test="record.description != null">
+        description,
+      </if>
+      <if test="record.remark != null">
+        remark,
+      </if>
+      <if test="record.checkStoreIds != null">
+        check_store_ids,
+      </if>
+      <if test="record.businessType != null">
+        business_type,
+      </if>
+      <if test="record.tags != null">
+        tags,
+      </if>
+      <if test="record.formId != null">
+        form_id,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+      <if test="record.cancelStatus != null">
+        cancel_status,
+      </if>
+      <if test="record.sopIds != null">
+        sop_ids,
+      </if>
+      <if test="record.taskGrouping != null">
+        task_grouping,
+      </if>
+      <if test="record.processInfo != null">
+        process_info,
+      </if>
+      <if test="record.timingInfo != null">
+        timing_info,
+      </if>
+      <if test="record.createUserName != null">
+        create_user_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.id != null">
+        #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.businessId != null">
+        #{record.businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskName != null">
+        #{record.taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskStartTime != null">
+        #{record.taskStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskEndTime != null">
+        #{record.taskEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.executePersons != null">
+        #{record.executePersons,jdbcType=VARCHAR},
+      </if>
+      <if test="record.priority != null">
+        #{record.priority,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkCode != null">
+        #{record.checkCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.handleWay != null">
+        #{record.handleWay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkStoreIds != null">
+        #{record.checkStoreIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessType != null">
+        #{record.businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tags != null">
+        #{record.tags,jdbcType=VARCHAR},
+      </if>
+      <if test="record.formId != null">
+        #{record.formId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateUserId != null">
+        #{record.updateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.cancelStatus != null">
+        #{record.cancelStatus,jdbcType=BIT},
+      </if>
+      <if test="record.sopIds != null">
+        #{record.sopIds,jdbcType=BIT},
+      </if>
+      <if test="record.taskGrouping != null">
+        #{record.taskGrouping},
+      </if>
+      <if test="record.processInfo != null">
+        #{record.processInfo},
+      </if>
+      <if test="record.timingInfo != null">
+        #{record.timingInfo},
+      </if>
+      <if test="record.createUserName != null">
+        #{record.createUserName},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.supervision.SupervisionTaskParentDO">
+    update supervision_task_parent_${enterpriseId}
+    <set>
+      <if test="record.businessId != null">
+        business_id = #{record.businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskName != null">
+        task_name = #{record.taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskStartTime != null">
+        task_start_time = #{record.taskStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskEndTime != null">
+        task_end_time = #{record.taskEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.executePersons != null">
+        execute_persons = #{record.executePersons,jdbcType=VARCHAR},
+      </if>
+      <if test="record.priority != null">
+        priority = #{record.priority,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkCode != null">
+        check_code = #{record.checkCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.handleWay != null">
+        handle_way = #{record.handleWay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkStoreIds != null">
+        check_store_ids = #{record.checkStoreIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessType != null">
+        business_type = #{record.businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tags != null">
+        tags = #{record.tags,jdbcType=VARCHAR},
+      </if>
+      <if test="record.formId != null">
+        form_id = #{record.formId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = #{record.updateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.cancelStatus != null">
+        cancel_status = #{record.cancelStatus,jdbcType=BIT},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=BIT},
+      </if>
+      <if test="record.sopIds != null">
+        sop_ids = #{record.sopIds,jdbcType=BIT},
+      </if>
+      <if test="record.failureState != null">
+        failure_state = #{record.failureState},
+      </if>
+      <if test="record.taskGrouping != null">
+        task_grouping = #{record.taskGrouping},
+      </if>
+      <if test="record.processInfo != null">
+        process_info = #{record.processInfo},
+      </if>
+      <if test="record.timingInfo != null">
+        timing_info = #{record.timingInfo},
+      </if>
+      <if test="record.createUserName != null">
+        create_user_name = #{record.createUserName},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != businessId">
+         and t.business_id = #{businessId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != taskName">
+         and t.task_name = #{taskName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != taskStartTime">
+         and t.task_start_time = #{taskStartTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != taskEndTime">
+         and t.task_end_time = #{taskEndTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != executePersons">
+         and t.execute_persons = #{executePersons,jdbcType=VARCHAR}
+      </if>
+      <if test="null != priority">
+         and t.priority = #{priority,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkCode">
+         and t.check_code = #{checkCode,jdbcType=VARCHAR}
+      </if>
+      <if test="null != handleWay">
+         and t.handle_way = #{handleWay,jdbcType=VARCHAR}
+      </if>
+      <if test="null != remark">
+         and t.remark = #{remark,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkStoreIds">
+         and t.check_store_ids = #{checkStoreIds,jdbcType=VARCHAR}
+      </if>
+      <if test="null != businessType">
+         and t.business_type = #{businessType,jdbcType=VARCHAR}
+      </if>
+      <if test="null != tags">
+         and t.tags = #{tags,jdbcType=VARCHAR}
+      </if>
+      <if test="null != formId">
+         and t.form_id = #{formId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createUserId">
+         and t.create_user_id = #{createUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != updateUserId">
+         and t.update_user_id = #{updateUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != updateTime">
+         and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != deleted">
+         and t.deleted = #{deleted,jdbcType=BIT}
+      </if>
+      <if test="null != cancelStatus">
+         and t.cancel_status = #{cancelStatus}
+      </if>
+    </trim>
+  </sql>
+
+  <select id="listByTaskIdList" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM supervision_task_parent_${enterpriseId}
+    where id in
+    <foreach collection="taskIdList" item="taskId" separator="," open="(" close=")">
+      #{taskId}
+    </foreach>
+  </select>
+
+
+  <update id="updateFailureState">
+    update supervision_task_parent_${enterpriseId}
+    set failure_state = 1
+    where id = #{id}
+  </update>
+
+
+  <select id="listByCondition" resultMap="BaseResultMap">
+    select * from supervision_task_parent_${enterpriseId}
+    where deleted = 0
+    <if test="keyWords!=null and keyWords!=''">
+      and (task_name like  concat('%',#{keyWords},'%') or create_user_name like concat('%',#{keyWords},'%'))
+    </if>
+    <if test="startTime!=null and endTime !=null">
+      and create_time BETWEEN #{startTime} and #{endTime}
+    </if>
+    <if test="supervisionTaskPriorityList!=null and supervisionTaskPriorityList.size>0">
+      <foreach collection="supervisionTaskPriorityList" item="supervisionTaskPriority" separator="," open="and priority in (" close=")">
+        #{supervisionTaskPriority}
+      </foreach>
+    </if>
+    <if test="taskGroupingList!=null and taskGroupingList.size>0">
+      <foreach collection="taskGroupingList" item="taskGrouping" separator="," open="and task_grouping in (" close=")">
+        #{taskGrouping}
+      </foreach>
+    </if>
+    <if test="tags!=null and tags.size>0">
+      <foreach collection="tags" item="tag" separator="or" open="and (" close=")">
+        tags like  concat('%',#{tag},'%')
+      </foreach>
+    </if>
+    <if test="statusList!=null and statusList.size()>0">
+      <foreach collection="statusList" item="status" open="and (" separator="or" close=")">
+        <if test="status !=null and status == 1">
+          (now() <![CDATA[ < ]]> task_start_time and cancel_status = 0 and failure_state = 0)
+        </if>
+        <if test="status !=null and status == 2">
+          ( now() BETWEEN task_start_time and task_end_time and cancel_status = 0 and failure_state = 0)
+        </if>
+        <if test="status !=null and status == 3">
+          ( now() <![CDATA[ > ]]> task_end_time and cancel_status = 0 and failure_state = 0)
+        </if>
+        <if test="status !=null and status == 4">
+          ( cancel_status = 1)
+        </if>
+        <if test="status !=null and status == 5">
+          ( failure_state = 1)
+        </if>
+      </foreach>
+    </if>
+    order by create_time desc
+  </select>
+
+  <update id="taskParentCancel">
+    update supervision_task_parent_${enterpriseId}
+    set cancel_status = 1
+    where id = #{taskId,jdbcType=BIGINT}
+  </update>
+
+  <update id="taskParentDel">
+    update supervision_task_parent_${enterpriseId}
+    set deleted = 1
+    where id = #{taskId,jdbcType=BIGINT}
+  </update>
+</mapper>

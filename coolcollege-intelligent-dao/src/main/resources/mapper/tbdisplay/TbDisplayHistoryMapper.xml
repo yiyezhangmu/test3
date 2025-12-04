@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.tbdisplay.TbDisplayHistoryMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.tbdisplay.TbDisplayHistoryDO">
+
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="record_id" jdbcType="BIGINT" property="recordId" />
+    <result column="operate_type" jdbcType="VARCHAR" property="operateType" />
+    <result column="operate_user_id" jdbcType="BIGINT" property="operateUserId" />
+    <result column="operate_user_name" jdbcType="VARCHAR" property="operateUserName" />
+    <result column="action_key" jdbcType="VARCHAR" property="actionKey" />
+    <result column="sub_task_id" jdbcType="BIGINT" property="subTaskId" />
+    <result column="is_valid" jdbcType="BIT" property="isValid" />
+    <result column="node_no" jdbcType="VARCHAR" property="nodeNo" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="score" jdbcType="DECIMAL" property="score" />
+    <result column="extend_info" jdbcType="VARCHAR" property="extendInfo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+
+    id, create_time, update_time, deleted, record_id, operate_type, operate_user_id, 
+    operate_user_name, action_key, sub_task_id, is_valid, node_no, remark, score, extend_info
+  </sql>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="record.id">
+    insert into tb_display_history_${enterpriseId} (create_time, record_id, operate_type, operate_user_id,
+      operate_user_name, action_key, sub_task_id, 
+      is_valid, node_no, remark, score, extend_info)
+    values (now(),
+      #{record.recordId,jdbcType=BIGINT}, #{record.operateType,jdbcType=VARCHAR}, #{record.operateUserId,jdbcType=BIGINT},
+      #{record.operateUserName,jdbcType=VARCHAR}, #{record.actionKey,jdbcType=VARCHAR}, #{record.subTaskId,jdbcType=BIGINT},
+      #{record.isValid,jdbcType=BIT}, #{record.nodeNo,jdbcType=VARCHAR}, #{record.remark,jdbcType=VARCHAR}, #{record.score},
+      #{record.extendInfo,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.tbdisplay.TbDisplayHistoryDO">
+
+    update tb_display_history_${enterpriseId}
+    <set>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recordId != null">
+        record_id = #{record.recordId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operateType != null">
+        operate_type = #{record.operateType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operateUserId != null">
+        operate_user_id = #{record.operateUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operateUserName != null">
+        operate_user_name = #{record.operateUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actionKey != null">
+        action_key = #{record.actionKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subTaskId != null">
+        sub_task_id = #{record.subTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="record.isValid != null">
+        is_valid = #{record.isValid,jdbcType=BIT},
+      </if>
+      <if test="record.nodeNo != null">
+        node_no = #{record.nodeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.score != null">
+        score = #{record.score},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+
+  <select id="listByRecordId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_display_history_${enterpriseId}
+    where record_id=#{recordId,jdbcType=BIGINT} and is_valid = 1
+  </select>
+  <select id="selectDisplayHistory" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_display_history_${enterpriseId}
+    where record_id=#{recordId,jdbcType=BIGINT}
+    and deleted = 0
+    and operate_type = #{operateType}
+    <if test="operateUserId != null and operateUserId != ''">
+      and operate_user_id = #{operateUserId}
+    </if>
+    <if test=" subTaskId!= null">
+      and sub_task_id = #{subTaskId}
+    </if>
+    limit 1
+  </select>
+  <select id="listBySubTaskIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_display_history_${enterpriseId}
+    where sub_task_id
+    <foreach collection="list" separator="," item="item">
+      #{item}
+    </foreach>
+    )
+    and deleted = 0 and is_valid = 1
+  </select>
+</mapper>

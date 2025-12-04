@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.authorityregion.AuthorityRegionMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.authorityregion.AuthorityRegionDO">
+    <!--@mbg.generated-->
+    <!--@Table authority_region_118bc3c221294bdbb772dc430b9dfcb5-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="user_ids" jdbcType="LONGVARCHAR" property="userIds" />
+    <result column="user_names" jdbcType="LONGVARCHAR" property="userNames" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_name" jdbcType="VARCHAR" property="createName" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_name" jdbcType="VARCHAR" property="updateName" />
+    <result column="deleted" jdbcType="BOOLEAN" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, `name`, user_ids, user_names, create_time, create_name, update_time, update_name, deleted
+  </sql>
+
+
+  <!--$var enterpriseId=118bc3c221294bdbb772dc430b9dfcb5 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+      <!--@mbg.generated-->
+      select
+      <include refid="Base_Column_List"/>
+      from authority_region_${enterpriseId}
+      where id = #{id,jdbcType=BIGINT}
+        and deleted = 0
+  </select>
+
+  <!--$var enterpriseId=118bc3c221294bdbb772dc430b9dfcb5 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    update authority_region_${enterpriseId}
+    set deleted = 1
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <!--$var enterpriseId=118bc3c221294bdbb772dc430b9dfcb5 -->
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id"  useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into authority_region_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.name != null">
+        `name`,
+      </if>
+      <if test="record.userIds != null">
+        user_ids,
+      </if>
+      <if test="record.userNames != null">
+        user_names,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.createName != null">
+        create_name,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.updateName != null">
+        update_name,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.name != null">
+        #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userIds != null">
+        #{record.userIds,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.userNames != null">
+        #{record.userNames,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createName != null">
+        #{record.createName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateName != null">
+        #{record.updateName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted,jdbcType=BOOLEAN},
+      </if>
+    </trim>
+  </insert>
+
+  <!--$var enterpriseId=118bc3c221294bdbb772dc430b9dfcb5 -->
+  <update id="updateByPrimaryKeySelective">
+      <!--@mbg.generated-->
+      update authority_region_${enterpriseId}
+      <set>
+          <if test="record.name != null">
+              `name` = #{record.name,jdbcType=VARCHAR},
+          </if>
+          <if test="record.userIds != null">
+              user_ids = #{record.userIds,jdbcType=LONGVARCHAR},
+          </if>
+          <if test="record.userNames != null">
+              user_names = #{record.userNames,jdbcType=LONGVARCHAR},
+          </if>
+          <if test="record.createTime != null">
+              create_time = #{record.createTime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.createName != null">
+              create_name = #{record.createName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.updateTime != null">
+              update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.updateName != null">
+              update_name = #{record.updateName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.deleted != null">
+              deleted = #{record.deleted,jdbcType=BOOLEAN},
+          </if>
+      </set>
+      where id = #{record.id,jdbcType=BIGINT}
+  </update>
+
+   <!--$var enterpriseId=118bc3c221294bdbb772dc430b9dfcb5 -->
+  <select id="getAuthorityRegionPage" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from authority_region_${enterpriseId}
+      <where>
+          deleted = 0
+          <if test="record.keyword != null and record.keyword != ''">
+              and name like concat('%', #{record.keyword}, '%')
+          </if>
+      </where>
+  </select>
+
+  <!--$var enterpriseId=118bc3c221294bdbb772dc430b9dfcb5 -->
+  <select id="getNameByUserId" resultType="java.lang.String">
+      select name
+      from authority_region_${enterpriseId}
+      where deleted = 0
+        and find_in_set(#{userId}, user_ids);
+  </select>
+
+</mapper>

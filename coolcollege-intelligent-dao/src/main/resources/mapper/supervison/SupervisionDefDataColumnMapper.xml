@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.supervision.SupervisionDefDataColumnMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.supervision.SupervisionDefDataColumnDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="task_parent_id" jdbcType="BIGINT" property="taskParentId" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="task_id" jdbcType="BIGINT" property="taskId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
+    <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId" />
+    <result column="meta_column_id" jdbcType="BIGINT" property="metaColumnId" />
+    <result column="meta_column_name" jdbcType="VARCHAR" property="metaColumnName" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="supervisor_id" jdbcType="VARCHAR" property="supervisorId" />
+    <result column="value1" jdbcType="VARCHAR" property="value1" />
+    <result column="value2" jdbcType="VARCHAR" property="value2" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="create_date" jdbcType="VARCHAR" property="createDate" />
+    <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime" />
+    <result column="check_video" jdbcType="TIMESTAMP" property="checkVideo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, task_parent_id, store_id, store_name, task_id, create_time, edit_time, meta_table_id, 
+    meta_column_id, meta_column_name, description, create_user_id, supervisor_id, value1, 
+    value2, deleted, create_date, submit_time,check_video
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from supervision_def_data_column_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from supervision_def_data_column_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.supervision.SupervisionDefDataColumnDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into supervision_def_data_column_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskParentId != null">
+        task_parent_id,
+      </if>
+      <if test="storeId != null">
+        store_id,
+      </if>
+      <if test="storeName != null">
+        store_name,
+      </if>
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="editTime != null">
+        edit_time,
+      </if>
+      <if test="metaTableId != null">
+        meta_table_id,
+      </if>
+      <if test="metaColumnId != null">
+        meta_column_id,
+      </if>
+      <if test="metaColumnName != null">
+        meta_column_name,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createUserId != null">
+        create_user_id,
+      </if>
+      <if test="supervisorId != null">
+        supervisor_id,
+      </if>
+      <if test="value1 != null">
+        value1,
+      </if>
+      <if test="value2 != null">
+        value2,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="submitTime != null">
+        submit_time,
+      </if>
+      <if test="checkVideo != null">
+        check_video,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskParentId != null">
+        #{taskParentId,jdbcType=BIGINT},
+      </if>
+      <if test="storeId != null">
+        #{storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="storeName != null">
+        #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null">
+        #{taskId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null">
+        #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="metaTableId != null">
+        #{metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="metaColumnId != null">
+        #{metaColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="metaColumnName != null">
+        #{metaColumnName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="supervisorId != null">
+        #{supervisorId,jdbcType=VARCHAR},
+      </if>
+      <if test="value1 != null">
+        #{value1,jdbcType=VARCHAR},
+      </if>
+      <if test="value2 != null">
+        #{value2,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=VARCHAR},
+      </if>
+      <if test="submitTime != null">
+      </if>
+      <if test="checkVideo != null">
+        #{checkVideo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.supervision.SupervisionDefDataColumnDO">
+    update supervision_def_data_column_${enterpriseId}
+    <set>
+      <if test="taskParentId != null">
+        task_parent_id = #{taskParentId,jdbcType=BIGINT},
+      </if>
+      <if test="storeId != null">
+        store_id = #{storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="storeName != null">
+        store_name = #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null">
+        task_id = #{taskId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null">
+        edit_time = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="metaTableId != null">
+        meta_table_id = #{metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="metaColumnId != null">
+        meta_column_id = #{metaColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="metaColumnName != null">
+        meta_column_name = #{metaColumnName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null">
+        create_user_id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="supervisorId != null">
+        supervisor_id = #{supervisorId,jdbcType=VARCHAR},
+      </if>
+      <if test="value1 != null">
+        value1 = #{value1,jdbcType=VARCHAR},
+      </if>
+      <if test="value2 != null">
+        value2 = #{value2,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=VARCHAR},
+      </if>
+      <if test="submitTime != null">
+        submit_time = #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkVideo != null">
+        check_video = #{checkVideo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != taskParentId">
+         and t.task_parent_id = #{taskParentId,jdbcType=BIGINT}
+      </if>
+      <if test="null != storeId">
+         and t.store_id = #{storeId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != storeName">
+         and t.store_name = #{storeName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != taskId">
+         and t.task_id = #{taskId,jdbcType=BIGINT}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != editTime">
+         and t.edit_time = #{editTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != metaTableId">
+         and t.meta_table_id = #{metaTableId,jdbcType=BIGINT}
+      </if>
+      <if test="null != metaColumnId">
+         and t.meta_column_id = #{metaColumnId,jdbcType=BIGINT}
+      </if>
+      <if test="null != metaColumnName">
+         and t.meta_column_name = #{metaColumnName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != description">
+         and t.description = #{description,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createUserId">
+         and t.create_user_id = #{createUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != supervisorId">
+         and t.supervisor_id = #{supervisorId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != value1">
+         and t.value1 = #{value1,jdbcType=VARCHAR}
+      </if>
+      <if test="null != value2">
+         and t.value2 = #{value2,jdbcType=VARCHAR}
+      </if>
+      <if test="null != deleted">
+         and t.deleted = #{deleted,jdbcType=TINYINT}
+      </if>
+      <if test="null != createDate">
+         and t.create_date = #{createDate,jdbcType=VARCHAR}
+      </if>
+      <if test="null != submitTime">
+         and t.submit_time = #{submitTime,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+  </sql>
+
+  <select id="getDataColumnListByTaskIdAndType" resultType="com.coolcollege.intelligent.model.supervision.dto.SupervisionDefDataColumnDTO">
+    select
+    <include refid="Base_Column_List" />
+    from supervision_def_data_column_${enterpriseId}
+    where type = #{type}
+    <if test="taskIds!=null and taskIds.size()>0">
+      and task_id in (
+      <foreach collection="taskIds" item="taskId" separator=",">
+        #{taskId}
+      </foreach>
+      )
+    </if>
+  </select>
+
+  <insert id="batchInsert" keyColumn="id" keyProperty="list.id" useGeneratedKeys="true">
+    insert into supervision_def_data_column_${enterpriseId}
+    (task_parent_id,
+    store_id,
+    store_name,
+    task_id,
+    create_time,
+    meta_table_id,
+    meta_column_id,
+    meta_column_name,
+    Description,
+    create_user_id,
+    supervisor_id,
+    create_date,
+    type,
+    check_video
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.taskParentId},
+      #{item.storeId},
+      #{item.storeName},
+      #{item.taskId},
+      now(),
+      #{item.metaTableId},
+      #{item.metaColumnId},
+      #{item.metaColumnName},
+      #{item.description},
+      #{item.createUserId},
+      #{item.supervisorId},
+      CURRENT_DATE,
+      #{item.type},
+      #{item.checkVideo}
+      )
+    </foreach>
+  </insert>
+
+  <update id="batchUpdate">
+    update supervision_def_data_column_${enterpriseId}
+    <set>
+      value1 = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.value1},value1)
+      </foreach>
+      END,
+      value2 = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.value2},value2)
+      </foreach>
+      END,
+      supervisor_id = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.supervisorId},value2)
+      </foreach>
+      END,
+      check_video = CASE id
+      <foreach collection="list" separator=" " item="item">
+        WHEN #{item.id} THEN IFNULL(#{item.checkVideo},check_video)
+      </foreach>
+      END,
+      submit_time = now(),
+    </set>
+    where
+    id in (
+    <foreach collection="list" item="item" separator=",">
+      #{item.id}
+    </foreach>
+    )
+  </update>
+
+  <update id="updateDelVideo">
+    update supervision_def_data_column_${enterpriseId}
+    set check_video = #{checkVideo}
+    where id = #{id}
+  </update>
+</mapper>

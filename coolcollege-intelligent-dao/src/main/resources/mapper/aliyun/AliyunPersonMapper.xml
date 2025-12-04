@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.aliyun.AliyunPersonMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.aliyun.AliyunPersonDO" id="BaseMap">
+        <result property="id" column="id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="storeId" column="store_id"/>
+        <result property="faceId" column="face_id"/>
+        <result property="aliPicUrl" column="ali_pic_url"/>
+        <result property="picUrl" column="pic_url"/>
+        <result property="name" column="name"/>
+        <result property="firstAppearTime" column="first_appear_time"/>
+        <result property="age" column="age"/>
+        <result property="phone" column="phone"/>
+        <result property="birthday" column="birthday"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateId" column="update_id"/>
+        <result property="personalTag" column="personal_tag"/>
+        <result property="taskId" column="task_id"/>
+        <result property="gender" column="gender"/>
+        <result property="email" column="email"/>
+        <result property="wechat" column="wechat"/>
+        <result property="lastAppearTime" column="last_appear_time"/>
+        <result property="lastAppearPic" column="last_appear_pic"/>
+        <result property="lastAppearTargetPic" column="last_appear_target_pic"/>
+        <result property="lastAppearStoreId" column="last_appear_store_id"/>
+    </resultMap>
+
+
+    <resultMap type="com.coolcollege.intelligent.model.aliyun.dto.AliyunPersonDTO" id="aliyunPersonDTO">
+        <result property="customerId" column="customer_id"/>
+        <result property="storeId" column="store_id"/>
+        <result property="faceId" column="face_id"/>
+        <result property="aliPicUrl" column="ali_pic_url"/>
+        <result property="picUrl" column="pic_url"/>
+        <result property="name" column="name"/>
+        <result property="firstAppearTime" column="first_appear_time"/>
+        <result property="age" column="age"/>
+        <result property="phone" column="phone"/>
+        <result property="birthday" column="birthday"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateId" column="update_id"/>
+        <result property="groupId" column="person_group_id"/>
+        <result property="groupName" column="person_group_name"/>
+        <result property="personalTag" column="personal_tag"/>
+        <result property="gender" column="gender"/>
+        <result property="email" column="email"/>
+        <result property="wechat" column="wechat"/>
+
+    </resultMap>
+    <insert id="insertAliyunPerson">
+        insert into aliyun_person_${eid}
+        (
+        customer_id,
+        store_id,
+        face_id,
+        ali_pic_url,
+        pic_url,
+        name,
+        first_appear_time,
+        age,
+        phone,
+        birthday,
+        create_time,
+        create_id,
+        remark,
+        personal_tag,
+        ali_user_id,
+        task_id,
+        gender,
+        email,
+        wechat,
+        update_time
+        )
+        values
+        (
+        #{aliyunPersonDO.customerId},
+        #{aliyunPersonDO.storeId},
+        #{aliyunPersonDO.faceId},
+        #{aliyunPersonDO.aliPicUrl},
+        #{aliyunPersonDO.picUrl},
+        #{aliyunPersonDO.name},
+        #{aliyunPersonDO.firstAppearTime},
+        #{aliyunPersonDO.age},
+        #{aliyunPersonDO.phone},
+        #{aliyunPersonDO.birthday},
+        #{aliyunPersonDO.createTime},
+        #{aliyunPersonDO.createId},
+        #{aliyunPersonDO.remark},
+        #{aliyunPersonDO.personalTag},
+        #{aliyunPersonDO.aliUserId},
+        #{aliyunPersonDO.taskId},
+        #{aliyunPersonDO.gender},
+        #{aliyunPersonDO.email},
+        #{aliyunPersonDO.wechat},
+        #{aliyunPersonDO.updateTime}
+        )
+    </insert>
+
+    <update id="updateAliyunPerson">
+        update  aliyun_person_${eid}  set
+        age=#{aliyunPersonDO.age},
+        phone=#{aliyunPersonDO.phone},
+        name= #{aliyunPersonDO.name},
+        pic_url=#{aliyunPersonDO.picUrl},
+        birthday=#{aliyunPersonDO.birthday},
+        remark=#{aliyunPersonDO.remark},
+        personal_tag=#{aliyunPersonDO.personalTag},
+        gender=#{aliyunPersonDO.gender},
+        email=#{aliyunPersonDO.email},
+        wechat=#{aliyunPersonDO.wechat},
+        update_time=#{aliyunPersonDO.updateTime}
+        where customer_id=#{aliyunPersonDO.customerId}
+    </update>
+
+    <update id="updateAliyunPersonByTaskId">
+        update  aliyun_person_${eid}  set
+        task_id=#{taskId}
+        where customer_id=#{customerId}
+    </update>
+
+
+    <update id="updateAliyunPersonWebHook">
+        update  aliyun_person_${eid}  set
+
+        last_appear_time=#{aliyunPersonDO.lastAppearTime},
+        last_appear_pic=#{aliyunPersonDO.lastAppearPic},
+        last_appear_target_pic=#{aliyunPersonDO.lastAppearTargetPic},
+        last_appear_store_id=#{aliyunPersonDO.lastAppearStoreId}
+
+        where customer_id=#{aliyunPersonDO.customerId}
+    </update>
+
+
+    <delete id="deleteAliyunPerson">
+        update aliyun_person_${eid}
+        set is_delete=1
+         where
+         <foreach collection="customerIdList" open="customer_id in (" close=")" separator="," item="customerId">
+             #{customerId}
+         </foreach>
+
+    </delete>
+    <select id="getAliyunPersonByCustomer" resultMap="BaseMap">
+        select  * from  aliyun_person_${eid}
+        where customer_id=#{customerId}
+
+    </select>
+
+    <select id="getAliyunPersonByCustomerList" resultType="com.coolcollege.intelligent.model.aliyun.vo.AliyunVdsPersonHistoryVO">
+        select
+        b.customer_id as customerId,
+        b.last_appear_time as lastShotTime,
+        b.last_appear_target_pic as targetPersonUrl,
+        b.last_appear_pic as sourcePersonUrl,
+        b.gender as  gender ,
+        b.pic_url as picUrl,
+        b.name as name,
+        b.age as age,
+        b.personal_tag as personalTag,
+        b.last_appear_store_id as lastAppearStoreId,
+        b.task_id as taskId
+
+      from  aliyun_person_${eid} b
+        <where>
+            <if test="customerIdList!=null and customerIdList.size>0">
+                <foreach collection="customerIdList" separator="," open="b.customer_id in(" close=")" item="customerId">
+                #{customerId}
+                </foreach>
+            </if>
+            <if test="isDelete!=null">
+                and b.is_delete=#{isDelete}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="getAliyunPersonByFaceId" resultMap="BaseMap">
+        select  * from  aliyun_person_${eid}
+        where face_id=#{faceId}
+        and is_delete=0
+    </select>
+
+    <select id="getAliyunPersonByPic" resultMap="BaseMap">
+        select  * from  aliyun_person_${eid}
+        where pic_url=#{picUrl}
+        and is_delete=0
+
+    </select>
+
+    <select id="listAliyunPersonDTO" resultMap="aliyunPersonDTO">
+      SELECT
+            	c.customer_id,
+            	b.store_id,
+            	b.face_id,
+            	b.ali_pic_url,
+            	b.pic_url,
+            	b.NAME,
+            	b.first_appear_time,
+            	b.age,
+            	b.birthday,
+            	b.personal_tag,
+            	b.gender,
+            	b.email,
+            	b.wechat,
+            	b.phone,
+            	b.personal_tag,
+                a.person_group_id,
+                a.person_group_name
+            FROM
+            	aliyun_person_group_mapping_${eid} c
+            	LEFT JOIN aliyun_person_group_${eid} a ON c.person_group_id = a.person_group_id
+            	LEFT JOIN aliyun_person_${eid} b ON c.customer_id = b.customer_id
+            WHERE
+            	c.person_group_id = #{groupId}
+            	<if test="keywords !=null and keywords !=''">
+                    and b.name like concat('%',#{keywords},'%')
+                </if>
+                and b.is_delete=0
+                order by b.create_time desc ,b.id desc
+    </select>
+
+
+
+    <select id="listAliyunPersonDTOByCustomerId" resultMap="aliyunPersonDTO">
+        SELECT
+        c.customer_id,
+        b.store_id,
+        b.face_id,
+        b.ali_pic_url,
+        b.pic_url,
+        b.NAME,
+        b.first_appear_time,
+        b.age,
+        b.birthday,
+        a.person_group_id,
+        a.person_group_name,
+        b.personal_tag
+        FROM
+        aliyun_person_group_mapping_${eid} c
+        LEFT JOIN aliyun_person_group_${eid} a ON c.person_group_id = a.person_group_id
+        LEFT JOIN aliyun_person_${eid} b ON c.customer_id = b.customer_id
+        WHERE
+        <if test="customerIdList !=null and customerIdList.size >0 ">
+
+            <foreach collection="customerIdList" item="customerId" separator="," open="c.customer_id in (" close=")">
+                #{customerId}
+            </foreach>
+        </if>
+        and b.is_delete=0
+
+
+    </select>
+
+    <select id="listAliyunPersonDTOByCustomerIdAndGroup" resultMap="aliyunPersonDTO">
+        SELECT
+        b.customer_id,
+        a.person_group_id,
+        a.person_group_name
+        FROM
+        aliyun_person_group_mapping_${eid} c
+        LEFT JOIN aliyun_person_group_${eid} a ON c.person_group_id = a.person_group_id
+        LEFT JOIN aliyun_person_${eid} b ON c.customer_id = b.customer_id
+        WHERE
+        <if test="customerIdList !=null and customerIdList.size >0 ">
+
+            <foreach collection="customerIdList" item="customerId" separator="," open="c.customer_id in (" close=")">
+                #{customerId}
+            </foreach>
+        </if>
+        and b.is_delete=0
+
+
+    </select>
+
+    <select id="listAliyunPersonDTOByVipAndUnbind" resultMap="aliyunPersonDTO">
+        SELECT
+        c.customer_id,
+        b.store_id,
+        b.face_id,
+        b.ali_pic_url,
+        b.pic_url,
+        b.NAME,
+        b.first_appear_time,
+        b.age,
+        b.birthday,
+        a.person_group_id,
+        a.person_group_name,
+        b.personal_tag
+        FROM
+        aliyun_person_group_mapping_${eid} c
+        LEFT JOIN aliyun_person_group_${eid} a ON c.person_group_id = a.person_group_id
+        LEFT JOIN aliyun_person_${eid} b ON c.customer_id = b.customer_id
+        WHERE
+        a.person_group_name='会员'
+        and b.face_id is null
+        and is_delete=0
+        <if test="keywords !=null and keywords !='' ">
+            and b.name like concat('%',#{keywords},'%')
+        </if>
+    </select>
+
+    <select id="listAliyunPerson" resultMap="BaseMap">
+        select * from aliyun_person_${eid}
+        <where>
+            <if test="customerIdList !=null and customerIdList.size > 0">
+                <foreach collection="customerIdList" item="customerId" separator="," open="customerId in (" close=")">
+                    #{customerId}
+                </foreach>
+            </if>
+            and is_delete=0
+        </where>
+    </select>
+
+</mapper>

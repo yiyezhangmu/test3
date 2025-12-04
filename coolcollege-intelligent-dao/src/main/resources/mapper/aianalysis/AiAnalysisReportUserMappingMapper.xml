@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.aianalysis.AiAnalysisReportUserMappingMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.aianalysis.AiAnalysisReportUserMappingDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="report_id" jdbcType="BIGINT" property="reportId"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="report_push_time" jdbcType="TIMESTAMP" property="reportPushTime"/>
+        <result column="report_date" jdbcType="DATE" property="reportDate"/>
+        <result column="store_id" jdbcType="VARCHAR" property="storeId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , report_id, user_id, report_push_time, report_date, store_id, create_time
+    </sql>
+    <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into ai_analysis_report_user_mapping_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.reportId != null">
+                report_id,
+            </if>
+            <if test="record.userId != null">
+                user_id,
+            </if>
+            <if test="record.reportPushTime != null">
+                report_push_time,
+            </if>
+            <if test="record.reportDate != null">
+                report_date,
+            </if>
+            <if test="record.storeId != null">
+                store_id,
+            </if>
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.reportId != null">
+                #{record.reportId},
+            </if>
+            <if test="record.userId != null">
+                #{record.userId},
+            </if>
+            <if test="record.reportPushTime != null">
+                #{record.reportPushTime},
+            </if>
+            <if test="record.reportDate != null">
+                #{record.reportDate},
+            </if>
+            <if test="record.storeId != null">
+                #{record.storeId},
+            </if>
+            <if test="record.createTime != null">
+                #{record.createTime},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update ai_analysis_report_user_mapping_${enterpriseId}
+        <set>
+            <if test="record.reportId != null">
+                report_id = #{record.reportId},
+            </if>
+            <if test="record.userId != null">
+                user_id = #{record.userId},
+            </if>
+            <if test="record.reportPushTime != null">
+                report_push_time = #{record.reportPushTime},
+            </if>
+            <if test="record.reportDate != null">
+                report_date = #{record.reportDate},
+            </if>
+            <if test="record.storeId != null">
+                store_id = #{record.storeId},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="list.id">
+        INSERT INTO ai_analysis_report_user_mapping_${enterpriseId}
+        (
+            report_id,
+            user_id,
+            report_push_time,
+            report_date,
+            store_id
+         ) VALUES
+        <foreach collection="list" item="record" separator=",">
+            (#{record.reportId}, #{record.userId}, #{record.reportPushTime}, #{record.reportDate}, #{record.storeId})
+        </foreach>
+    </insert>
+
+    <select id="getReportIdByUser" resultType="java.lang.Long">
+        SELECT report_id
+        FROM ai_analysis_report_user_mapping_${enterpriseId}
+        WHERE user_id = #{userId}
+        <if test="startDate != null">
+            AND report_date >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND report_date &lt;= #{endDate}
+        </if>
+        <if test="storeIds != null and storeIds.size > 0">
+            AND store_id IN
+            <foreach item="storeId" collection="storeIds" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        AND now() >= report_push_time
+        ORDER BY report_push_time DESC, report_id DESC
+    </select>
+
+    <select id="getUserIdsByReportId" resultType="java.lang.String">
+        SELECT user_id
+        FROM ai_analysis_report_user_mapping_${enterpriseId}
+        WHERE report_id = #{reportId}
+    </select>
+
+    <select id="getUserIdsByReportIds" resultMap="BaseResultMap">
+        SELECT report_id, user_id
+        FROM ai_analysis_report_user_mapping_${enterpriseId}
+        WHERE report_id IN
+        <foreach item="reportId" collection="reportIds" separator="," open="(" close=")">
+            #{reportId}
+        </foreach>
+    </select>
+
+    <delete id="deleteByReportIds">
+        DELETE FROM ai_analysis_report_user_mapping_${enterpriseId}
+        WHERE report_id IN
+        <foreach item="reportId" collection="reportIds" separator="," open="(" close=")">
+            #{reportId}
+        </foreach>
+    </delete>
+</mapper>

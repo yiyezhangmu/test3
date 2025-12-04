@@ -1,0 +1,2557 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseUserMapper" >
+
+
+    <resultMap id="deptUserMapping" type="com.coolcollege.intelligent.model.enterprise.dto.DeptUserDTO">
+        <result column="department_id" property="deptId"/>
+        <collection ofType="com.coolcollege.intelligent.model.department.dto.DeptUserTreeDTO" property="deptUsers">
+            <result column="user_id" property="id"/>
+            <result column="name" property="name"/>
+            <result column="avatar" property="avatar"/>
+            <result column="departments" property="deptId"/>
+            <result column="userFlag" property="userFlag"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectActiveNameByUserId" resultType="java.lang.String">
+        select name
+        from enterprise_user_${enterpriseId}
+        where user_id = #{userId, jdbcType=VARCHAR}
+        and active = true
+    </select>
+
+    <select id="selectNameIgnoreActiveByUserId" resultType="java.lang.String">
+        select name
+        from enterprise_user_${enterpriseId}
+        where user_id = #{userId, jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByUserId" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+                id                  as id,
+                user_id             as userId,
+                `name`              as name,
+                tel                 as tel,
+                remark              as remark,
+                mobile              as mobile,
+                email               as email,
+                active              as active,
+                is_admin            as isAdmin,
+                unionid             as unionid,
+                is_leader_in_depts  as isLeaderInDepts,
+                is_hide             as isHide,
+                `position`          as position,
+                avatar              as avatar,
+                face_url            as faceUrl,
+                jobnumber           as jobnumber,
+                is_enterprise       as isEnterprise,
+                roles               as roles,
+                departments         as departments,
+                is_leader           as isLeader,
+                create_time         as createTime,
+                `language`          as language,
+                user_status         as userStatus,
+                subordinate_change  as subordinateChange,
+                third_oa_unique_flag as thirdOaUniqueFlag,
+                user_region_ids as userRegionIds,
+                subordinate_range  as subordinateRange,
+                franchise_unique_code  as franchiseUniqueCode,
+                user_type as userType
+             from enterprise_user_${enterpriseId} where user_id = #{userId}
+             and active = true
+    </select>
+
+    <select id="selectById" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id                  as id,
+            user_id             as userId,
+            `name`              as name,
+            tel                 as tel,
+            remark              as remark,
+            mobile              as mobile,
+            email               as email,
+            active              as active,
+            is_admin            as isAdmin,
+            unionid             as unionid,
+            is_leader_in_depts  as isLeaderInDepts,
+            is_hide             as isHide,
+            `position`          as position,
+                avatar              as avatar,
+                face_url            as faceUrl,
+                jobnumber           as jobnumber,
+                is_enterprise       as isEnterprise,
+                roles               as roles,
+                departments         as departments,
+                is_leader           as isLeader,
+                create_time         as createTime,
+                `language`          as language,
+                user_status         as userStatus,
+                subordinate_change  as subordinateChange,
+                third_oa_unique_flag as thirdOaUniqueFlag,
+                user_region_ids as userRegionIds,
+                subordinate_range  as subordinateRange,
+                franchise_unique_code  as franchiseUniqueCode
+        from enterprise_user_${enterpriseId} where id = #{id}
+    </select>
+
+    <select id="selectByUserIdIgnoreActive" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id                  as id,
+            user_id             as userId,
+            `name`                as name,
+            tel                 as tel,
+            remark              as remark,
+            mobile              as mobile,
+            email               as email,
+            active              as active,
+            is_admin            as isAdmin,
+            unionid             as unionid,
+            is_leader_in_depts  as isLeaderInDepts,
+            is_hide             as isHide,
+            `position`            as position,
+                avatar              as avatar,
+                face_url            as faceUrl,
+                jobnumber           as jobnumber,
+                is_enterprise       as isEnterprise,
+                user_status         as userStatus,
+                roles               as roles,
+                departments         as departments,
+                is_leader           as isLeader,
+                create_time         as createTime,
+                `language`            as language,
+                third_oa_unique_flag as thirdOaUniqueFlag,
+                subordinate_change as subordinateChange,
+                subordinate_range  as subordinateRange,
+                franchise_unique_code  as franchiseUniqueCode
+        from enterprise_user_${enterpriseId} where user_id = #{userId, jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectConfigUserByUserIdIgnoreActive" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+                id                  as id,
+                user_id             as userId,
+                `name`                as name,
+                tel                 as tel,
+                remark              as remark,
+                mobile              as mobile,
+                email               as email,
+                active              as active,
+                is_admin            as isAdmin,
+                unionid             as unionid,
+                is_leader_in_depts  as isLeaderInDepts,
+                is_hide             as isHide,
+                `position`          as position,
+                avatar              as avatar,
+                jobnumber           as jobnumber,
+                is_enterprise       as isEnterprise,
+                departments         as departments,
+                is_leader           as isLeader,
+                create_time         as createTime,
+                `language`          as language
+             from enterprise_user where user_id = #{userId, jdbcType=VARCHAR}
+             and active = true
+    </select>
+
+    <select id="selectConfigUserByUserId" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id                  as id,
+            user_id             as userId,
+            `name`                as name,
+            tel                 as tel,
+            remark              as remark,
+            mobile              as mobile,
+            email               as email,
+            active              as active,
+            is_admin            as isAdmin,
+            unionid             as unionid,
+            is_leader_in_depts  as isLeaderInDepts,
+            is_hide             as isHide,
+            `position`          as position,
+                avatar              as avatar,
+                jobnumber           as jobnumber,
+                is_enterprise       as isEnterprise,
+                departments         as departments,
+                is_leader           as isLeader,
+                create_time         as createTime,
+                `language`          as language
+        from enterprise_user where user_id = #{userId, jdbcType=VARCHAR} and active = true limit 1
+    </select>
+
+    <select id="selectConfigUserByUnionid"
+            resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id                  as id,
+            user_id             as userId,
+            `name`              as name,
+            tel                 as tel,
+            remark              as remark,
+            mobile              as mobile,
+            email               as email,
+            active              as active,
+            is_admin            as isAdmin,
+            unionid             as unionid,
+            is_leader_in_depts  as isLeaderInDepts,
+            is_hide             as isHide,
+            `position`          as position,
+            avatar              as avatar,
+            jobnumber           as jobnumber,
+            is_enterprise       as isEnterprise,
+            departments         as departments,
+            is_leader           as isLeader,
+            create_time         as createTime,
+            `language`          as language,
+            password            as password
+        from enterprise_user where unionid = #{unionid}
+
+    </select>
+
+        <insert id="batchInsertPlatformUsers" parameterType="java.util.List">
+                <foreach collection="list" item="it" separator=";">
+                    insert into enterprise_user (
+                    id,
+                    user_id,
+                    `name`,
+                    mobile,
+                    email,
+                    active,
+                    main_admin,
+                    is_admin,
+                    unionid,
+                    is_leader_in_depts,
+                    is_hide,
+                    departments,
+                    `position`,
+                    avatar,
+                    jobnumber,
+                    is_leader,
+                    create_time,
+                    app_type,
+                    remark,
+                    password,
+                    third_oa_unique_flag
+                    ) values
+                        (
+                        #{it.id, jdbcType=VARCHAR},
+                        #{it.userId, jdbcType=VARCHAR},
+                        #{it.name, jdbcType=VARCHAR},
+                        #{it.mobile, jdbcType=VARCHAR},
+                        #{it.email, jdbcType=VARCHAR},
+                        #{it.active, jdbcType=BOOLEAN},
+                        #{it.mainAdmin, jdbcType=BOOLEAN},
+                        #{it.isAdmin, jdbcType=BOOLEAN},
+                        #{it.unionid, jdbcType=VARCHAR},
+                        #{it.isLeaderInDepts, jdbcType=VARCHAR},
+                        #{it.isHide, jdbcType=BOOLEAN},
+                        #{it.departments, jdbcType=VARCHAR},
+                        #{it.position, jdbcType=VARCHAR},
+                        #{it.avatar, jdbcType=VARCHAR},
+                        #{it.jobnumber, jdbcType=VARCHAR},
+                        #{it.isLeader, jdbcType=BOOLEAN},
+                        sysdate(),
+                        #{it.appType, jdbcType=VARCHAR},
+                        #{it.remark, jdbcType=VARCHAR},
+                        #{it.password, jdbcType=VARCHAR},
+                        #{it.thirdOaUniqueFlag}
+                        )
+                    ON DUPLICATE KEY UPDATE
+                    departments=values(departments),
+                    active=values(active),
+                    `name`=values(name),
+                    main_admin=values(main_admin),
+                    is_admin=values(is_admin),
+                    is_leader_in_depts=values(is_leader_in_depts),
+                    avatar=values(avatar),
+                    `position`=values(position),
+                    app_type = values(app_type),
+                    jobnumber=values(jobnumber)
+                    <if test="it.mobile != null">
+                        ,mobile=values(mobile)
+                    </if>
+                </foreach>
+        </insert>
+
+        <select id="selectAllUser" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+                select
+                id                  as id,
+                user_id             as userId,
+                `name`                as name,
+                tel                 as tel,
+                remark              as remark,
+                mobile              as mobile,
+                email               as email,
+                active              as active,
+                is_admin            as isAdmin,
+                unionid             as unionid,
+                is_leader_in_depts  as isLeaderInDepts,
+                is_hide             as isHide,
+                `position`            as position,
+                avatar              as avatar,
+                jobnumber           as jobnumber,
+                is_enterprise       as isEnterprise,
+                roles               as roles,
+                departments         as departments,
+                is_leader           as isLeader,
+                face_url            as faceUrl,
+                create_time         as createTime,
+                `language`            as language
+        from enterprise_user_${eid}
+        </select>
+
+        <select id="selectAllList" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+                select
+                id                  as id,
+                user_id             as userId,
+                `name`                as name,
+                tel                 as tel,
+                remark              as remark,
+                mobile              as mobile,
+                email               as email,
+                active              as active,
+                is_admin            as isAdmin,
+                unionid             as unionid,
+                is_leader_in_depts  as isLeaderInDepts,
+                is_hide             as isHide,
+                `position`            as position,
+                avatar              as avatar,
+                jobnumber           as jobnumber,
+                is_enterprise       as isEnterprise,
+                roles               as roles,
+                departments         as departments,
+                is_leader           as isLeader,
+                face_url            as faceUrl,
+                create_time         as createTime,
+                `language`            as language,
+                third_oa_unique_flag            as thirdOaUniqueFlag,
+                franchise_unique_code  as franchiseUniqueCode,
+                user_region_ids as userRegionIds,
+                user_type as userType
+        from enterprise_user_${eid}
+        where active = true
+        </select>
+
+    <select id="selectAllUserIds" resultType="java.lang.String">
+        select user_id as userId from enterprise_user_${eid}
+    </select>
+
+    <select id="selectAllUserIdByUserType" resultType="java.lang.String">
+        select user_id as userId from enterprise_user_${eid} where user_type = #{userType} and active = true
+    </select>
+
+    <select id="selectAllUserIdsByActive" resultType="java.lang.String">
+        select user_id as userId
+        from enterprise_user_${eid}
+        <if test="active != null and active!=''">
+            where active = #{active}
+        </if>
+    </select>
+
+    <select id="selectPlatformAllUserIds" resultType="java.lang.String">
+        select distinct(user_id) as userId  from enterprise_user where user_id is not null and user_id !=''
+    </select>
+
+    <select id="selectSpecifyNodeUserIds" resultType="com.coolcollege.intelligent.model.enterprise.dto.SyncEnterpriseUserDTO">
+        select user_id as userId,departments as departments  from enterprise_user_${eid}
+        where user_type = '0'
+            <if test="dingDeptId!=null and dingDeptId!=''">
+                and departments like  concat('%/',#{dingDeptId},'/%')
+            </if>
+    </select>
+
+        <!--$var eid=e17cd2dc350541df8a8b0af9bd27f77d -->
+        <insert id="batchInsertOrUpdate" parameterType="java.util.List">
+            <foreach collection="list" item="it" separator=";">
+                insert into enterprise_user_${eid} (
+                id,
+                user_id,
+                `name`,
+                mobile,
+                email,
+                active,
+                main_admin,
+                is_admin,
+                unionid,
+                is_leader_in_depts,
+                is_hide,
+                departments,
+                `position`,
+                avatar,
+                jobnumber,
+                roles,
+                is_leader,
+                create_time,
+                user_type,
+                user_region_ids,
+                remark,
+                user_status,
+                create_user_id
+                <if test="it.subordinateRange != null">
+                    , subordinate_range
+                </if>
+                ) values
+                        (
+                        #{it.id, jdbcType=VARCHAR},
+                        #{it.userId, jdbcType=VARCHAR},
+                        #{it.name, jdbcType=VARCHAR},
+                        #{it.mobile, jdbcType=VARCHAR},
+                        #{it.email, jdbcType=VARCHAR},
+                        #{it.active, jdbcType=BOOLEAN},
+                        #{it.mainAdmin, jdbcType=BOOLEAN},
+                        #{it.isAdmin, jdbcType=BOOLEAN},
+                        #{it.unionid, jdbcType=VARCHAR},
+                        #{it.isLeaderInDepts, jdbcType=VARCHAR},
+                        #{it.isHide, jdbcType=BOOLEAN},
+                        #{it.departments, jdbcType=VARCHAR},
+                        #{it.position, jdbcType=VARCHAR},
+                        #{it.avatar, jdbcType=VARCHAR},
+                        #{it.jobnumber, jdbcType=VARCHAR},
+                        #{it.roles, jdbcType=VARCHAR},
+                        #{it.isLeader, jdbcType=BOOLEAN},
+                        sysdate(),
+                        #{it.userType, jdbcType=VARCHAR},
+                        #{it.userRegionIds},
+                        #{it.remark},
+                        #{it.userStatus},
+                        #{it.createUserId}
+                        <if test="it.subordinateRange != null">
+                            ,   #{it.subordinateRange}
+                        </if>
+                        )
+                ON DUPLICATE KEY UPDATE
+                departments=values(departments),
+                `name`=values(name),
+                main_admin=values(main_admin),
+                is_admin=values(is_admin),
+                is_leader_in_depts=values(is_leader_in_depts),
+                 avatar=values(avatar),
+                 active=values(active),
+                 `position`=values(position),
+                roles=values(roles)
+                <if test="it.mobile != null">
+                    ,mobile = values(mobile)
+                </if>
+                <if test="it.jobnumber != null">
+                    ,jobnumber=values(jobnumber)
+                </if>
+                <if test="it.userRegionIds != null">
+                    ,user_region_ids=values(user_region_ids)
+                </if>
+                <if test="it.remark != null">
+                    ,remark=values(remark)
+                </if>
+                <if test="it.userStatus != null">
+                    ,user_status=values(user_status)
+                </if>
+            </foreach>
+        </insert>
+    <update id="updateEnterpriseUser">
+        update enterprise_user_${eid}
+        <set>
+            <if test="enterpriseUserDO.name != null and enterpriseUserDO.name !=''">`name` = #{enterpriseUserDO.name},</if>
+            <if test="enterpriseUserDO.tel != null and enterpriseUserDO.tel !=''">`tel` = #{enterpriseUserDO.tel},</if>
+            <if test="enterpriseUserDO.mobile != null and enterpriseUserDO.mobile !=''">`mobile` =
+                #{enterpriseUserDO.mobile},
+            </if>
+            <if test="enterpriseUserDO.email != null and enterpriseUserDO.email !=''">`email` = #{enterpriseUserDO.email},
+            </if>
+            <if test="enterpriseUserDO.active != null">`active` =
+                #{enterpriseUserDO.active},
+            </if>
+            <if test="enterpriseUserDO.mainAdmin != null">`main_admin` = #{enterpriseUserDO.mainAdmin},</if>
+            <if test="enterpriseUserDO.isAdmin != null">`is_admin` = #{enterpriseUserDO.isAdmin},</if>
+            <if test="enterpriseUserDO.unionid != null and enterpriseUserDO.unionid !=''">`unionid` =
+                #{enterpriseUserDO.unionid},
+            </if>
+            <if test="enterpriseUserDO.isLeaderInDepts != null and enterpriseUserDO.isLeaderInDepts !=''">
+                `is_leader_in_depts` = #{enterpriseUserDO.isLeaderInDepts},
+            </if>
+            <if test="enterpriseUserDO.isHide != null">`is_hide` = #{enterpriseUserDO.isHide},</if>
+
+            <if test="enterpriseUserDO.position != null and enterpriseUserDO.position !=''">`position` =
+                #{enterpriseUserDO.position},
+            </if>
+            <if test="enterpriseUserDO.avatar != null and enterpriseUserDO.avatar !=''">`avatar` =
+                #{enterpriseUserDO.avatar},
+            </if>
+            <if test="enterpriseUserDO.jobnumber != null and enterpriseUserDO.jobnumber !=''">`jobnumber` =
+                #{enterpriseUserDO.jobnumber},
+            </if>
+            <if test="enterpriseUserDO.isEnterprise != null">`is_enterprise` =
+                #{enterpriseUserDO.isEnterprise},
+            </if>
+            <if test="enterpriseUserDO.roles != null and enterpriseUserDO.roles !=''">`roles` = #{enterpriseUserDO.roles},
+            </if>
+            <if test="enterpriseUserDO.departments != null and enterpriseUserDO.departments !=''">`departments` =
+                #{enterpriseUserDO.departments},
+            </if>
+            <if test="enterpriseUserDO.isLeader != null">`is_leader` = #{enterpriseUserDO.isLeader},</if>
+            <if test="enterpriseUserDO.faceUrl != null and enterpriseUserDO.faceUrl !=''">`face_url` =
+                #{enterpriseUserDO.faceUrl},
+            </if>
+            <if test="enterpriseUserDO.language != null and enterpriseUserDO.language !=''">`language` =
+                #{enterpriseUserDO.language},
+            </if>
+            <if test="enterpriseUserDO.userStatus != null">`user_status` =
+                #{enterpriseUserDO.userStatus},
+            </if>
+            <if test="enterpriseUserDO.thirdOaUniqueFlag != null and enterpriseUserDO.thirdOaUniqueFlag !=''">`third_oa_unique_flag` =
+                #{enterpriseUserDO.thirdOaUniqueFlag},
+            </if>
+            <if test="enterpriseUserDO.userRegionIds != null and enterpriseUserDO.userRegionIds !=''">
+                `user_region_ids` = #{enterpriseUserDO.userRegionIds},
+            </if>
+            <if test="enterpriseUserDO.subordinateChange != null and enterpriseUserDO.subordinateChange !=''">
+                `subordinate_change` = #{enterpriseUserDO.subordinateChange},
+            </if>
+            <if test="enterpriseUserDO.subordinateRange != null and enterpriseUserDO.subordinateRange !=''">
+                `subordinate_range` = #{enterpriseUserDO.subordinateRange},
+            </if>
+            <if test="enterpriseUserDO.remark != null and enterpriseUserDO.remark !=''">
+                `remark` = #{enterpriseUserDO.remark},
+            </if>
+            <if test="enterpriseUserDO.franchiseUniqueCode != null and enterpriseUserDO.franchiseUniqueCode !=''">`franchise_unique_code` =
+                #{enterpriseUserDO.franchiseUniqueCode},
+            </if>
+        </set>
+        where user_id =#{enterpriseUserDO.userId}
+    </update>
+
+    <update id="overwriteUpdateEnterpriseUser">
+        update enterprise_user_${eid}
+        set name=#{enterpriseUserDO.name},
+            mobile=#{enterpriseUserDO.mobile},
+            email=#{enterpriseUserDO.email},
+            face_url=#{enterpriseUserDO.faceUrl},
+            avatar=#{enterpriseUserDO.avatar},
+            jobnumber=#{enterpriseUserDO.jobnumber},
+            remark=#{enterpriseUserDO.remark},
+            user_status=#{enterpriseUserDO.userStatus},
+            third_oa_unique_flag=#{enterpriseUserDO.thirdOaUniqueFlag},
+            user_region_ids = #{enterpriseUserDO.userRegionIds},
+            subordinate_change = #{enterpriseUserDO.subordinateChange},
+            subordinate_range = #{enterpriseUserDO.subordinateRange}
+        where user_id = #{enterpriseUserDO.userId}
+    </update>
+
+    <update id="clearThirdOaUniqueFlag">
+        update enterprise_user_${eid}
+        set third_oa_unique_flag = null
+        where user_id = #{userId}
+    </update>
+
+    <update id="updateConfigEnterpriseUser">
+        update enterprise_user set
+        <if test="enterpriseUserDO.tel != null and enterpriseUserDO.tel !=''">`tel` = #{enterpriseUserDO.tel},</if>
+        <if test="enterpriseUserDO.remark != null and enterpriseUserDO.remark !=''">`remark` =
+            #{enterpriseUserDO.remark},
+        </if>
+        <if test="enterpriseUserDO.mobile != null and enterpriseUserDO.mobile !=''">`mobile` =
+            #{enterpriseUserDO.mobile},
+        </if>
+        <if test="enterpriseUserDO.email != null and enterpriseUserDO.email !=''">`email` = #{enterpriseUserDO.email},
+        </if>
+        <if test="enterpriseUserDO.mainAdmin != null">`main_admin` = #{enterpriseUserDO.mainAdmin},</if>
+        <if test="enterpriseUserDO.isAdmin != null">`is_admin` = #{enterpriseUserDO.isAdmin},</if>
+        <if test="enterpriseUserDO.isLeaderInDepts != null and enterpriseUserDO.isLeaderInDepts !=''">
+            `is_leader_in_depts` = #{enterpriseUserDO.isLeaderInDepts},
+        </if>
+        <if test="enterpriseUserDO.isHide != null">`is_hide` = #{enterpriseUserDO.isHide},</if>
+
+        <if test="enterpriseUserDO.position != null and enterpriseUserDO.position !=''">`position` =
+            #{enterpriseUserDO.position},
+        </if>
+        <if test="enterpriseUserDO.avatar != null and enterpriseUserDO.avatar !=''">`avatar` =
+            #{enterpriseUserDO.avatar},
+        </if>
+        <if test="enterpriseUserDO.jobnumber != null and enterpriseUserDO.jobnumber !=''">`jobnumber` =
+            #{enterpriseUserDO.jobnumber},
+        </if>
+        <if test="enterpriseUserDO.isEnterprise != null">`is_enterprise` =
+            #{enterpriseUserDO.isEnterprise},
+        </if>
+        <if test="enterpriseUserDO.departments != null and enterpriseUserDO.departments !=''">`departments` =
+            #{enterpriseUserDO.departments},
+        </if>
+        <if test="enterpriseUserDO.isLeader != null">`is_leader` = #{enterpriseUserDO.isLeader},</if>
+        <if test="enterpriseUserDO.language != null and enterpriseUserDO.language !=''">`language` =
+            #{enterpriseUserDO.language},
+        </if>
+        <if test="enterpriseUserDO.appType != null and enterpriseUserDO.appType !=''">`app_type` =
+            #{enterpriseUserDO.appType},
+        </if>
+        `name` = #{enterpriseUserDO.name}
+        where id =#{enterpriseUserDO.id}
+    </update>
+
+        <delete id="deleteEnterpriseUsersByDingUserIds">
+                update enterprise_user_${eid}
+                set active = false
+                where user_id in
+                <foreach collection="list" item="it" open="(" close=")" separator=",">
+                        #{it, jdbcType=VARCHAR}
+                </foreach>
+        </delete>
+
+        <select id="selectUsersByDingUserIds" resultType="java.lang.String">
+                select user_id from enterprise_user_${eid} where user_id in
+                <foreach collection="userIds" item="it" open="(" close=")" separator=",">
+                        #{it, jdbcType=VARCHAR}
+                </foreach>
+            and active = true
+        </select>
+    <select id="selectUserNamesByUserIds" resultType="java.lang.String">
+        select name from enterprise_user_${eid} where user_id in
+        <foreach collection="userIds" item="it" open="(" close=")" separator=",">
+            #{it, jdbcType=VARCHAR}
+        </foreach>
+        and active = true
+    </select>
+        <select id="selectUsersByUserIds" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+                select
+                      id,
+                      user_id as userId,
+                      `name` as name,
+                      avatar,
+                      active,
+                      mobile,
+                      jobnumber,
+                      `language`,
+                      user_status as userStatus,
+                      subordinate_range  as subordinateRange,
+                      user_type as userType,
+                    unionid as unionid
+            from enterprise_user_${eid}
+                <where>
+                  <if test="userIds!=null and userIds.size()>0">
+                      user_id in
+                      <foreach collection="userIds" item="userId" separator="," open="(" close=")">
+                          #{userId, jdbcType=VARCHAR}
+                        </foreach>
+                  </if>
+                </where>
+        </select>
+    <select id="selectActiveUsersByUserIds" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+        id,
+        user_id as userId,
+        `name` as name,
+        avatar,
+        active,
+        mobile,
+        jobnumber,
+        `language`,
+        user_status as userStatus,
+        subordinate_range  as subordinateRange,
+        user_type as userType,
+        unionid as unionid
+        from enterprise_user_${eid}
+        <where>
+            active = true
+            <if test="userIds!=null and userIds.size()>0 ">
+                and user_id in
+                <foreach
+                        collection="userIds" item="userId" separator="," open="(" close=")">
+                    #{userId, jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="fuzzyUsersByUserIdsAndUserName" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+        id,
+        user_id as userId,
+        `name` as name
+        from enterprise_user_${eid}
+        <where>
+            <if test="userIds!=null and userIds.size()>0  ">
+                and user_id in
+                <foreach
+                        collection="userIds" item="userId" separator="," open="(" close=")">
+                    #{userId, jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="userName !=null and userName !=''">
+                and name like concat('%',#{userName},'%')
+            </if>
+            <if test="userStatus != null">
+                and user_status = #{userStatus}
+            </if>
+            and active = true
+        </where>
+    </select>
+
+
+
+        <select id="selectUsersIdByUnionid" resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseUserDTO">
+                select id,unionid,name,mobile from enterprise_user where unionid in
+                <foreach collection="list" item="item" separator="," open="(" close=")">
+                        #{item, jdbcType=VARCHAR}
+                </foreach>
+        </select>
+    <select id="selectUsersIdByUserId" resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseUserDTO">
+        select id,user_id,mobile from enterprise_user where user_id =#{userId}
+    </select>
+
+  <update id="updateUserMobile">
+      update enterprise_user set mobile =#{mobile} where user_id=#{userId}
+  </update>
+
+    <select id="getDepUsersByPage" resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseUserDTO">
+        select
+        distinct u.id,
+        u.user_id as userId,
+        u.name,
+        u.avatar,
+        u.jobnumber,
+        u.departments,
+        u.unionid,
+        u.create_time as createTime,
+        u.mobile,
+        u.face_url as faceUrl,
+        u.active
+        from enterprise_user_${eid} u left join enterprise_user_department_${eid} d
+        on u.user_id=d.user_id and d.is_has_auth = 0
+        where u.active = true
+        <if test="deptIdList != null and deptIdList.size > 0">
+            and d.department_id in
+            <foreach collection="deptIdList" item="dept" open="(" separator="," close=")">
+                #{dept}
+            </foreach>
+        </if>
+        <if test=" keyword != null and keyword != ''">
+            and u.name like concat('%',#{keyword, jdbcType=VARCHAR},'%')
+        </if>
+        <if test="userIds != null and userIds.size > 0">
+            and u.user_id in
+            <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                #{userId}
+            </foreach>
+        </if>
+        order by u.name
+    </select>
+
+
+    <select id="getUsersDepartments" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+                select
+                        u.id,
+                        u.user_id as userId,
+                        u.departments
+                from enterprise_user_${eid} u
+                where
+             u.active = true
+            <choose>
+                        <when test="userType != null and userType == 'active'">
+                           and     u.active = true
+                        </when>
+                        <otherwise>
+                           and     u.active = false
+                        </otherwise>
+                </choose>
+
+        </select>
+
+        <select id="getUserDetail" resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseUserDTO">
+                select
+                        u.id,
+                        u.user_id as userId,
+                        u.name,
+                        u.jobnumber,
+                        u.unionid,
+                        u.create_time as createTime,
+                        u.mobile,
+                        u.face_url as faceUrl,
+                        u.active,
+                        u.email,
+                        u.remark,
+                        u.user_status as userStatus,
+                        u.third_oa_unique_flag as thirdOaUniqueFlag
+                from enterprise_user_${eid} u where u.user_id =  #{userId, jdbcType=VARCHAR}
+                and active = true
+
+        </select>
+
+        <update id="batchUpdateUserMobile">
+                update enterprise_user_${eid}
+                set  mobile  =
+                <foreach collection="list" item="item" index="index"
+                         separator=" " open="case user_id" close="end">
+                        when #{item.userId} then ifnull(#{item.mobile},mobile)
+                </foreach> ,
+                face_url =
+                <foreach collection="list" item="item" index="index"
+                         separator=" " open="case user_id" close="end">
+                        when #{item.userId} then ifnull(#{item.faceUrl},face_url)
+                </foreach>,
+                email=
+                <foreach collection="list" item="item" index="index"
+                         separator=" " open="case user_id" close="end">
+                        when #{item.userId} then ifnull(#{item.email},email)
+                </foreach>,
+                jobnumber=
+                <foreach collection="list" item="item" index="index"
+                         separator=" " open="case user_id" close="end">
+                        when #{item.userId} then ifnull(#{item.jobnumber},jobnumber)
+                </foreach>,
+                name=
+                <foreach collection="list" item="item" index="index"
+                         separator=" " open="case user_id" close="end">
+                        when #{item.userId} then ifnull(#{item.name},name)
+                </foreach>,
+                remark=
+                <foreach collection="list" item="item" index="index"
+                         separator=" " open="case user_id" close="end">
+                        when #{item.userId} then ifnull(#{item.remark},remark)
+                </foreach>,
+                active=
+                <foreach collection="list" item="item" index="index"
+                         separator=" " open="case user_id" close="end">
+                        when #{item.userId} then ifnull(#{item.active},active)
+                </foreach>
+                where user_id in
+                <foreach collection="list" index="index" item="item"
+                         separator="," open="(" close=")">
+                        #{item.userId,jdbcType=VARCHAR}
+                </foreach>
+        </update>
+
+        <update id="updateUserToMainAdmin">
+            update
+            <choose>
+                <when test="eid != null and eid != '' ">
+                    enterprise_user_${eid}
+                </when>
+                <otherwise>
+                    enterprise_user
+                </otherwise>
+            </choose>
+            set main_admin = true
+            where 1 > 2
+            <if test="userIds != null and userIds.size() > 0">
+                or user_id in
+                <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                    #{userId}
+                </foreach>
+            </if>
+        </update>
+    <update id="batchUpdateImportUser">
+        update enterprise_user_${eid}
+        set  mobile  =
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case user_id" close="end">
+            when #{item.userId} then #{item.mobile}
+        </foreach> ,
+        email=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case user_id" close="end">
+            when #{item.userId} then #{item.email}
+        </foreach>,
+        jobnumber=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case user_id" close="end">
+            when #{item.userId} then #{item.jobnumber}
+        </foreach>,
+        name=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case user_id" close="end">
+            when #{item.userId} then #{item.name}
+        </foreach>,
+        remark=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case user_id" close="end">
+            when #{item.userId} then #{item.remark}
+        </foreach>,
+        user_status=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case user_id" close="end">
+            when #{item.userId} then #{item.userStatus}
+        </foreach>,
+        user_region_ids=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case user_id" close="end">
+            when #{item.userId} then #{item.userRegionIds}
+        </foreach>
+        where user_id in
+        <foreach collection="list" index="index" item="item"
+                 separator="," open="(" close=")">
+            #{item.userId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <update id="nonOverwriteUpdateImportUser">
+        update enterprise_user_${eid}
+        set  mobile  =
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case user_id" close="end">
+            when #{item.userId} then
+            <choose>
+                <when test="item.mobile != null and item.mobile != ''">
+                    #{item.mobile}
+                </when>
+                <otherwise>
+                    mobile
+                </otherwise>
+            </choose>
+        </foreach> ,
+        email=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case user_id" close="end">
+            when #{item.userId} then
+            <choose>
+                <when test="item.email != null and item.email != ''">
+                    #{item.email}
+                </when>
+                <otherwise>
+                    email
+                </otherwise>
+            </choose>
+        </foreach>,
+        jobnumber=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case user_id" close="end">
+            when #{item.userId} then
+            <choose>
+                <when test="item.jobnumber != null and item.jobnumber != ''">
+                    #{item.jobnumber}
+                </when>
+                <otherwise>
+                    jobnumber
+                </otherwise>
+            </choose>
+        </foreach>,
+        name=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case user_id" close="end">
+            when #{item.userId} then
+            <choose>
+                <when test="item.name != null and item.name != ''">
+                    #{item.name}
+                </when>
+                <otherwise>
+                    name
+                </otherwise>
+            </choose>
+        </foreach>,
+        remark=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case user_id" close="end">
+            when #{item.userId} then
+            <choose>
+                <when test="item.remark != null and item.remark != ''">
+                    #{item.remark}
+                </when>
+                <otherwise>
+                    remark
+                </otherwise>
+            </choose>
+        </foreach>,
+        user_status=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case user_id" close="end">
+            when #{item.userId} then
+            <choose>
+                <when test="item.userStatus != null and item.userStatus != ''">
+                    #{item.userStatus}
+                </when>
+                <otherwise>
+                    user_status
+                </otherwise>
+            </choose>
+        </foreach>,
+        user_region_ids=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case user_id" close="end">
+            when #{item.userId} then
+            <choose>
+                <when test="item.userRegionIds != null and item.userRegionIds != ''">
+                    #{item.userRegionIds}
+                </when>
+                <otherwise>
+                    user_region_ids
+                </otherwise>
+            </choose>
+        </foreach>
+        where user_id in
+        <foreach collection="list" index="index" item="item"
+                 separator="," open="(" close=")">
+            #{item.userId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <update id="updateUserMainAdmin">
+        update enterprise_user_${eid} set main_admin = 1 where user_id = #{userId}
+    </update>
+
+    <select id="getAddressBookUsers" resultType="com.coolcollege.intelligent.model.enterprise.dto.AddressBookUserDTO">
+                select
+                        id                  as id,
+                        user_id             as userId,
+                        name                as name,
+                        mobile              as mobile,
+                        jobnumber           as jobnumber,
+                        face_url            as faceUrl
+                from enterprise_user_${eid} where active = true
+        </select>
+
+        <select id="getUserByAdmin" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+                select
+                id as id,
+                user_id as userId,
+                name as name,
+                is_admin as isAdmin
+                from enterprise_user_${eip}
+                where 1=1
+                and  active=1
+             <if test="isAdmin!=null">
+                     <choose>
+                             <when test="isAdmin==true">
+                                     and is_admin = 1
+                             </when>
+                             <otherwise>
+                                     and is_admin = 0
+                             </otherwise>
+                     </choose>
+
+             </if>
+        </select>
+        <select id="getDeptUser" resultType="com.coolcollege.intelligent.model.department.dto.DeptUserTreeDTO">
+                select
+                distinct
+                u.user_id as id,
+                u.name,
+                IFNULL(u.face_url, u.avatar) avatar,
+                u.departments as deptId,
+                true as userFlag
+                from enterprise_user_${eid} u
+                left join enterprise_user_department_${eid} eud on u.user_id = eud.user_id and eud.is_has_auth = 0
+                left join sys_department_${eid} sd on eud.department_id = sd.id
+                <where>
+                    <choose>
+                        <when test="userType != null and userType == 'active'">
+                         and   u.active = true
+                        </when>
+                        <otherwise>
+                          and  u.active = false
+                        </otherwise>
+                    </choose>
+                </where>
+
+        </select>
+
+        <delete id="batchDeleteUserIds">
+                update enterprise_user_${eid}
+                set active = false
+                where user_id in
+                <foreach collection="list" item="it" open="(" close=")" separator=",">
+                        #{it, jdbcType=VARCHAR}
+                </foreach>
+        </delete>
+
+        <delete id="batchDeleteUserIdsConfig">
+                update enterprise_user
+                set active = false
+                where user_id in
+                <foreach collection="list" item="it" open="(" close=")" separator=",">
+                        #{it, jdbcType=VARCHAR}
+                </foreach>
+        </delete>
+
+    <select id="fuzzyUsersByDepartment" resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseUserDTO">
+        select
+        u.user_id as userId,
+        u.name as name,
+        u.roles as roles,
+        u.jobnumber as jobnumber,
+        remark as remark,
+        mobile as mobile,
+        email as email,
+        r.role_name as roleName,
+        u.avatar as avatar,
+        u.departments as departments,
+        u.user_status as userStatus,
+        u.unionid as unionid,
+        u.user_type as userType,
+        u.create_time as createTime,
+        u.update_time as updateTime,
+        u.create_user_id as createUserId
+        from enterprise_user_${eid} u
+        left join enterprise_user_role_${eid} ul on u.user_id=ul.user_id
+        left join sys_role_${eid} r on ul.role_id=r.id
+        <where>
+            u.active = true
+            <if test="deptId !=null and deptId !=''">
+                and u.departments like concat('%/',#{deptId},'/%')
+            </if>
+            <if test="userName !=null and userName !=''">
+                and u.name like concat('%',#{userName},'%')
+            </if>
+            <if test="jobNumber !=null and jobNumber !=''">
+                and u.jobnumber = #{jobNumber}
+            </if>
+            <if test="mobile !=null and mobile !=''">
+                and u.mobile like concat('%',#{mobile},'%')
+            </if>
+            <if test="roleId !=null ">
+                and r.id=#{roleId}
+            </if>
+            <if test="userStatus !=null ">
+                and u.user_status=#{userStatus}
+            </if>
+            <if test="regionId !=null and regionId !=''">
+                and user_region_ids  like concat('%/',#{regionId},'/%')
+            </if>
+            <if test="userIdList != null and userIdList.size > 0">
+                and u.user_id in
+                <foreach collection="userIdList" item="userId" separator="," open="(" close=")">
+                    #{userId}
+                </foreach>
+            </if>
+            <if test="userType !=null">
+                and u.user_type = #{userType}
+            </if>
+        </where>
+        GROUP BY u.user_id
+        <if test="orderBy != null and orderBy != '' ">
+            order by u.${orderBy} ${orderRule}
+        </if>
+
+    </select>
+
+
+    <select id="fuzzyUsersByDepartmentCOUNT" resultType="long">
+        select
+            count(1)
+        from enterprise_user_${eid} u
+        left join enterprise_user_role_${eid} ul on u.user_id=ul.user_id
+        left join sys_role_${eid} r on ul.role_id=r.id
+        <where>
+            u.active = true
+            <if test="deptId !=null and deptId !=''">
+                and u.departments like concat('%/',#{deptId},'/%')
+            </if>
+            <if test="userName !=null and userName !=''">
+                and u.name like concat('%',#{userName},'%')
+            </if>
+            <if test="jobNumber !=null and jobNumber !=''">
+                and u.jobnumber = #{jobNumber}
+            </if>
+            <if test="mobile !=null and mobile !=''">
+                and u.mobile like concat('%',#{mobile},'%')
+            </if>
+            <if test="roleId !=null ">
+                and r.id=#{roleId}
+            </if>
+            <if test="userStatus !=null ">
+                and u.user_status=#{userStatus}
+            </if>
+            <if test="regionId !=null and regionId !=''">
+                and user_region_ids  like concat('%/',#{regionId},'/%')
+            </if>
+            <if test="userIdList != null and userIdList.size > 0">
+                and u.user_id in
+                <foreach collection="userIdList" item="userId" separator="," open="(" close=")">
+                    #{userId}
+                </foreach>
+            </if>
+            <if test="userType !=null">
+                and u.user_type = #{userType}
+            </if>
+        </where>
+    </select>
+
+    <!--$var eid=e17cd2dc350541df8a8b0af9bd27f77d -->
+    <select id="fuzzyUsersByNotRole" resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseUserDTO">
+        select
+        user_id             as userId,
+        name                as name,
+        jobnumber           as jobnumber,
+        remark              as remark,
+        mobile              as mobile,
+        email               as email,
+        avatar as avatar,
+        roles as roles,
+        departments as departments,
+        user_status as userStatus,
+        unionid,
+        user_type as userType,
+        create_time as createTime,
+        update_time as updateTime,
+        create_user_id as createUserId
+        from enterprise_user_${eid}
+        <where>
+            active = true
+            <if test="deptId !=null and deptId !=''">
+                and departments  like concat('%/',#{deptId},'/%')
+            </if>
+            <if test="userName !=null and userName !=''">
+                and name  like concat('%',#{userName},'%')
+            </if>
+            <if test="jobNumber !=null and jobNumber !=''">
+                and jobnumber = #{jobNumber}
+            </if>
+            <if test="mobile !=null and mobile !=''">
+                and mobile like concat('%',#{mobile},'%')
+            </if>
+            <if test="userStatus !=null">
+                and user_status = #{userStatus}
+            </if>
+            <if test="regionId !=null and regionId !=''">
+                and user_region_ids  like concat('%/',#{regionId},'/%')
+            </if>
+            <if test="userIdList != null and userIdList.size > 0">
+                and user_id in
+                <foreach collection="userIdList" item="userId" separator="," open="(" close=")">
+                    #{userId}
+                </foreach>
+            </if>
+            <if test="userType !=null">
+                and user_type = #{userType}
+            </if>
+        </where>
+        ORDER BY user_id
+        <if test="orderBy != null and orderBy != '' ">
+            , ${orderBy}
+        </if>
+    </select>
+
+    <select id="fuzzyUsersByNotRoleCOUNT" resultType="long">
+        select
+            count(1)
+        from enterprise_user_${eid}
+        <where>
+            active = true
+            <if test="deptId !=null and deptId !=''">
+                and departments  like concat('%/',#{deptId},'/%')
+            </if>
+            <if test="userName !=null and userName !=''">
+                and name  like concat('%',#{userName},'%')
+            </if>
+            <if test="jobNumber !=null and jobNumber !=''">
+                and jobnumber = #{jobNumber}
+            </if>
+            <if test="mobile !=null and mobile !=''">
+                and mobile like concat('%',#{mobile},'%')
+            </if>
+            <if test="userStatus !=null">
+                and user_status = #{userStatus}
+            </if>
+            <if test="regionId !=null and regionId !=''">
+                and user_region_ids  like concat('%/',#{regionId},'/%')
+            </if>
+            <if test="userIdList != null and userIdList.size > 0">
+                and user_id in
+                <foreach collection="userIdList" item="userId" separator="," open="(" close=")">
+                    #{userId}
+                </foreach>
+            </if>
+            <if test="userType !=null">
+                and user_type = #{userType}
+            </if>
+        </where>
+    </select>
+
+        <select id="getMainAdmin" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+                select id, user_id as userId from enterprise_user_${eid} where main_admin = true and active = true
+        </select>
+    <select id="getUserDetailList"
+            resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseUserDTO">
+        select
+        u.id,
+        u.user_id as userId,
+        u.name,
+        u.jobnumber,
+        u.unionid,
+        u.create_time as createTime,
+        u.mobile,
+        u.face_url as faceUrl,
+        u.active,
+        u.email,
+        u.remark
+        from enterprise_user_${eid} u where u.user_id in
+        <foreach collection="userIdList" item="userId" separator="," open="(" close=")">
+            #{userId, jdbcType=VARCHAR}
+        </foreach>
+        and active = true
+    </select>
+
+    <select id="selectUserAll" resultType="java.lang.String">
+    select user_id from enterprise_user_${eid}
+    where active= true
+    </select>
+
+    <select id="countUserAll" resultType="java.lang.Integer">
+    select count(user_id) from enterprise_user_${eid}
+    where active= true
+    </select>
+
+    <select id="countUserByNotRole" resultType="java.lang.Integer">
+    select count(user_id) from enterprise_user_${eid}
+        <where>
+            active = true
+            <if test="deptId !=null and deptId !=''">
+                and departments  like concat('%/',#{deptId},'/%')
+            </if>
+            <if test="userName !=null and userName !=''">
+                and name  like concat('%',#{userName},'%')
+            </if>
+            <if test="jobNumber !=null and jobNumber !=''">
+                and jobnumber = #{jobNumber}
+            </if>
+            <if test="userStatus !=null">
+                and user_status = #{userStatus}
+            </if>
+            <if test="regionId !=null and regionId !=''">
+                and user_region_ids  like concat('%/',#{regionId},'/%')
+            </if>
+        </where>
+    </select>
+
+    <select id="countUserByRole" resultType="java.lang.Integer">
+        select count(u.user_id)
+        from enterprise_user_${eid} u
+        left join enterprise_user_role_${eid} ul on u.user_id=ul.user_id
+        left join sys_role_${eid} r on ul.role_id=r.id
+        <where>
+            u.active = true
+            <if test="deptId !=null and deptId !=''">
+                and u.departments like concat('%/',#{deptId},'/%')
+            </if>
+            <if test="userName !=null and userName !=''">
+                and u.name like concat('%',#{userName},'%')
+            </if>
+            <if test="jobNumber !=null and jobNumber !=''">
+                and u.jobnumber = #{jobNumber}
+            </if>
+            <if test="roleId !=null ">
+                and r.id=#{roleId}
+            </if>
+            <if test="userStatus !=null ">
+                and u.user_status=#{userStatus}
+            </if>
+            <if test="regionId !=null and regionId !=''">
+                and user_region_ids  like concat('%/',#{regionId},'/%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getUserDetailByUnionId" resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseUserDTO">
+                select
+                        u.id,
+                        u.user_id as userId,
+                        u.name,
+                        u.jobnumber,
+                        u.unionid,
+                        u.create_time as createTime,
+                        u.mobile,
+                        u.face_url as faceUrl,
+                        u.active,
+                        u.email,
+                        u.remark
+                from enterprise_user_${eid} u where u.unionid =  #{unionId}
+                and active = true
+                limit 1;
+        </select>
+    <select id="selectRecentUserList"
+            resultType="com.coolcollege.intelligent.model.enterprise.dto.SelectUserDTO">
+                select
+                    user_id                     as userId,
+                    name                        as userName,
+                    jobnumber                   as jobNumber,
+                    IFNULL(face_url, avatar)    as avatar
+                from enterprise_user_${eid}
+                where user_id in
+                <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                    #{userId}
+                </foreach>
+                and active = true and user_status = '1'
+    </select>
+    <select id="getNumByJobnumber" resultType="java.lang.Integer">
+        select
+            count(1)
+        from
+            enterprise_user_${eid}
+        where
+            jobNumber = #{jobNumber}
+            <if test="userId != null">
+                and user_id != #{userId}
+            </if>
+        and active = 1
+    </select>
+    <select id="selectUserIdsByUserList" resultType="java.lang.String">
+        select user_id
+        from enterprise_user_${eid}
+        where active = true
+        <if test="userIdList != null and userIdList.size()>0">
+            and user_id in
+            <foreach collection="userIdList" item="userId" open="(" separator="," close=")">
+                #{userId}
+            </foreach>
+        </if>
+        order by user_id desc
+    </select>
+
+
+    <select id="selectUserRegionIdsByUserList" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+        user_id ,
+        name ,
+        jobnumber,
+        user_region_ids
+        from enterprise_user_${eid}
+        <where>
+            <if test="filterActive!=null and filterActive">
+                and active = true
+            </if>
+            <if test="userIdList != null and userIdList.size()>0">
+                and user_id in
+                <foreach collection="userIdList" item="userId" open="(" separator="," close=")">
+                    #{userId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <!--$var eid=e17cd2dc350541df8a8b0af9bd27f77d -->
+    <insert id="insertEnterpriseUser" parameterType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseUserDTO">
+        insert into enterprise_user_${eid}
+        (   `id`,
+            `user_id`,
+            `name`,
+            `tel`,
+            `remark`,
+            `mobile`,
+            `email`,
+            `active`,
+            `main_admin`,
+            `is_admin`,
+            `unionid`,
+            `is_leader_in_depts`,
+            `is_hide`,
+            `position`,
+            `avatar`,
+            `jobnumber`,
+            `is_enterprise`,
+            `roles`,
+            `departments`,
+            `is_leader`,
+            `face_url`,
+            `create_time`,
+            `user_status`,
+            `third_oa_unique_flag`,
+            `subordinate_range`,
+            `franchise_unique_code`,
+            `user_type`,
+            `user_region_ids`,
+            `create_user_id`
+        )
+        values
+        (
+            #{entity.id},
+            #{entity.userId},
+            #{entity.name},
+            #{entity.tel},
+            #{entity.remark},
+            #{entity.mobile},
+            #{entity.email},
+            #{entity.active},
+            #{entity.mainAdmin},
+            #{entity.isAdmin},
+            #{entity.unionid},
+            #{entity.isLeaderInDepts},
+            #{entity.isHide},
+            #{entity.position},
+            #{entity.avatar},
+            #{entity.jobnumber},
+            #{entity.isEnterprise},
+            #{entity.roles},
+            #{entity.departments},
+            #{entity.isLeader},
+            #{entity.faceUrl},
+            now(),
+            #{entity.userStatus},
+            #{entity.thirdOaUniqueFlag},
+            #{entity.subordinateRange},
+            #{entity.franchiseUniqueCode},
+            #{entity.userType},
+            #{entity.userRegionIds},
+            #{entity.createUserId}
+        )
+    </insert>
+
+    <select id="getPlatformUserByMobile" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id                  as id,
+            user_id             as userId,
+            name                as name,
+            tel                 as tel,
+            remark              as remark,
+            mobile              as mobile,
+            email               as email,
+            active              as active,
+            is_admin            as isAdmin,
+            unionid             as unionid,
+            is_leader_in_depts  as isLeaderInDepts,
+            is_hide             as isHide,
+            position            as position,
+            avatar              as avatar,
+            jobnumber           as jobnumber,
+            is_enterprise       as isEnterprise,
+            roles               as roles,
+            departments         as departments,
+            is_leader           as isLeader,
+            create_time         as createTime,
+            language            as language,
+            password            as password,
+            app_type            as appType
+        from
+            enterprise_user
+        where
+            mobile = #{mobile, jdbcType=VARCHAR}
+    </select>
+
+
+
+    <select id="getPlatformUserByUnionid" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id                  as id,
+            user_id             as userId,
+            name                as name,
+            tel                 as tel,
+            remark              as remark,
+            mobile              as mobile,
+            email               as email,
+            active              as active,
+            is_admin            as isAdmin,
+            unionid             as unionid,
+            is_leader_in_depts  as isLeaderInDepts,
+            is_hide             as isHide,
+            position            as position,
+            avatar              as avatar,
+            jobnumber           as jobnumber,
+            is_enterprise       as isEnterprise,
+            roles               as roles,
+            departments         as departments,
+            is_leader           as isLeader,
+            create_time         as createTime,
+            language            as language,
+            password            as password,
+            app_type            as appType
+        from
+            enterprise_user
+        where
+            unionid = #{unionid}
+    </select>
+
+
+    <select id="selectByUnionids" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id                  as id,
+            user_id             as userId,
+            name                as name,
+            tel                 as tel,
+            remark              as remark,
+            mobile              as mobile,
+            email               as email,
+            active              as active,
+            is_admin            as isAdmin,
+            unionid             as unionid,
+            is_leader_in_depts  as isLeaderInDepts,
+            is_hide             as isHide,
+            position            as position,
+            avatar              as avatar,
+            face_url            as faceUrl,
+            jobnumber           as jobnumber,
+            is_enterprise       as isEnterprise,
+            roles               as roles,
+            departments         as departments,
+            is_leader           as isLeader,
+            create_time         as createTime,
+            language            as language,
+            user_status         as userStatus,
+            user_type as userType
+        from
+            enterprise_user_${enterpriseId}
+        where
+            active = true and unionid in <foreach collection="unionids" item="unionId" separator="," open="(" close=")">#{unionId}</foreach>
+        order by id desc limit 1
+    </select>
+
+    <select id="selectByUnionid" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+        id                  as id,
+        user_id             as userId,
+        name                as name,
+        tel                 as tel,
+        remark              as remark,
+        mobile              as mobile,
+        email               as email,
+        active              as active,
+        is_admin            as isAdmin,
+        unionid             as unionid,
+        is_leader_in_depts  as isLeaderInDepts,
+        is_hide             as isHide,
+        position            as position,
+        avatar              as avatar,
+        face_url            as faceUrl,
+        jobnumber           as jobnumber,
+        is_enterprise       as isEnterprise,
+        roles               as roles,
+        departments         as departments,
+        is_leader           as isLeader,
+        create_time         as createTime,
+        language            as language,
+        user_status         as userStatus
+        from
+        enterprise_user_${enterpriseId}
+        where
+        unionid = #{unionid, jdbcType=VARCHAR} and active = true
+        order by id desc limit 1
+    </select>
+
+    <select id="selectConfigUserByUserIds"
+            resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id                  as id,
+            user_id             as userId,
+            `name`                as name,
+            mobile              as mobile,
+            email               as email
+        from
+            enterprise_user
+        where user_id in
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </select>
+
+    <update id="updateConfigEnterpriseUserList">
+        <foreach collection="enterpriseUserList" separator=";" item="enterpriseUserDO">
+            update enterprise_user
+            <set>
+                <if test="enterpriseUserDO.mobile != null and enterpriseUserDO.mobile !=''">
+                    `mobile` =  #{enterpriseUserDO.mobile},
+                </if>
+                <if test="enterpriseUserDO.name != null and enterpriseUserDO.name != ''">
+                    `name` = #{enterpriseUserDO.name},
+                </if>
+            </set>
+            where unionid = #{enterpriseUserDO.unionid}
+        </foreach>
+    </update>
+
+    <update id="updateConfigEnterpriseUserByUnionId">
+        update enterprise_user
+        <set>
+            <if test="enterpriseUserDO.tel != null and enterpriseUserDO.tel !=''">`tel` = #{enterpriseUserDO.tel},</if>
+            <if test="enterpriseUserDO.remark != null and enterpriseUserDO.remark !=''">`remark` =
+                #{enterpriseUserDO.remark},
+            </if>
+            <if test="enterpriseUserDO.mobile != null and enterpriseUserDO.mobile !=''">`mobile` =
+                #{enterpriseUserDO.mobile},
+            </if>
+            <if test="enterpriseUserDO.email != null and enterpriseUserDO.email !=''">`email` = #{enterpriseUserDO.email},
+            </if>
+            <if test="enterpriseUserDO.active != null">`active` =
+                #{enterpriseUserDO.active},
+            </if>
+            <if test="enterpriseUserDO.mainAdmin != null">`main_admin` = #{enterpriseUserDO.mainAdmin},</if>
+            <if test="enterpriseUserDO.isAdmin != null">`is_admin` = #{enterpriseUserDO.isAdmin},</if>
+            <if test="enterpriseUserDO.unionid != null and enterpriseUserDO.unionid !=''">`unionid` =
+                #{enterpriseUserDO.unionid},
+            </if>
+            <if test="enterpriseUserDO.isLeaderInDepts != null and enterpriseUserDO.isLeaderInDepts !=''">
+                `is_leader_in_depts` = #{enterpriseUserDO.isLeaderInDepts},
+            </if>
+            <if test="enterpriseUserDO.isHide != null">`is_hide` = #{enterpriseUserDO.isHide},</if>
+
+            <if test="enterpriseUserDO.position != null and enterpriseUserDO.position !=''">`position` =
+                #{enterpriseUserDO.position},
+            </if>
+            <if test="enterpriseUserDO.avatar != null and enterpriseUserDO.avatar !=''">`avatar` =
+                #{enterpriseUserDO.avatar},
+            </if>
+            <if test="enterpriseUserDO.jobnumber != null and enterpriseUserDO.jobnumber !=''">`jobnumber` =
+                #{enterpriseUserDO.jobnumber},
+            </if>
+            <if test="enterpriseUserDO.isEnterprise != null">`is_enterprise` =
+                #{enterpriseUserDO.isEnterprise},
+            </if>
+            <if test="enterpriseUserDO.departments != null and enterpriseUserDO.departments !=''">`departments` =
+                #{enterpriseUserDO.departments},
+            </if>
+            <if test="enterpriseUserDO.isLeader != null">`is_leader` = #{enterpriseUserDO.isLeader},</if>
+            <if test="enterpriseUserDO.language != null and enterpriseUserDO.language !=''">`language` =
+                #{enterpriseUserDO.language},
+            </if>
+            <if test="enterpriseUserDO.appType != null and enterpriseUserDO.appType !=''">`app_type` =
+                #{enterpriseUserDO.appType},
+            </if>
+            <if test="enterpriseUserDO.name != null and enterpriseUserDO.name != ''">`name` =
+                #{enterpriseUserDO.name},
+            </if>
+            <if test="enterpriseUserDO.password != null ">`password` =
+                #{enterpriseUserDO.password},
+            </if>
+            <if test="enterpriseUserDO.thirdOaUniqueFlag != null and enterpriseUserDO.thirdOaUniqueFlag !=''">`third_oa_unique_flag` =
+                #{enterpriseUserDO.thirdOaUniqueFlag},
+            </if>
+        </set>
+        where unionid =#{enterpriseUserDO.unionid}
+    </update>
+
+
+    <select id="getEnterpriseUserByMobile" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id                  as id,
+            user_id             as userId,
+            name                as name,
+            tel                 as tel,
+            remark              as remark,
+            mobile              as mobile,
+            email               as email,
+            active              as active,
+            is_admin            as isAdmin,
+            unionid             as unionid,
+            is_leader_in_depts  as isLeaderInDepts,
+            is_hide             as isHide,
+            position            as position,
+            avatar              as avatar,
+            face_url            as faceUrl,
+            jobnumber           as jobnumber,
+            is_enterprise       as isEnterprise,
+            roles               as roles,
+            departments         as departments,
+            is_leader           as isLeader,
+            create_time         as createTime,
+            language            as language,
+            user_status         as userStatus,
+            third_oa_unique_flag         as thirdOaUniqueFlag
+        from
+            enterprise_user_${enterpriseId}
+        where
+            mobile = #{mobile, jdbcType=VARCHAR} and active = true
+            <if test="excludeUnionid != null">
+                and unionid != #{excludeUnionid}
+            </if>
+        order by id desc limit 1
+    </select>
+
+
+    <select id="getUserByMobile" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id                  as id,
+            user_id             as userId,
+            name                as name,
+            tel                 as tel,
+            remark              as remark,
+            mobile              as mobile,
+            email               as email,
+            active              as active,
+            is_admin            as isAdmin,
+            unionid             as unionid,
+            is_leader_in_depts  as isLeaderInDepts,
+            is_hide             as isHide,
+            position            as position,
+            avatar              as avatar,
+            face_url            as faceUrl,
+            jobnumber           as jobnumber,
+            is_enterprise       as isEnterprise,
+            roles               as roles,
+            departments         as departments,
+            is_leader           as isLeader,
+            create_time         as createTime,
+            language            as language,
+            user_status         as userStatus,
+            third_oa_unique_flag         as thirdOaUniqueFlag
+        from
+            enterprise_user_${enterpriseId}
+        where
+            mobile = #{mobile} and active = true
+            <if test="excludeUserId != null">
+                and user_id != #{excludeUserId}
+            </if>
+            order by id desc limit 1
+    </select>
+
+    <select id="getUserByThirdOaUniqueFlag" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id                  as id,
+            user_id             as userId,
+            name                as name,
+            tel                 as tel,
+            remark              as remark,
+            mobile              as mobile,
+            email               as email,
+            active              as active,
+            is_admin            as isAdmin,
+            unionid             as unionid,
+            is_leader_in_depts  as isLeaderInDepts,
+            is_hide             as isHide,
+            position            as position,
+            avatar              as avatar,
+            face_url            as faceUrl,
+            jobnumber           as jobnumber,
+            is_enterprise       as isEnterprise,
+            roles               as roles,
+            departments         as departments,
+            is_leader           as isLeader,
+            create_time         as createTime,
+            language            as language,
+            user_status         as userStatus,
+            third_oa_unique_flag         as thirdOaUniqueFlag
+        from
+            enterprise_user_${enterpriseId}
+        where
+            third_oa_unique_flag = #{thirdOaUniqueFlag} and active = true
+            <if test="excludeUserId != null">
+                and user_id != #{excludeUserId}
+            </if>
+            order by id desc limit 1
+    </select>
+
+    <select id="getEnterpriseUserByThirdOaUniqueFlag" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+        id                  as id,
+        user_id             as userId,
+        name                as name,
+        tel                 as tel,
+        remark              as remark,
+        mobile              as mobile,
+        email               as email,
+        active              as active,
+        is_admin            as isAdmin,
+        unionid             as unionid,
+        is_leader_in_depts  as isLeaderInDepts,
+        is_hide             as isHide,
+        position            as position,
+        avatar              as avatar,
+        face_url            as faceUrl,
+        jobnumber           as jobnumber,
+        is_enterprise       as isEnterprise,
+        roles               as roles,
+        departments         as departments,
+        is_leader           as isLeader,
+        create_time         as createTime,
+        language            as language,
+        user_status         as userStatus,
+        third_oa_unique_flag         as thirdOaUniqueFlag
+        from
+        enterprise_user_${enterpriseId}
+        where
+        third_oa_unique_flag = #{thirdOaUniqueFlag} and active = true
+        <if test="excludeUnionid != null">
+            and unionid != #{excludeUnionid}
+        </if>
+        order by id desc limit 1
+    </select>
+
+    <select id="selectConfigUserByAppTypeAndMobile"
+            resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id                  as id,
+            user_id             as userId,
+            `name`              as name,
+            tel                 as tel,
+            remark              as remark,
+            mobile              as mobile,
+            email               as email,
+            active              as active,
+            is_admin            as isAdmin,
+            unionid             as unionid,
+            is_leader_in_depts  as isLeaderInDepts,
+            is_hide             as isHide,
+            `position`          as position,
+            avatar              as avatar,
+            jobnumber           as jobnumber,
+            is_enterprise       as isEnterprise,
+            departments         as departments,
+            is_leader           as isLeader,
+            create_time         as createTime,
+            `language`          as language,
+            password            as password,
+            app_type            as appType
+        from
+            enterprise_user
+        where
+            mobile = #{mobile, jdbcType=VARCHAR}
+            and app_type = #{appType, jdbcType=VARCHAR}
+            and active = true
+        order by id desc limit 1
+    </select>
+
+    <update id="batchUpdateUserStatusByUnionid">
+        update
+            enterprise_user_${enterpriseId}
+        set
+            user_status = #{userStatus}
+        where unionid in
+        <foreach collection="unionids" open="(" close=")" separator="," item="unionid">
+            #{unionid}
+        </foreach>
+    </update>
+
+    <update id="modifyPasswordByMobile">
+        update enterprise_user set password = #{password} where mobile = #{mobile}
+    </update>
+
+    <select id="getEnterpriseUserStatus" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id                  as id,
+            user_id             as userId,
+            unionid             as unionid,
+            user_status         as userStatus,
+            active              as active
+        from
+            enterprise_user_${enterpriseId}
+        order by active asc, create_time asc, id asc
+    </select>
+
+    <select id="getActiveUserCount" resultType="java.lang.Integer">
+        select count(1) from enterprise_user_${eid} where  unionid is not null and unionid !='' and active= true
+    </select>
+
+    <select id="getUserCountByActive" resultType="java.lang.Integer">
+    select count(1)
+    from enterprise_user_${eid}
+    where  unionid is not null
+      and unionid !=''
+      <if test="active != null and active !=''" >
+        and active= #{active}
+      </if>
+    </select>
+
+    <select id="selectByJobnumber" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+        id                  as id,
+        user_id             as userId,
+        name                as name,
+        tel                 as tel,
+        remark              as remark,
+        mobile              as mobile,
+        email               as email,
+        active              as active,
+        is_admin            as isAdmin,
+        unionid             as unionid,
+        is_leader_in_depts  as isLeaderInDepts,
+        is_hide             as isHide,
+        position            as position,
+        avatar              as avatar,
+        face_url            as faceUrl,
+        jobnumber           as jobnumber,
+        is_enterprise       as isEnterprise,
+        roles               as roles,
+        departments         as departments,
+        is_leader           as isLeader,
+        create_time         as createTime,
+        language            as language,
+        user_status         as userStatus
+        from
+        enterprise_user_${enterpriseId}
+        where
+        jobnumber = #{jobnumber}
+        order by id desc limit 1
+    </select>
+
+    <select id="selectByThirdOaUniqueFlag" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+        id                  as id,
+        user_id             as userId,
+        name                as name,
+        tel                 as tel,
+        remark              as remark,
+        mobile              as mobile,
+        email               as email,
+        active              as active,
+        is_admin            as isAdmin,
+        unionid             as unionid,
+        is_leader_in_depts  as isLeaderInDepts,
+        is_hide             as isHide,
+        position            as position,
+        avatar              as avatar,
+        face_url            as faceUrl,
+        jobnumber           as jobnumber,
+        is_enterprise       as isEnterprise,
+        roles               as roles,
+        departments         as departments,
+        is_leader           as isLeader,
+        create_time         as createTime,
+        language            as language,
+        third_oa_unique_flag as thirdOaUniqueFlag,
+        user_status         as userStatus
+        from
+        enterprise_user_${enterpriseId}
+        where
+        third_oa_unique_flag = #{thirdOaUniqueFlag}
+        order by id,active desc limit 1
+    </select>
+
+    <select id="getUserIdsByUnionIds" resultType="string">
+        select
+            user_id
+        from
+            enterprise_user_${enterpriseId}
+        where
+            unionid in
+            <foreach collection="unionids" open="(" close=")" separator="," item="unionid">
+                #{unionid}
+            </foreach>
+    </select>
+    <select id="selectUserByKeyword"
+            resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id                  as id,
+            user_id             as userId,
+            `name`              as name,
+            avatar              as avatar,
+            face_url            as faceUrl,
+            jobnumber           as jobnumber
+        from enterprise_user_${eid}
+        <where>
+            <if test="keyword !=null and keyword !=''">
+                and (`name` like concat('%', #{keyword},'%') or jobnumber like concat('%', #{keyword},'%'))
+            </if>
+            <if test="userStatus != null">
+                and user_status = #{userStatus}
+            </if>
+            <if test="userIdList != null and userIdList.size > 0">
+                and user_id in
+                <foreach collection="userIdList" item="userId" separator="," open="(" close=")">
+                    #{userId}
+                </foreach>
+            </if>
+            <if test="active == null">
+                and active = true
+            </if>
+        </where>
+    </select>
+    <select id="selectByUserIdsAndStatus" resultType="java.lang.String">
+        select
+        user_id as userId
+        from enterprise_user_${eid}
+        <where>
+            <if test="userIds!=null and userIds.size()>0  ">
+                and user_id in
+                <foreach collection="userIds" item="userId" separator="," open="(" close=")">
+                    #{userId, jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="userStatus != null">
+                and user_status = #{userStatus}
+            </if>
+            and active = true
+        </where>
+    </select>
+    <select id="selectUsersByStatusAndUserIds"
+            resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id,
+            user_id as userId,
+            name as name,
+            avatar,
+            active,
+            mobile,
+            jobnumber,
+            language,
+            user_status as userStatus,
+            third_oa_unique_flag as thirdOaUniqueFlag
+        from enterprise_user_${eid}
+        <where>
+            <if test="userIds!=null and userIds.size()>0  ">
+                and user_id in
+                <foreach collection="userIds" item="userId" separator="," open="(" close=")">
+                    #{userId, jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="userStatus != null">
+                and user_status = #{userStatus}
+            </if>
+            <if test="active == null">
+                and active = true
+            </if>
+        </where>
+    </select>
+
+    <select id="selectUsersByStatusAndUserIdsForMyj"
+            resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+        id,
+        user_id as userId,
+        name as name,
+        avatar,
+        active,
+        mobile,
+        jobnumber,
+        language,
+        user_status as userStatus,
+        third_oa_unique_flag as thirdOaUniqueFlag
+        from enterprise_user_${eid}
+        <where>
+            <if test="userIds!=null and userIds.size()>0  ">
+                and user_id in
+                <foreach collection="userIds" item="userId" separator="," open="(" close=")">
+                    #{userId, jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="userStatus != null">
+                and user_status = #{userStatus}
+            </if>
+            <if test="active == null">
+                and active = true
+            </if>
+        </where>
+    </select>
+
+    <select id="listByUserIdIgnoreActive" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+        id                  as id,
+        user_id             as userId,
+        name                as name,
+        tel                 as tel,
+        remark              as remark,
+        mobile              as mobile,
+        email               as email,
+        active              as active,
+        is_admin            as isAdmin,
+        unionid             as unionid,
+        is_leader_in_depts  as isLeaderInDepts,
+        is_hide             as isHide,
+        position            as position,
+        avatar              as avatar,
+        face_url            as faceUrl,
+        jobnumber           as jobnumber,
+        is_enterprise       as isEnterprise,
+        roles               as roles,
+        departments         as departments,
+        is_leader           as isLeader,
+        create_time         as createTime,
+        language            as language,
+        third_oa_unique_flag as thirdOaUniqueFlag
+        from enterprise_user_${enterpriseId}
+        where user_id in
+        <foreach collection="userIds" open="(" close=")" separator="," item="userid">
+            #{userid}
+        </foreach>
+    </select>
+
+    <select id="selectEnterpriseUserAll"
+            resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select id                  as id,
+               user_id             as userId,
+               departments         as departments
+        from enterprise_user_${eid}
+        order by id
+    </select>
+    <select id="selectUserByEid" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id                  as id,
+            user_id             as userId,
+            `name`                as name,
+            tel                 as tel,
+            remark              as remark,
+            mobile              as mobile,
+            email               as email,
+            active              as active,
+            is_admin            as isAdmin,
+            unionid             as unionid,
+            is_leader_in_depts  as isLeaderInDepts,
+            is_hide             as isHide,
+            `position`            as position,
+                avatar              as avatar,
+                jobnumber           as jobnumber,
+                is_enterprise       as isEnterprise,
+                roles               as roles,
+                departments         as departments,
+                is_leader           as isLeader,
+                face_url            as faceUrl,
+                create_time         as createTime,
+                `language`            as language
+        from enterprise_user_${eid}
+        <where>
+            <if test="regionId !=null">
+                and user_region_ids  like concat('%/',#{regionId},'/%')
+            </if>
+        </where>
+        order by id
+    </select>
+
+    <select id="selectUserByRegionId" resultType="java.lang.String">
+        select
+        user_id
+        from enterprise_user_${eid} where user_region_ids  like concat('%/',#{regionId},'/%')
+        and active = 1
+    </select>
+    <select id="selectUserByDepartmentId" resultType="java.lang.String">
+        select
+            user_id
+        from enterprise_user_${eid} where  departments  like concat('%/',#{departmentId},'/%')  and active = 1
+    </select>
+    <select id="selectUserIdsByIds" resultType="java.lang.String">
+        select
+        user_id
+        from
+        enterprise_user_${eid}
+        where
+        id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+
+    <update id="batchUpdateUserRegionIds">
+        update enterprise_user_${eid}
+        set user_region_ids=replace(user_region_ids,#{oldFullRegionPath},concat(#{newFullRegionPath},#{keyNode},'/'))
+        WHERE user_region_ids like concat('%',#{oldFullRegionPath},'%')
+    </update>
+
+
+    <update id="batchUpdateDiffUserDiffRegionIds">
+        update enterprise_user_${eid}
+        set  user_region_ids =
+        <foreach collection="list" item="item" index="index" separator=" " open="case user_id" close="end">
+            when #{item.userId} then #{item.userRegionIds}
+        </foreach>
+        where user_id in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.userId}
+        </foreach>
+    </update>
+
+    <select id="countUserByGroupId" resultType="java.lang.Integer">
+    select count(1) from enterprise_user_${eid} u
+        left join enterprise_user_group_mapping_${eid} ug on u.user_id=ug.user_id
+    where ug.group_id = #{groupId} and u.active = true
+    </select>
+
+    <select id="listUserByGroupId" resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseUserDTO">
+        select
+        u.user_id as userId,
+        u.name as name,
+        u.roles as roles,
+        u.jobnumber as jobnumber,
+        u.mobile as mobile,
+        u.email as email,
+        u.avatar as avatar,
+        u.departments as departments,
+        u.user_status as userStatus,
+        u.unionid as unionid
+        from enterprise_user_${eid} u
+        left join enterprise_user_group_mapping_${eid} ug on u.user_id=ug.user_id
+        <where>
+            ug.group_id = #{groupId} and u.active = true
+            <if test="userName !=null and userName !=''">
+                and u.name like concat('%',#{userName},'%')
+            </if>
+            <if test="userIdList != null and userIdList.size > 0">
+                and u.user_id in
+                <foreach collection="userIdList" item="userId" separator="," open="(" close=")">
+                    #{userId}
+                </foreach>
+            </if>
+        </where>
+        GROUP BY u.user_id
+    </select>
+
+    <select id="getUserIdsByRegionIdList" resultType="string">
+        select
+            user_id
+        from enterprise_user_${eid} where active=1
+        <if test="regionIdList != null and regionIdList.size >0 ">
+            <foreach collection="regionIdList" item="regionId" separator=" or " open="and (" close=" )">
+                user_region_ids like concat('%/', #{regionId}, '/%')
+            </foreach>
+        </if>
+    </select>
+
+    <select id="listUserIdByRegionIdList" resultType="com.coolcollege.intelligent.model.enterprise.dto.UserGroupByRegionDTO">
+        select
+            user_region_ids as userRegionIds,user_id as userId
+        from enterprise_user_${eid} where active=1
+        <if test="regionIdList != null and regionIdList.size >0 ">
+            <foreach collection="regionIdList" item="regionId" separator=" or " open="and (" close=" )">
+                user_region_ids like concat('%/', #{regionId}, '/%')
+            </foreach>
+        </if>
+        order by id
+    </select>
+
+    <select id="listUserIdByDepartmentIdList" resultType="java.lang.String">
+        select
+        user_id             as userId
+        from enterprise_user_${eid}
+        <where>
+            <if test="departmentIdList != null and departmentIdList.size >0 ">
+                <foreach collection="departmentIdList" item="departmentId" separator=" or " open="and (" close=" )">
+                    departments like concat('%/', #{departmentId}, '/%')
+                </foreach>
+            </if>
+        </where>
+        order by id
+    </select>
+
+
+    <select id="usersByUserIdList" resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseUserSingleDTO">
+        select
+        user_id as userId,
+        `name` as userName,
+        avatar as avatar
+        from enterprise_user_${eid}
+        <where>
+            <if test="userIds!=null and userIds.size()>0  ">
+                <foreach
+                        collection="userIds" item="userId" separator="," open="and user_id in (" close=")">
+                    #{userId, jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectIgnoreDeletedUsersByUserIds" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id,
+            user_id as userId,
+            `name` as name,
+            avatar,
+            active
+        from enterprise_user_${eid}
+        where
+            user_id in
+            <foreach
+                    collection="userIds" item="userId" separator="," open="(" close=")">
+                #{userId, jdbcType=VARCHAR}
+            </foreach>
+    </select>
+
+    <select id="getUserCountByUserIdOrRegionIds" resultType="integer">
+        select
+            count(distinct(user_id))
+        from
+            enterprise_user_${eid}
+        where
+        active = true and (
+            <if test="userIds != null and userIds.size()>0">
+                <foreach collection="userIds" item="userId" open="user_id in (" close=")" separator=",">
+                    #{userId}
+                </foreach>
+            </if>
+            <if test="regionIds != null and regionIds.size()>0">
+                <if test="userIds != null and userIds.size()>0">
+                    or
+                </if>
+                <foreach collection="regionIds" separator="or" item="regionId">
+                    user_region_ids like concat('%/', #{regionId}, '/%')
+                </foreach>
+            </if>
+        )
+    </select>
+    <select id="getUsersByPage"
+            resultType="com.coolcollege.intelligent.facade.dto.user.EnterpriseUserAllFacadeDTO">
+        SELECT
+        user_id AS userId,
+        name AS name,
+        jobnumber AS jobNumber
+        FROM enterprise_user_${eid}
+      <where>
+          <if test="name != null and name != ''">
+              AND (`name` like concat('%', #{name}, '%') OR jobnumber like concat('%', #{name}, '%'))
+          </if>
+      </where>
+    </select>
+    <select id="getUsersByRoleIds" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select *
+        from enterprise_user_${enterpriseId}
+        where
+        <foreach collection="roleIdsByComp" item="it" separator="or">
+            roles like concat('%',#{it, jdbcType=VARCHAR},'%')
+        </foreach>
+    </select>
+
+
+    <select id="selectUserIdsByUserIdOrJobNumber" resultType="java.lang.String">
+        SELECT
+        DISTINCT user_id AS userId
+        FROM enterprise_user_${eid}
+        WHERE
+        active = true
+        <if test="importType != null and importType != ''">
+            <choose>
+                <when test="importType == 'USER_ID_TYPE'">
+                    AND user_id = #{userId}
+                </when>
+                <when test="importType == 'JOB_NUMBER_TYPE'">
+                    AND jobnumber = #{jobNumber}
+                </when>
+                <otherwise>
+                    and user_id is not null
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+    <select id="getAllUser" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+        user_id as userId,
+        `name` as name,
+        avatar as avatar
+        from enterprise_user_${eid}
+        where
+        active = true
+    </select>
+    <select id="selectUserByRegionPaths" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            user_id as userId ,user_region_ids as userRegionIds,`name` as name
+        from enterprise_user_${eid}
+        where active = 1
+        <if test="regionPaths != null and regionPaths.size()>0">
+            <foreach collection="regionPaths" item="item" separator=" or " open="and (" close=" )">
+                user_region_ids like concat('%',#{item},'%')
+            </foreach>
+        </if>
+    </select>
+
+    <insert id="batchInsertUsers">
+        <foreach collection="list" item="it" separator=";">
+            insert into enterprise_user_${eid} (
+            id,
+            user_id,
+            `name`,
+            mobile,
+            email,
+            active,
+            main_admin,
+            is_admin,
+            unionid,
+            departments,
+            `position`,
+            avatar,
+            jobnumber,
+            roles,
+            is_leader,
+            user_type,
+            user_region_ids,
+            user_status
+            <if test="it.subordinateRange != null">
+                , subordinate_range
+            </if>
+            <if test="it.thirdOaUniqueFlag != null">
+                , third_oa_unique_flag
+            </if>
+            ) values
+            (
+            #{it.id},
+            #{it.userId},
+            #{it.name},
+            #{it.mobile},
+            #{it.email},
+            #{it.active},
+            #{it.mainAdmin},
+            #{it.isAdmin},
+            #{it.unionid},
+            #{it.departments},
+            #{it.position},
+            #{it.avatar},
+            #{it.jobnumber},
+            #{it.roles},
+            #{it.isLeader},
+            #{it.userType},
+            #{it.userRegionIds},
+            #{it.userStatus}
+            <if test="it.subordinateRange != null">
+                ,   #{it.subordinateRange}
+            </if>
+            <if test="it.thirdOaUniqueFlag != null">
+                , #{it.thirdOaUniqueFlag}
+            </if>
+            )
+            ON DUPLICATE KEY UPDATE
+            `name`=values(name),
+            main_admin=values(main_admin),
+            is_admin=values(is_admin),
+            avatar=values(avatar),
+            active=values(active)
+            <if test="it.mobile != null">
+                ,mobile = values(mobile)
+            </if>
+            <if test="it.jobnumber != null">
+                ,jobnumber=values(jobnumber)
+            </if>
+            <if test="it.userStatus != null">
+                ,user_status = values(user_status)
+            </if>
+            <if test="it.thirdOaUniqueFlag != null">
+                ,third_oa_unique_flag = values(third_oa_unique_flag)
+            </if>
+            <if test="it.email != null">
+                ,email = values(email)
+            </if>
+            <if test="it.userRegionIds != null">
+                ,user_region_ids = values(user_region_ids)
+            </if>
+        </foreach>
+    </insert>
+    <select id="selectMaxNum" resultType="java.lang.String">
+        SELECT MAX(jobnumber) FROM enterprise_user_${eid}
+    </select>
+
+    <select id="getUserInfoByMobile" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        select
+            id                  as id,
+            user_id             as userId,
+            `name`              as name,
+            tel                 as tel,
+            remark              as remark,
+            mobile              as mobile,
+            email               as email,
+            active              as active,
+            is_admin            as isAdmin,
+            unionid             as unionid,
+            is_leader_in_depts  as isLeaderInDepts,
+            is_hide             as isHide,
+            `position`          as position,
+            avatar              as avatar,
+            face_url            as faceUrl,
+            jobnumber           as jobnumber,
+            is_enterprise       as isEnterprise,
+            roles               as roles,
+            departments         as departments,
+            is_leader           as isLeader,
+            create_time         as createTime,
+            `language`          as language,
+            user_status         as userStatus,
+            subordinate_change  as subordinateChange,
+            third_oa_unique_flag as thirdOaUniqueFlag,
+            user_region_ids as userRegionIds,
+            subordinate_range  as subordinateRange,
+            user_type as userType
+        from
+            enterprise_user_${eid}
+        where mobile=#{mobile} and active = true
+    </select>
+
+    <select id="hasPassword" resultType="java.lang.Boolean">
+        SELECT (password IS NOT NULL AND password != '')
+        FROM enterprise_user
+        WHERE unionid = #{unionid}
+    </select>
+
+    <select id="getList" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDO">
+        SELECT user_id, name, mobile, jobnumber, user_region_ids
+        FROM enterprise_user_${enterpriseId}
+        <where>
+            active = true
+            <if test="param.regionId != null">
+                <choose>
+                    <when test="param.hasChild != null and param.hasChild == true">
+                        AND user_region_ids LIKE CONCAT('%/', #{param.regionId}, '/%')
+                    </when>
+                    <otherwise>
+                        AND user_region_ids LIKE CONCAT('%/', #{param.regionId}, '/]') OR user_region_ids LIKE CONCAT('%/', #{param.regionId}, '/,%')
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="param.userIds != null and !param.userIds.isEmpty()">
+                AND user_id IN
+                <foreach collection="param.userIds" item="userId" separator="," open="(" close=")">
+                    #{userId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>

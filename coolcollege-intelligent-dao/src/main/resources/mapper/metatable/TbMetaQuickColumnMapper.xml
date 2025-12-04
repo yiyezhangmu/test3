@@ -1,0 +1,812 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.metatable.TbMetaQuickColumnMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.metatable.TbMetaQuickColumnDO">
+      <id column="id" jdbcType="BIGINT" property="id"/>
+      <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+      <result column="edit_time" jdbcType="TIMESTAMP" property="editTime"/>
+      <result column="category" jdbcType="BIGINT" property="category"/>
+      <result column="column_name" jdbcType="VARCHAR" property="columnName"/>
+      <result column="description" jdbcType="VARCHAR" property="description"/>
+      <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+      <result column="question_handler_type" jdbcType="VARCHAR" property="questionHandlerType"/>
+      <result column="question_handler_id" jdbcType="VARCHAR" property="questionHandlerId"/>
+      <result column="question_rechecker_type" jdbcType="VARCHAR" property="questionRecheckerType"/>
+      <result column="question_rechecker_id" jdbcType="VARCHAR" property="questionRecheckerId" />
+      <result column="question_cc_type" jdbcType="VARCHAR" property="questionCcType"/>
+      <result column="question_cc_id" jdbcType="VARCHAR" property="questionCcId"/>
+      <result column="punish_money" jdbcType="DECIMAL" property="punishMoney" />
+      <result column="award_money" jdbcType="DECIMAL" property="awardMoney" />
+      <result column="standard_pic" jdbcType="VARCHAR" property="standardPic" />
+      <result column="question_handler_name" jdbcType="VARCHAR" property="questionHandlerName"/>
+      <result column="question_rechecker_name" jdbcType="VARCHAR" property="questionRecheckerName"/>
+      <result column="question_cc_name" jdbcType="VARCHAR" property="questionCcName"/>
+      <result column="sop_id" jdbcType="BIGINT" property="sopId" />
+      <result column="cool_course" jdbcType="VARCHAR" property="coolCourse" />
+      <result column="free_course" jdbcType="VARCHAR" property="freeCourse" />
+      <result column="store_scene_id" jdbcType="BIGINT" property="storeSceneId"/>
+      <result column="question_approve_user" jdbcType="VARCHAR" property="questionApproveUser"/>
+      <result column="column_type" jdbcType="VARCHAR" property="columnType"/>
+      <result column="threshold" jdbcType="DECIMAL" property="threshold"/>
+      <result column="category_id" jdbcType="BIGINT" property="categoryId"/>
+      <result column="user_defined_score" jdbcType="INTEGER" property="userDefinedScore"/>
+      <result column="config_type" jdbcType="INTEGER" property="configType"/>
+      <result column="min_score" jdbcType="DECIMAL" property="minScore"/>
+      <result column="max_score" jdbcType="DECIMAL" property="maxScore"/>
+      <result column="status" jdbcType="INTEGER" property="status"/>
+      <result column="ai_type" jdbcType="VARCHAR" property="aiType"/>
+      <result column="edit_user_name" jdbcType="VARCHAR" property="editUserName"/>
+      <result column="edit_user_id" jdbcType="VARCHAR" property="editUserId"/>
+      <result column="use_person_info" jdbcType="VARCHAR" property="usePersonInfo"/>
+      <result column="use_range" jdbcType="VARCHAR" property="useRange"/>
+      <result column="use_userids" jdbcType="VARCHAR" property="useUserids"/>
+      <result column="common_edit_userids" jdbcType="VARCHAR" property="commonEditUserids"/>
+      <result column="must_pic" jdbcType="INTEGER" property="mustPic"/>
+      <result column="create_user_approve" jdbcType="TINYINT" property="createUserApprove" />
+    <result column="is_ai_check" jdbcType="INTEGER" property="isAiCheck" />
+    <result column="ai_check_std_desc" jdbcType="VARCHAR" property="aiCheckStdDesc" />
+    <result column="extend_info" jdbcType="VARCHAR" property="extendInfo" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, create_time, edit_time, category, description, create_user,column_name,
+     question_handler_type, question_handler_id, question_rechecker_type, question_cc_type, question_cc_id,
+    question_rechecker_id, punish_money, award_money, standard_pic,
+    question_handler_name,question_rechecker_name,question_cc_name,sop_id,cool_course, free_course,store_scene_id,question_approve_user,column_type,threshold,category_id,
+    user_defined_score,config_type,min_score,max_score,status,ai_type,edit_user_name,edit_user_id,use_person_info,use_range,use_userids,common_edit_userids,must_pic,
+    create_user_approve,is_ai_check,ai_check_std_desc,extend_info
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_meta_quick_column_${enterpriseId}
+    where id = #{id}
+  </select>
+  <delete id="deleteByIdList">
+    delete from tb_meta_quick_column_${enterpriseId}
+    where id in
+    <foreach collection="columnIdList" item="columnId" open="(" close=")" separator=",">
+      #{columnId}
+    </foreach>
+  </delete>
+    <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into tb_meta_quick_column_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            create_time,
+            <if test="record.editTime != null">
+                edit_time,
+            </if>
+            <if test="record.category != null">
+                category,
+            </if>
+            <if test="record.columnName != null">
+                column_name,
+            </if>
+            <if test="record.description != null">
+                description,
+            </if>
+            <if test="record.createUser != null">
+                create_user,
+            </if>
+            <if test="record.questionHandlerType != null">
+                question_handler_type,
+            </if>
+            <if test="record.questionRecheckerType != null">
+                question_rechecker_type,
+            </if>
+            <if test="record.questionCcType != null">
+                question_cc_type,
+            </if>
+            <if test="record.punishMoney != null">
+                punish_money,
+            </if>
+            <if test="record.awardMoney != null">
+                award_money,
+            </if>
+            <if test="record.standardPic != null">
+                standard_pic,
+            </if>
+            <if test="record.createUserName != null">
+                create_user_name,
+            </if>
+            <if test="record.editUserName != null">
+                edit_user_name,
+            </if>
+            <if test="record.editUserId != null">
+                edit_user_id,
+            </if>
+            <if test="record.questionHandlerName != null">
+                question_handler_name,
+            </if>
+            <if test="record.questionRecheckerName != null">
+                question_rechecker_name,
+            </if>
+            <if test="record.questionCcName != null">
+                question_cc_name,
+            </if>
+            <if test="record.sopId != null">
+                sop_id,
+            </if>
+            <if test="record.coolCourse != null">
+                cool_course,
+            </if>
+            <if test="record.freeCourse != null">
+                free_course,
+            </if>
+            <if test="record.storeSceneId != null">
+                store_scene_id,
+            </if>
+            <if test="record.categoryId != null">
+                category_id,
+            </if>
+            <if test="record.userDefinedScore != null">
+                user_defined_score,
+            </if>
+            <if test="record.configType != null">
+                config_type,
+            </if>
+            <if test="record.minScore != null">
+                min_score,
+            </if>
+            <if test="record.maxScore != null">
+                max_score,
+            </if>
+            <if test="record.status != null">
+                status,
+            </if>
+            <if test="record.columnType != null">
+                column_type,
+            </if>
+            <if test="record.aiType != null">
+                ai_type,
+            </if>
+            <if test="record.threshold != null">
+                threshold,
+            </if>
+            <if test="record.questionHandlerId != null">
+                question_handler_id,
+            </if>
+            <if test="record.questionRecheckerId != null">
+                question_rechecker_id,
+            </if>
+            <if test="record.questionCcId != null">
+                question_cc_id,
+            </if>
+            <if test="record.questionApproveUser != null">
+                question_approve_user,
+            </if>
+            <if test="record.usePersonInfo != null">
+                use_person_info,
+            </if>
+            <if test="record.useRange != null">
+                use_range,
+            </if>
+            <if test="record.useUserids != null">
+                use_userids,
+            </if>
+            <if test="record.commonEditUserids != null">
+                common_edit_userids,
+            </if>
+            <if test="record.mustPic != null">
+                must_pic,
+            </if>
+            <if test="record.createUserApprove != null">
+                create_user_approve,
+            </if>
+            <if test="record.isAiCheck != null">
+                is_ai_check,
+            </if>
+            <if test="record.aiCheckStdDesc != null">
+                ai_check_std_desc,
+            </if>
+            <if test="record.extendInfo != null">
+                extend_info,
+            </if>
+       </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),
+            <if test="record.editTime != null">
+                #{record.editTime},
+            </if>
+            <if test="record.category != null">
+                #{record.category},
+            </if>
+            <if test="record.columnName != null">
+                #{record.columnName},
+            </if>
+            <if test="record.description != null">
+                #{record.description},
+            </if>
+            <if test="record.createUser != null">
+                #{record.createUser},
+            </if>
+            <if test="record.questionHandlerType != null">
+                #{record.questionHandlerType},
+            </if>
+            <if test="record.questionRecheckerType != null">
+                #{record.questionRecheckerType},
+            </if>
+            <if test="record.questionCcType != null">
+                #{record.questionCcType},
+            </if>
+            <if test="record.punishMoney != null">
+                #{record.punishMoney},
+            </if>
+            <if test="record.awardMoney != null">
+                #{record.awardMoney},
+            </if>
+            <if test="record.standardPic != null">
+                #{record.standardPic},
+            </if>
+            <if test="record.createUserName != null">
+                #{record.createUserName},
+            </if>
+            <if test="record.editUserName != null">
+                #{record.editUserName},
+            </if>
+            <if test="record.editUserId != null">
+                #{record.editUserId},
+            </if>
+            <if test="record.questionHandlerName != null">
+                #{record.questionHandlerName},
+            </if>
+            <if test="record.questionRecheckerName != null">
+                #{record.questionRecheckerName},
+            </if>
+            <if test="record.questionCcName != null">
+                #{record.questionCcName},
+            </if>
+            <if test="record.sopId != null">
+                #{record.sopId},
+            </if>
+            <if test="record.coolCourse != null">
+                #{record.coolCourse},
+            </if>
+            <if test="record.freeCourse != null">
+                #{record.freeCourse},
+            </if>
+            <if test="record.storeSceneId != null">
+                #{record.storeSceneId},
+            </if>
+            <if test="record.categoryId != null">
+                #{record.categoryId},
+            </if>
+            <if test="record.userDefinedScore != null">
+                #{record.userDefinedScore},
+            </if>
+            <if test="record.configType != null">
+                #{record.configType},
+            </if>
+            <if test="record.minScore != null">
+                #{record.minScore},
+            </if>
+            <if test="record.maxScore != null">
+                #{record.maxScore},
+            </if>
+            <if test="record.status != null">
+                #{record.status},
+            </if>
+            <if test="record.columnType != null">
+                #{record.columnType},
+            </if>
+            <if test="record.aiType != null">
+                #{record.aiType},
+            </if>
+            <if test="record.threshold != null">
+                #{record.threshold},
+            </if>
+            <if test="record.questionHandlerId != null">
+                #{record.questionHandlerId},
+            </if>
+            <if test="record.questionRecheckerId != null">
+                #{record.questionRecheckerId},
+            </if>
+            <if test="record.questionCcId != null">
+                #{record.questionCcId},
+            </if>
+            <if test="record.questionApproveUser != null">
+                #{record.questionApproveUser},
+            </if>
+            <if test="record.usePersonInfo != null">
+                #{record.usePersonInfo},
+            </if>
+            <if test="record.useRange != null">
+                #{record.useRange},
+            </if>
+            <if test="record.useUserids != null">
+                #{record.useUserids},
+            </if>
+            <if test="record.commonEditUserids != null">
+                #{record.commonEditUserids},
+            </if>
+            <if test="record.mustPic != null">
+                #{record.mustPic},
+            </if>
+            <if test="record.createUserApprove != null">
+                #{record.createUserApprove},
+            </if>
+            <if test="record.isAiCheck != null">
+                #{record.isAiCheck},
+            </if>
+            <if test="record.aiCheckStdDesc != null">
+                #{record.aiCheckStdDesc},
+            </if>
+            <if test="record.extendInfo != null">
+                #{record.extendInfo},
+            </if>
+        </trim>
+    </insert>
+  <insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.ArrayList" keyProperty="list.id">
+    insert into tb_meta_quick_column_${enterpriseId} (create_time, edit_time, category,
+      `column_name`, description, create_user,
+       question_handler_type, question_handler_id,
+      question_rechecker_type, question_rechecker_id, question_cc_type, question_cc_id,
+      punish_money, award_money,
+       standard_pic,create_user_name,edit_user_name,edit_user_id
+       ,question_rechecker_name,question_handler_name, question_cc_name,column_type,category_id,user_defined_score)
+    values
+    <foreach collection="list" separator="," item="model">
+      (now(), #{model.editTime}, #{model.category},
+      #{model.columnName}, #{model.description}, #{model.createUser},
+      #{model.questionHandlerType}, #{model.questionHandlerId},
+      #{model.questionRecheckerType}, #{model.questionRecheckerId},
+      #{model.questionCcType}, #{model.questionCcId}, #{model.punishMoney}, #{model.awardMoney},
+      #{model.standardPic},#{model.createUserName},
+      #{model.editUserName},#{model.editUserId}
+      ,#{model.questionRecheckerName},#{model.questionHandlerName},#{model.questionCcName},#{model.columnType},#{model.categoryId},#{model.userDefinedScore})
+    </foreach>
+  </insert>
+
+  <select id="selectQuickTableColumnList"
+            resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+        from tb_meta_quick_column_${enterpriseId}
+        where 1=1
+        <if test="columnName != null and columnName != ''">
+            and column_name like concat('%',#{columnName},'%')
+        </if>
+      <if test="columnTypes != null and columnTypes.size()>0">
+          and column_type in <foreach collection="columnTypes" separator="," open="(" close=")" item="columnType">#{columnType}</foreach>
+      </if>
+      <if test="aiAlgorithmsList != null and aiAlgorithmsList.size()>0">
+          and ai_type in <foreach collection="aiAlgorithmsList" separator="," open="(" close=")" item="aiAlgorithms">#{aiAlgorithms}</foreach>
+      </if>
+        <if test="columnType != null">
+          and column_type =#{columnType}
+        </if>
+        <if test="categoryId != null">
+          and category_id =#{categoryId}
+        </if>
+        <if test="status != null">
+          and status =#{status}
+        </if>
+      <if test="createUserId != null and createUserId != ''">
+          and create_user =#{createUserId}
+      </if>
+      <if test="useUserId != null and useUserId != ''">
+          and (use_range = 'all'  or use_userids like  concat('%,',#{useUserId},',%') or common_edit_userids like  concat('%,',#{useUserId},',%')
+          or create_user =#{useUserId})
+      </if>
+      <if test="isAiCheck != null">
+          AND is_ai_check = #{isAiCheck}
+      </if>
+      <if test="orderBy == null or orderBy == 1">
+          order by create_time desc ,id desc
+      </if>
+      <if test="orderBy != null and orderBy == 2">
+          order by create_time asc ,id asc
+      </if>
+      <if test="orderBy != null and orderBy == 3">
+          order by edit_time desc,id desc
+      </if>
+      <if test="orderBy != null and orderBy == 4">
+          order by edit_time asc,id asc
+      </if>
+    </select>
+  <select id="selectAllCategory" resultType="java.lang.String">
+    select distinct category from tb_meta_quick_column_${enterpriseId}
+  </select>
+    <select id="isExit" resultType="java.lang.Integer">
+      select count(0)
+      from tb_meta_quick_column_${enterpriseId}
+      where COLUMN_NAME  = #{columnName}
+    </select>
+  <select id="selectAllColumnList"
+          resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_meta_quick_column_${enterpriseId}
+  </select>
+  <select id="countAll" resultType="java.lang.Long">
+    select
+    count(0)
+    from tb_meta_quick_column_${enterpriseId}
+  </select>
+
+    <update id="updateByPrimaryKeySelective">
+        update tb_meta_quick_column_${enterpriseId}
+        <set>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.editTime != null">
+                edit_time = #{record.editTime},
+            </if>
+            <if test="record.category != null">
+                category = #{record.category},
+            </if>
+            <if test="record.columnName != null">
+                column_name = #{record.columnName},
+            </if>
+            <if test="record.description != null">
+                description = #{record.description},
+            </if>
+            <if test="record.createUser != null">
+                create_user = #{record.createUser},
+            </if>
+            <if test="record.questionHandlerType != null">
+                question_handler_type = #{record.questionHandlerType},
+            </if>
+            <if test="record.questionRecheckerType != null">
+                question_rechecker_type = #{record.questionRecheckerType},
+            </if>
+            <if test="record.questionCcType != null">
+                question_cc_type = #{record.questionCcType},
+            </if>
+            <if test="record.punishMoney != null">
+                punish_money = #{record.punishMoney},
+            </if>
+            <if test="record.awardMoney != null">
+                award_money = #{record.awardMoney},
+            </if>
+            <if test="record.standardPic != null">
+                standard_pic = #{record.standardPic},
+            </if>
+            <if test="record.createUserName != null">
+                create_user_name = #{record.createUserName},
+            </if>
+            <if test="record.editUserName != null">
+                edit_user_name = #{record.editUserName},
+            </if>
+            <if test="record.editUserId != null">
+                edit_user_id = #{record.editUserId},
+            </if>
+            <if test="record.questionHandlerName != null">
+                question_handler_name = #{record.questionHandlerName},
+            </if>
+            <if test="record.questionRecheckerName != null">
+                question_rechecker_name = #{record.questionRecheckerName},
+            </if>
+            <if test="record.questionCcName != null">
+                question_cc_name = #{record.questionCcName},
+            </if>
+            <if test="record.sopId != null">
+                sop_id = #{record.sopId},
+            </if>
+            <if test="record.coolCourse != null">
+                cool_course = #{record.coolCourse},
+            </if>
+            <if test="record.freeCourse != null">
+                free_course = #{record.freeCourse},
+            </if>
+            <if test="record.storeSceneId != null">
+                store_scene_id = #{record.storeSceneId},
+            </if>
+            <if test="record.categoryId != null">
+                category_id = #{record.categoryId},
+            </if>
+            <if test="record.userDefinedScore != null">
+                user_defined_score = #{record.userDefinedScore},
+            </if>
+            <if test="record.configType != null">
+                config_type = #{record.configType},
+            </if>
+            <if test="record.minScore != null">
+                min_score = #{record.minScore},
+            </if>
+            <if test="record.maxScore != null">
+                max_score = #{record.maxScore},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status},
+            </if>
+            <if test="record.columnType != null">
+                column_type = #{record.columnType},
+            </if>
+            <if test="record.aiType != null">
+                ai_type = #{record.aiType},
+            </if>
+            <if test="record.threshold != null">
+                threshold = #{record.threshold},
+            </if>
+            <if test="record.questionHandlerId != null">
+                question_handler_id = #{record.questionHandlerId},
+            </if>
+            <if test="record.questionRecheckerId != null">
+                question_rechecker_id = #{record.questionRecheckerId},
+            </if>
+            <if test="record.questionCcId != null">
+                question_cc_id = #{record.questionCcId},
+            </if>
+            <if test="record.questionApproveUser != null">
+                question_approve_user = #{record.questionApproveUser},
+            </if>
+            <if test="record.usePersonInfo != null">
+                use_person_info = #{record.usePersonInfo},
+            </if>
+            <if test="record.useRange != null">
+                use_range = #{record.useRange},
+            </if>
+            <if test="record.useUserids != null">
+                use_userids = #{record.useUserids},
+            </if>
+            <if test="record.commonEditUserids != null">
+                common_edit_userids = #{record.commonEditUserids},
+            </if>
+            <if test="record.mustPic != null">
+                must_pic = #{record.mustPic},
+            </if>
+            <if test="record.createUserApprove != null">
+                create_user_approve = #{record.createUserApprove},
+            </if>
+            <if test="record.isAiCheck != null">
+                is_ai_check = #{record.isAiCheck},
+            </if>
+            <if test="record.aiCheckStdDesc != null">
+                ai_check_std_desc = #{record.aiCheckStdDesc},
+            </if>
+            <if test="record.extendInfo != null">
+                extend_info = #{record.extendInfo},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+  <update id="updateStatus">
+    update tb_meta_quick_column_${enterpriseId} set status = #{status} where id = #{id}
+  </update>
+
+    <select id="getCategoryCount" resultType="com.coolcollege.intelligent.model.metatable.dto.TbMetaCategoryCountDTO">
+        select
+            category_id as id, count(1) as cnt
+        from
+            tb_meta_quick_column_${enterpriseId}
+        where
+            status = 0 and category_id in <foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">#{categoryId}</foreach>
+        group by category_id
+    </select>
+    
+    <update id="updateColumnCategoryId">
+        update
+            tb_meta_quick_column_${enterpriseId}
+        set
+            category_id = #{toCategoryId}
+        where
+            category_id = #{fromCategoryId}
+            <if test="status != null">
+                and status = #{status}
+            </if>
+    </update>
+
+    <select id="getByNameAndCategoryAndType" resultType="long">
+        select id from tb_meta_quick_column_${enterpriseId}
+        where column_name = #{columnName} and category_id = #{categoryId} and column_type = #{columnType} and create_user = #{createUserId} limit 1
+    </select>
+
+    <update id="batchUpdate">
+        update tb_meta_quick_column_${enterpriseId}
+        <trim prefix="set" suffixOverrides=",">
+            edit_time = now(),
+            <trim prefix="description =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.description!=null">
+                        when #{item.id,jdbcType=BIGINT} then #{item.description}
+                    </if>
+                </foreach>
+                when '000' then description
+                else description
+            </trim>
+            <trim prefix="max_score =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.maxScore!=null">
+                        when #{item.id,jdbcType=BIGINT} then #{item.maxScore}
+                    </if>
+                </foreach>
+                when '000' then max_score
+                else max_score
+            </trim>
+            <trim prefix="min_score =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.minScore!=null">
+                        when #{item.id,jdbcType=BIGINT} then #{item.minScore}
+                    </if>
+                </foreach>
+                when '000' then min_score
+                else min_score
+            </trim>
+            <trim prefix="punish_money =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.punishMoney!=null">
+                        when #{item.id,jdbcType=BIGINT} then #{item.punishMoney}
+                    </if>
+                </foreach>
+                when '000' then punish_money
+                else punish_money
+            </trim>
+            <trim prefix="award_money =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.awardMoney!=null">
+                        when #{item.id,jdbcType=BIGINT} then #{item.awardMoney}
+                    </if>
+                </foreach>
+                when '000' then award_money
+                else award_money
+            </trim>
+            <trim prefix="user_defined_score =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.userDefinedScore!=null">
+                        when #{item.id} then #{item.userDefinedScore}
+                    </if>
+                </foreach>
+                when '000' then user_defined_score
+                else user_defined_score
+            </trim>
+            <trim prefix="edit_user_id =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.editUserId!=null">
+                        when #{item.id,jdbcType=BIGINT} then #{item.editUserId}
+                    </if>
+                </foreach>
+                when '000' then edit_user_id
+                else edit_user_id
+            </trim>
+            <trim prefix="edit_user_name =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.editUserName!=null">
+                        when #{item.id,jdbcType=BIGINT} then #{item.editUserName}
+                    </if>
+                </foreach>
+                when '000' then edit_user_name
+                else edit_user_name
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.status!=null">
+                        when #{item.id,jdbcType=BIGINT} then #{item.status}
+                    </if>
+                </foreach>
+                when '000' then status
+                else status
+            </trim>
+        </trim>
+        where
+        id in
+        <foreach collection="list" item="record" open="(" separator="," close=")">
+            #{record.id}
+        </foreach>
+    </update>
+    <update id="batchUpdateStatus">
+        update tb_meta_quick_column_${enterpriseId}
+        <trim prefix="set" suffixOverrides=",">
+            edit_time = now(),
+            `status` = #{status}
+        </trim>
+        where
+        id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+
+    <select id="getSameNameCount" resultType="int">
+        select
+            count(1)
+        from
+            tb_meta_quick_column_${enterpriseId}
+        where
+            column_name = #{columnName} and category_id = #{categoryId} and column_type = #{columnType} and create_user = #{createUser}
+            <if test="excludeId != null">
+                and id != #{excludeId}
+            </if>
+    </select>
+
+    <select id="selectQuickColumnList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_meta_quick_column_${enterpriseId}
+        where 1=1
+        <if test="columnType != null">
+            and column_type =#{columnType}
+        </if>
+        <if test="beginTime != null">
+            and create_time >= #{beginTime}
+        </if>
+    </select>
+
+    <insert id="copyMetaColumn" >
+        insert into tb_meta_quick_column_${enterpriseId} (id, create_time, edit_time, category,
+        `column_name`, description, create_user,
+        question_handler_type, question_handler_id,
+        question_rechecker_type, question_rechecker_id, question_cc_type, question_cc_id,
+        punish_money, award_money,
+        standard_pic,create_user_name,edit_user_name,edit_user_id
+        ,question_rechecker_name,question_handler_name, question_cc_name,column_type,category_id,user_defined_score, sop_id,
+        cool_course, free_course, store_scene_id, question_approve_user,config_type,min_score,max_score,status,ai_type,threshold)
+        values
+        (#{column.id}, now(), #{column.editTime}, #{column.category},#{column.columnName}, #{column.description}, #{column.createUser},
+        #{column.questionHandlerType}, #{column.questionHandlerId}, #{column.questionRecheckerType}, #{column.questionRecheckerId},
+        #{column.questionCcType}, #{column.questionCcId}, #{column.punishMoney}, #{column.awardMoney},
+        #{column.standardPic},#{column.createUserName}, #{column.editUserName},#{column.editUserId}
+        ,#{column.questionRecheckerName},#{column.questionHandlerName},#{column.questionCcName},#{column.columnType},#{column.categoryId},#{column.userDefinedScore}, #{column.sopId},
+        #{column.coolCourse}, #{column.freeCourse}, #{column.storeSceneId}, #{column.questionApproveUser},#{column.configType},#{column.minScore},
+        #{column.maxScore},#{column.status},#{column.aiType},#{column.threshold})
+    </insert>
+
+    <delete id="deleteAllMetaColumn">
+        delete from tb_meta_quick_column_${enterpriseId}
+    </delete>
+
+    <update id="batchUpdateQuickColumnAUth">
+        update tb_meta_quick_column_${enterpriseId}
+        set use_person_info = #{record.usePersonInfo},
+        use_range = #{record.useRange},
+        use_userids = #{record.useUserids},
+        common_edit_userids = #{record.commonEditUserids}
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+
+
+    <select id="getMetaColumnIdByCategoryId" resultType="Long">
+        select id from  tb_meta_quick_column_${enterpriseId}
+        <where>
+            <if test="categoryId!=null">
+               and  category_id = #{categoryId}
+            </if>
+            <if test="metaColumnId!=null">
+                and  id = #{metaColumnId}
+            </if>
+        </where>
+    </select>
+
+    <select id="listColumnForOaPlugin"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_meta_quick_column_${enterpriseId}
+        order by id desc
+        limit 5000
+    </select>
+
+
+    <select id="getQuickColumnList" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from tb_meta_quick_column_${enterpriseId} where use_range in ('part') order by id desc
+    </select>
+
+    <update id="batchUpdateUseUserIds">
+        <foreach collection="updateList" separator=";" item="update">
+            update tb_meta_quick_column_${enterpriseId} set  use_userids = #{update.useUserids} where id = #{update.id}
+        </foreach>
+    </update>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        FROM tb_meta_quick_column_${enterpriseId}
+        WHERE id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")" >
+            #{id}
+        </foreach>
+    </select>
+    <select id="selectListExtend" resultType="com.coolcollege.intelligent.model.metatable.TbMetaQuickColumnDO">
+        select
+        <include refid="Base_Column_List" />
+        FROM tb_meta_quick_column_${enterpriseId}
+        WHERE `extend_info` LIKE '%aiModel%'
+    </select>
+</mapper>

@@ -1,0 +1,1778 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.unifytask.TaskSubMapper">
+
+    <insert id="batchInsertTaskSub" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="list.id">
+        insert into unify_task_sub_${enterpriseId}
+        (
+        unify_task_id,
+        create_user_id,
+        handle_user_id,
+        create_time,
+        handle_time,
+        action_key,
+        remark,
+        store_id,
+        node_no,
+        instance_id,
+        template_id,
+        sub_status,
+        cycle_count,
+        biz_code,
+        cid,
+        parent_turn_sub_id,
+        flow_state,
+        turn_user_id,
+        group_item,loop_count,
+        sub_task_code,
+        task_data,
+        sub_begin_time,
+        sub_end_time,
+        store_area,
+        task_type,
+        store_name,
+        region_id,
+        handler_end_time,
+        is_operate_overdue
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.unifyTaskId},
+            #{item.createUserId},
+            #{item.handleUserId},
+            #{item.createTime},
+            #{item.handleTime},
+            #{item.actionKey},
+            #{item.remark},
+            #{item.storeId},
+            #{item.nodeNo},
+            #{item.instanceId},
+            #{item.templateId},
+            #{item.subStatus},
+            #{item.cycleCount},
+            #{item.bizCode},
+            #{item.cid},
+            #{item.parentTurnSubId},
+            #{item.flowState},
+            #{item.turnUserId},
+            #{item.groupItem},
+            #{item.loopCount},
+            #{item.subTaskCode},
+            #{item.taskData},
+            #{item.subBeginTime},
+            #{item.subEndTime},
+            #{item.storeArea},
+            #{item.taskType},
+            #{item.storeName},
+            #{item.regionId},
+            #{item.handlerEndTime},
+            #{item.isOperateOverdue}
+            )
+        </foreach>
+    </insert>
+    <insert id="insertTaskSub" parameterType="com.coolcollege.intelligent.model.unifytask.TaskSubDO"
+            useGeneratedKeys="true" keyProperty="item.id">
+        insert into unify_task_sub_${enterpriseId}
+        (unify_task_id,
+        create_user_id,
+        handle_user_id,
+        create_time,
+        handle_time,
+        action_key,
+        remark,
+        store_id,
+        node_no,
+        instance_id,
+        template_id,
+        sub_status,
+        cycle_count,
+        biz_code,cid,
+        parent_turn_sub_id,
+        flow_state,
+        turn_user_id,
+        group_item,
+        loop_count,
+        sub_task_code,
+        task_data,
+        sub_begin_time,
+        sub_end_time,
+        store_area,
+        task_type,
+        store_name,
+        region_id,
+        handler_end_time,
+        is_operate_overdue
+        )
+        values
+             (
+             #{item.unifyTaskId},
+             #{item.createUserId},
+             #{item.handleUserId},
+            #{item.createTime},
+            #{item.handleTime},
+            #{item.actionKey},
+            #{item.remark},
+            #{item.storeId},
+            #{item.nodeNo},
+            #{item.instanceId},
+            #{item.templateId},
+            #{item.subStatus},
+            #{item.cycleCount},
+            #{item.bizCode},
+            #{item.cid},
+            #{item.parentTurnSubId},
+            #{item.flowState},
+            #{item.turnUserId},
+            #{item.groupItem},
+            #{item.loopCount},
+            #{item.subTaskCode},
+            #{item.taskData},
+            #{item.subBeginTime},
+            #{item.subEndTime},
+            #{item.storeArea},
+            #{item.taskType},
+            #{item.storeName},
+            #{item.regionId},
+            #{item.handlerEndTime},
+            #{item.isOperateOverdue}
+        )
+    </insert>
+
+    <update id="updateSubDetailExclude">
+        UPDATE unify_task_sub_${enterpriseId}
+        <trim prefix="set" suffixOverrides=",">
+            <if test="taskSubDO.subStatus != null and taskSubDO.subStatus != ''">
+                sub_status = #{taskSubDO.subStatus},
+            </if>
+            <if test="taskSubDO.bizCode != null and taskSubDO.bizCode != ''">
+                biz_code = #{taskSubDO.bizCode},
+            </if>
+            <if test="taskSubDO.cid != null and taskSubDO.cid != ''">
+                cid = #{taskSubDO.cid},
+            </if>
+            <if test="taskSubDO.handleTime != null and taskSubDO.handleTime != ''">
+                handle_time = #{taskSubDO.handleTime},
+            </if>
+            <if test="taskSubDO.taskData != null and taskSubDO.taskData != ''">
+                task_data = #{taskSubDO.taskData},
+            </if>
+            <if test="taskSubDO.isOperateOverdue != null and taskSubDO.isOperateOverdue != ''">
+                is_operate_overdue = #{taskSubDO.isOperateOverdue},
+            </if>
+        </trim>
+        where
+            loop_count = #{queryDO.loopCount}
+        and unify_task_id = #{queryDO.unifyTaskId}
+        and node_no = #{queryDO.nodeNo}
+        and store_id = #{queryDO.storeId}
+    </update>
+
+    <update id="updateSubStatusComplete">
+        UPDATE unify_task_sub_${enterpriseId}
+              set  sub_status = 'complete'
+        where loop_count = #{loopCount}
+        and unify_task_id = #{unifyTaskId}
+        and store_id = #{storeId}
+    </update>
+
+
+    <select id="selectSubDetailExclude" resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+        a.instance_id as flowInstanceId,
+        a.node_no as flowNodeNo,
+        a.cycle_count as flowCycleCount,
+        a.template_id as flowTemplateId,
+        a.store_id as storeId,
+        a.action_key as flowActionKey,
+        a.store_name as storeName,
+        a.sub_status as subStatus,
+        a.create_user_id as createUserId,
+        a.handle_user_id as handleUserId,
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.cid as cid,
+        a.biz_code as bizCode,
+        a.group_item as groupItem,
+        a.loop_count as loopCount,
+        a.task_data as taskData,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime
+        from unify_task_sub_${enterpriseId} a
+        where id != #{subTaskId}
+
+        and group_item = #{queryDO.groupItem}
+        and loop_count = #{queryDO.loopCount}
+        and unify_task_id = #{queryDO.unifyTaskId}
+        and node_no = #{queryDO.nodeNo}
+        and store_id = #{queryDO.storeId}
+    </select>
+
+    <update id="updateSubDetailExcludeById">
+        update unify_task_sub_${enterpriseId}
+        <set>
+            sub_status = CASE id
+            <foreach collection="list" separator=" " item="item">
+                <if test="item.subStatus!=null">
+                    WHEN #{item.id} THEN #{item.subStatus}
+                </if>
+            </foreach>
+            END,
+            biz_code = CASE id
+            <foreach collection="list" separator=" " item="item">
+                <if test="item.bizCode!=null">
+                    WHEN #{item.id} THEN #{item.bizCode}
+                </if>
+            </foreach>
+            END,cid = CASE id
+            <foreach collection="list" separator=" " item="item">
+                <if test="item.cid!=null">
+                    WHEN #{item.id} THEN #{item.cid}
+                </if>
+            </foreach>
+            END,handle_time = CASE id
+            <foreach collection="list" separator=" " item="item">
+                <if test="item.handleTime!=null">
+                    WHEN #{item.id} THEN #{item.handleTime}
+                </if>
+            </foreach>
+            END,task_data = CASE id
+            <foreach collection="list" separator=" " item="item">
+                <if test="item.taskData!=null">
+                    WHEN #{item.id} THEN #{item.taskData}
+                </if>
+            </foreach>
+            END,
+        </set>
+        where
+        id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item.id}
+        </foreach>
+        )
+    </update>
+
+    <update id="updateSubDetailById">
+        UPDATE unify_task_sub_${enterpriseId}
+        <trim prefix="set" suffixOverrides=",">
+            <if test="taskSubDO.actionKey != null and taskSubDO.actionKey != ''">
+                action_key = #{taskSubDO.actionKey},
+            </if>
+            <if test="taskSubDO.subStatus != null and taskSubDO.subStatus != ''">
+                sub_status = #{taskSubDO.subStatus},
+            </if>
+            <if test="taskSubDO.bizCode != null and taskSubDO.bizCode != ''">
+                biz_code = #{taskSubDO.bizCode},
+            </if>
+            <if test="taskSubDO.cid != null and taskSubDO.cid != ''">
+                cid = #{taskSubDO.cid},
+            </if>
+            <if test="taskSubDO.handleTime != null and taskSubDO.handleTime != ''">
+                handle_time = #{taskSubDO.handleTime},
+            </if>
+            <if test="taskSubDO.instanceId != null and taskSubDO.instanceId != ''">
+                instance_id = #{taskSubDO.instanceId},
+            </if>
+            <if test="taskSubDO.cycleCount != null">
+                cycle_count = #{taskSubDO.cycleCount},
+            </if>
+            <if test="taskSubDO.nodeNo != null and taskSubDO.nodeNo != ''">
+                node_no = #{taskSubDO.nodeNo},
+            </if>
+            <if test="taskSubDO.flowState != null and taskSubDO.flowState != ''">
+                flow_state = #{taskSubDO.flowState},
+            </if>
+            <if test="taskSubDO.remark != null">
+                remark = #{taskSubDO.remark},
+            </if>
+            <if test="taskSubDO.turnUserId != null and taskSubDO.turnUserId != ''">
+                turn_user_id = #{taskSubDO.turnUserId},
+            </if>
+            <if test="taskSubDO.taskData != null and taskSubDO.taskData != ''">
+                task_data = #{taskSubDO.taskData},
+            </if>
+        </trim>
+        where id = #{taskSubDO.id}
+    </update>
+
+    <update id="batchUpdateTaskTime">
+        update unify_task_sub_${enterpriseId}
+        set
+        sub_begin_time=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case id" close="end">
+            when #{item.subTaskId} then #{item.beginTime}
+        </foreach>,
+        sub_end_time=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case id" close="end">
+            when #{item.subTaskId} then #{item.endTime}
+        </foreach>
+        where id in
+        <foreach collection="list" index="index" item="item"
+                 separator="," open="(" close=")">
+            #{item.subTaskId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+    <update id="updateHandleTimeByParentId">
+        update unify_task_sub_${enterpriseId}
+        set handle_time = #{handleTime}
+        where unify_task_id = #{taskId}
+    </update>
+
+
+    <select id="selectSubTaskDataNew" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        SELECT
+        a.instance_id as flowInstanceId,
+        a.node_no as flowNodeNo,
+        a.cycle_count as flowCycleCount,
+        a.template_id as flowTemplateId,
+        a.store_id as storeId,
+        a.action_key as flowActionKey,
+        a.store_name as storeName,
+        a.sub_status as subStatus,
+        a.create_user_id as createUserId,
+        a.handle_user_id as handleUserId,
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.cid as cid,
+        a.biz_code as bizCode,
+        a.group_item as groupItem,
+        a.loop_count as loopCount,
+        a.task_data as taskData,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime
+        FROM
+        unify_task_sub_${enterpriseId} a
+        WHERE
+        1=1
+        <if test="query.subTaskId != null">
+            and a.id = #{query.subTaskId}
+        </if>
+        <if test="query.unifyTaskId != null">
+            and a.unify_task_id = #{query.unifyTaskId}
+        </if>
+        <if test="query.userId != null and query.userId!= ''">
+            and a.handle_user_id = #{query.userId}
+        </if>
+        <if test="query.taskType != null and query.taskType != ''">
+            and a.task_type = #{query.taskType}
+        </if>
+        <choose>
+            <when test="query.queryType=='handle'">
+                and a.node_no = '1'
+                and a.sub_status = 'ongoing'
+            </when>
+            <when test="query.queryType=='approver'">
+                and a.node_no = '2'
+                and a.sub_status = 'ongoing'
+            </when>
+            <when test="query.queryType=='recheck'">
+                and a.node_no = '3'
+                and a.sub_status = 'ongoing'
+            </when>
+            <otherwise>
+                and a.node_no = '1'
+                and a.sub_status = 'ongoing'
+            </otherwise>
+        </choose>
+        <if test="query.storeName != null and query.storeName != ''">
+            and a.store_name like concat('%',trim(#{query.storeName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="query.loopCount != null">
+            and a.loop_count = #{query.loopCount}
+        </if>
+        order by a.create_time desc
+    </select>
+
+    <select id="selectDisplaySubStatistics" resultType="java.lang.Integer">
+        SELECT
+        count( a.id )
+        FROM
+        unify_task_sub_${enterpriseId} a
+        WHERE
+        a.unify_task_id = #{taskId}
+        <if test="loopCount != null">
+            and a.loop_count = #{loopCount}
+        </if>
+        <if test="queryType!=null and queryType!=''">
+            <choose>
+                <when test="queryType=='handle'">
+                    and a.node_no = '1'
+                    and a.sub_status = 'ongoing'
+                    and a.handle_user_id = #{userId}
+                </when>
+                <when test="queryType=='approver'">
+                    and a.node_no = '2'
+                    and a.sub_status = 'ongoing'
+                    and a.handle_user_id = #{userId}
+                </when>
+                <when test="queryType=='recheck'">
+                    and a.node_no = '3'
+                    and a.sub_status = 'ongoing'
+                    and a.handle_user_id = #{userId}
+                </when>
+                <when test="queryType=='complete'">
+                    and a.node_no = 'endNode'
+                    and a.sub_status = 'complete'
+                    <if test="list !=null and list.size > 0">
+                        and a.store_id in
+                        <foreach collection="list" item="storeId" separator="," open="(" close=")">
+                            #{storeId}
+                        </foreach>
+                    </if>
+                </when>
+                <otherwise>
+                    and a.node_no = '1'
+                    and a.sub_status = 'ongoing'
+                    and a.handle_user_id = #{userId}
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+    <select id="getTaskSubDOList" resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+        id as id,
+        unify_task_id as unifyTaskId,
+        create_user_id as createUserId,
+        handle_user_id as handleUserId,
+        create_time as createTime,
+        handle_time as handleTime,
+        action_key as actionKey,
+        remark as remark,
+        store_id as storeId,
+        node_no as nodeNo,
+        instance_id as instanceId,
+        template_id as templateId,
+        sub_status as subStatus,
+        cycle_count as cycleCount,
+        biz_code as bizCode,
+        cid as cid
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+        and sub_status = 'complete'
+        and node_no = 'endNode'
+    </select>
+
+    <select id="getTaskSubDOListByUnifyTaskId" resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+        id as id,
+        unify_task_id as unifyTaskId,
+        create_user_id as createUserId,
+        handle_user_id as handleUserId,
+        create_time as createTime,
+        handle_time as handleTime,
+        action_key as actionKey,
+        remark as remark,
+        store_id as storeId,
+        node_no as nodeNo,
+        instance_id as instanceId,
+        template_id as templateId,
+        sub_status as subStatus,
+        cycle_count as cycleCount,
+        biz_code as bizCode,
+        cid as cid
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+    </select>
+
+    <select id="getTaskSubDOListForSend" resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+        id as id,
+        unify_task_id as unifyTaskId,
+        create_user_id as createUserId,
+        handle_user_id as handleUserId,
+        create_time as createTime,
+        handle_time as handleTime,
+        action_key as actionKey,
+        remark as remark,
+        store_id as storeId,
+        node_no as nodeNo,
+        instance_id as instanceId,
+        template_id as templateId,
+        sub_status as subStatus,
+        cycle_count as cycleCount,
+        sub_begin_time as subBeginTime,
+        sub_end_time as subEndTime,
+        loop_count as loopCount,
+        biz_code as bizCode,
+        cid as cid
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+        and sub_status = 'ongoing'
+        and node_no = '1'
+        <if test="loopCount != null">
+            and loop_count = #{loopCount}
+        </if>
+        <if test="nodeNo != null and nodeNo != ''">
+            and node_no = #{nodeNo}
+        </if>
+        <if test="storeId != null and storeId != ''">
+            and store_id = #{storeId}
+        </if>
+    </select>
+
+    <select id="selectSubTaskById" resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+        a.id as id,
+        a.unify_task_id as unifyTaskId,
+        a.store_id as storeId,
+        a.biz_code as bizCode,
+        a.cid as cid,
+        a.template_id as templateId,
+        a.instance_id as instanceId,
+        a.cycle_count as cycleCount,
+        a.node_no as nodeNo,
+        a.create_user_id as createUserId,
+        a.sub_status as subStatus,
+        a.flow_state as flowState,
+        a.handle_user_id as handleUserId,
+        a.group_item as groupItem,
+        a.loop_count as loopCount,
+        a.template_id as templateId,
+        a.task_type as taskType,
+        a.create_time as createTime,
+        a.handle_time as handleTime,
+        a.action_key as actionKey,
+        a.parent_turn_sub_id as parentTurnSubId,
+        a.turn_user_id as turnUserId,
+        a.sub_task_code as subTaskCode,
+        a.task_data as taskData,
+        a.loop_count as loopCount,
+        a.region_id as regionId,
+        a.store_name as storeName,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime,
+        a.handler_end_time as handlerEndTime,
+        is_operate_overdue as isOperateOverdue
+        from unify_task_sub_${enterpriseId} a
+        where a.id = #{subTaskId}
+    </select>
+    <select id="selectSubTaskByTaskIdAndStoreId" resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+            a.id as id,
+            a.unify_task_id as unifyTaskId,
+            a.store_id as storeId,
+            a.biz_code as bizCode,
+            a.cid as cid,
+            a.template_id as templateId,
+            a.instance_id as instanceId,
+            a.cycle_count as cycleCount,
+            a.node_no as nodeNo,
+            a.create_user_id as createUserId,
+            a.sub_status as subStatus,
+            a.flow_state as flowState,
+            a.handle_user_id as handleUserId,
+            a.group_item as groupItem,
+            a.loop_count as loopCount,
+            a.template_id as templateId,
+            a.create_time as createTime,
+            a.handle_time as handleTime,
+            a.action_key as actionKey,
+            a.parent_turn_sub_id as parentTurnSubId,
+            a.turn_user_id as turnUserId,
+            a.sub_task_code as subTaskCode,
+            a.task_data as taskData,
+            a.loop_count as loopCount,
+            a.sub_begin_time as subBeginTime,
+            a.sub_end_time as subEndTime,
+            a.handler_end_time as handlerEndTime
+        from unify_task_sub_${enterpriseId} a
+        where a.unify_task_id = #{unifyTaskId}
+        and a.store_id = #{storeId}
+        and a.loop_count = #{loopCount}
+        and a.handle_user_id = #{userId}
+        and a.node_no = #{nodeNo}
+        and a.sub_status = 'ongoing'
+        order by a.create_time desc
+        limit 1
+    </select>
+    <select id="selectSubTaskByTaskIdList" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        select
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.sub_status as subStatus,
+        a.task_type as taskType,
+        a.store_id as storeId,
+        a.loop_count as loopCount,
+        a.node_no as flowNodeNo,
+        a.handle_user_id as handleUserId
+        from unify_task_sub_${enterpriseId} a
+        where a.unify_task_id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectSubTaskByTaskId" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        select
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.store_id as storeId,
+        a.action_key as actionKey,
+        a.sub_status as subStatus,
+        a.node_no as flowNodeNo,
+        a.parent_turn_sub_id as parentTurnSubId
+        from unify_task_sub_${enterpriseId} a
+        where a.unify_task_id = #{unifyTaskId}
+    </select>
+
+    <select id="selectSubTaskByTaskIdAndStoreIdAndLoop"
+            resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        select
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.store_id as storeId,
+        a.action_key as actionKey,
+        a.sub_status as subStatus,
+        a.node_no as flowNodeNo,
+        a.parent_turn_sub_id as parentTurnSubId,
+        a.handle_user_id as handleUserId
+        from unify_task_sub_${enterpriseId} a
+        where a.unify_task_id = #{unifyTaskId}
+        and a.store_id = #{storeId}
+        and a.loop_count = #{loopCount}
+    </select>
+
+    <select id="selectEndStoreByTaskId" resultType="java.lang.String">
+        select distinct store_id
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+        and node_no = 'endNode'
+    </select>
+
+    <select id="selectAllStoreByTaskId" resultType="java.lang.String">
+        select distinct store_id
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+    </select>
+
+    <select id="selectAllOrEndSubTaskDataNew" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        SELECT
+        a.instance_id as flowInstanceId,
+        a.node_no as flowNodeNo,
+        a.cycle_count as flowCycleCount,
+        a.template_id as flowTemplateId,
+        a.store_id as storeId,
+        a.action_key as flowActionKey,
+        a.store_name as storeName,
+        a.sub_status as subStatus,
+        a.create_user_id as createUserId,
+        a.handle_user_id as handleUserId,
+        a.create_time as createTime,
+        a.handle_time as handleTime,
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.cid as cid,
+        a.biz_code as bizCode,
+        a.group_item as groupItem,
+        a.loop_count as loopCount,
+        CONCAT(a.unify_task_id,'#',a.store_id,'#',a.group_item,'#',a.loop_count,'#',a.node_no) as groupSign,
+        a.task_data as taskData,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime
+        FROM
+        unify_task_sub_${enterpriseId} a
+        WHERE
+        1=1
+        <choose>
+            <when test="selectType=='complete'">
+                and a.node_no = 'endNode'
+                and a.sub_status = 'complete'
+            </when>
+            <otherwise>
+                and a.sub_status is not null
+            </otherwise>
+        </choose>
+        <if test="list !=null and list.size > 0">
+            and a.store_id in
+            <foreach collection="list" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="query.unifyTaskId != null">
+            and a.unify_task_id = #{query.unifyTaskId}
+        </if>
+        <if test="query.taskType != null and query.taskType != ''">
+            and a.task_type = #{query.taskType}
+        </if>
+        <if test="query.storeName != null and query.storeName != ''">
+            and a.store_name like concat('%',trim(#{query.storeName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="query.loopCount != null">
+            and a.loop_count = #{query.loopCount}
+        </if>
+        order by a.create_time desc
+    </select>
+
+    <select id="selectBySubTaskCodeLoopCounts" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        SELECT
+        a.instance_id as flowInstanceId,
+        a.node_no as flowNodeNo,
+        a.cycle_count as flowCycleCount,
+        a.template_id as flowTemplateId,
+        a.store_id as storeId,
+        a.action_key as flowActionKey,
+        a.store_name as storeName,
+        a.sub_status as subStatus,
+        a.create_user_id as createUserId,
+        a.handle_user_id as handleUserId,
+        a.create_time as createTime,
+        a.handle_time as handleTime,
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.cid as cid,
+        a.biz_code as bizCode,
+        a.group_item as groupItem,
+        a.loop_count as loopCount,
+        CONCAT(a.unify_task_id,'#',a.store_id,'#',a.group_item,'#',a.loop_count,'#',a.node_no) as groupSign,
+        a.task_data as taskData,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime
+        FROM
+        unify_task_sub_${enterpriseId} a
+        WHERE
+        1=1 and
+        a.sub_task_code in
+        <foreach collection="subTaskCodes" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        and a.loop_count in
+        <foreach collection="loopCounts" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        order by a.create_time desc
+    </select>
+
+
+    <select id="selectSubTaskDetailByIdNew" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        SELECT
+        a.instance_id as flowInstanceId,
+        a.node_no as flowNodeNo,
+        a.cycle_count as flowCycleCount,
+        a.template_id as flowTemplateId,
+        a.store_id as storeId,
+        a.action_key as actionKey,
+        a.store_name as storeName,
+        a.sub_status as subStatus,
+        a.create_user_id as createUserId,
+        a.handle_user_id as handleUserId,
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.cid as cid,
+        a.biz_code as bizCode,
+        a.group_item as groupItem,
+        a.loop_count as loopCount,
+        a.task_data as taskData,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime,
+        a.handle_time as handleTime,
+        a.handler_end_time as handlerEndTime
+        FROM
+        unify_task_sub_${enterpriseId} a
+        WHERE a.id = #{id}
+
+    </select>
+
+
+    <delete id="delSubTaskByTaskId">
+        delete from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+    </delete>
+    <delete id="delSubTaskByTaskIdAndStoreIdAndLoopCount">
+        delete from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+          and store_id = #{storeId}
+          and loop_count = #{loopCount}
+    </delete>
+
+    <delete id="batchDelSubTaskByTaskIdAndStoreIdAndLoopCount">
+        delete from unify_task_sub_${enterpriseId}
+        where
+        <foreach collection="taskStoreList" separator="or" item="item">
+            (unify_task_id=#{item.unifyTaskId} and store_id=#{item.storeId} and loop_count=#{item.loopCount})
+        </foreach>
+    </delete>
+
+    <select id="selectSubTaskByTaskIdAndStoreIdAndLoopCount" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        SELECT
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.store_id as storeId,
+        a.action_key as actionKey,
+        a.sub_status as subStatus,
+        a.node_no as flowNodeNo,
+        a.parent_turn_sub_id as parentTurnSubId,
+        a.handle_user_id as handleUserId
+        from unify_task_sub_${enterpriseId} a
+        WHERE
+        <foreach collection="taskStoreList" separator="or" item="item">
+            (unify_task_id=#{item.unifyTaskId} and store_id=#{item.storeId} and loop_count=#{item.loopCount})
+        </foreach>
+    </select>
+
+    <delete id="delSubTaskByTaskIdAndStoreId">
+        delete from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+        and store_id = #{storeId}
+    </delete>
+
+    <select id="getSubIdListByTaskId" resultType="java.lang.Long">
+        select id
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+    </select>
+
+    <select id="selectUnCompleteUser" resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifyParentUser">
+        select
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.handle_user_id as userId,
+        a.loop_count as loopCount,
+        a.node_no as nodeNo,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime,
+        a.task_type as taskType
+        from unify_task_sub_${enterpriseId} a
+        where a.sub_status = 'ongoing'
+        and (
+        is_operate_overdue is null
+        or
+        is_operate_overdue = 1
+        or (
+        is_operate_overdue = 0
+        <if test="handlerOvertimeTaskContinue==false">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK'
+            and node_no = 1
+            and a.create_time &lt;= '1712591999000'
+            THEN a.handler_end_time  >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="handlerOvertimeTaskContinue==true">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK'
+            and node_no = 1
+            and a.create_time > '1712591999000'
+            THEN a.handler_end_time  >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="overdueTask==false">
+            and
+            CASE
+            WHEN a.task_type != 'TB_DISPLAY_TASK'
+            and a.create_time &lt;= '1712591999000'
+            THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="overdueTask==true">
+            and
+            CASE
+            WHEN a.task_type != 'TB_DISPLAY_TASK'
+            and a.create_time > '1712591999000'
+            THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+            ELSE 1 = 1
+            end
+        </if>
+        )
+        )
+        <if test="approverOvertimeTaskContinue != null and approverOvertimeTaskContinue==false">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK' and node_no != 1  THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="taskList !=null and taskList.size > 0">
+            AND a.unify_task_id in
+            <foreach collection="taskList" item="taskId" separator="," open="(" close=")">
+                #{taskId}
+            </foreach>
+        </if>
+        <if test="node != null and node != ''">
+            and a.node_no = #{node}
+        </if>
+        <if test="groupItem != null">
+            and a.group_item = #{groupItem}
+        </if>
+        <if test="loopCount != null">
+            and a.loop_count = #{loopCount}
+        </if>
+        <if test="storeId != null and storeId != ''">
+            and a.store_id = #{storeId}
+        </if>
+    </select>
+    <select id="selectSubTaskHistoryByTaskId"
+            resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifySubHistoryDTO">
+        SELECT
+        	a.id,
+            a.create_user_id as createUserId,
+            a.create_time as createTime,
+            a.handle_user_id as handleUserId,
+        a.handle_time as handleTime,
+        a.remark,
+        a.action_key as action,
+        a.node_no as nodeNo,
+        a.cycle_count as cycleCount,
+        a.biz_code as bizCode,
+        a.cid,
+        a.flow_state as flowState,
+        a.parent_turn_sub_id as parentTurnId,
+        a.group_item as groupItem,
+        a.loop_count as loopCount,
+        a.turn_user_id as turnUserId,
+        a.task_data as taskData
+        FROM unify_task_sub_${enterpriseId} a
+        WHERE a.unify_task_id = #{unifyTaskId}
+        AND a.store_id = #{storeId}
+        ORDER BY
+        a.create_time ASC
+    </select>
+    <select id="getByTaskIds" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        select
+        instance_id as flowInstanceId,
+        node_no as flowNodeNo,
+        cycle_count as flowCycleCount,
+        template_id as flowTemplateId,
+        store_id as storeId,
+        action_key as actionKey,
+        sub_status as subStatus,
+        create_user_id as createUserId,
+        handle_user_id as handleUserId,
+        create_time as createTime,
+        handle_time as handleTime,
+        id as subTaskId,
+        unify_task_id as unifyTaskId,
+        cid as cid,
+        biz_code as bizCode
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id in (
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+    </select>
+    <select id="selectSubQuestionTaskByTaskIdList"
+            resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        select
+        instance_id as flowInstanceId,
+        node_no as flowNodeNo,
+        cycle_count as flowCycleCount,
+        template_id as flowTemplateId,
+        store_id as storeId,
+        region_id as regionId,
+        sub_status as subStatus,
+        action_key as flowActionKey,
+        create_user_id as createUserId,
+        handle_user_id as handleUserId,
+        create_time as createTime,
+        handle_time as handleTime,
+        remark,
+        task_data as taskData,
+        id as subTaskId,
+        unify_task_id as unifyTaskId,
+        cid as cid,
+        biz_code as bizCode
+        from unify_task_sub_${enterpriseId}
+        where id in (
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+        order by id asc
+    </select>
+    <select id="getTaskSubDOListById" resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+        id as id,
+        unify_task_id as unifyTaskId,
+        create_user_id as createUserId,
+        handle_user_id as handleUserId,
+        create_time as createTime,
+        handle_time as handleTime,
+        action_key as actionKey,
+        remark as remark,
+        store_id as storeId,
+        node_no as nodeNo,
+        instance_id as instanceId,
+        template_id as templateId,
+        sub_status as subStatus,
+        cycle_count as cycleCount,
+        biz_code as bizCode,
+        cid as cid,
+        loop_count as loopCount
+        from unify_task_sub_${enterpriseId}
+        where id= #{taskSubId}
+        and sub_status = 'complete'
+        and node_no = 'endNode'
+    </select>
+
+    <select id="getSimpleTaskSubDOListById" resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+        id as id,
+        unify_task_id as unifyTaskId,
+        create_user_id as createUserId,
+        handle_user_id as handleUserId,
+        create_time as createTime,
+        handle_time as handleTime,
+        action_key as actionKey,
+        remark as remark,
+        store_id as storeId,
+        node_no as nodeNo,
+        instance_id as instanceId,
+        template_id as templateId,
+        sub_status as subStatus,
+        cycle_count as cycleCount,
+        biz_code as bizCode,
+        cid as cid,
+        loop_count as loopCount,
+        task_type as taskType
+        from unify_task_sub_${enterpriseId}
+        where id= #{taskSubId}
+    </select>
+
+    <select id="getByEnterpriseId" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        select
+        instance_id as flowInstanceId,
+        node_no as flowNodeNo,
+        cycle_count as flowCycleCount,
+        template_id as flowTemplateId,
+        store_id as storeId,
+        action_key as actionKey,
+        sub_status as subStatus,
+        create_user_id as createUserId,
+        handle_user_id as handleUserId,
+        create_time as createTime,
+        handle_time as handleTime,
+        id as subTaskId,
+        unify_task_id as unifyTaskId,
+        cid as cid,
+        biz_code as bizCode
+        from unify_task_sub_${enterpriseId}
+    </select>
+
+    <select id="getByTaskId" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        select
+        instance_id as flowInstanceId,
+        node_no as flowNodeNo,
+        cycle_count as flowCycleCount,
+        template_id as flowTemplateId,
+        store_id as storeId,
+        action_key as actionKey,
+        sub_status as subStatus,
+        create_user_id as createUserId,
+        handle_user_id as handleUserId,
+        create_time as createTime,
+        handle_time as handleTime,
+        id as subTaskId,
+        unify_task_id as unifyTaskId,
+        cid as cid,
+        biz_code as bizCode,
+        loop_count as loopCount,
+        sub_begin_time as subBeginTime,
+        sub_end_time as subEndTime,
+        is_operate_overdue as isOperateOverdue
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+    </select>
+
+
+    <select id="getByTaskIdLimit1" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        select
+        instance_id as flowInstanceId,
+        node_no as flowNodeNo,
+        cycle_count as flowCycleCount,
+        template_id as flowTemplateId,
+        store_id as storeId,
+        action_key as actionKey,
+        sub_status as subStatus,
+        create_user_id as createUserId,
+        handle_user_id as handleUserId,
+        create_time as createTime,
+        handle_time as handleTime,
+        id as subTaskId,
+        unify_task_id as unifyTaskId,
+        cid as cid,
+        biz_code as bizCode,
+        loop_count as loopCount,
+        sub_begin_time as subBeginTime,
+        sub_end_time as subEndTime,
+        is_operate_overdue as isOperateOverdue
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+        limit 1
+    </select>
+
+    <select id="selectTaskBySubId" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubInfoVO">
+        select
+        a.id as id,
+        a.unify_task_id as unifyTaskId,
+        a.store_id as storeId,
+        a.biz_code as bizCode,
+        a.cid as cid,
+        a.template_id as templateId,
+        a.instance_id as instanceId,
+        a.cycle_count as cycleCount,
+        a.node_no as nodeNo,
+        a.create_user_id as createUserId,
+        a.sub_status as subStatus,
+        a.flow_state as flowState,
+        a.handle_user_id as handleUserId,
+        a.group_item as groupItem,
+        a.loop_count as loopCount,
+        a.task_data as taskData,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime,
+        a.create_time as createTime,
+        c.store_name as storeName,
+        b.task_name as taskName,
+        b.end_time as endTime,
+        b.task_type as taskType,
+        b.task_info as taskInfo,
+        a.store_area as storeArea,
+        a.handler_end_time as handlerEndTime,
+        a.region_id as regionId,
+        a.cycle_count as cycleCount,
+        a.is_operate_overdue as isOperateOverdue
+        from unify_task_sub_${enterpriseId} a
+        INNER JOIN unify_task_parent_${enterpriseId} b ON a.unify_task_id = b.id
+        LEFT JOIN store_${enterpriseId} c ON a.store_id = c.store_id
+        where a.id = #{subTaskId}
+    </select>
+    <select id="selectSubQuestionTaskIdByTaskIdList" resultType="java.lang.Long">
+        select
+        max(id)
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id in (
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+        and handle_time is not null
+        group by unify_task_id, node_no
+    </select>
+    <select id="selectCount" resultType="java.lang.Long">
+        select count(*) from unify_task_sub_${enterpriseId}
+    </select>
+
+    <select id="selectSubTaskBySubTaskCodes" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        select
+        instance_id as flowInstanceId,
+        node_no as flowNodeNo,
+        cycle_count as flowCycleCount,
+        template_id as flowTemplateId,
+        store_id as storeId,
+        action_key as actionKey,
+        sub_status as subStatus,
+        create_user_id as createUserId,
+        handle_user_id as handleUserId,
+        create_time as createTime,
+        handle_time as handleTime,
+        id as subTaskId,
+        unify_task_id as unifyTaskId,
+        cid as cid,
+        biz_code as bizCode,
+        sub_task_code as subTaskCode,
+        sub_begin_time as subBeginTime,
+        sub_end_time as subEndTime
+        from unify_task_sub_${enterpriseId}
+        where sub_task_code in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+    <select id="getDOByIdList" resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+        id as id,
+        unify_task_id as unifyTaskId,
+        create_user_id as createUserId,
+        handle_user_id as handleUserId,
+        create_time as createTime,
+        handle_time as handleTime,
+        action_key as actionKey,
+        remark as remark,
+        store_id as storeId,
+        node_no as nodeNo,
+        loop_count as loopCount,
+        instance_id as instanceId,
+        template_id as templateId,
+        sub_status as subStatus,
+        cycle_count as cycleCount,
+        biz_code as bizCode,
+        cid as cid,
+        sub_begin_time as subBeginTime,
+        sub_end_time as subEndTime
+        from unify_task_sub_${enterpriseId}
+        where id in
+        <foreach collection="taskSubIdList" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </select>
+    <select id="getDOByIdListForMap" resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+        id as id,
+        unify_task_id as unifyTaskId,
+        create_user_id as createUserId,
+        handle_user_id as handleUserId,
+        create_time as createTime,
+        handle_time as handleTime,
+        sub_begin_time as subBeginTime,
+        sub_end_time as subEndTime
+        from unify_task_sub_${enterpriseId}
+        where id in
+        <foreach collection="taskSubIdList" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </select>
+    <select id="selectAllInfo" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        select
+        a.id as subTaskId,
+        b.begin_time as beginTime,
+        b.end_time as endTime
+        from unify_task_sub_${enterpriseId} a
+        INNER JOIN unify_task_parent_${enterpriseId} b ON a.unify_task_id = b.id
+		where a.sub_begin_time is null
+    </select>
+
+    <select id="selectDisplayAllSubStatistics" resultType="java.lang.Integer">
+        SELECT
+        count( DISTINCT a.store_id , a.loop_count)
+        FROM
+        unify_task_sub_${enterpriseId} a
+        where a.unify_task_id = #{taskId}
+        <if test="loopCount != null">
+            and a.loop_count = #{loopCount}
+        </if>
+        <if test="list !=null and list.size > 0">
+            and a.store_id in
+            <foreach collection="list" item="storeId" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+    </select>
+    <select id="selectSubTaskByParentIdBatch"
+            resultType="com.coolcollege.intelligent.model.unifytask.dto.TaskSubReportVO">
+        select
+        a.id as id,
+        a.unify_task_id as unifyTaskId,
+        a.store_id as storeId,
+        a.biz_code as bizCode,
+        a.cid as cid,
+        a.template_id as templateId,
+        a.instance_id as instanceId,
+        a.cycle_count as cycleCount,
+        a.node_no as nodeNo,
+        a.create_user_id as createUserId,
+        a.sub_status as subStatus,
+        a.flow_state as flowState,
+        a.handle_user_id as handleUserId,
+        a.group_item as groupItem,
+        a.loop_count as loopCount,
+        a.template_id as templateId,
+        a.create_time as createTime,
+        a.handle_time as handleTime,
+        a.action_key as actionKey,
+        a.parent_turn_sub_id as parentTurnSubId,
+        a.turn_user_id as turnUserId,
+        a.sub_task_code as subTaskCode,
+        a.task_data as taskData,
+        IFNULL(a.handle_time,a.create_time) as sortTime,
+        a.sub_end_time as subEndTime,
+        a.remark
+        from unify_task_sub_${enterpriseId} a
+        where a.unify_task_id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectDoneByTaskIds" resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+        unify_task_id as unifyTaskId,
+        node_no as nodeNo,
+        handle_time as handleTime
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id in
+        <foreach collection="taskIdList" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        and node_no = 'endNode'
+    </select>
+
+
+    <select id="selectTaskNum" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        select
+        distinct
+        a.unify_task_id as unifyTaskId,
+        a.store_id as storeId,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime
+        from unify_task_sub_${enterpriseId} a
+        INNER JOIN unify_task_parent_${enterpriseId} b ON a.unify_task_id = b.id
+        where a.store_id = #{storeId}
+        <choose>
+            <when test="taskType == 'QUESTION_ORDER'">
+                and b.task_type = 'QUESTION_ORDER'
+            </when>
+            <otherwise>
+                and b.task_type != 'QUESTION_ORDER'
+            </otherwise>
+        </choose>
+        <if test="status == 'ongoing'">
+            and a.sub_end_time &lt;= UNIX_TIMESTAMP(now())*1000
+            and a.sub_status = 'ongoing'
+        </if>
+        <if test="status == 'end'">
+            and a.handle_time &gt; a.sub_end_time
+            and a.sub_status = 'complete'
+            and a.node_no ='endNode'
+        </if>
+    </select>
+
+    <select id="selectOrSubTaskIds" resultType="java.lang.Long">
+        select id
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+        and store_id = #{storeId}
+        and node_no = #{nodeNo}
+        and group_item = #{groupItem}
+        and loop_count = #{loopCount}
+    </select>
+    <select id="selectUserIdByLoopCount" resultType="java.lang.String">
+        select distinct handle_user_id
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+        and store_id = #{storeId}
+        <if test="nodeNo != null and nodeNo != ''">
+            and node_no = #{nodeNo}
+        </if>
+        and loop_count = #{loopCount}
+        and sub_status = 'ongoing'
+    </select>
+    <select id="selectUserIdByLoopCountAndStoreIdListAndUnifyTaskList"
+            resultType="com.coolcollege.intelligent.model.enterprise.dto.PersonNodeNoDTO">
+        select handle_user_id as userId, store_id as storeId, node_no as nodeNo, unify_task_id as unifyTaskId
+        from unify_task_sub_${enterpriseId}
+        where
+        unify_task_id in
+        <foreach collection="unifyTaskIds" item="unifyTaskId" open="(" close=")" separator=",">
+            #{unifyTaskId}
+        </foreach>
+        and store_id in
+        <foreach collection="storeIdList" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        <if test="nodeNo != null and nodeNo != ''">
+            and node_no = #{nodeNo}
+        </if>
+        and loop_count = #{loopCount}
+        and sub_status = 'ongoing'
+    </select>
+    <select id="selectUserIdByLoopCountAndStoreIdList"
+            resultType="com.coolcollege.intelligent.model.enterprise.dto.PersonNodeNoDTO">
+        select handle_user_id as userId, store_id as storeId, node_no as nodeNo, unify_task_id as unifyTaskId
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+        and store_id in
+        <foreach collection="storeIdList" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        <if test="nodeNo != null and nodeNo != ''">
+            and node_no = #{nodeNo}
+        </if>
+        and loop_count = #{loopCount}
+        and sub_status = 'ongoing'
+    </select>
+    <select id="getLatestSubId" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        select
+        a.id as id,
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.store_id as storeId,
+        a.biz_code as bizCode,
+        a.cid as cid,
+        a.template_id as templateId,
+        a.instance_id as flowInstanceId,
+        a.cycle_count as flowCycleCount,
+        a.node_no as flowNodeNo,
+        a.action_key as flowActionKey,
+        a.create_user_id as createUserId,
+        a.sub_status as subStatus,
+        a.flow_state as flowState,
+        a.handle_user_id as handleUserId,
+        a.handle_time as handleTime,
+        a.group_item as groupItem,
+        a.loop_count as loopCount,
+        a.task_data as taskData,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime,
+        a.create_time as createTime,
+        a.store_name as storeName,
+        b.task_name as taskName,
+        b.end_time as endTime,
+        b.task_type as taskType,
+        b.task_info as taskInfo,
+        b.status_type as statusType,
+        a.is_operate_overdue as isOperateOverdue
+        from unify_task_sub_${enterpriseId} a
+        INNER JOIN unify_task_parent_${enterpriseId} b ON a.unify_task_id = b.id
+        where a.unify_task_id = #{unifyTaskId}
+        and a.store_id = #{storeId}
+        and a.loop_count = #{loopCount}
+        <if test="userId != null and userId != ''">
+            and a.handle_user_id = #{userId}
+        </if>
+        <if test="subStatus != null and subStatus != ''">
+            and a.sub_status = #{subStatus}
+        </if>
+        <if test="nodeNo != null and nodeNo != ''">
+            and a.node_no = #{nodeNo}
+        </if>
+        order by a.create_time desc, a.handle_time desc
+        limit 1
+    </select>
+
+    <select id="getByTbDisplayTableRecordInfo" resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+        id as id,
+        unify_task_id as unifyTaskId,
+        create_user_id as createUserId,
+        handle_user_id as handleUserId,
+        create_time as createTime,
+        handle_time as handleTime,
+        action_key as actionKey,
+        remark as remark,
+        store_id as storeId,
+        node_no as nodeNo,
+        instance_id as instanceId,
+        template_id as templateId,
+        sub_status as subStatus,
+        cycle_count as cycleCount,
+        biz_code as bizCode,
+        cid as cid,
+        sub_begin_time as subBeginTime,
+        sub_end_time as subEndTime,
+        group_item as groupItem,
+        loop_count as loopCount,
+        is_operate_overdue as isOperateOverdue
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+        and store_id = #{storeId}
+        and loop_count = #{loopCount}
+        and handle_user_id = #{userId}
+        and node_no = '1'
+        and sub_status = 'ongoing'
+        limit 1
+    </select>
+
+    <select id="getSubBeginTimeEndTimeByTaskIdAndLoopCount"
+            resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+        sub_begin_time as subBeginTime,
+        sub_end_time as subEndTime
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+        and loop_count = #{loopCount}
+        and node_no = '1'
+        and group_item = 1
+        limit 1
+    </select>
+
+    <select id="countByTaskIdAndStoreId" resultType="Integer">
+        select
+        count(0)
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+        and store_id = #{storeId}
+        and loop_count = #{loopCount}
+    </select>
+
+    <select id="getTaskSubDOById" resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+        a.id as id,
+        a.unify_task_id as unifyTaskId,
+        a.create_user_id as createUserId,
+        a.handle_user_id as handleUserId,
+        a.create_time as createTime,
+        a.handle_time as handleTime,
+        a.action_key as actionKey,
+        a.remark as remark,
+        a.store_id as storeId,
+        a.node_no as nodeNo,
+        a.instance_id as instanceId,
+        a.template_id as templateId,
+        a.sub_status as subStatus,
+        a.cycle_count as cycleCount,
+        a.biz_code as bizCode,
+        a.cid as cid,
+        a.loop_count as loopCount,
+        b.name as handleUserName
+        from unify_task_sub_${enterpriseId}  a
+        inner join enterprise_user_${enterpriseId} b
+        on b.user_id = a.handle_user_id
+        where a.id= #{subTaskId}
+    </select>
+
+    <select id="taskSubList" resultType="com.coolcollege.intelligent.model.enterprise.dto.ApproveDTO">
+        SELECT
+        a.handle_user_id as userId,
+        FROM_UNIXTIME(a.handle_time/1000,'%Y-%m-%d %H:%i:%s') as approveTime ,
+        b.name as userName
+        FROM
+        unify_task_sub_${enterpriseId} a
+        INNER JOIN enterprise_user_${enterpriseId} b ON a.handle_user_id = b.user_id
+        WHERE
+        a.unify_task_id = #{taskId} and a.store_id = #{storeId} and a.node_no='endNode'
+    </select>
+
+    <select id="getRemoveSubTaskIdList" resultType="java.lang.Long">
+        select a.id
+        from unify_task_sub_${enterpriseId} a
+        where a.unify_task_id = #{unifyTaskId}
+        and a.store_id = #{storeId}
+        and a.loop_count = #{loopCount}
+        and a.handle_user_id in
+        <foreach collection="removeUserIdList" item="removeUserId" separator="," open="(" close=")">
+            #{removeUserId}
+        </foreach>
+        <if test="subStatus != null and subStatus != ''">
+            and a.sub_status = #{subStatus}
+        </if>
+        <if test="nodeNo != null and nodeNo != ''">
+            and a.node_no = #{nodeNo}
+        </if>
+    </select>
+
+    <update id="updateNeedRemoveSubTaskStatus">
+        UPDATE unify_task_sub_${enterpriseId}
+        set handle_time = #{handleTime}, sub_status = #{subStatus}, action_key = #{actionKey}, flow_state = #{flowState}
+        where id in
+        <foreach collection="subTaskIdList" index="index" item="subTaskId" separator="," open="(" close=")">
+            #{subTaskId}
+        </foreach>
+    </update>
+
+    <select id="getCompleteSubTaskByReallocate" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskSubVO">
+        select
+        a.id as id,
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.store_id as storeId,
+        a.biz_code as bizCode,
+        a.cid as cid,
+        a.template_id as templateId,
+        a.instance_id as flowInstanceId,
+        a.cycle_count as flowCycleCount,
+        a.node_no as flowNodeNo,
+        a.action_key as flowActionKey,
+        a.create_user_id as createUserId,
+        a.sub_status as subStatus,
+        a.flow_state as flowState,
+        a.handle_user_id as handleUserId,
+        a.handle_time as handleTime,
+        a.group_item as groupItem,
+        a.loop_count as loopCount,
+        a.task_data as taskData,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime,
+        a.create_time as createTime,
+        a.store_name as storeName
+        from unify_task_sub_${enterpriseId} a
+        where a.unify_task_id = #{unifyTaskId}
+        and a.store_id = #{storeId}
+        and a.loop_count = #{loopCount}
+        <if test="userId != null and userId != ''">
+            and a.handle_user_id = #{userId}
+        </if>
+        <if test="subStatus != null and subStatus != ''">
+            and a.sub_status = #{subStatus}
+        </if>
+        <if test="actionKey != null and actionKey != ''">
+            and a.action_key = #{actionKey}
+        </if>
+        <if test="nodeNo != null and nodeNo != ''">
+            and a.node_no = #{nodeNo}
+        </if>
+        order by a.create_time desc, a.handle_time desc
+        limit 1
+    </select>
+    <select id="selectHandlerCompletedSubTask"
+            resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+            a.id as id,
+            a.unify_task_id as unifyTaskId,
+            a.create_user_id as createUserId,
+            a.handle_user_id as handleUserId,
+            a.create_time as createTime,
+            a.handle_time as handleTime,
+            a.action_key as actionKey,
+            a.remark as remark,
+            a.store_id as storeId,
+            a.node_no as nodeNo,
+            a.instance_id as instanceId,
+            a.template_id as templateId,
+            a.sub_status as subStatus,
+            a.cycle_count as cycleCount,
+            a.biz_code as bizCode,
+            a.cid as cid,
+            a.loop_count as loopCount,
+            a.task_data as taskData,
+            a.sub_begin_time as subBeginTime,
+            a.sub_end_time as subEndTime,
+            a.create_time as createTime,
+            a.store_name as storeName
+        from unify_task_sub_${enterpriseId} a
+        where sub_status = 'complete'
+          AND node_no = 1
+          and handle_time is not null
+          and task_type = #{taskType}
+          and store_id = #{storeId}
+          and unify_task_id = #{unifyTaskId}
+        order by handle_time desc
+            limit 1
+    </select>
+
+    <select id="getSubTaskIdListByUnifyTaskId" resultType="java.lang.Long">
+        select
+            id
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+    </select>
+
+    <select id="getSubTaskIdsByUserIdAndStatus" resultType="java.lang.Long">
+        select id from unify_task_sub_${enterpriseId} where handle_user_id = #{userId}
+        <if test="subStatus != null and subStatus != ''">
+            and sub_status = #{subStatus}
+        </if>
+    </select>
+
+    <update id="updateSubStatusBySubTaskId">
+        update unify_task_sub_${enterpriseId}
+        set sub_status = #{subStatus}
+        where id = #{subTaskId}
+    </update>
+
+    <select id="getPendingUserByUnifyTaskId" resultType="string">
+        select
+        distinct(handle_user_id)
+        from
+        unify_task_sub_${enterpriseId}
+        where
+        unify_task_id = #{unifyTaskId} and sub_status = 'ongoing'
+        <if test="storeId != null">
+            and store_id = #{storeId}
+        </if>
+        <if test="loopCount != null">
+            and loop_count = #{loopCount}
+        </if>
+    </select>
+    <select id="getCountByUnifyTaskId" resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifySuToDoDTO">
+        select
+            count( id ) as totalNum,
+            ifnull( sum( IF ( node_no = '1', 1, 0 ) ), 0 ) AS handleNum,
+            ifnull( sum( IF ( node_no != '1', 1, 0 ) ), 0 ) AS approveNum,
+            max(sub_end_time) as endTime
+        from
+        unify_task_sub_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+        and sub_status = 'ongoing'
+        and handle_user_id = #{handleUserId}
+        and task_type = 'QUESTION_ORDER'
+    </select>
+
+    <select id="getUnFinishHandleUserIds" resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+            loop_count as loopCount,
+            node_no as nodeNo,
+            handle_user_id as handleUserId
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{taskId} and sub_status = 'ongoing'
+    </select>
+
+    <select id="getTaskBySubTaskId" resultType="java.lang.String">
+        select unify_task_id
+        from unify_task_sub_${enterpriseId}
+        where id = #{subTaskId}
+    </select>
+
+    <update id="updateSubStatusByTaskId">
+        update unify_task_sub_${enterpriseId}
+        set node_no = 'endNode',
+            sub_status = 'complete'
+        where unify_task_id = #{taskId}
+    </update>
+    <update id="updateOperateOverdue">
+        update unify_task_sub_${enterpriseId}
+        set is_operate_overdue = #{isOperateOverdue}
+        where unify_task_id = #{unifyTaskId}
+    </update>
+
+
+    <select id="listCombineStore" resultType="com.coolcollege.intelligent.model.unifytask.TaskSubDO">
+        select
+        a.id as id,
+        a.unify_task_id as unifyTaskId,
+        a.create_user_id as createUserId,
+        a.handle_user_id as handleUserId,
+        a.create_time as createTime,
+        a.handle_time as handleTime,
+        a.action_key as actionKey,
+        a.remark as remark,
+        a.store_id as storeId,
+        a.node_no as nodeNo,
+        a.instance_id as instanceId,
+        a.template_id as templateId,
+        a.sub_status as subStatus,
+        a.cycle_count as cycleCount,
+        a.biz_code as bizCode,
+        a.cid as cid,
+        a.loop_count as loopCount,
+        a.task_data as taskData,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime,
+        a.create_time as createTime,
+        a.store_name as storeName
+        from unify_task_sub_${enterpriseId} a
+        where a.unify_task_id = #{unifyTaskId}
+        and a.store_id in
+        <foreach collection="storeIdList" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        <if test="nodeNo != null and nodeNo != ''">
+            and a.node_no = #{nodeNo}
+        </if>
+        and a.loop_count = #{loopCount}
+        and a.handle_user_id = #{handleUserId}
+    </select>
+    <select id="getIsOperateOverdueByStoreIdAndTaskId" resultType="java.lang.Boolean">
+        select is_operate_overdue
+        from unify_task_sub_${enterpriseId}
+        where unify_task_id = #{taskId}
+        and store_id = #{storeId}
+        order by create_time desc
+        limit 1
+    </select>
+    <select id="filterExistOtherStoreSubTask" resultType="java.lang.String">
+        SELECT handle_user_id FROM (
+            SELECT COUNT(*) store_num, handle_user_id
+            FROM unify_task_sub_${enterpriseId}
+            WHERE unify_task_id = #{unifyTaskId}
+            AND loop_count = #{loopCount}
+            AND store_id != #{storeId}
+            AND sub_status = 'ongoing'
+            AND handle_user_id in
+            <foreach collection="userIds" item="userId" separator="," open="(" close=")">
+                #{userId}
+            </foreach>
+            GROUP BY handle_user_id
+        ) a WHERE store_num > 0
+    </select>
+
+</mapper>

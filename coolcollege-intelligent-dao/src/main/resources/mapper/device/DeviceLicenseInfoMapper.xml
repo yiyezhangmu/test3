@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.device.DeviceLicenseInfoMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.device.DeviceLicenseInfoDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="batch_id" jdbcType="VARCHAR" property="batchId" />
+    <result column="device_code" jdbcType="VARCHAR" property="deviceCode" />
+    <result column="device_id" jdbcType="VARCHAR" property="deviceId" />
+    <result column="license" jdbcType="VARCHAR" property="license" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
+    <result column="channel_ids" jdbcType="VARCHAR" property="channelIds" />
+    <result column="use_by_new" jdbcType="INTEGER" property="useByNew" />
+    <result column="apply_user" jdbcType="VARCHAR" property="applyUser" />
+    <result column="register_validity" jdbcType="INTEGER" property="registerValidity" />
+    <result column="Heartbeat_cycle" jdbcType="INTEGER" property="heartbeatCycle" />
+    <result column="heartbeat_timeout" jdbcType="INTEGER" property="heartbeatTimeout" />
+    <result column="create_name" jdbcType="VARCHAR" property="createName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_name" jdbcType="VARCHAR" property="updateName" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="device_serial" jdbcType="VARCHAR" property="deviceSerial" />
+    <result column="ys_device_serial" jdbcType="VARCHAR" property="ysDeviceSerial" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, type, batch_id, device_code, device_id, license, status, apply_time, channel_ids, 
+    use_by_new, apply_user, register_validity, Heartbeat_cycle, heartbeat_timeout, create_name, 
+    create_time, update_name, update_time, remark, name, device_serial, ys_device_serial
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into device_license_info_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.type != null">
+        type,
+      </if>
+      <if test="record.batchId != null">
+        batch_id,
+      </if>
+      <if test="record.deviceCode != null">
+        device_code,
+      </if>
+      <if test="record.deviceId != null">
+        device_id,
+      </if>
+      <if test="record.license != null">
+        license,
+      </if>
+      <if test="record.status != null">
+        status,
+      </if>
+      <if test="record.applyTime != null">
+        apply_time,
+      </if>
+      <if test="record.channelIds != null">
+        channel_ids,
+      </if>
+      <if test="record.useByNew != null">
+        use_by_new,
+      </if>
+      <if test="record.applyUser != null">
+        apply_user,
+      </if>
+      <if test="record.registerValidity != null">
+        register_validity,
+      </if>
+      <if test="record.heartbeatCycle != null">
+        Heartbeat_cycle,
+      </if>
+      <if test="record.heartbeatTimeout != null">
+        heartbeat_timeout,
+      </if>
+      <if test="record.createName != null">
+        create_name,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.updateName != null">
+        update_name,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.remark != null">
+        remark,
+      </if>
+      <if test="record.name != null">
+        name,
+      </if>
+      <if test="record.deviceSerial != null">
+        device_serial,
+      </if>
+      <if test="record.ysDeviceSerial != null">
+        ys_device_serial,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.type != null">
+        #{record.type},
+      </if>
+      <if test="record.batchId != null">
+        #{record.batchId},
+      </if>
+      <if test="record.deviceCode != null">
+        #{record.deviceCode},
+      </if>
+      <if test="record.deviceId != null">
+        #{record.deviceId},
+      </if>
+      <if test="record.license != null">
+        #{record.license},
+      </if>
+      <if test="record.status != null">
+        #{record.status},
+      </if>
+      <if test="record.applyTime != null">
+        #{record.applyTime},
+      </if>
+      <if test="record.channelIds != null">
+        #{record.channelIds},
+      </if>
+      <if test="record.useByNew != null">
+        #{record.useByNew},
+      </if>
+      <if test="record.applyUser != null">
+        #{record.applyUser},
+      </if>
+      <if test="record.registerValidity != null">
+        #{record.registerValidity},
+      </if>
+      <if test="record.heartbeatCycle != null">
+        #{record.heartbeatCycle},
+      </if>
+      <if test="record.heartbeatTimeout != null">
+        #{record.heartbeatTimeout},
+      </if>
+      <if test="record.createName != null">
+        #{record.createName},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+      <if test="record.updateName != null">
+        #{record.updateName},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime},
+      </if>
+      <if test="record.remark != null">
+        #{record.remark},
+      </if>
+      <if test="record.name != null">
+        #{record.name},
+      </if>
+      <if test="record.deviceSerial != null">
+        #{record.deviceSerial},
+      </if>
+      <if test="record.ysDeviceSerial != null">
+        #{record.ysDeviceSerial},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update device_license_info_${enterpriseId}
+    <set>
+      <if test="record.type != null">
+        type = #{record.type},
+      </if>
+      <if test="record.batchId != null">
+        batch_id = #{record.batchId},
+      </if>
+      <if test="record.deviceCode != null">
+        device_code = #{record.deviceCode},
+      </if>
+      <if test="record.deviceId != null">
+        device_id = #{record.deviceId},
+      </if>
+      <if test="record.license != null">
+        license = #{record.license},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status},
+      </if>
+      <if test="record.applyTime != null">
+        apply_time = #{record.applyTime},
+      </if>
+      <if test="record.channelIds != null">
+        channel_ids = #{record.channelIds},
+      </if>
+      <if test="record.useByNew != null">
+        use_by_new = #{record.useByNew},
+      </if>
+      <if test="record.applyUser != null">
+        apply_user = #{record.applyUser},
+      </if>
+      <if test="record.registerValidity != null">
+        register_validity = #{record.registerValidity},
+      </if>
+      <if test="record.heartbeatCycle != null">
+        Heartbeat_cycle = #{record.heartbeatCycle},
+      </if>
+      <if test="record.heartbeatTimeout != null">
+        heartbeat_timeout = #{record.heartbeatTimeout},
+      </if>
+      <if test="record.createName != null">
+        create_name = #{record.createName},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime},
+      </if>
+      <if test="record.updateName != null">
+        update_name = #{record.updateName},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name},
+      </if>
+      <if test="record.deviceSerial != null">
+        device_serial = #{record.deviceSerial},
+      </if>
+      <if test="record.ysDeviceSerial != null">
+        ys_device_serial = #{record.ysDeviceSerial},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+
+  <insert id="batchInsert">
+    INSERT INTO device_license_info_${eid} (type, batch_id, device_code, device_id,
+    license,status,apply_time,channel_ids,use_by_new,apply_user,register_validity,Heartbeat_cycle,heartbeat_timeout,create_name,create_time,update_name,update_time,remark,name,device_serial)
+    VALUES
+    <foreach collection="list" separator="," item="item">
+      (#{item.type},#{item.batchId},#{item.deviceCode},#{item.deviceId},#{item.license},#{item.status},#{item.applyTime},#{item.channelIds},#{item.useByNew},#{item.applyUser},
+      #{item.registerValidity},#{item.heartbeatCycle},#{item.heartbeatTimeout},#{item.createName},#{item.createTime},#{item.updateName},#{item.updateTime},#{item.remark},#{item.name}
+      ,#{item.deviceSerial})
+    </foreach>
+  </insert>
+
+  <update id="update">
+    update device_license_info_${eid}
+    set name=#{name},
+        remark=#{remark}
+    where id = #{id}
+  </update>
+  <delete id="delete">
+    delete
+    from device_license_info_${eid}
+    where id = #{id}
+  </delete>
+  <update id="updateStatus">
+    update device_license_info_${eid}
+    set status          =1,
+        use_by_new=1,
+        ys_device_serial=#{ys}
+    where id = #{id}
+  </update>
+  <update id="updateChannelIds">
+    update device_license_info_${eid}
+    set channel_ids=#{channelIds}
+    where id = #{id}
+  </update>
+  <update id="updateStatusNoNew">
+    update device_license_info_${eid}
+    set status =1
+    where device_serial in
+    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <select id="selectList" resultType="com.coolcollege.intelligent.model.device.vo.DeviceLicenseVO">
+    select d.id,
+    d.type,d.device_code as deviceCode,d.device_serial as deviceSerial,d.name,
+    e.name as createName,
+
+    case
+    when
+    d.status =1
+    then "占用"
+    when
+    d.status =0
+    then "未占用"
+    end as status,
+
+    d.batch_id as batchId,
+    d.channel_ids as channelIds,
+
+    case
+    when
+    d.use_by_new =1
+    then "是"
+    when
+    d.use_by_new =0
+    then "否"
+    end as useByNew,
+    d.apply_time as applyTime
+
+    from device_license_info_${eid} d
+    left join
+    enterprise_user_${eid} e  on d.create_name = e.user_id
+    <where>
+      1=1
+      <if test="type !=null ">
+        and d.type=#{type}
+      </if>
+      <if test="deviceSerial !=null and deviceSerial !=''">
+        and d.device_serial like concat('%', #{deviceSerial}, '%')
+      </if>
+      <if test="name != null and name !=''">
+        and d.name like concat('%', #{name}, '%')
+      </if>
+      <if test="status != null">
+        and d.status=#{status}
+      </if>
+      <if test="useByNew !=null">
+        and d.use_by_new=#{useByNew}
+      </if>
+    </where>
+    order by d.apply_time desc
+  </select>
+  <select id="selectOne" resultType="com.coolcollege.intelligent.model.device.DeviceLicenseInfoDO">
+    select *
+    from device_license_info_${eid}
+    where id = #{id}
+  </select>
+  <select id="selectListByIds"
+          resultType="com.coolcollege.intelligent.model.device.DeviceLicenseInfoDO">
+    select *
+    from device_license_info_${eid}
+    where id in
+    <foreach collection="licenseIds" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </select>
+</mapper>

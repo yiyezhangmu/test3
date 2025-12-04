@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.metatable.TbMetaQuickColumnResultMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.metatable.TbMetaQuickColumnResultDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="meta_quick_column_id" jdbcType="BIGINT" property="metaQuickColumnId" />
+    <result column="result_name" jdbcType="VARCHAR" property="resultName" />
+    <result column="max_score" jdbcType="DECIMAL" property="maxScore" />
+    <result column="min_score" jdbcType="DECIMAL" property="minScore" />
+    <result column="default_money" jdbcType="DECIMAL" property="defaultMoney" />
+    <result column="mapping_result" jdbcType="VARCHAR" property="mappingResult" />
+    <result column="must_pic" jdbcType="TINYINT" property="mustPic" />
+    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="score_is_double" jdbcType="TINYINT" property="scoreIsDouble" />
+    <result column="award_is_double" jdbcType="TINYINT" property="awardIsDouble" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="score" jdbcType="DECIMAL" property="score" />
+  </resultMap>
+  <resultMap id="BlobResultMap" extends="BaseResultMap" type="com.coolcollege.intelligent.model.metatable.TbMetaQuickColumnResultDO">
+    <result column="extend_info" jdbcType="VARCHAR" property="extendInfo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, meta_quick_column_id, result_name, max_score, min_score, default_money,
+    mapping_result, must_pic, order_num, description, score_is_double, award_is_double, 
+    deleted, create_user_id, update_user_id, create_time, update_time, score
+  </sql>
+  <sql id="Blob_Column_List">
+    extend_info
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_meta_quick_column_result_${enterpriseId}
+    where id = #{id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_meta_quick_column_result_${enterpriseId}
+    where id = #{id}
+  </delete>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into tb_meta_quick_column_result_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.metaQuickColumnId != null">
+        meta_quick_column_id,
+      </if>
+      <if test="record.resultName != null">
+        result_name,
+      </if>
+      <if test="record.maxScore != null">
+        max_score,
+      </if>
+      <if test="record.minScore != null">
+        min_score,
+      </if>
+      <if test="record.defaultMoney != null">
+        default_money,
+      </if>
+      <if test="record.mappingResult != null">
+        mapping_result,
+      </if>
+      <if test="record.mustPic != null">
+        must_pic,
+      </if>
+      <if test="record.orderNum != null">
+        order_num,
+      </if>
+      <if test="record.description != null">
+        description,
+      </if>
+      <if test="record.scoreIsDouble != null">
+        score_is_double,
+      </if>
+      <if test="record.awardIsDouble != null">
+        award_is_double,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.score != null">
+        score,
+      </if>
+      <if test="record.extendInfo != null">
+        extend_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.metaQuickColumnId != null">
+        #{record.metaQuickColumnId},
+      </if>
+      <if test="record.resultName != null">
+        #{record.resultName},
+      </if>
+      <if test="record.maxScore != null">
+        #{record.maxScore},
+      </if>
+      <if test="record.minScore != null">
+        #{record.minScore},
+      </if>
+      <if test="record.defaultMoney != null">
+        #{record.defaultMoney},
+      </if>
+      <if test="record.mappingResult != null">
+        #{record.mappingResult},
+      </if>
+      <if test="record.mustPic != null">
+        #{record.mustPic},
+      </if>
+      <if test="record.orderNum != null">
+        #{record.orderNum},
+      </if>
+      <if test="record.description != null">
+        #{record.description},
+      </if>
+      <if test="record.scoreIsDouble != null">
+        #{record.scoreIsDouble},
+      </if>
+      <if test="record.awardIsDouble != null">
+        #{record.awardIsDouble},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId},
+      </if>
+      <if test="record.updateUserId != null">
+        #{record.updateUserId},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime},
+      </if>
+      <if test="record.score != null">
+        #{record.score},
+      </if>
+      <if test="record.extendInfo != null">
+        #{record.extendInfo},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update tb_meta_quick_column_result_${enterpriseId}
+    <set>
+      <if test="record.metaQuickColumnId != null">
+        meta_quick_column_id = #{record.metaQuickColumnId},
+      </if>
+      <if test="record.resultName != null">
+        result_name = #{record.resultName},
+      </if>
+      <if test="record.maxScore != null">
+        max_score = #{record.maxScore},
+      </if>
+      <if test="record.minScore != null">
+        min_score = #{record.minScore},
+      </if>
+      <if test="record.defaultMoney != null">
+        default_money = #{record.defaultMoney},
+      </if>
+      <if test="record.mappingResult != null">
+        mapping_result = #{record.mappingResult},
+      </if>
+      <if test="record.mustPic != null">
+        must_pic = #{record.mustPic},
+      </if>
+      <if test="record.orderNum != null">
+        order_num = #{record.orderNum},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description},
+      </if>
+      <if test="record.scoreIsDouble != null">
+        score_is_double = #{record.scoreIsDouble},
+      </if>
+      <if test="record.awardIsDouble != null">
+        award_is_double = #{record.awardIsDouble},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId},
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = #{record.updateUserId},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime},
+      </if>
+      <if test="record.score != null">
+        score = #{record.score},
+      </if>
+      <if test="record.extendInfo != null">
+        extend_info = #{record.extendInfo},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+
+  <insert id="batchInsert">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_meta_quick_column_result_${enterpriseId}
+    (
+    meta_quick_column_id,
+    result_name,
+    max_score,
+    min_score,
+    default_money,
+    mapping_result,
+    must_pic,
+    order_num,
+    description,
+    score_is_double,
+    award_is_double,
+    create_user_id,
+    create_time,
+    update_user_id,
+    update_time,
+    score
+    )
+    values
+    <foreach collection="list" separator="," item="record">
+      (
+      #{record.metaQuickColumnId},
+      #{record.resultName},
+      #{record.maxScore},
+      #{record.minScore},
+      #{record.defaultMoney},
+      #{record.mappingResult},
+      #{record.mustPic},
+      #{record.orderNum},
+      #{record.description},
+      #{record.scoreIsDouble},
+      #{record.awardIsDouble},
+      #{record.createUserId},
+      #{record.createTime},
+      #{record.updateUserId},
+      #{record.updateTime},
+      #{record.score}
+      )
+    </foreach>
+  </insert>
+
+  <update id="deleteByMetaQuickColumnId">
+    update tb_meta_quick_column_result_${enterpriseId} set deleted = 1 where meta_quick_column_id = #{metaQuickColumnId}
+  </update>
+  
+  <update id="logicallyDeleteByIds">
+    update tb_meta_quick_column_result_${enterpriseId} set deleted = 1 where id in <foreach collection="ids" item="id" open="(" close=")" separator=",">#{id}</foreach>
+  </update>
+
+  <select id="getIdsByMetaQuickColumnId" resultType="long">
+    select id from tb_meta_quick_column_result_${enterpriseId} where meta_quick_column_id = #{metaQuickColumnId}
+  </select>
+  
+  <select id="getColumnResultList" resultMap="BlobResultMap">
+    select
+      <include refid="Base_Column_List"/>, <include refid="Blob_Column_List"/>
+    from
+      tb_meta_quick_column_result_${enterpriseId}
+    where
+      deleted = 0 and meta_quick_column_id in
+      <foreach collection="metaQuickColumnIds" item="metaQuickColumnId" open="(" close=")" separator=",">#{metaQuickColumnId}</foreach>
+  </select>
+  <select id="getAllColumnResultImportList" resultType="com.coolcollege.intelligent.model.metatable.dto.QuickColumnResultImportDTO">
+    select id,meta_quick_column_id,result_name as name,max_score as score,mapping_result as result,
+      must_pic as checkPic ,description as checkDec
+    from tb_meta_quick_column_result_${enterpriseId} where deleted =0
+  </select>
+    <select id="getFailDetailByQuickId"
+            resultType="com.coolcollege.intelligent.model.metatable.TbMetaQuickColumnResultDO">
+      select max_score,min_score
+      from tb_meta_quick_column_result_${enterpriseId}
+      where meta_quick_column_id = #{quickColumnId}
+      and mapping_result = 'FAIL' and `deleted`  = '0'
+    </select>
+
+    <insert id="copyMetaQuickColumnResult">
+      insert into tb_meta_quick_column_result_${enterpriseId}
+      (
+      id,
+      meta_quick_column_id,
+      result_name,
+      max_score,
+      min_score,
+      default_money,
+      mapping_result,
+      must_pic,
+      order_num,
+      description,
+      score_is_double,
+      award_is_double,
+      create_user_id,
+      create_time,
+      update_user_id,
+      update_time,
+      score
+      )
+      values
+      <foreach collection="list" separator="," item="record">
+        (
+        #{record.id},
+        #{record.metaQuickColumnId},
+        #{record.resultName},
+        #{record.maxScore},
+        #{record.minScore},
+        #{record.defaultMoney},
+        #{record.mappingResult},
+        #{record.mustPic},
+        #{record.orderNum},
+        #{record.description},
+        #{record.scoreIsDouble},
+        #{record.awardIsDouble},
+        #{record.createUserId},
+        #{record.createTime},
+        #{record.updateUserId},
+        #{record.updateTime},
+        #{record.score}
+        )
+      </foreach>
+  </insert>
+
+  <delete id="deleteAllMetaQuickColumnResult">
+    delete from tb_meta_quick_column_result_${enterpriseId}
+  </delete>
+  <update id="deleteByMetaQuickColumnIds">
+    update tb_meta_quick_column_result_${enterpriseId}
+    set deleted = 1
+    where
+    <foreach collection="ids" open=" meta_quick_column_id in (" close=")" separator="," item="id">
+      #{id}
+    </foreach>
+  </update>
+</mapper>

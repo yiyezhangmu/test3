@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.user.UserCollectStoreMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.user.UserCollectStoreDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, store_id, create_user_id, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_collect_store_${enterpriseId}
+    where id = #{id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user_collect_store_${enterpriseId}
+    where id = #{id}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.user.UserCollectStoreDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user_collect_store_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.userId != null">
+        user_id,
+      </if>
+      <if test="record.storeId != null">
+        store_id,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.userId != null">
+        #{record.userId},
+      </if>
+      <if test="record.storeId != null">
+        #{record.storeId},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.user.UserCollectStoreDO">
+    update user_collect_store_${enterpriseId}
+    <set>
+      <if test="userId != null">
+        user_id = #{userId},
+      </if>
+      <if test="storeId != null">
+        store_id = #{storeId},
+      </if>
+      <if test="createUserId != null">
+        create_user_id = #{createUserId},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <delete id="deleteUserCollectStore">
+    delete from user_collect_store_${enterpriseId} where user_id = #{userId} and store_id = #{storeId}
+  </delete>
+
+  <select id="getUserCollectStore" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/> from user_collect_store_${enterpriseId} where user_id = #{userId}
+  </select>
+</mapper>

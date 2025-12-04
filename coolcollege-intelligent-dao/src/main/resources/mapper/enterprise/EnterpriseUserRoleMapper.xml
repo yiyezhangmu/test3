@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseUserRoleMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.coolcollege.intelligent.model.enterprise.EnterpriseUserRole" id="enterpriseUserRoleMap">
+        <result property="id" column="id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="userId" column="user_id"/>
+		<result property="syncType" column="sync_type"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+    </resultMap>
+
+	<select id="selectByPrimaryKey" resultMap="enterpriseUserRoleMap">
+		select * from enterprise_user_role_${eid} where id = #{id}
+	</select>
+
+ 	<select id="count" resultType="int">
+		select count(*) from enterprise_user_role_${eid} 
+	</select>
+
+
+	<insert id="save" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserRole">
+		insert into enterprise_user_role_${eid}
+		(
+			`role_id`,
+			`user_id`,
+			`create_time`,
+			`sync_type`
+		)
+		values
+		(
+			#{entity.roleId},
+			#{entity.userId},
+			#{entity.createTime},
+			#{entity.syncType}
+		)
+		on duplicate key update
+		`update_time` = now()
+		<if test="entity.syncType != null">
+			,`sync_type` = #{entity.syncType}
+		</if>
+	</insert>
+	 
+	<update id="updateByPrimaryKey" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserRole">
+		update enterprise_user_role_${eid} 
+		<set>
+			<if test="entity.roleId != null">`role_id` = #{entity.roleId}, </if>
+			<if test="entity.userId != null">`user_id` = #{entity.userId}, </if>
+			`update_time` = now()
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="deleteByPrimaryKey">
+		delete from enterprise_user_role_${eid} where id = #{id}
+	</delete>
+	
+	<delete id="deleteBatchByPrimaryKey">
+		delete from enterprise_user_role_${eid} where id in
+		<foreach item="id" collection="ids" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<delete id="deleteByRoleId">
+		delete from enterprise_user_role_${eid} where role_id = #{roleId}
+	</delete>
+
+	<delete id="deleteByRoleIdAndUserId">
+		delete from enterprise_user_role_${eid} where role_id = #{roleId} and user_id = #{userId}
+	</delete>
+
+
+	<delete id="deleteBatchByRoleId">
+		delete from enterprise_user_role_${eid} where role_id in
+		<foreach item="roleId" collection="roleIds" open="(" separator="," close=")">
+			#{roleId}
+		</foreach>
+	</delete>
+
+	<delete id="deleteBatchByUserIdAndRoleId">
+		delete from enterprise_user_role_${eid} where user_id = #{userId} and role_id in
+		<foreach item="roleId" collection="roleIds" open="(" separator="," close=")">
+			#{roleId}
+		</foreach>
+	</delete>
+
+	<select id="selectDingRoleMappingByUserId" resultMap="enterpriseUserRoleMap">
+		SELECT
+			eur.*
+		FROM
+			enterprise_user_role_${eid} eur
+				LEFT JOIN sys_role_${eid} sr on eur.role_id = sr.id
+		WHERE
+			user_id = #{userId}
+		  and (sr.source = 'sync' OR sr.id IS NULL)
+	</select>
+
+	<select id="listsUserRoleByUserIdListAndSource" resultMap="enterpriseUserRoleMap">
+		SELECT
+			eur.*
+		FROM
+			enterprise_user_role_${eid} eur
+				LEFT JOIN sys_role_${eid} sr on eur.role_id = sr.id
+		where user_id in
+		<foreach item="userId" collection="userIds" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+		  and (sr.source = #{source} OR sr.id IS NULL)
+	</select>
+
+	<select id="selectMdtRoleMappingByUserId" resultMap="enterpriseUserRoleMap">
+		SELECT
+			eur.*
+		FROM
+			enterprise_user_role_${eid} eur
+				LEFT JOIN sys_role_${eid} sr on eur.role_id = sr.id
+		WHERE
+			user_id = #{userId}
+		  and (sr.syn_ding_role_id is not null OR sr.id IS NULL)
+	</select>
+
+
+	<select id="selectUserRoleByUserId"
+			resultType="com.coolcollege.intelligent.model.enterprise.dto.EntUserRoleDTO">
+		SELECT eur.role_id as roleId,
+			   eur.id as userRoleId,
+			   sr.source,
+			   sr.role_enum as roleEnum,
+			   sr.role_name as roleName,
+			   eur.sync_type as syncType
+		FROM enterprise_user_role_${eid} eur
+				 LEFT JOIN sys_role_${eid} sr on eur.role_id = sr.id
+		WHERE user_id = #{userId}
+	</select>
+
+	<select id="selectUserRoleByUserIds"
+			resultType="com.coolcollege.intelligent.model.enterprise.dto.EntUserRoleDTO">
+		SELECT eur.role_id as roleId,
+			   eur.id as userRoleId,
+			   sr.source,
+			   sr.role_enum as roleEnum,
+			   sr.role_name as roleName,
+			   eur.user_id as userId
+		FROM enterprise_user_role_${eid} eur
+				 LEFT JOIN sys_role_${eid} sr on eur.role_id = sr.id
+		WHERE user_id in
+		<foreach item="userId" collection="userIds" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</select>
+
+	<select id="selectUserRoleNameByUserId"
+			resultType="com.coolcollege.intelligent.model.enterprise.dto.EntUserRoleDTO">
+		SELECT eur.role_id as roleId,
+			   eur.id as userRoleId,
+			   sr.source,
+			   sr.role_enum as roleEnum,
+				sr.role_name as roleName
+		FROM enterprise_user_role_${eid} eur
+				 LEFT JOIN sys_role_${eid} sr on eur.role_id = sr.id
+		WHERE user_id = #{userId}
+		and (sr.source = 'sync' OR sr.id IS NULL)
+	</select>
+
+	<select id="selectByRoleId" resultMap="enterpriseUserRoleMap">
+		select * from enterprise_user_role_${eid} where role_id = #{roleId}
+	</select>
+
+
+	<select id="selectIdsByUserId" resultType="java.lang.Long">
+		select id from enterprise_user_role_${eid} where user_id = #{userId}
+	</select>
+
+	<select id="selectCountsByUserId" resultType="java.lang.Integer">
+		select count(1) from enterprise_user_role_${eid} where user_id = #{userId}
+	</select>
+
+	<select id="selectIdsByUserIds" resultType="java.lang.Long">
+		select id from enterprise_user_role_${eid} where user_id in
+		<foreach item="userId" collection="userIds" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</select>
+	<select id="selectUserDingPosition"
+			resultType="com.coolcollege.intelligent.model.enterprise.dto.UserDingPositionDTO">
+		select eur.id as userRoleId, sr.role_name as userDingPosition
+		from enterprise_user_role_${eid} eur
+				 LEFT JOIN sys_role_${eid} sr ON eur.role_id = sr.id
+		where eur.user_id = #{userId}
+		  AND sr.source = 'sync_position'
+	</select>
+
+	<select id="countMainAdmin" resultType="int">
+		select count(*) from enterprise_user_role_${eid} where role_id = #{roleId}
+	</select>
+
+	<select id="selectByUserIdList" resultMap="enterpriseUserRoleMap">
+		select id, user_id, role_id
+		from enterprise_user_role_${eid}
+		where user_id in
+		<foreach item="userId" collection="userIds" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</select>
+
+	<select id="selectByUserIdAndRoleId" resultMap="enterpriseUserRoleMap">
+		select * from enterprise_user_role_${eid}
+		where user_id = #{userId} and role_id = #{roleId}
+		order by id asc
+      	limit 1
+	</select>
+
+	<select id="selectUserIdByRoleId" resultType="string">
+		select
+			user_id
+		from
+			enterprise_user_role_${eid}
+		where role_id = #{roleId} and user_id in
+		<foreach item="userId" collection="userIds" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</select>
+	<select id="selectRoleIdsByUserId" resultType="java.lang.Long">
+		select role_id as roleId from enterprise_user_role_${eid} where user_id = #{userId}
+	</select>
+
+	<select id="selectUserIdsByRoleId" resultType="java.lang.String">
+		select
+			user_id
+		from
+			enterprise_user_role_${eid}
+		where role_id = #{roleId}
+	</select>
+	<select id="selectUserIdsByRoleIdList" resultType="java.lang.String">
+		select
+			DISTINCT a.user_id
+		from
+			enterprise_user_role_${eid} a left join enterprise_user_${eid} b on a.user_id=b.user_id
+		where
+		b.user_status = '1'
+        and b.active = true
+        and a.role_id in
+			<foreach collection="roleIds" item="roleId" open="(" separator="," close=")">
+				#{roleId}
+			</foreach>
+	</select>
+
+	<select id="getAllData" resultMap="enterpriseUserRoleMap">
+		select * from enterprise_user_role_${eid}
+	</select>
+
+	<select id="getUserIdsByRoleIds" resultType="string">
+		select
+			user_id
+		from
+			enterprise_user_role_${eid}
+		where
+			role_id in <foreach collection="roleIds" open="(" close=")" separator="," item="roleId">#{roleId}</foreach>
+		and
+			user_id in <foreach collection="userIds" open="(" close=")" separator="," item="userId">#{userId}</foreach>
+	</select>
+
+	<select id="getUserRoleIds" resultType="long">
+		select role_id from enterprise_user_role_${eid} where user_id = #{userId}
+	</select>
+
+	<select id="getUserIdsByRoleIdList" resultType="java.lang.String">
+		select user_id
+		from enterprise_user_role_${eid}
+		where role_id in (
+		<foreach collection="roleIdList" item="id" separator=",">
+			#{id}
+		</foreach>
+		)
+	</select>
+
+	<select id="getHaveRoleUserIds" resultType="string">
+		select user_id from enterprise_user_role_${eid} where user_id in <foreach collection="userIds" item="userId" separator="," open="(" close=")">#{userId}</foreach>
+	</select>
+	<select id="getUserIdAndPositionType"
+			resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserPositionType">
+		SELECT
+		eur.user_id as userId,
+		sr.position_type as positionType
+		FROM
+		enterprise_user_role_${eid} eur
+		LEFT JOIN sys_role_${eid} sr on eur.role_id = sr.id
+		where user_id in
+		<foreach item="userId" collection="userIds" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</select>
+	<select id="selectByUserIdsList"
+			resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseUserRoleDTO">
+		select id, user_id as userId, role_id as roleId
+		from enterprise_user_role_${eid}
+		where user_id in
+		<foreach item="userId" collection="userIds" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</select>
+	<select id="getByRoleIds"
+			resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseUserRoleDTO">
+		select id, user_id as userId, role_id as roleId
+		from enterprise_user_role_${eid}
+		where role_id in
+		<foreach item="roleId" collection="roleIds" open="(" separator="," close=")">
+		#{roleId}
+		</foreach>
+	</select>
+
+	<delete id="deleteUserRoleByUserId">
+		delete from
+			enterprise_user_role_${eid}
+		where
+			user_id = #{userId} and sync_type = #{syncType} and role_id in
+			(
+				select id from sys_role_${eid}
+				where
+					<if test="syncType == 1 ">
+						source = 'sync'
+					</if>
+					<if test="syncType == 2 ">
+						source = 'create'
+					</if>
+			)
+	</delete>
+
+
+</mapper>

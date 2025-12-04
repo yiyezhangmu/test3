@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.boss.BossUserMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.system.BossUserDO"
+               id="SysUserDOResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="username" column="username"/>
+        <result property="mobile" column="mobile"/>
+        <result property="email" column="email"/>
+        <result property="password" column="password"/>
+        <result property="avatar" column="avatar"/>
+        <result property="status" column="status"/>
+        <result property="remark" column="remark"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+    <insert id="insertUser">
+        insert into boss_user
+        (name,
+         username,
+         mobile,
+         password
+        )
+        values (#{name},
+                #{username},
+                #{mobile},
+                #{password}
+                )
+    </insert>
+    <update id="updateByIdSelective">
+        update boss_user
+        <set>
+            <if test="bossUserDO.username != null">
+                username = #{bossUserDO.username,jdbcType=VARCHAR},
+            </if>
+            <if test="bossUserDO.name != null">
+                name = #{bossUserDO.name,jdbcType=VARCHAR},
+            </if>
+            <if test="bossUserDO.mobile != null">
+                mobile = #{bossUserDO.mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="bossUserDO.email != null">
+                email = #{bossUserDO.email,jdbcType=VARCHAR},
+            </if>
+            <if test="bossUserDO.password != null">
+                password = #{bossUserDO.password,jdbcType=VARCHAR},
+            </if>
+            <if test="bossUserDO.avatar != null">
+                avatar = #{bossUserDO.avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="bossUserDO.status != null">
+                status = #{bossUserDO.status,jdbcType=TINYINT},
+            </if>
+            <if test="bossUserDO.userId != null">
+                user_id = #{bossUserDO.userId},
+            </if>
+        </set>
+        where id = #{bossUserDO.id,jdbcType=BIGINT}
+    </update>
+    <select id="getList" resultType="com.coolcollege.intelligent.model.system.BossUserDO">
+        select id,
+               name,
+               username,
+               mobile,
+               email,
+               avatar,
+               status,
+               create_time as createTime,
+               update_time as updateTime,
+               user_id as userId,
+               is_deleted as isDeleted
+        from boss_user
+        where is_deleted = 0
+        <if test="username != null and username != ''">
+            username = #{username}
+        </if>
+        <if test="status != null">
+           and  status = #{status}
+        </if>
+        order by update_time desc
+    </select>
+    <select id="selectById" resultType="com.coolcollege.intelligent.model.system.BossUserDO">
+        select id,
+               name,
+               username,
+               mobile,
+               email,
+               avatar,
+               status,
+               password,
+               create_time as createTime,
+               update_time as updateTime,
+               user_id as userId
+        from boss_user
+        where is_deleted = 0
+          and id = #{id}
+    </select>
+    <select id="getUserByUsername" resultType="com.coolcollege.intelligent.model.system.BossUserDO">
+        select id,
+               name,
+               username,
+               mobile,
+               email,
+               avatar,
+               status,
+               password,
+               create_time as createTime,
+               update_time as updateTime,
+               user_id as userId
+        from boss_user
+        where is_deleted = 0
+          and username = #{username}
+    </select>
+    <update id="deleteById">
+        update boss_user set is_deleted = 1 where is_deleted = 0 and id = #{userId}
+    </update>
+</mapper>

@@ -1,0 +1,46 @@
+package com.coolcollege.intelligent.facade.consumer.listener;
+
+import com.aliyun.openservices.ons.api.ConsumeContext;
+import com.aliyun.openservices.ons.api.Message;
+import com.coolcollege.intelligent.common.constant.CommonConstant;
+import com.coolcollege.intelligent.facade.SyncUserFacade;
+import com.coolcollege.intelligent.util.RedisUtilPool;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import javax.annotation.Resource;
+import java.nio.charset.StandardCharsets;
+
+/**
+ * @author byd
+ * @date 2022-04-08 10:44
+ */
+@Slf4j
+@RunWith(MockitoJUnitRunner.class)
+public class FullUserSyncListenerTest {
+
+    @InjectMocks
+    private FullUserSyncListener fullUserSyncListener;
+
+    @Mock
+    private RedisUtilPool redisUtilPool;
+
+    @Mock
+    private SyncUserFacade syncUserFacade;
+
+    @Test
+    public void consume() {
+        String text = "{\"appType\":\"qw2\",\"authUserId\":\"woayJeDAAA5aMMGbxo3hZ8eiOkx3qDtg\",\"corpId\":\"wpayJeDAAAJBJKBRgxLIiqMO6jVvRHtw\",\"dbName\":\"coolcollege_intelligent_2\",\"eid\":\"361e95a9c2be463db9192c1ed28b28cc\"}";
+        Message message = new Message();
+        message.setBody(text.getBytes(StandardCharsets.UTF_8));
+        message.setTag("enterprise_open_enterprise_run_script");
+        String lockKey = "FullUserSyncListener:" + message.getMsgID();
+        Mockito.when(redisUtilPool.setNxExpire(lockKey, message.getMsgID(), CommonConstant.NORMAL_LOCK_TIMES)).thenReturn(true);
+        fullUserSyncListener.consume(message, new ConsumeContext());
+    }
+}

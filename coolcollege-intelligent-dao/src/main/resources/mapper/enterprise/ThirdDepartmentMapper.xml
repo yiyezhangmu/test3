@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.ThirdDepartmentMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.enterprise.ThirdDepartmentDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="department_code" jdbcType="VARCHAR" property="departmentCode" />
+    <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
+    <result column="dept_principal" jdbcType="VARCHAR" property="deptPrincipal" />
+    <result column="parent_department_code" jdbcType="VARCHAR" property="parentDepartmentCode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, department_code, department_name, dept_principal, parent_department_code, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from third_department_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from third_department_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != departmentCode">
+         and t.department_code = #{departmentCode,jdbcType=VARCHAR}
+      </if>
+      <if test="null != departmentName">
+         and t.department_name = #{departmentName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != deptPrincipal">
+         and t.dept_principal = #{deptPrincipal,jdbcType=VARCHAR}
+      </if>
+      <if test="null != parentDepartmentCode">
+         and t.parent_department_code = #{parentDepartmentCode,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != updateTime">
+         and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+  </sql>
+
+  <delete id="deleteThirdDepartment">
+    delete from third_department_${eid}
+    where department_code in
+    <foreach collection="departmentCodes" item="departmentCode" open="(" separator="," close=")">
+      #{departmentCode}
+    </foreach>
+  </delete>
+
+  <insert id="batchInsertOrUpdate" parameterType="java.util.List">
+    insert into third_department_${eid}
+    (
+    department_code,
+    department_name,
+    dept_principal,
+    parent_department_code,
+    create_time
+    ) values
+    <foreach collection="thirdDepartments" item="thirdDepartment" separator=",">
+      (
+      #{thirdDepartment.departmentCode},
+      #{thirdDepartment.departmentName},
+      #{thirdDepartment.deptPrincipal},
+      #{thirdDepartment.parentDepartmentCode},
+      now()
+      )
+    </foreach>
+    ON DUPLICATE KEY UPDATE update_time=values(update_time),department_name=values(department_name),
+    dept_principal=values(dept_principal),parent_department_code=values(parent_department_code)
+  </insert>
+
+  <select id="listByDeptPrincipals" resultType="com.coolcollege.intelligent.model.enterprise.ThirdDepartmentDO">
+    select <include refid="Base_Column_List" />
+    from third_department_${eid}
+    where dept_principal in
+    <foreach collection="deptPrincipals" item="deptPrincipal" open="(" separator="," close=")">
+      #{deptPrincipal}
+    </foreach>
+  </select>
+
+  <select id="listAllThirdDepartment" resultType="com.coolcollege.intelligent.model.enterprise.ThirdDepartmentDO">
+    select <include refid="Base_Column_List" />
+    from third_department_${eid}
+  </select>
+
+  <select id="getByDepartmentCode" resultType="com.coolcollege.intelligent.model.enterprise.ThirdDepartmentDO">
+    select <include refid="Base_Column_List" />
+    from third_department_${eid}
+    where department_code = #{departmentCode}
+  </select>
+
+</mapper>

@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseMapper">
+
+    <select id="selectById" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseDO">
+        select
+            id                   as id,
+            name                 as name,
+            original_name        as originalName,
+            mobile               as mobile,
+            province             as province,
+            city                 as city,
+            status               as status,
+            logo                 as logo,
+            is_vip               as isVip,
+            auth_type            as authType,
+            auth_user_id         as authUserId,
+            industry             as industry,
+            corp_logo_url        as corpLogoUrl,
+            logo_name            as logoName,
+            is_authenticated     as isAuthenticated,
+            auth_level           as authLevel,
+            create_time          as createTime,
+            update_time          as updateTime,
+            package_begin_date   as packageBeginDate,
+            package_end_date     as packageEndDate,
+            aliyun_person_group_crop_id as groupCropId,
+            tag as tag,
+            app_type as appType,
+            limit_store_count as limitStoreCount,
+            limit_device_count as limitDeviceCount
+        from enterprise where id = #{id, jdbcType=VARCHAR}
+    </select>
+    <select id="getBaseInfo" resultType="java.util.Map">
+        select id, name, logo_name, corp_logo_url, mobile, create_time from enterprise where id = #{id}
+    </select>
+
+    <insert id="insertEnterprise" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseDO"  keyProperty="id">
+        INSERT into enterprise
+        (
+            id,name,original_name,mobile,province,city,status,logo,is_vip,auth_type,
+            auth_user_id,industry,corp_logo_url,is_authenticated,auth_level,create_time,update_time,package_begin_date,package_end_date,app_type
+        ) VALUES (
+            #{id, jdbcType=VARCHAR},
+            #{name, jdbcType=VARCHAR},
+            #{originalName, jdbcType=VARCHAR},
+            #{mobile, jdbcType=VARCHAR},
+            #{province, jdbcType=VARCHAR},
+            #{city, jdbcType=VARCHAR},
+            #{status, jdbcType=INTEGER},
+            #{logo, jdbcType=VARCHAR},
+            #{isVip, jdbcType=INTEGER},
+            #{authType, jdbcType=INTEGER},
+            #{authUserId, jdbcType=VARCHAR},
+             #{industry, jdbcType=VARCHAR},
+             #{corpLogoUrl, jdbcType=VARCHAR},
+             #{isAuthenticated, jdbcType=BOOLEAN},
+             #{authLevel, jdbcType=INTEGER},
+             sysdate(),
+             sysdate(),
+             sysdate(),
+             date_add(sysdate(),interval 30 day),
+             #{appType}
+        )
+    </insert>
+
+    <update id="updateEnterpriseById" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseDO">
+        update enterprise set status = #{status, jdbcType=INTEGER},update_time = sysdate()
+         where id = #{id, jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateInfo">
+        update enterprise
+        SET
+        <trim suffixOverrides=",">
+            <if test="ep.logoName != null and ep.logoName !='' ">
+                `logo_name` = #{ep.logoName},
+            </if>
+            <if test="ep.corpLogoUrl != null and ep.corpLogoUrl !='' ">
+                `corp_logo_url` = #{ep.corpLogoUrl},
+            </if>
+            <if test="ep.name != null and ep.name !='' ">
+                `name` = #{ep.name},
+            </if>
+            <if test="ep.mobile != null and ep.mobile !='' ">
+                `mobile` = #{ep.mobile},
+            </if>
+        </trim>
+        where id = #{ep.id}
+    </update>
+    <insert id="setBanner">
+        insert into enterprise_banner
+        (enterprise_id, banner_url, jump_url, remark, create_time)
+        values
+        <foreach collection="banners" item="banner" separator=",">
+            (#{id},
+            #{banner.bannerUrl},
+            #{banner.jumpUrl},
+            #{banner.remark},
+            #{banner.createTime})
+        </foreach>
+
+    </insert>
+
+    <insert id="saveOrUpdateSettings">
+        insert into enterprise_settings
+        (enterprise_id,
+        location_sign_in,
+        force_b1,
+        in_store_commit_result,
+        offline_in_store_sign_out,
+        upload_local_img,
+        customize_grade,
+        continue_patrol,
+        overdue_task_continue,
+        auto_send_problem,
+        manual_train,
+        create_time,
+        create_user_id,
+        update_time,
+        update_user_id,
+        enable_ding_sync,
+        organization_sync,
+        position_sync,
+        customize_model,
+        photo_watermark,
+        multi_login,
+        extend_field
+        )
+        values
+        (
+            #{id},
+            #{set.locationSignIn},
+            #{set.forceB1},
+            #{set.inStoreCommitResult},
+            #{set.offlineInStoreSignOut},
+            #{set.uploadLocalImg},
+            #{set.customizeGrade},
+            #{set.continuePatrol},
+            #{set.overdueTaskContinue},
+            #{set.autoSendProblem},
+            #{set.manualTrain},
+            #{set.createTime},
+            #{set.createUserId},
+            #{set.updateTime},
+            #{set.updateUserId},
+            #{set.enableDingSync},
+            #{set.organizationSync},
+            #{set.positionSync},
+            #{set.customizeModel},
+            #{set.photoWatermark},
+            #{set.multiLogin},
+            #{set.extendField}
+        )
+        ON DUPLICATE KEY UPDATE
+        <trim suffixOverrides=",">
+            <if test="set.updateTime != null">
+                update_time=#{set.updateTime},
+            </if>
+            <if test="set.updateUserId != null and set.updateUserId != '' ">
+                update_user_id=#{set.updateUserId},
+            </if>
+            <if test="set.locationSignIn != null  ">
+                location_sign_in=#{set.locationSignIn},
+            </if>
+            <if test="set.forceB1 != null ">
+                force_b1=#{set.forceB1},
+            </if>
+            <if test="set.uploadLocalImg != null">
+                upload_local_img=#{set.uploadLocalImg},
+            </if>
+            <if test="set.customizeGrade != null">
+                customize_grade=#{set.customizeGrade},
+            </if>
+            <if test="set.continuePatrol != null">
+                continue_patrol=#{set.continuePatrol},
+            </if>
+            <if test="set.overdueTaskContinue != null">
+                overdue_task_continue=#{set.overdueTaskContinue},
+            </if>
+            <if test="set.enableDingSync != null">
+                enable_ding_sync=#{set.enableDingSync},
+            </if>
+            <if test="set.autoSendProblem != null">
+                auto_send_problem=#{set.autoSendProblem},
+            </if>
+            <if test="set.manualTrain != null">
+                manual_train=#{set.manualTrain},
+            </if>
+            <if test="set.inStoreCommitResult != null">
+                in_store_commit_result=#{set.inStoreCommitResult},
+            </if>
+            <if test="set.offlineInStoreSignOut != null">
+                offline_in_store_sign_out=#{set.offlineInStoreSignOut},
+            </if>
+            <if test="set.organizationSync != null">
+                organization_sync=#{set.organizationSync},
+            </if>
+            <if test="set.positionSync != null">
+                position_sync=#{set.positionSync},
+            </if>
+            <if test="set.customizeModel != null">
+                customize_model=#{set.customizeModel},
+            </if>
+            <if test="set.photoWatermark != null">
+                photo_watermark=#{set.photoWatermark},
+            </if>
+            <if test="set.multiLogin != null">
+                multi_login=#{set.multiLogin},
+            </if>
+            <if test="set.manageUser != null">
+                manage_user=#{set.manageUser},
+            </if>
+            <if test="set.extendField != null">
+                extend_field=#{set.extendField},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getBannerList" resultType="com.coolcollege.intelligent.model.enterprise.BannerDO">
+        select
+            enterprise_id as eid,
+            banner_url as bannerUrl,
+            jump_url as jumpUrl,
+            remark,
+            create_time as createTime
+        from enterprise_banner
+        where enterprise_id = #{id}
+    </select>
+
+
+    <select id="getEnterpriseSetting" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseSettingDO">
+        select
+            enterprise_id as enterpriseId,
+            location_sign_in as locationSignIn,
+            force_b1 as forceB1,
+            in_store_commit_result as inStoreCommitResult,
+            offline_in_store_sign_out as offlineInStoreSignOut,
+            upload_local_img as uploadLocalImg,
+            customize_grade as customizeGrade,
+            continue_patrol as continuePatrol,
+            overdue_task_continue as overdueTaskContinue,
+            auto_send_problem as autoSendProblem,
+            manual_train as manualTrain,
+            create_time as createTime,
+            create_user_id as createUserId,
+            update_time as updateTime,
+            update_user_id as updateUserId,
+            enable_ding_sync as enableDingSync,
+            photo_watermark as photoWatermark,
+            customize_model as customizeModel,
+            organization_sync as organizationSync,
+            position_sync as positionSync,
+            vcs_corp_id as vcsCorpId,
+            multi_login as multiLogin,
+            manage_user as manageUser,
+            app_home_page_pic as appHomePagePic,
+            extend_field as extendField
+       from enterprise_settings
+       where enterprise_id = #{id}
+    </select>
+
+    <select id="getEnterpriseSettingAll" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseSettingDO">
+        select
+            enterprise_id as enterpriseId,
+            location_sign_in as locationSignIn,
+            force_b1 as forceB1,
+            in_store_commit_result as inStoreCommitResult,
+            offline_in_store_sign_out as offlineInStoreSignOut,
+            upload_local_img as uploadLocalImg,
+            customize_grade as customizeGrade,
+            continue_patrol as continuePatrol,
+            overdue_task_continue as overdueTaskContinue,
+            auto_send_problem as autoSendProblem,
+            manual_train as manualTrain,
+            create_time as createTime,
+            create_user_id as createUserId,
+            update_time as updateTime,
+            update_user_id as updateUserId,
+            enable_ding_sync as enableDingSync
+       from enterprise_settings
+    </select>
+
+    <delete id="deleteBanner">
+        delete from enterprise_banner where enterprise_id = #{id}
+    </delete>
+
+    <select id="getEnterpriseByMobile" resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseLoginDTO">
+        select a.user_id as userId,
+         c.name as enterpriseName,
+         d.ding_corp_id as corpId,
+         c.id as enterpriseId,
+         c.original_name as originalName,
+         a.unionid as unionId,
+         d.db_name as dbName
+         from
+        enterprise_user a
+        join enterprise_user_mapping b on a.id=b.user_id
+        join enterprise c on b.enterprise_id=c.id
+        join enterprise_config d on c.id =d.enterprise_id
+        where a.mobile =#{mobile} and b.user_status = '1' and a.password = #{password}
+    </select>
+
+    <!--        平台库sql-->
+    <update id="updateAliyunGroupCropId">
+                update enterprise
+                set aliyun_person_group_crop_id = #{groupCropId}
+                where id=#{id}
+        </update>
+
+
+    <update id="updateEnterpriseTag">
+        update enterprise
+        set tag = #{tag}
+        where id=#{id}
+    </update>
+
+    <update id="updateEnterpriseCSM">
+        update enterprise
+        set csm = #{csm}
+        where id=#{id}
+    </update>
+
+
+    <select id="listEnterprise" resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseBossDTO">
+        select
+        a.id                   as id,
+        name                 as name,
+        original_name        as originalName,
+        mobile               as mobile,
+        province             as province,
+        city                 as city,
+        status               as status,
+        logo                 as logo,
+        is_vip               as isVip,
+        auth_type            as authType,
+        auth_user_id         as authUserId,
+        industry             as industry,
+        corp_logo_url        as corpLogoUrl,
+        logo_name            as logoName,
+        is_authenticated     as isAuthenticated,
+        auth_level           as authLevel,
+        a.create_time          as createTime,
+        a.update_time          as updateTime,
+        a.app_type          as appType,
+        package_begin_date   as packageBeginDate,
+        package_end_date     as packageEndDate,
+        b.ding_corp_id as dingCorpId,
+        b.db_name as dbName,
+        b.db_server as dbServer,
+        b.main_corp_id as mainCorpId,
+        b.app_type as appType,
+        b.current_package as currentPackageId,
+        b.cool_college_enterprise_id as coolCollegeEnterpriseId,
+        a.tag as tag,
+        a.is_leave_info as isLeaveInfo,
+        a.limit_store_count as limitStoreCount,
+        a.limit_device_count as limitDeviceCount,
+        a.store_count as storeCount
+        from enterprise a left join  enterprise_config b on a.id=b.enterprise_id
+        <where> ding_corp_id is not null
+            <if test="name !=null and name !=''">
+              and   name like  concat('%', #{name}, '%')
+            </if>
+            <if test="enterpriseId !=null and enterpriseId !=''">
+                and   a.id like  concat('%', #{enterpriseId}, '%')
+            </if>
+            <if test="tag !=null and tag !=''">
+                and   a.tag like  concat('%', #{tag}, '%')
+            </if>
+            <if test="isPersonal!=null and isPersonal">
+                and main_corp_id  is not null
+            </if>
+            <if test="isPersonal!=null and !isPersonal">
+                and main_corp_id  is null
+            </if>
+            <if test="isLeaveInfo!=null and isLeaveInfo">
+                and is_leave_info  = 1
+            </if>
+            <if test="isLeaveInfo!=null and !isLeaveInfo">
+                and is_leave_info = 0
+            </if>
+            <if test="currentPackageId !=null and currentPackageId !=''">
+                and   current_package = #{currentPackageId}
+            </if>
+            <if test="appType !=null and appType !=''">
+                and   a.app_type = #{appType}
+            </if>
+            <if test="packageBeginDateStart !=null">
+                and package_begin_date >  #{packageBeginDateStart}
+            </if>
+            <if test="packageBeginDateEnd != null">
+                <![CDATA[and package_begin_date <=  #{packageBeginDateEnd}]]>
+            </if>
+        </where>
+        order by a.create_time desc, a.id desc
+    </select>
+    <select id="getSystemSetting" resultType="java.util.Map">
+        select ${field} from ${model} where enterprise_id = #{eid}
+    </select>
+    <select id="BusinessManagement" resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseDTO">
+        select
+        id as id,
+        name as name,
+        logo_name as logoName,
+        corp_logo_url as corpLogoUrl,
+        mobile as mobile,
+        app_type as appType
+        from enterprise
+        where id = #{eId}
+    </select>
+
+    <select id="listEnterpriseAll" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseDO">
+        select
+             id                   as id,
+            name                 as name,
+            original_name        as originalName,
+            mobile               as mobile
+         from enterprise
+    </select>
+
+    <select id="getEnterpriseByIds" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseDO">
+        select
+            id                   as id,
+            name                 as name,
+            original_name        as originalName,
+            mobile               as mobile,
+            corp_logo_url        as corpLogoUrl,
+            create_time as createTime,
+            app_type as appType
+        from
+            enterprise
+        where
+            status = '1' and id in <foreach collection="enterpriseIds" open="(" close=")" separator="," item="id">#{id}</foreach>
+    </select>
+
+    <update id="truncateBusinessData">
+        truncate table achievement_detail_${eid};
+        truncate table achievement_formwork_${eid};
+        truncate table achievement_formwork_mapping_${eid};
+        truncate table achievement_target_${eid};
+        truncate table achievement_target_detail_${eid};
+        truncate table achievement_type_${eid};
+        truncate table patrol_store_record_${eid};
+        truncate table tb_data_def_table_column_${eid};
+        truncate table tb_data_sta_table_column_${eid};
+        truncate table tb_data_table_${eid};
+        truncate table tb_display_history_${eid};
+        truncate table tb_display_history_column_${eid};
+        truncate table tb_display_table_data_column_${eid};
+        truncate table tb_display_table_data_content_${eid};
+        truncate table tb_display_table_record_${eid};
+        truncate table tb_patrol_store_picture_${eid};
+        truncate table tb_patrol_store_record_${eid};
+        truncate table tb_patrol_store_record_info_${eid};
+        truncate table tb_patrolstore_history_${eid};
+        truncate table unify_data_mapping_${eid};
+        truncate table unify_person_mapping_${eid};
+        truncate table unify_store_mapping_${eid};
+        truncate table unify_task_parent_${eid};
+        truncate table unify_task_parent_cc_user_${eid};
+        truncate table unify_task_store_${eid};
+        truncate table unify_task_sub_${eid};
+        truncate table unify_task_parent_user_${eid};
+        truncate table tb_question_record_${eid};
+        truncate table tb_question_history_${eid};
+        truncate table tb_question_record_expand_${eid};
+        update tb_meta_table_${eid} set locked = 0;
+    </update>
+
+    <update id="updateEnterpriseIsLeaveInfo">
+        update enterprise
+        set is_leave_info = 1
+        where id=#{id}
+    </update>
+    
+    <update id="updateLimitStoreCount">
+        update enterprise set limit_store_count = #{limitStoreCount} where id = #{enterpriseId}
+    </update>
+    
+    <update id="updateDeviceCount">
+        update enterprise set limit_device_count = #{limitDeviceCount} where id = #{enterpriseId}
+    </update>
+
+    <update id="updateStoreCount">
+        update enterprise set store_count = #{storeCount} where id = #{enterpriseId}
+    </update>
+    
+    <select id="getQueryEnterpriseIds" resultType="java.lang.String">
+        select
+            id as id
+        from
+            enterprise
+        where
+            status = '1'
+        <if test="enterpriseId !=null and enterpriseId !=''">
+            and id like concat('%', #{enterpriseId}, '%')
+        </if>
+        <if test="enterpriseName !=null and enterpriseName !=''">
+            and name like concat('%', #{enterpriseName}, '%')
+        </if>
+        <if test="tag !=null and tag !=''">
+            and tag like concat('%', #{tag}, '%')
+        </if>
+    </select>
+</mapper>

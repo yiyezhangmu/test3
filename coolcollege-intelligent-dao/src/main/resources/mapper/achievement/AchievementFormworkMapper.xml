@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.achievement.AchievementFormWorkMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.achievement.entity.AchievementFormworkDO"
+               autoMapping="true">
+    </resultMap>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="entity.id">
+        insert ignore into achievement_formwork_${eid}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="entity.createId != null">
+                create_id,
+            </if>
+            <if test="entity.createName != null">
+                create_name,
+            </if>
+            <if test="entity.updateId != null">
+                update_id,
+            </if>
+            <if test="entity.updateName != null">
+                update_name,
+            </if>
+            <if test="entity.name != null">
+                name,
+            </if>
+            <if test="entity.editTime != null">
+                edit_time,
+            </if>
+            <if test="entity.type != null">
+                type,
+            </if>
+            <if test="entity.status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="entity.createId != null">
+                #{entity.createId,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.createName != null">
+                #{entity.createName,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.updateId != null">
+                #{entity.updateId,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.updateName != null">
+                #{entity.updateName,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.name != null">
+                #{entity.name,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.editTime != null">
+                #{entity.editTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entity.type != null">
+                #{entity.type},
+            </if>
+            <if test="entity.status != null">
+                #{entity.status},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="update">
+        update achievement_formwork_${eid}
+        <trim prefix="set" suffixOverrides=",">
+            <if test="entity.name != null">
+                name=#{entity.name,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.updateName != null">
+                update_name=#{entity.updateName,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.updateId != null">
+                update_id=#{entity.updateId,jdbcType=VARCHAR},
+            </if>
+            <if test="entity.status != null">
+                status=#{entity.status},
+            </if>
+        </trim>
+        where id = #{entity.id}
+    </update>
+
+    <select id="listAll" resultMap="BaseResultMap">
+        SELECT id, name, update_name, edit_time, type ,status
+        from achievement_formwork_${eid}
+        <where>
+            <if test="statusList!=null and statusList.size>0">
+                and status in
+                <foreach collection="statusList" close=")" open="(" separator="," item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY id desc
+    </select>
+
+    <select id="get" resultMap="BaseResultMap">
+        SELECT id, name, update_name, edit_time, type ,status
+        from achievement_formwork_${eid}
+        where id = #{id}
+    </select>
+
+    <select id="listFormworkById" resultMap="BaseResultMap">
+        SELECT id, name, update_name, edit_time, type ,status
+        from achievement_formwork_${eid}
+        <where>
+        <if test="idList!=null and idList.size>0">
+            <foreach collection="idList" close=")" open="id in(" separator="," item="item">
+                #{item}
+            </foreach>
+        </if>
+        </where>
+        ORDER BY id desc
+    </select>
+    <select id="countByName" resultType="int">
+        SELECT count(1)
+        from achievement_formwork_${eid}
+        where name = #{name}
+        and status != -1
+        <if test="id != null">
+            and id != #{id}
+        </if>
+    </select>
+    <select id="chooseCategory"
+            resultType="com.coolcollege.intelligent.model.achievement.dto.ChooseCategoryResponse">
+        select id ,name
+        from achievement_formwork_${enterpriseId}
+    </select>
+
+
+</mapper>

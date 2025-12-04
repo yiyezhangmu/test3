@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.inspection.AiInspectionTimePeriodMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.inspection.entity.AiInspectionTimePeriodDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="inspection_id" jdbcType="BIGINT" property="inspectionId" />
+    <result column="begin_time" jdbcType="VARCHAR" property="beginTime" />
+    <result column="end_time" jdbcType="VARCHAR" property="endTime" />
+    <result column="period" jdbcType="INTEGER" property="period" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, inspection_id, begin_time, end_time, period, create_time, create_user_id, update_time, 
+    update_user_id, deleted
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into ai_inspection_time_period_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.inspectionId != null">
+        inspection_id,
+      </if>
+      <if test="record.beginTime != null">
+        begin_time,
+      </if>
+      <if test="record.endTime != null">
+        end_time,
+      </if>
+      <if test="record.period != null">
+        period,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.inspectionId != null">
+        #{record.inspectionId},
+      </if>
+      <if test="record.beginTime != null">
+        #{record.beginTime},
+      </if>
+      <if test="record.endTime != null">
+        #{record.endTime},
+      </if>
+      <if test="record.period != null">
+        #{record.period},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update ai_inspection_time_period_${enterpriseId}
+    <set>
+      <if test="record.inspectionId != null">
+        inspection_id = #{record.inspectionId},
+      </if>
+      <if test="record.beginTime != null">
+        begin_time = #{record.beginTime},
+      </if>
+      <if test="record.endTime != null">
+        end_time = #{record.endTime},
+      </if>
+      <if test="record.period != null">
+        period = #{record.period},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+    <delete id="deleteByInspectionId">
+      delete from ai_inspection_time_period_${enterpriseId}
+      where inspection_id = #{inspectionId}
+    </delete>
+  <update id="removeByInspectionId">
+    update ai_inspection_time_period_${enterpriseId} set deleted = 1
+    where inspection_id = #{inspectionId}
+  </update>
+    <select id="selectByInspectionIdList"
+            resultType="com.coolcollege.intelligent.model.inspection.entity.AiInspectionTimePeriodDO">
+      select
+      <include refid="Base_Column_List" />
+      from ai_inspection_time_period_${enterpriseId}
+      where inspection_id in
+      <foreach item="inspectionId" collection="inspectionIdList" separator="," open="(" close=")" index="">
+        #{inspectionId}
+      </foreach>
+      and deleted = 0
+    </select>
+
+  <select id="findMatchingStrategiesWithPeriods" resultMap="BaseResultMap">
+    SELECT
+     p.*
+
+    FROM ai_inspection_strategies_${enterpriseId} s
+           INNER JOIN ai_inspection_time_period_${enterpriseId} p
+                      ON s.id = p.inspection_id AND p.deleted = 0
+    WHERE s.deleted = 0
+      AND s.status = 1
+      AND s.run_date LIKE concat('%', #{dayOfWeek}, '%')
+      AND #{currentTimeHourMin} BETWEEN p.begin_time AND p.end_time
+      GROUP BY p.inspection_id
+  </select>
+    <select id="getMatchingStrategyWithPeriod" resultMap="BaseResultMap">
+        SELECT
+        p.*
+        from ai_inspection_time_period_${enterpriseId} p
+        WHERE p.deleted = 0
+        AND #{currentTimeHourMin} BETWEEN p.begin_time AND p.end_time
+        and p.inspection_id = #{inspectionId}
+        limit 1
+    </select>
+</mapper>

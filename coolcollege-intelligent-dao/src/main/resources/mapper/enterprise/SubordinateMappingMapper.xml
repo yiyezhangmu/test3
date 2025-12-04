@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.SubordinateMappingMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.enterprise.SubordinateMappingDO" id="BaseMap">
+        <result property="id" column="id"/>
+        <result property="regionId" column="region_id"/>
+        <result property="personalId" column="personal_id"/>
+        <result property="type" column="type"/>
+        <result property="userId" column="user_id"/>
+        <result property="createId" column="create_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateId" column="update_id"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="userRange" column="user_range"/>
+        <result property="source" column="source"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, user_id, region_id, personal_id, type, create_id, create_time,update_id,update_time, user_range, source
+    </sql>
+
+    <select id="selectById" resultMap="BaseMap" >
+        select
+        <include refid="Base_Column_List"></include>
+        from subordinate_mapping_${enterpriseId}
+        where id = #{id}
+    </select>
+
+    <delete id="deletedByIds">
+        delete  from subordinate_mapping_${enterpriseId}  where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deletedById">
+        delete  from subordinate_mapping_${enterpriseId}  where id = #{id}
+    </delete>
+    <delete id="deletedByUserIds">
+        delete from subordinate_mapping_${enterpriseId}
+        where
+        user_id in
+        <foreach collection="userIds" open="(" close=")" separator="," item="userId">
+            #{userId}
+        </foreach>
+        and type = 0
+    </delete>
+
+    <update id="updateById" parameterType="com.coolcollege.intelligent.model.enterprise.UserRegionMappingDO">
+        update subordinate_mapping_${enterpriseId}
+        SET
+        <trim suffixOverrides=",">
+            <if test="entity.regionId != null and entity.regionId !='' ">
+                `region_id` = #{entity.regionId},
+            </if>
+            <if test="entity.userId != null and entity.userId !='' ">
+                `user_id` = #{entity.userId},
+            </if>
+            <if test="entity.personalId != null and entity.personalId !='' ">
+                `personal_id` = #{entity.personalId},
+            </if>
+            <if test="entity.type != null and entity.type !='' ">
+                `type` = #{entity.type},
+            </if>
+            <if test="entity.updateId != null and entity.updateId !='' ">
+                `update_id` = #{entity.updateId},
+            </if>
+            <if test="entity.updateTime != null and entity.updateTime !='' ">
+                `update_time` = now(),
+            </if>
+        </trim>
+        where id = #{entity.id}
+    </update>
+
+    <insert id="addSubordinateMapping">
+        INSERT into subordinate_mapping_${enterpriseId}
+        (
+        id,user_id,region_id,personal_id,type,create_id,create_time,update_id,update_time
+        ) VALUES (
+        #{id, jdbcType=INTEGER},
+        #{userId, jdbcType=VARCHAR},
+        #{regionId, jdbcType=VARCHAR},
+        #{personalId, jdbcType=VARCHAR},
+        #{type, jdbcType=INTEGER},
+        #{createId, jdbcType=VARCHAR},
+        now(),
+        #{updateId, jdbcType=VARCHAR},
+        now()
+        )
+    </insert>
+    <insert id="batchInsertSubordinateMapping">
+        insert into subordinate_mapping_${enterpriseId}
+        (
+        user_id,
+        region_id,
+        personal_id,
+        `type`,
+        create_id,
+        create_time,
+        update_id,
+        update_time,
+        user_range,
+        source
+        )
+        values
+        <foreach collection="subordinateMappingDOS" item="entity" separator=",">
+            (
+            #{entity.userId},
+            #{entity.regionId},
+            #{entity.personalId},
+            #{entity.type},
+            #{entity.createId},
+            now(),
+            #{entity.updateId},
+            now(),
+            #{entity.userRange},
+            #{entity.source}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectByUserIdAndType" resultMap="BaseMap" >
+        select
+        <include refid="Base_Column_List"></include>
+        from subordinate_mapping_${enterpriseId}
+        where user_id = #{userId} and type = 1
+    </select>
+
+    <update id="updateByUserIdAndType" parameterType="com.coolcollege.intelligent.model.enterprise.UserRegionMappingDO">
+         update subordinate_mapping_${enterpriseId}
+         set `personal_id` = #{personalId} , update_id = #{currentUserId}, update_time = now()
+         where user_id = #{userId} and type = 1
+    </update>
+
+    <select id="selectByUserIds" resultMap="BaseMap">
+        select
+        <include refid="Base_Column_List"/>
+        from subordinate_mapping_${enterpriseId}
+        <if test="userIds !=null and userIds.size >0">
+            where user_id in
+            <foreach collection="userIds" open="(" close=")" separator="," item="userId">
+                #{userId}
+            </foreach>
+        </if>
+        and type = 0
+    </select>
+
+    <delete id="deletedByUserIdsAndType">
+        delete from subordinate_mapping_${enterpriseId}
+        where
+        user_id in
+        <foreach collection="userIds" open="(" close=")" separator="," item="userId">
+            #{userId}
+        </foreach>
+        and type = 1
+    </delete>
+
+
+    <select id="selectByUserIdsAndType" resultMap="BaseMap">
+        select
+        <include refid="Base_Column_List"/>
+        from subordinate_mapping_${enterpriseId}
+        <if test="userIds !=null and userIds.size >0">
+            where user_id in
+            <foreach collection="userIds" open="(" close=")" separator="," item="userId">
+                #{userId}
+            </foreach>
+        </if>
+        and type = 1
+    </select>
+
+</mapper>

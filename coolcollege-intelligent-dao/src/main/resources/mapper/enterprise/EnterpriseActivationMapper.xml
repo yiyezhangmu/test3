@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseActivationMapper">
+  <sql id="Base_Column_List">
+    id, enterprise_id, enterprise_name, total_task_num, total_store_num, total_store_open_num,
+    total_user_num, no_role_user_num, login_user_num, total_store_work_num, total_store_work_store_num,
+    store_work_finish_num, total_patrol_num, total_patrol_store_num, patrol_store_finish_num,
+    total_question_num, total_question_store_num, question_finish_num, total_display_num,
+    total_display_store_num, display_finish_num, query_date, type, create_time, update_time
+  </sql>
+
+  <select id="getEnterpriseActivationPage" resultType="com.coolcollege.intelligent.model.enterprise.vo.EnterpriseActivationVO">
+      select
+        a.id as enterpriseId,
+        a.name as enterpriseName,
+        a.csm as csm,
+        b.total_task_num as totalTaskNum,
+        b.total_store_num as totalStoreNum,
+        b.total_store_open_num as totalStoreOpenNum,
+        b.total_user_num as totalUserNum,
+        b.no_role_user_num as noRoleUserNum,
+        b.login_user_num as loginUserNum,
+        b.total_store_work_num as totalStoreWorkNum,
+        b.total_store_work_store_num as totalStoreWorkStoreNum,
+        b.store_work_finish_num as storeWorkFinishNum,
+        b.total_patrol_num as totalPatrolNum,
+        b.total_patrol_store_num as totalPatrolStoreNum,
+        b.patrol_store_finish_num as patrolStoreFinishNum,
+        b.total_question_num as totalQuestionNum,
+        b.total_question_store_num as totalQuestionStoreNum,
+        b.question_finish_num as questionFinishNum,
+        b.total_display_num as totalDisplayNum,
+        b.total_display_store_num as totalDisplayStoreNum,
+        b.display_finish_num as displayFinishNum,
+        b.query_date as queryDate,
+        b.type
+      from
+        enterprise a left join enterprise_activation b on a.id = b.enterprise_id
+      <where>
+        <if test="request.enterpriseId != null">
+          and a.id = #{request.enterpriseId}
+        </if>
+        <if test="request.tag != null">
+          and a.tag like concat('%',#{request.tag},'%')
+        </if>
+        <if test="request.enterpriseName != null">
+          and a.name like concat('%',#{request.enterpriseName},'%')
+        </if>
+        <if test="request.csm != null">
+          and a.csm like concat('%',#{request.csm},'%')
+        </if>
+        <if test="request.type != null">
+          and b.type = #{request.type}
+        </if>
+        <if test="request.queryDate != null">
+          and b.query_date = #{request.queryDate}
+        </if>
+      </where>
+      order by b.login_user_num desc
+  </select>
+
+</mapper>

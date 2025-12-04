@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.aianalysis.AiAnalysisPictureMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.aianalysis.AiAnalysisPictureDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="rule_id" jdbcType="BIGINT" property="ruleId"/>
+        <result column="store_id" jdbcType="VARCHAR" property="storeId"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="capture_time" jdbcType="TIME" property="captureTime"/>
+        <result column="generate_date" jdbcType="DATE" property="generateDate"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="device_id" jdbcType="TIMESTAMP" property="deviceId"/>
+        <result column="channel_no" jdbcType="TIMESTAMP" property="channelNo"/>
+        <result column="store_scene_id" jdbcType="TIMESTAMP" property="storeSceneId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, rule_id, store_id, url, capture_time, generate_date, create_time, device_id, channel_no, store_scene_id
+    </sql>
+    <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into ai_analysis_picture_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.ruleId != null">
+                rule_id,
+            </if>
+            <if test="record.storeId != null">
+                store_id,
+            </if>
+            <if test="record.url != null">
+                url,
+            </if>
+            <if test="record.captureTime != null">
+                capture_time,
+            </if>
+            <if test="record.generateDate != null">
+                generate_date,
+            </if>
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.deviceId != null">
+                device_id,
+            </if>
+            <if test="record.channelNo != null">
+                channel_no,
+            </if>
+            <if test="record.storeSceneId != null">
+                store_scene_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.ruleId != null">
+                #{record.ruleId},
+            </if>
+            <if test="record.storeId != null">
+                #{record.storeId},
+            </if>
+            <if test="record.url != null">
+                #{record.url},
+            </if>
+            <if test="record.captureTime != null">
+                #{record.captureTime},
+            </if>
+            <if test="record.generateDate != null">
+                #{record.generateDate},
+            </if>
+            <if test="record.createTime != null">
+                #{record.createTime},
+            </if>
+            <if test="record.deviceId != null">
+                #{record.deviceId},
+            </if>
+            <if test="record.channelNo != null">
+                #{record.channelNo},
+            </if>
+            <if test="record.storeSceneId != null">
+                #{record.storeSceneId},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update ai_analysis_picture_${enterpriseId}
+        <set>
+            <if test="record.ruleId != null">
+                rule_id = #{record.ruleId},
+            </if>
+            <if test="record.storeId != null">
+                store_id = #{record.storeId},
+            </if>
+            <if test="record.url != null">
+                url = #{record.url},
+            </if>
+            <if test="record.captureTime != null">
+                capture_time = #{record.captureTime},
+            </if>
+            <if test="record.generateDate != null">
+                generate_date = #{record.generateDate},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.deviceId != null">
+                device_id = #{record.deviceId},
+            </if>
+            <if test="record.channelNo != null">
+                channel_no = #{record.channelNo},
+            </if>
+            <if test="record.storeSceneId != null">
+                store_scene_id = #{record.storeSceneId},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="list.id">
+        INSERT INTO ai_analysis_picture_${enterpriseId}
+        (
+            rule_id,
+            store_id,
+            url,
+            capture_time,
+            generate_date,
+            device_id,
+            channel_no,
+            store_scene_id
+         ) VALUES
+        <foreach collection="list" item="record" separator=",">
+            (#{record.ruleId}, #{record.storeId}, #{record.url}, #{record.captureTime},
+             #{record.generateDate}, #{record.deviceId}, #{record.channelNo}, #{record.storeSceneId})
+        </foreach>
+    </insert>
+
+    <select id="getByRuleIdAndDate" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ai_analysis_picture_${enterpriseId}
+        WHERE rule_id = #{ruleId} AND generate_date = #{date}
+    </select>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ai_analysis_picture_${enterpriseId}
+        WHERE rule_id = #{ruleId} AND generate_date = #{date} AND store_id = #{storeId}
+    </select>
+
+    <delete id="deleteByRuleIds">
+        DELETE FROM ai_analysis_picture_${enterpriseId}
+        WHERE rule_id IN
+        <foreach item="ruleId" collection="ruleIds" separator="," open="(" close=")">
+            #{ruleId}
+        </foreach>
+        AND generate_date = #{date}
+    </delete>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.setting.EnterpriseNoticeSettingMapper">
+    <resultMap id="baseMap" type="com.coolcollege.intelligent.model.setting.EnterpriseNoticeSettingDO">
+        <result column="id" property="id"/>
+        <result column="enterprise_id" property="enterpriseId"/>
+        <result column="person_group_id" property="personGroupId"/>
+        <result column="role_id_str" property="roleIdStr"/>
+    </resultMap>
+
+    <insert id="batchInsertEnterpriseNoticeSetting">
+        insert into enterprise_notice_setting (enterprise_id,person_group_id,role_id_str) values
+        <foreach collection="enterpriseNoticeSettingList" item="enterpriseNoticeSetting" separator=",">
+            (
+            #{enterpriseNoticeSetting.enterpriseId},
+            #{enterpriseNoticeSetting.personGroupId},
+            #{enterpriseNoticeSetting.roleIdStr}
+            )
+        </foreach>
+    </insert>
+    <select id="selectEnterpriseNoticeSetting" resultMap="baseMap">
+        select * from enterprise_notice_setting where  enterprise_id=#{eid}
+    </select>
+    <delete id="deleteEnterpriseNoticeSetting">
+        delete from enterprise_notice_setting where  enterprise_id=#{eid}
+    </delete>
+</mapper>

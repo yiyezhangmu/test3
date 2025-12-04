@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseUserDepartmentMapper">
+
+    <resultMap id="userDeptRole" type="com.coolcollege.intelligent.model.enterprise.dto.UserDeptRoleDTO">
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="is_leader_in_depts" property="isLeaderInDept" jdbcType="VARCHAR"/>
+        <collection property="deptList" ofType="com.coolcollege.intelligent.model.enterprise.DeptIdDTO" javaType="java.util.ArrayList">
+            <result column="deptId" property="id" jdbcType="BIGINT"/>
+        </collection>
+        <collection property="roles" ofType="com.coolcollege.intelligent.model.system.SysRoleDO">
+            <id column="roleId" property="id" jdbcType="BIGINT"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="manualDeptUser" type="com.coolcollege.intelligent.model.enterprise.dto.ManualDeptUserDTO">
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="name" property="userName" jdbcType="VARCHAR"/>
+        <result column="deptId" property="deptId"/>
+        <result column="pid" property="pid"/>
+        <result column="is_leader_in_depts" property="isLeaderInDept" jdbcType="VARCHAR"/>
+        <collection property="roles" ofType="com.coolcollege.intelligent.model.system.SysRoleDO">
+            <id column="roleId" property="id" jdbcType="BIGINT"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="userDept" type="com.coolcollege.intelligent.model.enterprise.dto.UserDeptDTO" >
+        <result column="jobnumber" property="jobnumber" jdbcType="VARCHAR"/>
+        <result column="user_status" property="userStatus"/>
+        <result column="third_oa_unique_flag" property="thirdOaUniqueFlag" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="unionid" property="unionid" jdbcType="VARCHAR"/>
+        <collection property="deptList" ofType="com.coolcollege.intelligent.model.department.dto.DeptForUserDTO">
+            <id column="id" property="deptId" jdbcType="BIGINT"/>
+            <result column="deptName" property="deptName" />
+        </collection>
+    </resultMap>
+
+    <insert id="save" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDepartmentDO">
+        insert into enterprise_user_department_${eid}
+        (
+            `user_id`,
+            `department_id`,
+            `create_time`,
+            `is_has_auth`
+        )
+        values
+        (
+            #{entity.userId},
+            #{entity.departmentId},
+            #{entity.createTime},
+            #{entity.isHasAuth}
+        )
+    </insert>
+
+    <insert id="batchInsert">
+        insert into enterprise_user_department_${eid}
+        (user_id, department_id, create_time, is_has_auth)
+        values
+        <foreach collection="deptUsers" item="deptUser" separator=",">
+            (#{deptUser.userId}, #{deptUser.departmentId}, now(), #{deptUser.isHasAuth})
+        </foreach>
+    </insert>
+    <delete id="deleteMapping">
+        delete from enterprise_user_department_${eid} where is_has_auth = 0
+        <if test="userIds != null and userIds.size() > 0 ">
+            and user_id in
+            <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                #{userId}
+            </foreach>
+        </if>
+    </delete>
+
+    <select id="selectEnterpriseUserDepartmentByUserList" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDepartmentDO">
+        select * from enterprise_user_department_${eid}
+        <where>
+            is_has_auth = 0
+            <if test="list !=null and list.size >0">
+                and user_id in
+                <foreach collection="list" open="(" close=")" separator="," item="userId">
+                   #{userId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectEnterpriseUserDepartmentByDeptList" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDepartmentDO">
+        select * from enterprise_user_department_${eid}
+        <where>
+            is_has_auth = 0
+            <if test="list !=null and list.size >0">
+                and department_id in
+                <foreach collection="list" open="(" close=")" separator="," item="departmentId">
+                    department_id=#{departmentId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getDeptParentAndIdForUser" resultMap="manualDeptUser">
+        SELECT
+            eu.user_id,
+            eu.name,
+            eu.is_leader_in_depts,
+            sd.id as deptId,
+            sd.parent_id as pid,
+            sr.role_id as roleId
+        from
+        enterprise_user_${eid} eu
+        join enterprise_user_department_${eid} eud USING(user_id)
+        join sys_department_${eid} sd on eud.department_id = sd.id
+        join enterprise_user_role_${eid} sr using (user_id)
+        where
+        eu.active = true and eud.is_has_auth = 0
+        <if test="userIds != null and userIds.size() > 0">
+            <foreach collection="userIds" item="userId" open=" and eu.user_id in (" separator="," close=")">
+                #{userId}
+            </foreach>
+        </if>
+        <if test="deptIds != null and deptIds.size() > 0">
+            <foreach collection="deptIds" item="deptId" open=" and sd.id in (" separator="," close=")">
+                #{deptId}
+            </foreach>
+        </if>
+    </select>
+    <select id="getUserDeptAndRole" resultMap="userDeptRole">
+        SELECT
+            eu.user_id,
+            eu.name,
+            eu.is_leader_in_depts,
+            eud.department_id deptId,
+            eur.role_id roleId
+        from enterprise_user_${eid} eu
+        left join enterprise_user_department_${eid} eud on eu.user_id = eud.user_id and eud.is_has_auth = 0
+        left join enterprise_user_role_${eid} eur USING(user_id)
+        where
+        and eu.active = true
+        <if test="userIds != null and userIds.size() > 0">
+            <foreach collection="userIds" item="userId" open=" and eu.user_id in (" separator="," close=")">
+                #{userId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getUserDeptByUserId" resultMap="userDept">
+        SELECT
+            eu.user_id,
+            eu.`name`,
+            IFNULL(eu.face_url, eu.avatar) avatar,
+            sd.id,
+            sd.`name` deptName,
+            eu.mobile,
+            eu.email,
+            eu.unionid,
+            eu.jobnumber,
+            eu.user_status,
+            eu.third_oa_unique_flag
+        from enterprise_user_${eid} eu
+        left join enterprise_user_department_${eid} eud on eu.user_id = eud.user_id and eud.is_has_auth = 0
+        left join sys_department_${eid} sd
+        on eud.department_id = sd.id
+        where eu.user_id = #{userId}
+    </select>
+
+    <delete id="deleteByIdList">
+        delete from enterprise_user_department_${eid} where
+        <if test="list != null and list.size() > 0 ">
+            id in
+            <foreach collection="list" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+    </delete>
+
+    <select id="getIdsByUserId" resultType="java.lang.Integer">
+        select id from enterprise_user_department_${eid} where user_id = #{userId} and is_has_auth = 0
+    </select>
+
+
+    <select id="getIdsByUserIds" resultType="java.lang.Integer">
+        select id from enterprise_user_department_${eid} where is_has_auth = 0 and user_id in
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </select>
+    <select id="selectUserDeptByUserId"
+            resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDepartmentDO">
+        select
+            id,
+            user_id as userId,
+            department_id as departmentId,
+            create_time as createTime,
+            update_time as updateTime
+        from enterprise_user_department_${eid} where user_id = #{userId} and is_has_auth = 0
+    </select>
+
+    <select id="getUserDepartments" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDepartmentDO">
+        select
+        eud.id,
+        eud.department_id as departmentId,
+        eud.user_id as userId
+        from enterprise_user_${eid} eu
+        left join enterprise_user_department_${eid} eud on eu.user_id = eud.user_id and eud.is_has_auth = 0
+        where eud.department_id in
+        <foreach collection="departmentIds" item="deptId" separator="," open="(" close=")">
+            #{deptId}
+        </foreach>
+        and eu.active=true
+        and eu.user_status = '1'
+    </select>
+    <select id="getUserIdsByDeptId" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDepartmentDO">
+        select
+            id,
+            user_id as userId,
+            department_id as departmentId,
+            create_time as createTime,
+            update_time as updateTime
+        from enterprise_user_department_${eid} where department_id = #{deptId} and is_has_auth = 0
+    </select>
+    <select id="selectUserDeptAuthByUserId"
+            resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDepartmentDO">
+        select
+            id,
+            user_id as userId,
+            department_id as departmentId,
+            create_time as createTime,
+            update_time as updateTime
+        from enterprise_user_department_${eid} where user_id = #{userId} and is_has_auth = 1
+    </select>
+    <select id="selectDeptIdByUserIds" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDepartmentDO">
+        select user_id as userId, department_id as departmentId from enterprise_user_department_${eid}
+        <where>
+            is_has_auth = 0
+            <if test="userIds !=null and userIds.size >0">
+                and user_id in
+                <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                    #{userId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="selectDeptAuthByUserIds"
+            resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserDepartmentDO">
+        select user_id as userId, department_id as departmentId from enterprise_user_department_${eid}
+        <where>
+            is_has_auth = 1
+            <if test="userIds !=null and userIds.size >0">
+                and user_id in
+                <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                    #{userId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <delete id="deleteUserDepartmentAuth">
+        delete from enterprise_user_department_${eid} where is_has_auth = 1
+        <if test="userIds != null and userIds.size() > 0 ">
+            and user_id in
+            <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                #{userId}
+            </foreach>
+        </if>
+    </delete>
+</mapper>

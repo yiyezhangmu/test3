@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.qyy.QyyPerformanceReportMapper">
+
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.qyy.josiny.QyyPerformanceReportDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="third_dept_id" jdbcType="VARCHAR" property="thirdDeptId"/>
+        <result column="store_id" jdbcType="VARCHAR" property="storeId"/>
+        <result column="store_name" jdbcType="VARCHAR" property="storeName"/>
+        <result column="region_id" jdbcType="BIGINT" property="regionId"/>
+        <result column="region_path" jdbcType="VARCHAR" property="regionPath"/>
+        <result column="time_type" jdbcType="VARCHAR" property="timeType"/>
+        <result column="time_value" jdbcType="VARCHAR" property="timeValue"/>
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName"/>
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId"/>
+        <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName"/>
+        <result column="create_time" jdbcType="DATE" property="createTime"/>
+        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+        <result column="push_type" jdbcType="VARCHAR" property="pushType"/>
+        <result column="gross_sales" jdbcType="DECIMAL" property="grossSales"/>
+        <result column="gross_sales_yoy" jdbcType="DECIMAL" property="grossSalesYoy"/>
+        <result column="gross_sales_rate" jdbcType="DECIMAL" property="grossSalesRate"/>
+        <result column="finish_rate" jdbcType="DECIMAL" property="finishRate"/>
+        <result column="finish_rate_yoy" jdbcType="DECIMAL" property="finishRateYoy"/>
+        <result column="output" jdbcType="DECIMAL" property="output"/>
+        <result column="output_yoy" jdbcType="DECIMAL" property="outputYoy"/>
+        <result column="output_rate" jdbcType="DECIMAL" property="outputRate"/>
+        <result column="breach" jdbcType="DECIMAL" property="breach"/>
+        <result column="sales_volume" jdbcType="DECIMAL" property="salesVolume"/>
+        <result column="sales_volume_rate" jdbcType="DECIMAL" property="salesVolumeRate"/>
+        <result column="per_customer" jdbcType="DECIMAL" property="perCustomer"/>
+        <result column="per_customer_rate" jdbcType="DECIMAL" property="perCustomerRate"/>
+        <result column="achieve_yoy" jdbcType="DECIMAL" property="achieveYoy"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        third_dept_id,
+        store_id,
+        store_name,
+        region_id,
+        region_path,
+        time_type,
+        time_value,
+        create_user_id,
+        create_user_name,
+        update_user_id,
+        update_user_name,
+        create_time,
+        update_time,
+        push_type,
+        gross_sales,
+        gross_sales_yoy,
+        gross_sales_rate,
+        finish_rate,
+        finish_rate_yoy,
+        output,
+        output_yoy,
+        output_rate,
+        breach,
+        sales_volume,
+        sales_volume_rate,
+        per_customer,
+        per_customer_rate,
+        achieve_yoy
+    </sql>
+
+    <insert id="insert">
+        <foreach collection="qyyPerformanceReportDOArrayList" separator=";" item="record">
+            insert into qyy_performance_report_${enterpriseId}
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="record.thirdDeptId != null">
+                    third_dept_id,
+                </if>
+                <if test="record.storeId != null">
+                    store_id,
+                </if>
+                <if test="record.storeName != null">
+                    store_name,
+                </if>
+                <if test="record.regionId != null">
+                    region_id,
+                </if>
+                <if test="record.regionPath != null">
+                    region_path,
+                </if>
+                <if test="record.timeType != null">
+                    time_type,
+                </if>
+                <if test="record.timeValue != null">
+                    time_value,
+                </if>
+                <if test="record.createUserId != null">
+                    create_user_id,
+                </if>
+                <if test="record.createUserName != null">
+                    create_user_name,
+                </if>
+                <if test="record.updateUserId != null">
+                    update_user_id,
+                </if>
+                <if test="record.updateUserName != null">
+                    update_user_name,
+                </if>
+                <if test="record.pushType != null">
+                    push_type,
+                </if>
+                <if test="record.grossSales != null">
+                    gross_sales,
+                </if>
+                <if test="record.grossSalesYoy != null">
+                    gross_sales_yoy,
+                </if>
+                <if test="record.grossSalesRate != null">
+                    gross_sales_rate,
+                </if>
+                <if test="record.finishRate != null">
+                    finish_rate,
+                </if>
+                <if test="record.finishRateYoy != null">
+                    finish_rate_yoy,
+                </if>
+                <if test="record.output != null">
+                    output,
+                </if>
+                <if test="record.outputYoy != null">
+                    output_yoy,
+                </if>
+                <if test="record.outputRate != null">
+                    output_rate,
+                </if>
+                <if test="record.breach != null">
+                    breach,
+                </if>
+                <if test="record.salesVolume != null">
+                    sales_volume,
+                </if>
+                <if test="record.salesVolumeRate != null">
+                    sales_volume_rate,
+                </if>
+                <if test="record.perCustomer != null">
+                    per_customer,
+                </if>
+                <if test="record.perCustomerRate != null">
+                    per_customer_rate,
+                </if>
+                <if test="record.achieveYoy != null">
+                    achieve_yoy,
+                </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="record.thirdDeptId != null">
+                    #{record.thirdDeptId},
+                </if>
+                <if test="record.storeId != null">
+                    #{record.storeId},
+                </if>
+                <if test="record.storeName != null">
+                    #{record.storeName},
+                </if>
+                <if test="record.regionId != null">
+                    #{record.regionId},
+                </if>
+                <if test="record.regionPath != null">
+                    #{record.regionPath},
+                </if>
+                <if test="record.timeType != null">
+                    #{record.timeType},
+                </if>
+                <if test="record.timeValue != null">
+                    #{record.timeValue},
+                </if>
+                <if test="record.createUserId != null">
+                    #{record.createUserId},
+                </if>
+                <if test="record.createUserName != null">
+                    #{record.createUserName},
+                </if>
+                <if test="record.updateUserId != null">
+                    #{record.updateUserId},
+                </if>
+                <if test="record.updateUserName != null">
+                    #{record.updateUserName},
+                </if>
+                <if test="record.pushType != null">
+                    #{record.pushType},
+                </if>
+                <if test="record.grossSales != null">
+                    #{record.grossSales},
+                </if>
+                <if test="record.grossSalesYoy != null">
+                    #{record.grossSalesYoy},
+                </if>
+                <if test="record.grossSalesRate != null">
+                    #{record.grossSalesRate},
+                </if>
+                <if test="record.finishRate != null">
+                    #{record.finishRate},
+                </if>
+                <if test="record.finishRateYoy != null">
+                    #{record.finishRateYoy},
+                </if>
+                <if test="record.output != null">
+                    #{record.output},
+                </if>
+                <if test="record.outputYoy != null">
+                    #{record.outputYoy},
+                </if>
+                <if test="record.outputRate != null">
+                    #{record.outputRate},
+                </if>
+                <if test="record.breach != null">
+                    #{record.breach},
+                </if>
+                <if test="record.salesVolume != null">
+                    #{record.salesVolume},
+                </if>
+                <if test="record.salesVolumeRate != null">
+                    #{record.salesVolumeRate},
+                </if>
+                <if test="record.perCustomer != null">
+                    #{record.perCustomer},
+                </if>
+                <if test="record.perCustomerRate != null">
+                    #{record.perCustomerRate},
+                </if>
+                <if test="record.achieveYoy != null">
+                    #{record.achieveYoy},
+                </if>
+            </trim>
+            ON DUPLICATE KEY UPDATE
+            gross_sales = values(gross_sales),
+            gross_sales_yoy = values(gross_sales_yoy),
+            gross_sales_rate = values(gross_sales_rate),
+            finish_rate = values(finish_rate),
+            finish_rate_yoy = values(finish_rate_yoy),
+            output = values(output),
+            output_yoy = values(output_yoy),
+            output_rate = values(output_rate),
+            breach = values(breach),
+            sales_volume = values(sales_volume),
+            sales_volume_rate = values(sales_volume_rate),
+            per_customer = values(per_customer),
+            per_customer_rate = values(per_customer_rate),
+            achieve_yoy = values(achieve_yoy)
+
+        </foreach>
+    </insert>
+    <select id="getListByTDIdList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        qyy_performance_report_${enterpriseId}
+        <where>
+            time_type = "DAY"
+            AND time_value = #{currentDay}
+            <if test="viewThirdDeptIdList != null and viewThirdDeptIdList.size()>0">
+                AND third_dept_id IN
+                (
+                <foreach collection="viewThirdDeptIdList" item="thirdDeptId" separator=",">
+                    #{thirdDeptId}
+                </foreach>
+                )
+            </if>
+        </where>
+        ORDER BY ${order} DESC
+        LIMIT 3
+    </select>
+    <select id="selectByThirdDingDeptId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        qyy_performance_report_${enterpriseId}
+        WHERE third_dept_id = #{req.synDingDeptId}
+        AND time_type = #{req.timeType}
+        AND time_value = #{req.timeValue}
+
+    </select>
+    <select id="selectListByThirdDeptIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        qyy_performance_report_${enterpriseId}
+        <where>
+            <foreach collection="subThirdDeptIds" item="thirdDeptId" open="third_dept_id in (" separator="," close=")">
+                #{thirdDeptId}
+            </foreach>
+
+            AND
+            time_type = #{req.timeType}
+            AND
+            time_value = #{req.timeValue}
+        </where>
+        <if test="req.sortDesc != null">
+            ORDER BY ${req.sortDesc} DESC
+        </if>
+    </select>
+    <select id="getDetailByDay"
+            resultType="com.coolcollege.intelligent.model.qyy.josiny.QyyPerformanceReportDO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        qyy_performance_report_${enterpriseId}
+        where region_id = #{regionId}
+        and time_type = #{day}
+        and time_value = #{time}
+    </select>
+</mapper>

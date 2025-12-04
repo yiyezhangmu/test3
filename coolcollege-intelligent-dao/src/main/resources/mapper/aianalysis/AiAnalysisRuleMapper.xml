@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.aianalysis.AiAnalysisRuleMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.aianalysis.AiAnalysisRuleDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="rule_name" jdbcType="VARCHAR" property="ruleName"/>
+        <result column="start_time" jdbcType="DATE" property="startTime"/>
+        <result column="end_time" jdbcType="DATE" property="endTime"/>
+        <result column="capture_device" jdbcType="TINYINT" property="captureDevice"/>
+        <result column="capture_device_scene" jdbcType="VARCHAR" property="captureDeviceScene"/>
+        <result column="capture_times" jdbcType="VARCHAR" property="captureTimes"/>
+        <result column="models" jdbcType="VARCHAR" property="models"/>
+        <result column="report_push_time" jdbcType="TIME" property="reportPushTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId"/>
+        <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName"/>
+        <result column="store_range" jdbcType="LONGVARCHAR" property="storeRange"/>
+        <result column="report_pusher" jdbcType="LONGVARCHAR" property="reportPusher"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , rule_name, start_time, end_time, capture_device, capture_device_scene, capture_times,
+    models, report_push_time, create_time, create_user_id, create_user_name, update_time, 
+    update_user_id, update_user_name, store_range, report_pusher
+    </sql>
+    <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into ai_analysis_rule_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.ruleName != null">
+                rule_name,
+            </if>
+            <if test="record.startTime != null">
+                start_time,
+            </if>
+            <if test="record.endTime != null">
+                end_time,
+            </if>
+            <if test="record.captureDevice != null">
+                capture_device,
+            </if>
+            <if test="record.captureDeviceScene != null">
+                capture_device_scene,
+            </if>
+            <if test="record.captureTimes != null">
+                capture_times,
+            </if>
+            <if test="record.models != null">
+                models,
+            </if>
+            <if test="record.reportPushTime != null">
+                report_push_time,
+            </if>
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id,
+            </if>
+            <if test="record.createUserName != null">
+                create_user_name,
+            </if>
+            <if test="record.updateTime != null">
+                update_time,
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id,
+            </if>
+            <if test="record.updateUserName != null">
+                update_user_name,
+            </if>
+            <if test="record.storeRange != null">
+                store_range,
+            </if>
+            <if test="record.reportPusher != null">
+                report_pusher,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.ruleName != null">
+                #{record.ruleName},
+            </if>
+            <if test="record.startTime != null">
+                #{record.startTime},
+            </if>
+            <if test="record.endTime != null">
+                #{record.endTime},
+            </if>
+            <if test="record.captureDevice != null">
+                #{record.captureDevice},
+            </if>
+            <if test="record.captureDeviceScene != null">
+                #{record.captureDeviceScene},
+            </if>
+            <if test="record.captureTimes != null">
+                #{record.captureTimes},
+            </if>
+            <if test="record.models != null">
+                #{record.models},
+            </if>
+            <if test="record.reportPushTime != null">
+                #{record.reportPushTime},
+            </if>
+            <if test="record.createTime != null">
+                #{record.createTime},
+            </if>
+            <if test="record.createUserId != null">
+                #{record.createUserId},
+            </if>
+            <if test="record.createUserName != null">
+                #{record.createUserName},
+            </if>
+            <if test="record.updateTime != null">
+                #{record.updateTime},
+            </if>
+            <if test="record.updateUserId != null">
+                #{record.updateUserId},
+            </if>
+            <if test="record.updateUserName != null">
+                #{record.updateUserName},
+            </if>
+            <if test="record.storeRange != null">
+                #{record.storeRange},
+            </if>
+            <if test="record.reportPusher != null">
+                #{record.reportPusher},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update ai_analysis_rule_${enterpriseId}
+        <set>
+            <if test="record.ruleName != null">
+                rule_name = #{record.ruleName},
+            </if>
+            <if test="record.startTime != null">
+                start_time = #{record.startTime},
+            </if>
+            <if test="record.endTime != null">
+                end_time = #{record.endTime},
+            </if>
+            <if test="record.captureDevice != null">
+                capture_device = #{record.captureDevice},
+            </if>
+            <if test="record.captureDeviceScene != null">
+                capture_device_scene = #{record.captureDeviceScene},
+            </if>
+            <if test="record.captureTimes != null">
+                capture_times = #{record.captureTimes},
+            </if>
+            <if test="record.models != null">
+                models = #{record.models},
+            </if>
+            <if test="record.reportPushTime != null">
+                report_push_time = #{record.reportPushTime},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id = #{record.createUserId},
+            </if>
+            <if test="record.createUserName != null">
+                create_user_name = #{record.createUserName},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime},
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id = #{record.updateUserId},
+            </if>
+            <if test="record.updateUserName != null">
+                update_user_name = #{record.updateUserName},
+            </if>
+            <if test="record.storeRange != null">
+                store_range = #{record.storeRange},
+            </if>
+            <if test="record.reportPusher != null">
+                report_pusher = #{record.reportPusher},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <delete id="deleteBatch">
+        DELETE FROM ai_analysis_rule_${enterpriseId} WHERE id IN
+        <foreach item="id" collection="ids" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ai_analysis_rule_${enterpriseId}
+        <where>
+            <if test="query.ruleName != null">
+                AND rule_name LIKE CONCAT('%', #{query.ruleName}, '%')
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ai_analysis_rule_${enterpriseId}
+        WHERE id = #{id}
+    </select>
+
+    <select id="getListByPeriod" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ai_analysis_rule_${enterpriseId}
+        WHERE start_time &lt;= #{time} AND end_time >= #{time}
+        <if test="ruleIds != null and ruleIds.size > 0">
+            AND id IN
+            <foreach item="id" collection="ruleIds" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+</mapper>

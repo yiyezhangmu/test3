@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.metatable.TbMetaTableUserAuthMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.metatable.TbMetaTableUserAuthDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="business_id" jdbcType="VARCHAR" property="businessId" />
+    <result column="business_type" jdbcType="VARCHAR" property="businessType" />
+    <result column="use_auth" jdbcType="BIT" property="useAuth" />
+    <result column="edit_auth" jdbcType="BIT" property="editAuth" />
+    <result column="view_auth" jdbcType="BIT" property="viewAuth" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, business_id, business_type, use_auth, edit_auth, view_auth, create_time, update_time
+  </sql>
+
+  <insert id="batchAddOrUpdate">
+    <foreach collection="addList" item="item" separator=";">
+      insert into tb_meta_table_user_auth_${enterpriseId} (user_id, business_id, business_type, use_auth, edit_auth, view_auth, create_time, update_time)
+      values (#{item.userId}, #{item.businessId}, #{item.businessType}, #{item.useAuth}, #{item.editAuth}, #{item.viewAuth}, #{item.createTime}, #{item.updateTime})
+      on duplicate key update
+        use_auth = #{item.useAuth},
+        edit_auth = #{item.editAuth},
+        view_auth = #{item.viewAuth},
+        update_time = #{item.updateTime}
+    </foreach>
+  </insert>
+
+  <delete id="deleteByBusinessIds">
+    DELETE FROM tb_meta_table_user_auth_${enterpriseId}
+    WHERE 1 = 1
+    <if test="filterUserIds != null and !filterUserIds.isEmpty()">
+      AND user_id NOT IN
+      <foreach collection="filterUserIds" item="userId" separator="," open="(" close=")">
+        #{userId}
+      </foreach>
+    </if>
+    AND business_id IN
+    <foreach collection="businessIds" item="businessId" separator="," open="(" close=")">
+      #{businessId}
+    </foreach>
+    AND business_type = #{businessType}
+  </delete>
+  
+  <select id="getUserAuthMetaTableList" resultMap="BaseResultMap">
+      select
+        business_id, use_auth, edit_auth, view_auth, user_id
+      from
+        tb_meta_table_user_auth_${enterpriseId}
+      where
+        user_id in  (#{userId}, 'all_user_id') and (use_auth = 1 or edit_auth = 1)
+  </select>
+
+
+  <select id="getUserAuthViewMetaTableList" resultMap="BaseResultMap">
+    select
+      business_id, use_auth, edit_auth, view_auth, user_id
+    from
+      tb_meta_table_user_auth_${enterpriseId}
+    where
+      user_id in  (#{userId}, 'all_user_id')
+  </select>
+
+  <select id="getEditAuthTableIds" resultType="java.lang.String">
+    select
+      business_id
+    from
+      tb_meta_table_user_auth_${enterpriseId}
+    where
+      user_id in  (#{userId}, 'all_user_id') and edit_auth = 1 and business_type = 'table' and business_id in
+    <foreach collection="metaTableIds" item="metaTableId" separator="," open="(" close=")">
+      #{metaTableId}
+    </foreach>
+  </select>
+
+  <select id="getTableAuth" resultMap="BaseResultMap">
+    select
+      business_id, use_auth, edit_auth, view_auth, user_id
+    from
+      tb_meta_table_user_auth_${enterpriseId}
+    where
+      user_id in  (#{userId}, 'all_user_id') and business_type = 'table' and business_id in
+    <foreach collection="metaTableIds" item="metaTableId" separator="," open="(" close=")"> #{metaTableId}</foreach>
+  </select>
+
+</mapper>

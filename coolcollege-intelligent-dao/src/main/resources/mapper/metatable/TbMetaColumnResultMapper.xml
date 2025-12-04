@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.metatable.TbMetaColumnResultMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.metatable.TbMetaColumnResultDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
+        <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId" />
+        <result column="meta_column_id" jdbcType="BIGINT" property="metaColumnId" />
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+        <result column="result_name" jdbcType="VARCHAR" property="resultName" />
+        <result column="score" jdbcType="DECIMAL" property="score" />
+        <result column="money" jdbcType="DECIMAL" property="money" />
+        <result column="mapping_result" jdbcType="VARCHAR" property="mappingResult" />
+        <result column="must_pic" jdbcType="TINYINT" property="mustPic" />
+        <result column="order_num" jdbcType="INTEGER" property="orderNum" />
+        <result column="deleted" jdbcType="TINYINT" property="deleted" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="max_score" jdbcType="DECIMAL" property="maxScore" />
+        <result column="min_score" jdbcType="DECIMAL" property="minScore" />
+        <result column="score_is_double" jdbcType="TINYINT" property="scoreIsDouble" />
+        <result column="award_is_double" jdbcType="TINYINT" property="awardIsDouble" />
+    </resultMap>
+
+    <resultMap id="BlobResultMap" extends="BaseResultMap" type="com.coolcollege.intelligent.model.metatable.TbMetaColumnResultDO">
+        <result column="extend_info" jdbcType="VARCHAR" property="extendInfo" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, create_time, edit_time, meta_table_id, meta_column_id, create_user_id, result_name,
+        score, money, mapping_result, must_pic, order_num, deleted, description, max_score,
+        min_score, score_is_double, award_is_double
+    </sql>
+    <sql id="Blob_Column_List">
+        extend_info
+    </sql>
+
+    <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into tb_meta_column_result_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.editTime != null">
+                edit_time,
+            </if>
+            <if test="record.metaTableId != null">
+                meta_table_id,
+            </if>
+            <if test="record.metaColumnId != null">
+                meta_column_id,
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id,
+            </if>
+            <if test="record.resultName != null">
+                result_name,
+            </if>
+            <if test="record.score != null">
+                score,
+            </if>
+            <if test="record.money != null">
+                money,
+            </if>
+            <if test="record.mappingResult != null">
+                mapping_result,
+            </if>
+            <if test="record.mustPic != null">
+                must_pic,
+            </if>
+            <if test="record.orderNum != null">
+                order_num,
+            </if>
+            <if test="record.deleted != null">
+                deleted,
+            </if>
+            <if test="record.description != null">
+                description,
+            </if>
+            <if test="record.maxScore != null">
+                max_score,
+            </if>
+            <if test="record.minScore != null">
+                min_score,
+            </if>
+            <if test="record.scoreIsDouble != null">
+                score_is_double,
+            </if>
+            <if test="record.awardIsDouble != null">
+                award_is_double,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.createTime != null">
+                #{record.createTime},
+            </if>
+            <if test="record.editTime != null">
+                #{record.editTime},
+            </if>
+            <if test="record.metaTableId != null">
+                #{record.metaTableId},
+            </if>
+            <if test="record.metaColumnId != null">
+                #{record.metaColumnId},
+            </if>
+            <if test="record.createUserId != null">
+                #{record.createUserId},
+            </if>
+            <if test="record.resultName != null">
+                #{record.resultName},
+            </if>
+            <if test="record.score != null">
+                #{record.score},
+            </if>
+            <if test="record.money != null">
+                #{record.money},
+            </if>
+            <if test="record.mappingResult != null">
+                #{record.mappingResult},
+            </if>
+            <if test="record.mustPic != null">
+                #{record.mustPic},
+            </if>
+            <if test="record.orderNum != null">
+                #{record.orderNum},
+            </if>
+            <if test="record.deleted != null">
+                #{record.deleted},
+            </if>
+            <if test="record.description != null">
+                #{record.description},
+            </if>
+            <if test="record.maxScore != null">
+                #{record.maxScore},
+            </if>
+            <if test="record.minScore != null">
+                #{record.minScore},
+            </if>
+            <if test="record.scoreIsDouble != null">
+                #{record.scoreIsDouble},
+            </if>
+            <if test="record.awardIsDouble != null">
+                #{record.awardIsDouble},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update tb_meta_column_result_${enterpriseId}
+        <set>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.editTime != null">
+                edit_time = #{record.editTime},
+            </if>
+            <if test="record.metaTableId != null">
+                meta_table_id = #{record.metaTableId},
+            </if>
+            <if test="record.metaColumnId != null">
+                meta_column_id = #{record.metaColumnId},
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id = #{record.createUserId},
+            </if>
+            <if test="record.resultName != null">
+                result_name = #{record.resultName},
+            </if>
+            <if test="record.score != null">
+                score = #{record.score},
+            </if>
+            <if test="record.money != null">
+                money = #{record.money},
+            </if>
+            <if test="record.mappingResult != null">
+                mapping_result = #{record.mappingResult},
+            </if>
+            <if test="record.mustPic != null">
+                must_pic = #{record.mustPic},
+            </if>
+            <if test="record.orderNum != null">
+                order_num = #{record.orderNum},
+            </if>
+            <if test="record.deleted != null">
+                deleted = #{record.deleted},
+            </if>
+            <if test="record.description != null">
+                description = #{record.description},
+            </if>
+            <if test="record.maxScore != null">
+                max_score = #{record.maxScore},
+            </if>
+            <if test="record.minScore != null">
+                min_score = #{record.minScore},
+            </if>
+            <if test="record.scoreIsDouble != null">
+                score_is_double = #{record.scoreIsDouble},
+            </if>
+            <if test="record.awardIsDouble != null">
+                award_is_double = #{record.awardIsDouble},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <insert id="batchInsert" keyColumn="id" keyProperty="list.id" useGeneratedKeys="true">
+        insert into tb_meta_column_result_${enterpriseId}
+        (meta_table_id, meta_column_id, create_user_id, result_name, score, money, mapping_result, must_pic,
+        order_num,description,max_score,min_score,score_is_double,award_is_double,extend_info)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.metaTableId}, #{item.metaColumnId}, #{item.createUserId}, #{item.resultName}, #{item.score},
+            #{item.money}, #{item.mappingResult}, #{item.mustPic}, #{item.orderNum},
+            #{item.description},#{item.maxScore}, #{item.minScore},#{item.scoreIsDouble},#{item.awardIsDouble},#{item.extendInfo})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByMetaTableIdList">
+        delete
+        from tb_meta_column_result_${enterpriseId}
+        where meta_table_id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </delete>
+
+    <select id="selectByColumnIds" resultMap="BlobResultMap">
+        select
+        <include refid="Base_Column_List"/>, <include refid="Blob_Column_List"/>
+        from tb_meta_column_result_${enterpriseId}
+        where meta_column_id in (
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+        order by order_num, id
+    </select>
+
+    <update id="updateDelByMetaTableIdList">
+        update tb_meta_column_result_${enterpriseId}
+        set deleted = 1
+        where meta_table_id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="updateResultByList">
+        <if test="resultList != null and resultList.size()>0">
+            <foreach collection="resultList" item="result" separator=";">
+                update tb_meta_column_result_${enterpriseId}
+                set result_name = #{result.resultName},
+                score = #{result.score},
+                money = #{result.money},
+                mapping_result = #{result.mappingResult},
+                must_pic = #{result.mustPic},
+                order_num = #{result.orderNum},
+                description = #{result.description},
+                max_score = #{result.maxScore},
+                min_score = #{result.minScore},
+                score_is_double = #{result.scoreIsDouble},
+                award_is_double = #{result.awardIsDouble},
+                edit_time = CURRENT_DATE,
+                extend_info = #{result.extendInfo}
+                where id = #{result.id}
+            </foreach>
+        </if>
+    </update>
+
+    <select id="selectByMetaTableId" resultMap="BlobResultMap">
+        select
+        <include refid="Base_Column_List"/>,<include refid="Blob_Column_List"/>
+        from tb_meta_column_result_${enterpriseId}
+        where meta_table_id = #{metaTableId}
+        order by order_num, id
+    </select>
+
+    <select id="selectByMetaTableIdList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_meta_column_result_${enterpriseId}
+        where meta_table_id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+        order by order_num, id
+    </select>
+    <select id="selectIdByMetaTableId" resultMap="BaseResultMap">
+        select
+        id
+        from tb_meta_column_result_${enterpriseId}
+        where meta_table_id = #{metaTableId}
+        limit 1
+    </select>
+
+
+    <select id="listByMetaTableIdRemoveFrozenCulumnResultColumn" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_meta_column_result_${enterpriseId}
+        where meta_table_id = #{metaTableId}
+        and meta_column_id not in (
+        <foreach collection="metaColumnIdList" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <update id="updateMinScore">
+        update tb_meta_column_result_${enterpriseId} set min_score = 0
+    </update>
+
+    <select id="getResultIdsByColumnId" resultType="long">
+        select
+            id
+        from tb_meta_column_result_${enterpriseId}
+        where meta_column_id = #{metaColumnId}
+    </select>
+
+
+    <select id="getColumnResultByColumnId" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from tb_meta_column_result_${enterpriseId}
+        where meta_column_id = #{metaColumnId} and deleted = 0
+    </select>
+
+    <insert id="copyColumnResult">
+        insert into tb_meta_column_result_${enterpriseId}
+        (id,meta_table_id, meta_column_id, create_user_id, result_name, score, money, mapping_result, must_pic,
+        order_num,description,max_score,min_score,score_is_double,award_is_double,deleted,create_time,edit_time)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.metaTableId}, #{item.metaColumnId}, #{item.createUserId}, #{item.resultName}, #{item.score},
+            #{item.money}, #{item.mappingResult}, #{item.mustPic}, #{item.orderNum},
+            #{item.description},#{item.maxScore}, #{item.minScore},#{item.scoreIsDouble},#{item.awardIsDouble},#{item.deleted},#{item.createTime},#{item.editTime})
+        </foreach>
+    </insert>
+
+    <delete id="deleteAll">
+        delete from tb_meta_column_result_${enterpriseId}
+    </delete>
+</mapper>

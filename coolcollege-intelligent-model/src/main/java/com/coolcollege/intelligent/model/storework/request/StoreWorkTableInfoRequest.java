@@ -1,0 +1,48 @@
+package com.coolcollege.intelligent.model.storework.request;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import java.util.List;
+
+/**
+ * 店务定义表信息
+ * @author wxp
+ * @date 2022-09-08 10:48
+ */
+@ApiModel
+@Data
+public class StoreWorkTableInfoRequest {
+
+    @ApiModelProperty("作业定时执行日期例周一到周五执行“1,2,3,4,5”例每月1号17号执行“1,17”")
+    private String beginDate;
+
+    @ApiModelProperty("作业开始时间 8:00 排序")
+    private String beginTime;
+
+    @ApiModelProperty("执行时长，单位秒")
+    private Double limitHour;
+
+    @ApiModelProperty("检查表ID")
+    private Long metaTableId;
+
+    @ApiModelProperty("任务名称,即检查表名称")
+    private String dutyName;
+
+    @ApiModelProperty("检查项列表")
+    private List<StoreWorkColumnInfoRequest> columnInfoList;
+
+    @ApiModelProperty("检查表扩展信息,前端存开始结束时间")
+    private String tableInfo;
+
+    @ApiModelProperty("检查表映射表id，修改时必传")
+    private Long tableMappingId;
+
+    /**
+     * 表属性 0:普通表 1:高级表 2:加分表 3:权重表 4:扣分表 5:AI检查表 6:自定义表
+     */
+    @ApiModelProperty("表属性")
+    private Integer tableProperty;
+
+}

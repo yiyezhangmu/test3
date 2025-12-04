@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.unifytask.TaskMappingMapper">
+
+
+    <insert id="insertTaskMapping">
+        insert into ${table}_${enterpriseId}
+        (unify_task_id, mapping_id,type, filter_region_id)values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.unifyTaskId},#{item.mappingId},#{item.type},#{item.filterRegionId})
+        </foreach>
+    </insert>
+
+    <insert id="insertDataTaskMapping">
+        insert into unify_data_mapping_${enterpriseId}
+        (unify_task_id, mapping_id,type,origin_mapping_id,mapping_name,check_table,ai_audit)values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.unifyTaskId},#{item.mappingId},#{item.type},#{item.originMappingId},#{item.mappingName},#{item.checkTable},#{item.aiAudit})
+        </foreach>
+    </insert>
+    
+
+    <select id="selectMappingByTaskId" resultType="com.coolcollege.intelligent.model.unifytask.TaskMappingDO">
+        select
+        mapping_id as mappingId,
+        filter_region_id as filterRegionId,
+        type
+        from ${table}_${enterpriseId}
+        where unify_task_id= #{taskId}
+    </select>
+
+    <select id="selectPersonInfo"  resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifyPersonDTO">
+        select
+        distinct
+        a.unify_task_id as unifyTaskId,
+        a.mapping_id as userId,
+        a.type as storeId,
+        a.node  as node,
+        b.name as userName,
+        b.avatar
+        from unify_person_mapping_${enterpriseId} a
+        left join enterprise_user_${enterpriseId} b on a.mapping_id=b.user_id
+        where a.task_role in ('create','approval','cc')
+        <if test="mappingDO.node!=null and mappingDO.node!=''">
+            and a.node =#{mappingDO.node}
+        </if>
+        <if test="mappingDO.type!=null and mappingDO.type!=''">
+            and a.type =#{mappingDO.type}
+        </if>
+        <if test="mappingDO.unifyTaskId!=null ">
+            and a.unify_task_id =#{mappingDO.unifyTaskId}
+        </if>
+        <if test="list !=null and list.size > 0">
+            AND a.type in
+            <foreach collection="list" item="item" separator="," open="(" close=")">
+                #{item, jdbcType=VARCHAR}
+            </foreach>
+        </if>
+    </select>
+
+
+    <select id="getTaskPersonFromSubTask"  resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifyPersonDTO">
+        select
+        distinct
+        a.unify_task_id as unifyTaskId,
+        a.handle_user_id as userId,
+        a.store_id as storeId,
+        a.node_no  as node
+        from unify_task_sub_${enterpriseId} a
+        where (a.action_key is null or (a.action_key != 'turn' and a.action_key != 'reallocate'))
+        <if test="unifyTaskId!=null ">
+            and a.unify_task_id =#{unifyTaskId}
+        </if>
+        <if test="loopCount!=null">
+            and a.loop_count =#{loopCount}
+        </if>
+        <if test="subStatus != null and subStatus != ''">
+            and a.sub_status = #{subStatus}
+        </if>
+        <if test="list !=null and list.size > 0">
+            AND a.store_id in
+            <foreach collection="list" item="item" separator="," open="(" close=")">
+                #{item, jdbcType=VARCHAR}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="selectStoreInfo" resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifyStoreDTO">
+        SELECT
+            a.unify_task_id as unifyTaskId,
+            a.mapping_id as storeId,
+            a.type,
+            a.filter_region_id as  filterRegionId
+        FROM
+            unify_store_mapping_${enterpriseId} a
+            where a.unify_task_id in
+            <foreach collection="taskList" item="taskId" separator="," open="(" close=")">
+                #{taskId}
+            </foreach>
+    </select>
+
+    <select id="selectMappingByBatchTaskId"
+            resultType="com.coolcollege.intelligent.model.unifytask.TaskMappingDO">
+        select
+        unify_task_id as unifyTaskId,
+        mapping_id as mappingId,
+        type
+        from ${table}_${enterpriseId}
+        where
+        1=1
+        <if test="taskList !=null and taskList.size > 0">
+            AND unify_task_id in
+            <foreach collection="taskList" item="taskId" separator="," open="(" close=")">
+                #{taskId}
+            </foreach>
+        </if>
+    </select>
+
+
+    <select id="selectMappingData"
+            resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifyFormDataDTO">
+        select
+        unify_task_id as unifyTaskId,
+        mapping_id as mappingId,
+        type,
+        ifnull(check_table,0) as checkTable,
+        origin_mapping_id as originMappingId,
+        mapping_name as mappingName
+        from unify_data_mapping_${enterpriseId}
+        where unify_task_id in
+        <foreach collection="taskList" item="taskId" separator="," open="(" close=")">
+            #{taskId}
+        </foreach>
+    </select>
+    <select id="selectMappingDataByTaskId"
+            resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifyFormDataDTO">
+        select
+        unify_task_id as unifyTaskId,
+        mapping_id as mappingId,
+        type,
+        origin_mapping_id as originMappingId,
+        mapping_name as mappingName,
+        ifnull(check_table,0) as checkTable,
+        ai_audit as aiAudit
+        from unify_data_mapping_${enterpriseId}
+        where unify_task_id = #{taskId}
+    </select>
+
+    <select id="selectOriginMappingIdByTaskId"
+            resultType="java.lang.String">
+        select
+        origin_mapping_id
+        from unify_data_mapping_${enterpriseId}
+        where unify_task_id = #{taskId}
+        and origin_mapping_id is not null
+    </select>
+
+    <delete id="delMappingByTaskId">
+        delete from ${table}_${enterpriseId}
+        where unify_task_id= #{unifyTaskId}
+    </delete>
+
+    <delete id="delStoreMappingByTaskIdAndStoreId">
+        delete from unify_store_mapping_${enterpriseId}
+        where unify_task_id= #{unifyTaskId}
+        and mapping_id = #{storeId}
+    </delete>
+
+
+    <select id="selectMappingIdByTaskIdAndType" resultType="java.lang.Long">
+        select
+        mapping_id
+        from ${table}_${enterpriseId}
+        where unify_task_id= #{unifyTaskId}
+        and `type` = #{type}
+    </select>
+
+    <select id="selectOriginMappingIdByTaskIdAndType" resultType="java.lang.Long">
+        select
+        origin_mapping_id
+        from ${table}_${enterpriseId}
+        where unify_task_id= #{unifyTaskId}
+        and `type` = #{type}
+    </select>
+
+    <select id="selectByTaskIdsAndType" resultType="com.coolcollege.intelligent.model.unifytask.TaskMappingDO">
+        select
+        unify_task_id as unifyTaskId,
+        mapping_id as mappingId
+        from ${table}_${enterpriseId}
+        where unify_task_id in (
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+        and `type` = #{type}
+    </select>
+
+
+    <select id="selectMappingByTaskIds" resultType="com.coolcollege.intelligent.model.unifytask.TaskMappingDO">
+        select
+        unify_task_id as unifyTaskId,
+        origin_mapping_id as originMappingId
+        from unify_data_mapping_${enterpriseId}
+        where unify_task_id in (
+        <foreach collection="taskIdList" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="getAllDataMappingByUnifyTaskIds" resultType="com.coolcollege.intelligent.model.unifytask.TaskDataMappingDO">
+        select
+            unify_task_id as unifyTaskId,
+            mapping_id as mappingId,
+            type,
+            origin_mapping_id as originMappingId,
+            mapping_name as mappingName
+        from unify_data_mapping_${enterpriseId} where unify_task_id in (
+        <foreach collection="taskIdList" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+</mapper>

@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.patrolstore.TbDataDefTableColumnMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.patrolstore.TbDataDefTableColumnDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="task_id" jdbcType="BIGINT" property="taskId"/>
+        <result column="sub_task_id" jdbcType="BIGINT" property="subTaskId"/>
+        <result column="store_id" jdbcType="VARCHAR" property="storeId"/>
+        <result column="store_name" jdbcType="VARCHAR" property="storeName"/>
+        <result column="region_id" jdbcType="BIGINT" property="regionId"/>
+        <result column="region_path" jdbcType="VARCHAR" property="regionPath"/>
+        <result column="business_id" jdbcType="BIGINT" property="businessId"/>
+        <result column="business_type" jdbcType="VARCHAR" property="businessType"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="edit_time" jdbcType="TIMESTAMP" property="editTime"/>
+        <result column="data_table_id" jdbcType="BIGINT" property="dataTableId"/>
+        <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId"/>
+        <result column="meta_column_id" jdbcType="BIGINT" property="metaColumnId"/>
+        <result column="meta_column_name" jdbcType="VARCHAR" property="metaColumnName"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="supervisor_id" jdbcType="VARCHAR" property="supervisorId"/>
+        <result column="value1" jdbcType="VARCHAR" property="value1"/>
+        <result column="value2" jdbcType="VARCHAR" property="value2"/>
+        <result column="task_question_id" jdbcType="BIGINT" property="taskQuestionId"/>
+        <result column="task_question_status" jdbcType="VARCHAR" property="taskQuestionStatus"/>
+        <result column="submit_status" jdbcType="TINYINT" property="submitStatus"/>
+        <result column="business_status" jdbcType="TINYINT" property="businessStatus"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+        <result column="create_date" jdbcType="VARCHAR" property="createDate"/>
+        <result column="patrol_store_time" jdbcType="TIMESTAMP" property="patrolStoreTime"/>
+        <result column="patrol_type" jdbcType="VARCHAR" property="patrolType" />
+        <result column="check_video" jdbcType="VARCHAR" property="checkVideo" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, task_id, sub_task_id, store_id, store_name, region_id, region_path, business_id, business_type,
+    create_time, edit_time, data_table_id, meta_table_id, meta_column_id, meta_column_name,
+    description, create_user_id, supervisor_id, value1, value2, task_question_id, task_question_status,
+    submit_status, business_status, deleted, create_date,patrol_store_time,patrol_type, check_video
+  </sql>
+    <sql id="Base_Column_List_A">
+        a.id, a.task_id, a.sub_task_id, a.store_id, a.store_name, a.region_id, a.region_path, a.business_id, a.business_type,
+        a.create_time, a.edit_time, a.data_table_id, a.meta_table_id, a.meta_column_id, a.meta_column_name,
+        a.description, a.create_user_id, a.supervisor_id, a.value1, a.value2, a.task_question_id, a.task_question_status,
+        a.submit_status, a.business_status, a.deleted, a.create_date, a.patrol_store_time, a.patrol_type, a.check_video
+    </sql>
+
+    <insert id="batchInsert" keyColumn="id" keyProperty="list.id" useGeneratedKeys="true">
+        insert into tb_data_def_table_column_${enterpriseId}
+        (data_table_id,
+        meta_table_id,
+        meta_column_id,
+        meta_column_name,
+        Description,
+        create_user_id,
+        supervisor_id,
+        store_id,
+        store_name,
+        region_id,
+        region_path,
+        task_id,
+        sub_task_id,
+        business_id,
+        business_type,
+        create_date,
+        patrol_store_time,
+        patrol_type,
+        check_video,
+        value1,
+        value2
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.dataTableId},
+            #{item.metaTableId},
+            #{item.metaColumnId},
+            #{item.metaColumnName},
+            #{item.description},
+            #{item.createUserId},
+            #{item.supervisorId},
+            #{item.storeId},
+            #{item.storeName},
+            #{item.regionId},
+            #{item.regionPath},
+            #{item.taskId},
+            #{item.subTaskId},
+            #{item.businessId},
+            #{item.businessType},
+            CURRENT_DATE,
+            #{item.patrolStoreTime},
+            #{item.patrolType},
+            #{item.checkVideo},
+            #{item.value1},
+            #{item.value2}
+            )
+        </foreach>
+    </insert>
+
+    <update id="batchUpdate">
+        update tb_data_def_table_column_${enterpriseId}
+        <set>
+            value1 = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.value1},value1)
+            </foreach>
+            END,
+            value2 = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.value2},value2)
+            </foreach>
+            END,
+            check_video = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.checkVideo},check_video)
+            </foreach>
+            END,
+            submit_status = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.submitStatus},submit_status)
+            </foreach>
+            END,
+            <if test="submit">
+                submit_status = 1,
+            </if>
+        </set>
+        where
+        id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item.id}
+        </foreach>
+        )
+        and business_id = #{businessId}
+        and data_table_id = #{dataTableId}
+        and deleted = 0
+    </update>
+    <select id="getListBySubTaskIdAndTaskId"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from tb_data_def_table_column_${enterpriseId}
+        where task_id = #{taskId}
+        <foreach collection="subTaskIdList" open="and sub_task_id in (" close=")" separator="," item="subTaskId">
+            #{subTaskId}
+        </foreach>
+    </select>
+
+    <update id="updateDelByBusinessIds">
+        update tb_data_def_table_column_${enterpriseId}
+        set deleted = 1
+        where business_id in (
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>
+        ) and business_type = #{businessType}
+    </update>
+    <delete id="delByBusinessIdAndMetaTableIds">
+        delete from tb_data_def_table_column_${enterpriseId}
+        where business_id = #{businessId}
+        and meta_table_id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="deleteAbsoluteByBusinessId">
+        delete from tb_data_def_table_column_${enterpriseId}
+        where business_id = #{businessId}
+    </delete>
+    <update id="updateBusinessStatus">
+        update tb_data_def_table_column_${enterpriseId}
+        set business_status = 1, sub_task_id = #{subTaskId}, supervisor_id = #{supervisorId}
+        where business_id = #{businessId}
+        and business_type = #{businessType}
+    </update>
+    <select id="selectByBusinessId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_def_table_column_${enterpriseId}
+        where business_id = #{businessId}
+        and business_type = #{businessType}
+        and deleted = 0
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_def_table_column_${enterpriseId}
+        where id = #{id}
+    </select>
+    <select id="getListByRecordIdList"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_def_table_column_${enterpriseId}
+        where deleted = 0
+        <if test="recordIdList!=null">
+            <foreach collection="recordIdList" item="recordId" separator="," open="and business_id in(" close=")">
+                #{recordId}
+            </foreach>
+        </if>
+        <if test="query != null ">
+            <if test="query.storeId != null and query.storeId != ''">
+                and store_id = #{query.storeId}
+            </if>
+            <if test="query.beginDate != null and query.endDate != null">
+                and create_time BETWEEN #{query.beginDate} and #{query.endDate}
+            </if>
+            <if test="query.isComplete != null and query.isComplete">
+                and business_status = 1
+            </if>
+        </if>
+    </select>
+    <select id="getListByRecordIdListAndPatrolStoreTime"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List_A"/>
+        from tb_data_def_table_column_${enterpriseId} a
+        <if test="query.signOutBeginDate != null and query.signOutEndDate != null or query.signInBeginDate != null and query.signInEndDate != null">
+            LEFT JOIN tb_patrol_store_record_${enterpriseId} r ON a.business_id = r.id
+        </if>
+        where a.deleted = 0
+        <if test="recordIdList!=null">
+            <foreach collection="recordIdList" item="recordId" separator="," open="and business_id in(" close=")">
+                #{recordId}
+            </foreach>
+        </if>
+        <if test="query != null ">
+            <if test="query.storeId != null and query.storeId != ''">
+                and a.store_id = #{query.storeId}
+            </if>
+            <if test="query.beginDate != null and query.endDate != null">
+                and a.patrol_store_time BETWEEN #{query.beginDate} and #{query.endDate}
+            </if>
+            <if test="query.metaTableIds != null and query.metaTableIds.size() > 0">
+                and a.meta_table_id in
+                <foreach collection="query.metaTableIds" separator="," open="(" close=")" item="metaTableId">
+                    #{metaTableId}
+                </foreach>
+            </if>
+            <if test="query.metaColumnIds != null and query.metaColumnIds.size() > 0">
+                and a.meta_column_id in
+                <foreach collection="query.metaColumnIds" separator="," open="(" close=")" item="metaColumnId">
+                    #{metaColumnId}
+                </foreach>
+            </if>
+            <if test="query.regionPath != null and query.regionPath != ''">
+                and a.region_path like concat(#{query.regionPath},'%')
+            </if>
+            <if test="query.isComplete != null and query.isComplete">
+                and a.business_status = 1
+            </if>
+            <if test="query.supervisorIds != null and query.supervisorIds.size() > 0">
+                and a.supervisor_id in
+                <foreach collection="query.supervisorIds" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="query.signOutBeginDate != null and query.signOutEndDate != null">
+                and r.sign_end_time between #{query.signOutBeginDate} and #{query.signOutEndDate}
+            </if>
+            <if test="query.signInBeginDate != null and query.signInEndDate != null">
+                and r.sign_start_time between #{query.signInBeginDate} and #{query.signInEndDate}
+            </if>
+        </if>
+        order by a.id desc
+    </select>
+    <select id="getListByRecordIdListCount" resultType="java.lang.Long">
+        select
+             count(a.id)
+        from tb_data_def_table_column_${enterpriseId} a
+        <if test="query.signOutBeginDate != null and query.signOutEndDate != null or query.signInBeginDate != null and query.signInEndDate != null">
+            LEFT JOIN tb_patrol_store_record_${enterpriseId} r ON a.business_id = r.id
+        </if>
+        where a.deleted = 0
+        <if test="recordIdList!=null">
+            <foreach collection="recordIdList" item="recordId" separator="," open="and business_id in(" close=")">
+                #{recordId}
+            </foreach>
+        </if>
+        <if test="query != null ">
+            <if test="query.storeId != null and query.storeId != ''">
+                and a.store_id = #{query.storeId}
+            </if>
+
+            <if test="query.beginDate != null and query.endDate != null">
+                and a.create_time BETWEEN #{query.beginDate} and #{query.endDate}
+            </if>
+            <if test="query.metaTableIds != null and query.metaTableIds.size() > 0">
+                and a.meta_table_id in
+                <foreach collection="query.metaTableIds" separator="," open="(" close=")" item="metaTableId">
+                    #{metaTableId}
+                </foreach>
+            </if>
+            <if test="query.metaColumnIds != null and query.metaColumnIds.size() > 0">
+                and a.meta_column_id in
+                <foreach collection="query.metaColumnIds" separator="," open="(" close=")" item="metaColumnId">
+                    #{metaColumnId}
+                </foreach>
+            </if>
+            <if test="query.regionPath != null and query.regionPath != ''">
+                and a.region_path like concat(#{query.regionPath},'%')
+            </if>
+            <if test="query.signOutBeginDate != null and query.signOutEndDate != null">
+                and r.sign_end_time between #{query.signOutBeginDate} and #{query.signOutEndDate}
+            </if>
+            <if test="query.signInBeginDate != null and query.signInEndDate != null">
+                and r.sign_start_time between #{query.signInBeginDate} and #{query.signInEndDate}
+            </if>
+        </if>
+    </select>
+    <select id="getListByRecordIdListForMap"
+            resultMap="BaseResultMap">
+        select
+        id, business_id
+        from tb_data_def_table_column_${enterpriseId}
+        where deleted = 0
+        <if test="recordIdList!=null">
+            <foreach collection="recordIdList" item="recordId" separator="," open="and business_id in(" close=")">
+                #{recordId}
+            </foreach>
+        </if>
+
+    </select>
+    <select id="statisticsColumnCount"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsDataColumnCountDTO">
+        select
+        data_table_id as dataTableId,
+        count(*) as totalColumnCount
+        from tb_data_def_table_column_${enterpriseId}
+        where data_table_id in (
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+        group by data_table_id
+    </select>
+    <select id="statisticsColumnCountByBusinessIds"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsDataColumnCountDTO">
+        select
+        data_table_id as dataTableId,
+        business_id as businessId,
+        count(*) as totalColumnCount
+        from tb_data_def_table_column_${enterpriseId}
+        where business_id in (
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+        group by data_table_id
+    </select>
+
+    <select id="selectByBusinessIdAndMetaTableIds"
+            resultType="com.coolcollege.intelligent.model.patrolstore.TbDataDefTableColumnDO">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_def_table_column_${enterpriseId}
+        where business_id = #{businessId}
+        and meta_table_id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="selectByBusinessIdList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_def_table_column_${enterpriseId}
+        where 1 = 1
+        <if test="businessIdList != null and businessIdList.size()>0">
+            and business_id in (
+            <foreach collection="businessIdList" item="businessId" separator=",">
+                #{businessId}
+            </foreach>
+            )
+        </if>
+    </select>
+    <select id="selectDefColumnData"
+            resultType="com.coolcollege.intelligent.model.metatable.vo.TaskStoreMetaTableColVO">
+        select
+        meta_column_id as metaTableColumnId,
+        meta_column_name AS metaTableColumnName,
+        value1,
+        value2
+        from tb_data_def_table_column_${eid}
+        where data_table_id = #{dataTableId}
+        <if test="metaTableId != null">
+            and meta_table_id = #{metaTableId}
+        </if>
+        <if test="columnIds != null and columnIds.size > 0">
+            and meta_column_id in (
+            <foreach collection="columnIds" item="colId" separator=",">
+                #{colId}
+            </foreach>
+            )
+        </if>
+    </select>
+    <update id="updateDelVideo">
+        update tb_data_def_table_column_${enterpriseId}
+        set check_video = #{checkVideo}
+        where id = #{id}
+    </update>
+    <select id="dataDefColumnNotSubmitCount" resultType="java.lang.Integer">
+        select count(id)
+        from tb_data_def_table_column_${enterpriseId}
+        where data_table_id = #{dataTableId}
+          and submit_status = 0
+          and deleted = 0
+    </select>
+
+    <update id="correctRegionIdAndPath">
+        UPDATE tb_data_def_table_column_${enterpriseId} a
+        INNER JOIN store_${enterpriseId} b ON a.store_id = b.store_id
+        SET a.region_id = b.region_id, a.region_path = b.region_path
+        WHERE a.task_id = #{unifyTaskId}
+    </update>
+</mapper>

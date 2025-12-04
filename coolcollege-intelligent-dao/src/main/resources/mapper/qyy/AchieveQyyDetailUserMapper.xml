@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.qyy.AchieveQyyDetailUserMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.qyy.AchieveQyyDetailUserDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+        <result column="user_id" jdbcType="VARCHAR" property="userId" />
+        <result column="time_type" jdbcType="VARCHAR" property="timeType" />
+        <result column="time_value" jdbcType="VARCHAR" property="timeValue" />
+        <result column="goal_amt" jdbcType="DECIMAL" property="goalAmt" />
+        <result column="sales_amt" jdbcType="DECIMAL" property="salesAmt" />
+        <result column="sales_rate" jdbcType="DECIMAL" property="salesRate" />
+        <result column="etl_tm" jdbcType="TIMESTAMP" property="etlTm" />
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+        <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, store_id, user_id, time_type, time_value, goal_amt, sales_amt, sales_rate, etl_tm,
+        create_user_id, create_user_name, update_user_id, update_user_name, create_time,
+        update_time
+    </sql>
+    <insert id="batchInsertSelective" >
+        <foreach collection="insertList" separator=";" item="record">
+            insert into achieve_qyy_detail_user_${enterpriseId}
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="record.storeId != null">
+                  store_id,
+                </if>
+                <if test="record.userId != null">
+                  user_id,
+                </if>
+                <if test="record.timeType != null">
+                  time_type,
+                </if>
+                <if test="record.timeValue != null">
+                  time_value,
+                </if>
+                <if test="record.goalAmt != null">
+                  goal_amt,
+                </if>
+                <if test="record.salesAmt != null">
+                  sales_amt,
+                </if>
+                <if test="record.salesRate != null">
+                  sales_rate,
+                </if>
+                <if test="record.etlTm != null">
+                  etl_tm,
+                </if>
+                <if test="record.createUserId != null">
+                  create_user_id,
+                </if>
+                <if test="record.createUserName != null">
+                  create_user_name,
+                </if>
+                <if test="record.updateUserId != null">
+                  update_user_id,
+                </if>
+                <if test="record.updateUserName != null">
+                  update_user_name,
+                </if>
+                <if test="record.createTime != null">
+                  create_time,
+                </if>
+                <if test="record.updateTime != null">
+                  update_time,
+                </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="record.storeId != null">
+                  #{record.storeId},
+                </if>
+                <if test="record.userId != null">
+                  #{record.userId},
+                </if>
+                <if test="record.timeType != null">
+                  #{record.timeType},
+                </if>
+                <if test="record.timeValue != null">
+                  #{record.timeValue},
+                </if>
+                <if test="record.goalAmt != null">
+                  #{record.goalAmt},
+                </if>
+                <if test="record.salesAmt != null">
+                  #{record.salesAmt},
+                </if>
+                <if test="record.salesRate != null">
+                  #{record.salesRate},
+                </if>
+                <if test="record.etlTm != null">
+                  #{record.etlTm},
+                </if>
+                <if test="record.createUserId != null">
+                  #{record.createUserId},
+                </if>
+                <if test="record.createUserName != null">
+                  #{record.createUserName},
+                </if>
+                <if test="record.updateUserId != null">
+                  #{record.updateUserId},
+                </if>
+                <if test="record.updateUserName != null">
+                  #{record.updateUserName},
+                </if>
+                <if test="record.createTime != null">
+                  #{record.createTime},
+                </if>
+                <if test="record.updateTime != null">
+                  #{record.updateTime},
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+
+     <insert id="batchInsertOrUpdate">
+        <foreach collection="userGoalList" separator=";" item="record">
+            INSERT INTO achieve_qyy_detail_user_${enterpriseId}
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="record.userId != null">
+                    user_id,
+                </if>
+                <if test="record.dingDeptId != null">
+                    store_id,
+                </if>
+                <if test="record.goalAmt != null">
+                    goal_amt,
+                </if>
+                <if test="mth != null">
+                    time_value,
+                </if>
+                <if test="code != null">
+                    time_type,
+                </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="record.userId != null">
+                    #{record.userId},
+                </if>
+                <if test="record.dingDeptId != null">
+                    #{record.dingDeptId},
+                </if>
+                <if test="record.goalAmt != null">
+                    #{record.goalAmt},
+                </if>
+                <if test="mth != null">
+                    #{mth},
+                </if>
+                <if test="code != null">
+                    #{code},
+                </if>
+            </trim>
+            ON DUPLICATE KEY UPDATE  goal_amt = values(goal_amt), update_user_id = values(update_user_id), update_user_name = values(update_user_name)
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertOrUpdateUserGoal" >
+        <foreach collection="insertList" separator=";" item="record">
+            insert into achieve_qyy_detail_user_${enterpriseId}
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="record.storeId != null">
+                    store_id,
+                </if>
+                <if test="record.userId != null">
+                    user_id,
+                </if>
+                <if test="record.timeType != null">
+                    time_type,
+                </if>
+                <if test="record.timeValue != null">
+                    time_value,
+                </if>
+                <if test="record.goalAmt != null">
+                    goal_amt,
+                </if>
+                <if test="record.createUserId != null">
+                    create_user_id,
+                </if>
+                <if test="record.createUserName != null">
+                    create_user_name,
+                </if>
+                <if test="record.updateUserId != null">
+                    update_user_id,
+                </if>
+                <if test="record.updateUserName != null">
+                    update_user_name,
+                </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="record.storeId != null">
+                    #{record.storeId},
+                </if>
+                <if test="record.userId != null">
+                    #{record.userId},
+                </if>
+                <if test="record.timeType != null">
+                    #{record.timeType},
+                </if>
+                <if test="record.timeValue != null">
+                    #{record.timeValue},
+                </if>
+                <if test="record.goalAmt != null">
+                    #{record.goalAmt},
+                </if>
+                <if test="record.createUserId != null">
+                    #{record.createUserId},
+                </if>
+                <if test="record.createUserName != null">
+                    #{record.createUserName},
+                </if>
+                <if test="record.updateUserId != null">
+                    #{record.updateUserId},
+                </if>
+                <if test="record.updateUserName != null">
+                    #{record.updateUserName},
+                </if>
+            </trim>
+            ON DUPLICATE KEY UPDATE  goal_amt = values(goal_amt), update_user_id = values(update_user_id), update_user_name = values(update_user_name)
+        </foreach>
+    </insert>
+
+
+    <insert id="batchInsertOrUpdateUserSales" >
+        <foreach collection="insertList" separator=";" item="record">
+            insert into achieve_qyy_detail_user_${enterpriseId}
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="record.storeId != null">
+                    store_id,
+                </if>
+                <if test="record.userId != null">
+                    user_id,
+                </if>
+                <if test="record.timeType != null">
+                    time_type,
+                </if>
+                <if test="record.timeValue != null">
+                    time_value,
+                </if>
+                <if test="record.salesAmt != null">
+                    sales_amt,
+                </if>
+                <if test="record.salesRate != null">
+                    sales_rate,
+                </if>
+                <if test="record.topComp != null">
+                    top_comp,
+                </if>
+                <if test="record.etlTm != null">
+                    etl_tm,
+                </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="record.storeId != null">
+                    #{record.storeId},
+                </if>
+                <if test="record.userId != null">
+                    #{record.userId},
+                </if>
+                <if test="record.timeType != null">
+                    #{record.timeType},
+                </if>
+                <if test="record.timeValue != null">
+                    #{record.timeValue},
+                </if>
+                <if test="record.salesAmt != null">
+                    #{record.salesAmt},
+                </if>
+                <if test="record.salesRate != null">
+                    #{record.salesRate},
+                </if>
+                <if test="record.topComp != null">
+                    #{record.topComp},
+                </if>
+                <if test="record.etlTm != null">
+                    #{record.etlTm},
+                </if>
+            </trim>
+            ON DUPLICATE KEY UPDATE
+                <if test="record.salesAmt != null">
+                    sales_amt = values(sales_amt),
+                </if>
+                <if test="record.salesRate != null">
+                    sales_rate = values(sales_rate),
+                </if>
+                <if test="record.topComp != null">
+                    top_comp = values(top_comp),
+                </if>
+                <if test="record.etlTm != null">
+                    etl_tm = values(etl_tm),
+                </if>
+            update_time = now()
+        </foreach>
+    </insert>
+
+
+    <update id="updateByPrimaryKeySelective" >
+      update achieve_qyy_detail_user_${enterpriseId}
+        <set>
+            <if test="record.storeId != null">
+              store_id = #{record.storeId},
+            </if>
+            <if test="record.userId != null">
+              user_id = #{record.userId},
+            </if>
+            <if test="record.timeType != null">
+              time_type = #{record.timeType},
+            </if>
+            <if test="record.timeValue != null">
+              time_value = #{record.timeValue},
+            </if>
+            <if test="record.goalAmt != null">
+              goal_amt = #{record.goalAmt},
+            </if>
+            <if test="record.salesAmt != null">
+              sales_amt = #{record.salesAmt},
+            </if>
+            <if test="record.salesRate != null">
+              sales_rate = #{record.salesRate},
+            </if>
+            <if test="record.etlTm != null">
+              etl_tm = #{record.etlTm},
+            </if>
+            <if test="record.createUserId != null">
+              create_user_id = #{record.createUserId},
+            </if>
+            <if test="record.createUserName != null">
+              create_user_name = #{record.createUserName},
+            </if>
+            <if test="record.updateUserId != null">
+              update_user_id = #{record.updateUserId},
+            </if>
+            <if test="record.updateUserName != null">
+              update_user_name = #{record.updateUserName},
+            </if>
+            <if test="record.createTime != null">
+              create_time = #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+              update_time = #{record.updateTime},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <select id="getStoreAchieveByUserAndTime" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            achieve_qyy_detail_user_${enterpriseId}
+        where
+            store_id = #{storeId} and user_id = #{userId} and time_type = #{timeType} and time_value in
+            <foreach collection="timeValues" open="(" close=")" separator="," item="timeValue">
+                #{timeValue}
+            </foreach>
+    </select>
+
+    <select id="getStoreAchievesByTime" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            achieve_qyy_detail_user_${enterpriseId}
+        where
+            store_id = #{storeId}  and time_type = #{timeType} and time_value = #{timeValue}
+    </select>
+
+    <select id="getUserStoreAchieveByTime" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            achieve_qyy_detail_user_${enterpriseId}
+        where
+            store_id = #{storeId}  and time_type = #{timeType} and time_value = #{timeValue}  and user_id = #{userId}
+        limit 1
+    </select>
+
+    <select id="getStoreMGoalSumGroupByDay" resultMap="BaseResultMap">
+        select
+            time_value,
+            sum(goal_amt) as goal_amt
+        from
+            achieve_qyy_detail_user_${enterpriseId}
+        where
+            store_id = #{storeId} and time_type = 'day' and time_value in
+            <foreach collection="timeValues" open="(" close=")" separator="," item="timeValue">
+                #{timeValue}
+            </foreach>
+        group by time_value
+    </select>
+
+    <select id="getDaySalesAmtRank" resultMap="BaseResultMap">
+        select
+            user_id, sales_amt, sales_rate, etl_tm
+        from
+            achieve_qyy_detail_user_${enterpriseId}
+        where
+            store_id = #{storeId}
+            and time_type = 'day'
+            and time_value = #{timeValue}
+            and user_id is not null
+        order by sales_amt desc
+    </select>
+    
+    <select id="getUserMSalesAmtGroupByUserId" resultMap="BaseResultMap">
+        select
+            user_id,
+            sum(sales_amt) as sales_amt,
+            sum(goal_amt) as goal_amt
+        from
+            achieve_qyy_detail_user_${enterpriseId}
+        where
+            store_id = #{storeId} and time_type = 'day'
+            and time_value in
+            <foreach collection="timeValues" open="(" close=")" separator="," item="timeValue">
+                #{timeValue}
+            </foreach>
+            <if test="userIds != null and userIds.size()> 0">
+                and user_id in
+                <foreach collection="userIds" open="(" close=")" separator="," item="userId">
+                    #{userId}
+                </foreach>
+            </if>
+        group by user_id
+    </select>
+    
+    <update id="updateUserSalesRate">
+        update
+            achieve_qyy_detail_user_${enterpriseId}
+        set
+            sales_rate = ROUND((sales_amt/goal_amt) * 100, 2)
+        where
+            time_type = 'day'
+            and store_id in
+                <foreach collection="storeIds" open="(" close=")" separator="," item="storeId">
+                    #{storeId}
+                </foreach>
+            and time_value in
+                <foreach collection="days" open="(" close=")" separator="," item="day">
+                    #{day}
+                </foreach>
+    </update>
+
+    <select id="getTodayStoreUserGoal" resultMap="BaseResultMap">
+        select
+            user_id, store_id, goal_amt
+        from
+            achieve_qyy_detail_user_${enterpriseId}
+        where
+            time_type = 'day' and time_value = #{timeValue} and goal_amt > 0
+    </select>
+
+    <select id="pullUserSales" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            achieve_qyy_detail_user_${enterpriseId}
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="storeId != null">
+                and store_id = #{storeId}
+            </if>
+            <if test="date != null ">
+                and time_type = 'day' and time_value = #{date}
+            </if>
+        </where>
+    </select>
+
+    <select id="getUserSalesAmtByUserIdsAndTimes" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            achieve_qyy_detail_user_${enterpriseId}
+        where
+            time_type = 'month' and time_value in
+            <foreach collection="months" open="(" close=")" separator="," item="month">
+                #{month}
+            </foreach>
+            <if test="userIds != null and userIds.size()> 0">
+                and user_id in
+                <foreach collection="userIds" open="(" close=")" separator="," item="userId">
+                    #{userId}
+                </foreach>
+            </if>
+    </select>
+    <select id="getDetailUserByTypeAndValue" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM achieve_qyy_detail_user_${enterpriseId}
+        WHERE time_type = #{timeType}
+        AND time_value = #{timeValue}
+    </select>
+    <select id="getUserGoalByWeeks"
+            resultType="com.coolcollege.intelligent.model.qyy.QyyNewspaperAchieveDO$UserGoalByWeek">
+     SELECT
+	a1.user_id as userId,
+	a2.`name`,
+	SUM( a1.sales_amt ) AS weekAchieve,
+	a1.goal_amt as monthTarget,
+	a1.sales_rate as monthRate
+    FROM
+        achieve_qyy_detail_user_${enterpriseId} a1,
+        enterprise_user_${enterpriseId} a2
+    WHERE
+        store_id = #{storeDOId}
+        AND time_value <![CDATA[ >= ]]> #{startTime}
+        AND time_value <![CDATA[ <= ]]> #{endTime}
+        AND a1.user_id = a2.user_id
+        AND a2.active = TRUE
+    GROUP BY
+	userId;
+    </select>
+    <select id="getUserGoalByMonth" resultType="com.coolcollege.intelligent.model.qyy.QyyGoalDO">
+        select  id,
+                user_id as userId,
+                goal_amt as goalAmt,
+                store_id as storeId
+        from achieve_qyy_detail_user_${enterpriseId}
+        where time_type = 'month'
+        and time_value=#{period}
+    </select>
+    <select id="getGoalAmtByMonth" resultType="com.coolcollege.intelligent.model.qyy.AchieveQyyDetailUserDO">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        achieve_qyy_detail_user_${enterpriseId}
+        where
+        <if test="userIds != null and userIds.size() > 0">
+             user_id in
+            <foreach collection="userIds" open="(" close=")" separator="," item="userId">
+                #{userId}
+            </foreach>
+        </if>
+        and time_type='day'
+        and time_value BETWEEN #{firstDay} and #{currentTime}
+    </select>
+
+</mapper>

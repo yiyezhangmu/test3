@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.fsGroup.FsGroupCardMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.fsGroup.FsGroupCardDO" id="FsGroupCardMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="cardCode" column="card_code" jdbcType="VARCHAR"/>
+        <result property="sceneId" column="scene_id" jdbcType="BIGINT"/>
+        <result property="cardTemplateId" column="card_template_id" jdbcType="VARCHAR"/>
+        <result property="cardTemplate" column="card_template" jdbcType="VARCHAR"/>
+        <result property="cardName" column="card_name" jdbcType="VARCHAR"/>
+        <result property="cardDesc" column="card_desc" jdbcType="VARCHAR"/>
+        <result property="sendRole" column="send_role" jdbcType="VARCHAR"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    <sql id="baseSql">
+        id as id,create_time as createTime,update_time as updateTime,card_code as cardCode,scene_id as sceneId,card_template_id as cardTemplateId,card_template as cardTemplate,card_name as cardName,card_desc as cardDesc,send_role as sendRole,is_deleted as isDeleted    </sql>
+    <!--查询单个-->
+    <select id="queryById" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupCardDO">
+        select
+          <include refid="baseSql"></include>
+        from fs_group_card_${eid}
+        where id = #{id}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from fs_group_card_${eid}
+        <where>
+            <if test="fsGroupCardDO.id != null">
+                and id = #{fsGroupCardDO.id}
+            </if>
+            <if test="fsGroupCardDO.createTime != null">
+                and create_time = #{fsGroupCardDO.createTime}
+            </if>
+            <if test="fsGroupCardDO.updateTime != null">
+                and update_time = #{fsGroupCardDO.updateTime}
+            </if>
+            <if test="fsGroupCardDO.cardCode != null and fsGroupCardDO.cardCode != ''">
+                and card_code = #{fsGroupCardDO.cardCode}
+            </if>
+            <if test="fsGroupCardDO.sceneId != null">
+                and scene_id = #{fsGroupCardDO.sceneId}
+            </if>
+            <if test="fsGroupCardDO.cardTemplateId != null and fsGroupCardDO.cardTemplateId != ''">
+                and card_template_id = #{fsGroupCardDO.cardTemplateId}
+            </if>
+            <if test="fsGroupCardDO.cardTemplate != null and fsGroupCardDO.cardTemplate != ''">
+                and card_template = #{fsGroupCardDO.cardTemplate}
+            </if>
+            <if test="fsGroupCardDO.cardName != null and fsGroupCardDO.cardName != ''">
+                and card_name = #{fsGroupCardDO.cardName}
+            </if>
+            <if test="fsGroupCardDO.cardDesc != null and fsGroupCardDO.cardDesc != ''">
+                and card_desc = #{fsGroupCardDO.cardDesc}
+            </if>
+            <if test="fsGroupCardDO.sendRole != null and fsGroupCardDO.sendRole != ''">
+                and send_role = #{fsGroupCardDO.sendRole}
+            </if>
+            <if test="fsGroupCardDO.isDeleted != null">
+                and is_deleted = #{fsGroupCardDO.isDeleted}
+            </if>
+        </where>
+    </select>
+    <select id="queryBySceneId" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupCardDO">
+        select
+            <include refid="baseSql"></include>
+        from fs_group_card_${eid}
+        where scene_id = #{sceneId}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="fsGroupCardDO.id" useGeneratedKeys="true">
+        insert into fs_group_card_${eid}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fsGroupCardDO.createTime != null">
+                create_time,
+            </if>
+            <if test="fsGroupCardDO.updateTime != null">
+                update_time,
+            </if>
+            <if test="fsGroupCardDO.cardCode != null and fsGroupCardDO.cardCode != ''">
+                card_code,
+            </if>
+            <if test="fsGroupCardDO.sceneId != null">
+                scene_id,
+            </if>
+            <if test="fsGroupCardDO.cardTemplateId != null and fsGroupCardDO.cardTemplateId != ''">
+                card_template_id,
+            </if>
+            <if test="fsGroupCardDO.cardTemplate != null and fsGroupCardDO.cardTemplate != ''">
+                card_template,
+            </if>
+            <if test="fsGroupCardDO.cardName != null and fsGroupCardDO.cardName != ''">
+                card_name,
+            </if>
+            <if test="fsGroupCardDO.cardDesc != null and fsGroupCardDO.cardDesc != ''">
+                card_desc,
+            </if>
+            <if test="fsGroupCardDO.sendRole != null and fsGroupCardDO.sendRole != ''">
+                send_role,
+            </if>
+            <if test="fsGroupCardDO.isDeleted != null">
+                is_deleted,
+            </if>
+     </trim>
+        values 
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fsGroupCardDO.createTime != null">
+                #{fsGroupCardDO.createTime},
+            </if>
+            <if test="fsGroupCardDO.updateTime != null">
+                #{fsGroupCardDO.updateTime},
+            </if>
+            <if test="fsGroupCardDO.cardCode != null and fsGroupCardDO.cardCode != ''">
+                #{fsGroupCardDO.cardCode},
+            </if>
+            <if test="fsGroupCardDO.sceneId != null">
+                #{fsGroupCardDO.sceneId},
+            </if>
+            <if test="fsGroupCardDO.cardTemplateId != null and fsGroupCardDO.cardTemplateId != ''">
+                #{fsGroupCardDO.cardTemplateId},
+            </if>
+            <if test="fsGroupCardDO.cardTemplate != null and fsGroupCardDO.cardTemplate != ''">
+                #{fsGroupCardDO.cardTemplate},
+            </if>
+            <if test="fsGroupCardDO.cardName != null and fsGroupCardDO.cardName != ''">
+                #{fsGroupCardDO.cardName},
+            </if>
+            <if test="fsGroupCardDO.cardDesc != null and fsGroupCardDO.cardDesc != ''">
+                #{fsGroupCardDO.cardDesc},
+            </if>
+            <if test="fsGroupCardDO.sendRole != null and fsGroupCardDO.sendRole != ''">
+                #{fsGroupCardDO.sendRole},
+            </if>
+            <if test="fsGroupCardDO.isDeleted != null">
+                #{fsGroupCardDO.isDeleted},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" keyProperty="dos.id" useGeneratedKeys="true">
+        insert into fs_group_card_${eid}(create_time, update_time, card_code, scene_id, card_template_id, card_template, card_name, card_desc, send_role, is_deleted)
+        values
+        <foreach collection="dos" item="do" separator=",">
+        (#{do.createTime}, #{do.updateTime}, #{do.cardCode}, #{do.sceneId}, #{do.cardTemplateId}, #{do.cardTemplate}, #{do.cardName}, #{do.cardDesc}, #{do.sendRole}, #{do.isDeleted})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="dos.id" useGeneratedKeys="true">
+        insert into fs_group_card_${eid}(create_time, update_time, card_code, scene_id, card_template_id, card_template, card_name, card_desc, send_role, is_deleted)
+        values
+        <foreach collection="dos" item="do" separator=",">
+            (#{do.createTime}, #{do.updateTime}, #{do.cardCode}, #{do.sceneId}, #{do.cardTemplateId}, #{do.cardTemplate}, #{do.cardName}, #{do.cardDesc}, #{do.sendRole}, #{do.isDeleted})
+        </foreach>
+        on duplicate key update
+        create_time = values(create_time),
+        update_time = values(update_time),
+        card_code = values(card_code),
+        scene_id = values(scene_id),
+        card_template_id = values(card_template_id),
+        card_template = values(card_template),
+        card_name = values(card_name),
+        card_desc = values(card_desc),
+        send_role = values(send_role),
+        is_deleted = values(is_deleted)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update fs_group_card_${eid}
+        <set>
+            <if test="fsGroupCardDO.createTime != null">
+                create_time = #{fsGroupCardDO.createTime},
+            </if>
+            <if test="fsGroupCardDO.updateTime != null">
+                update_time = #{fsGroupCardDO.updateTime},
+            </if>
+            <if test="fsGroupCardDO.cardCode != null and fsGroupCardDO.cardCode != ''">
+                card_code = #{fsGroupCardDO.cardCode},
+            </if>
+            <if test="fsGroupCardDO.sceneId != null">
+                scene_id = #{fsGroupCardDO.sceneId},
+            </if>
+            <if test="fsGroupCardDO.cardTemplateId != null and fsGroupCardDO.cardTemplateId != ''">
+                card_template_id = #{fsGroupCardDO.cardTemplateId},
+            </if>
+            <if test="fsGroupCardDO.cardTemplate != null and fsGroupCardDO.cardTemplate != ''">
+                card_template = #{fsGroupCardDO.cardTemplate},
+            </if>
+            <if test="fsGroupCardDO.cardName != null and fsGroupCardDO.cardName != ''">
+                card_name = #{fsGroupCardDO.cardName},
+            </if>
+            <if test="fsGroupCardDO.cardDesc != null and fsGroupCardDO.cardDesc != ''">
+                card_desc = #{fsGroupCardDO.cardDesc},
+            </if>
+            <if test="fsGroupCardDO.sendRole != null and fsGroupCardDO.sendRole != ''">
+                send_role = #{fsGroupCardDO.sendRole},
+            </if>
+            <if test="fsGroupCardDO.isDeleted != null">
+                is_deleted = #{fsGroupCardDO.isDeleted},
+            </if>
+        </set>
+        where id = #{fsGroupCardDO.id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from fs_group_card_${eid} where id = #{id}
+    </delete>
+
+</mapper>
+

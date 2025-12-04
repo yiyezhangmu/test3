@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.fsGroup.FsGroupMenuMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.fsGroup.FsGroupMenuDO" id="FsGroupMenuMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="menuName" column="menu_name" jdbcType="VARCHAR"/>
+        <result property="urlType" column="url_type" jdbcType="INTEGER"/>
+        <result property="url" column="url" jdbcType="VARCHAR"/>
+        <result property="urlCode" column="url_code" jdbcType="VARCHAR"/>
+        <result property="sendStoreRegionIds" column="send_store_region_ids" jdbcType="VARCHAR"/>
+        <result property="sendRegionChatIds" column="send_region_chat_ids" jdbcType="VARCHAR"/>
+        <result property="sendOtherChatIds" column="send_other_chat_ids" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <sql id="baseSql">
+        id as id,menu_name as menuName,url_type as urlType,url as url,url_code as urlCode,send_store_region_ids as sendStoreRegionIds,send_region_chat_ids as sendRegionChatIds,send_other_chat_ids as sendOtherChatIds,create_time as createTime,create_user as createUser,update_time as updateTime,update_user as updateUser    </sql>
+
+    <select id="queryByIds" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupMenuDO">
+        select
+        <include refid="baseSql"></include>
+        from fs_group_menu_${eid}
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="selectByQuery" resultType="com.coolcollege.intelligent.model.fsGroup.vo.FsGroupMenuVO">
+        select <include refid="baseSql"></include>,fm.groupCount as groupCount
+        from fs_group_menu_${eid} f
+        left join (SELECT menu_id,count(*) as groupCount FROM fs_group_menu_mapping_${eid} GROUP BY menu_id) fm
+        on f.id = fm.menu_id
+        <where>
+            <if test="query.menuName != null and query.menuName != ''">
+                and menu_name like concat('%',#{query.menuName},'%')
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <!--查询单个-->
+    <select id="queryById" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupMenuDO">
+        select
+          <include refid="baseSql"></include>
+        from fs_group_menu_${eid}
+        where id = #{id}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from fs_group_menu_${eid}
+        <where>
+            <if test="fsGroupMenuDO.id != null">
+                and id = #{fsGroupMenuDO.id}
+            </if>
+            <if test="fsGroupMenuDO.menuName != null and fsGroupMenuDO.menuName != ''">
+                and menu_name = #{fsGroupMenuDO.menuName}
+            </if>
+            <if test="fsGroupMenuDO.urlType != null">
+                and url_type = #{fsGroupMenuDO.urlType}
+            </if>
+            <if test="fsGroupMenuDO.url != null and fsGroupMenuDO.url != ''">
+                and url = #{fsGroupMenuDO.url}
+            </if>
+            <if test="fsGroupMenuDO.urlCode != null and fsGroupMenuDO.urlCode != ''">
+                and url_code = #{fsGroupMenuDO.urlCode}
+            </if>
+            <if test="fsGroupMenuDO.sendStoreRegionIds != null and fsGroupMenuDO.sendStoreRegionIds != ''">
+                and send_store_region_ids = #{fsGroupMenuDO.sendStoreRegionIds}
+            </if>
+            <if test="fsGroupMenuDO.sendRegionChatIds != null and fsGroupMenuDO.sendRegionChatIds != ''">
+                and send_region_chat_ids = #{fsGroupMenuDO.sendRegionChatIds}
+            </if>
+            <if test="fsGroupMenuDO.sendOtherChatIds != null and fsGroupMenuDO.sendOtherChatIds != ''">
+                and send_other_chat_ids = #{fsGroupMenuDO.sendOtherChatIds}
+            </if>
+            <if test="fsGroupMenuDO.createTime != null">
+                and create_time = #{fsGroupMenuDO.createTime}
+            </if>
+            <if test="fsGroupMenuDO.createUser != null and fsGroupMenuDO.createUser != ''">
+                and create_user = #{fsGroupMenuDO.createUser}
+            </if>
+            <if test="fsGroupMenuDO.updateTime != null">
+                and update_time = #{fsGroupMenuDO.updateTime}
+            </if>
+            <if test="fsGroupMenuDO.updateUser != null and fsGroupMenuDO.updateUser != ''">
+                and update_user = #{fsGroupMenuDO.updateUser}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="fsGroupMenuDO.id" useGeneratedKeys="true">
+        insert into fs_group_menu_${eid}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fsGroupMenuDO.menuName != null and fsGroupMenuDO.menuName != ''">
+                menu_name,
+            </if>
+            <if test="fsGroupMenuDO.urlType != null">
+                url_type,
+            </if>
+            <if test="fsGroupMenuDO.url != null and fsGroupMenuDO.url != ''">
+                url,
+            </if>
+            <if test="fsGroupMenuDO.urlCode != null and fsGroupMenuDO.urlCode != ''">
+                url_code,
+            </if>
+            <if test="fsGroupMenuDO.sendStoreRegionIds != null and fsGroupMenuDO.sendStoreRegionIds != ''">
+                send_store_region_ids,
+            </if>
+            <if test="fsGroupMenuDO.sendRegionChatIds != null and fsGroupMenuDO.sendRegionChatIds != ''">
+                send_region_chat_ids,
+            </if>
+            <if test="fsGroupMenuDO.sendOtherChatIds != null and fsGroupMenuDO.sendOtherChatIds != ''">
+                send_other_chat_ids,
+            </if>
+            <if test="fsGroupMenuDO.createTime != null">
+                create_time,
+            </if>
+            <if test="fsGroupMenuDO.createUser != null and fsGroupMenuDO.createUser != ''">
+                create_user,
+            </if>
+            <if test="fsGroupMenuDO.updateTime != null">
+                update_time,
+            </if>
+            <if test="fsGroupMenuDO.updateUser != null and fsGroupMenuDO.updateUser != ''">
+                update_user,
+            </if>
+     </trim>
+        values 
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fsGroupMenuDO.menuName != null and fsGroupMenuDO.menuName != ''">
+                #{fsGroupMenuDO.menuName},
+            </if>
+            <if test="fsGroupMenuDO.urlType != null">
+                #{fsGroupMenuDO.urlType},
+            </if>
+            <if test="fsGroupMenuDO.url != null and fsGroupMenuDO.url != ''">
+                #{fsGroupMenuDO.url},
+            </if>
+            <if test="fsGroupMenuDO.urlCode != null and fsGroupMenuDO.urlCode != ''">
+                #{fsGroupMenuDO.urlCode},
+            </if>
+            <if test="fsGroupMenuDO.sendStoreRegionIds != null and fsGroupMenuDO.sendStoreRegionIds != ''">
+                #{fsGroupMenuDO.sendStoreRegionIds},
+            </if>
+            <if test="fsGroupMenuDO.sendRegionChatIds != null and fsGroupMenuDO.sendRegionChatIds != ''">
+                #{fsGroupMenuDO.sendRegionChatIds},
+            </if>
+            <if test="fsGroupMenuDO.sendOtherChatIds != null and fsGroupMenuDO.sendOtherChatIds != ''">
+                #{fsGroupMenuDO.sendOtherChatIds},
+            </if>
+            <if test="fsGroupMenuDO.createTime != null">
+                #{fsGroupMenuDO.createTime},
+            </if>
+            <if test="fsGroupMenuDO.createUser != null and fsGroupMenuDO.createUser != ''">
+                #{fsGroupMenuDO.createUser},
+            </if>
+            <if test="fsGroupMenuDO.updateTime != null">
+                #{fsGroupMenuDO.updateTime},
+            </if>
+            <if test="fsGroupMenuDO.updateUser != null and fsGroupMenuDO.updateUser != ''">
+                #{fsGroupMenuDO.updateUser},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" keyProperty="dos.id" useGeneratedKeys="true">
+        insert into fs_group_menu_${eid}(menu_name, url_type, url, url_code, send_store_region_ids, send_region_chat_ids, send_other_chat_ids, create_time, create_user, update_time, update_user)
+        values
+        <foreach collection="dos" item="do" separator=",">
+        (#{do.menuName}, #{do.urlType}, #{do.url}, #{do.urlCode}, #{do.sendStoreRegionIds}, #{do.sendRegionChatIds}, #{do.sendOtherChatIds}, #{do.createTime}, #{do.createUser}, #{do.updateTime}, #{do.updateUser})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="dos.id" useGeneratedKeys="true">
+        insert into fs_group_menu_${eid}(menu_name, url_type, url, url_code, send_store_region_ids, send_region_chat_ids, send_other_chat_ids, create_time, create_user, update_time, update_user)
+        values
+        <foreach collection="dos" item="do" separator=",">
+            (#{do.menuName}, #{do.urlType}, #{do.url}, #{do.urlCode}, #{do.sendStoreRegionIds}, #{do.sendRegionChatIds}, #{do.sendOtherChatIds}, #{do.createTime}, #{do.createUser}, #{do.updateTime}, #{do.updateUser})
+        </foreach>
+        on duplicate key update
+        menu_name = values(menu_name),
+        url_type = values(url_type),
+        url = values(url),
+        url_code = values(url_code),
+        send_store_region_ids = values(send_store_region_ids),
+        send_region_chat_ids = values(send_region_chat_ids),
+        send_other_chat_ids = values(send_other_chat_ids),
+        create_time = values(create_time),
+        create_user = values(create_user),
+        update_time = values(update_time),
+        update_user = values(update_user)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update fs_group_menu_${eid}
+        <set>
+            <if test="fsGroupMenuDO.menuName != null and fsGroupMenuDO.menuName != ''">
+                menu_name = #{fsGroupMenuDO.menuName},
+            </if>
+            <if test="fsGroupMenuDO.urlType != null">
+                url_type = #{fsGroupMenuDO.urlType},
+            </if>
+            <if test="fsGroupMenuDO.url != null and fsGroupMenuDO.url != ''">
+                url = #{fsGroupMenuDO.url},
+            </if>
+            <if test="fsGroupMenuDO.urlCode != null and fsGroupMenuDO.urlCode != ''">
+                url_code = #{fsGroupMenuDO.urlCode},
+            </if>
+            <if test="fsGroupMenuDO.sendStoreRegionIds != null and fsGroupMenuDO.sendStoreRegionIds != ''">
+                send_store_region_ids = #{fsGroupMenuDO.sendStoreRegionIds},
+            </if>
+            <if test="fsGroupMenuDO.sendRegionChatIds != null and fsGroupMenuDO.sendRegionChatIds != ''">
+                send_region_chat_ids = #{fsGroupMenuDO.sendRegionChatIds},
+            </if>
+            <if test="fsGroupMenuDO.sendOtherChatIds != null and fsGroupMenuDO.sendOtherChatIds != ''">
+                send_other_chat_ids = #{fsGroupMenuDO.sendOtherChatIds},
+            </if>
+            <if test="fsGroupMenuDO.createTime != null">
+                create_time = #{fsGroupMenuDO.createTime},
+            </if>
+            <if test="fsGroupMenuDO.createUser != null and fsGroupMenuDO.createUser != ''">
+                create_user = #{fsGroupMenuDO.createUser},
+            </if>
+            <if test="fsGroupMenuDO.updateTime != null">
+                update_time = #{fsGroupMenuDO.updateTime},
+            </if>
+            <if test="fsGroupMenuDO.updateUser != null and fsGroupMenuDO.updateUser != ''">
+                update_user = #{fsGroupMenuDO.updateUser},
+            </if>
+        </set>
+        where id = #{fsGroupMenuDO.id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from fs_group_menu_${eid} where id = #{id}
+    </delete>
+
+</mapper>
+

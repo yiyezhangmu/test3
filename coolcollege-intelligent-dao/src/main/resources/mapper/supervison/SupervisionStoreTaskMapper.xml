@@ -1,0 +1,1016 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.supervision.SupervisionStoreTaskMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.supervision.SupervisionStoreTaskDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="task_parent_id" jdbcType="BIGINT" property="taskParentId" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="task_start_time" jdbcType="TIMESTAMP" property="taskStartTime" />
+    <result column="task_end_time" jdbcType="TIMESTAMP" property="taskEndTime" />
+    <result column="supervision_user_id" jdbcType="VARCHAR" property="supervisionUserId" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="business_type" jdbcType="VARCHAR" property="businessType" />
+    <result column="complete_time" jdbcType="TIMESTAMP" property="completeTime" />
+    <result column="task_state" jdbcType="INTEGER" property="taskState" />
+    <result column="form_id" jdbcType="VARCHAR" property="formId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="cancel_status" jdbcType="BIT" property="cancelStatus" />
+    <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime" />
+    <result column="priority" jdbcType="VARCHAR" property="priority" />
+    <result column="sop_ids" jdbcType="VARCHAR" property="sopIds" />
+    <result column="supervision_task_id" jdbcType="VARCHAR" property="supervisionTaskId" />
+
+    <result column="task_grouping" jdbcType="VARCHAR" property="taskGrouping" />
+    <result column="first_approve" jdbcType="VARCHAR" property="firstApprove" />
+    <result column="secondary_approve" jdbcType="VARCHAR" property="secondaryApprove" />
+    <result column="third_approve" jdbcType="VARCHAR" property="thirdApprove" />
+    <result column="current_node" jdbcType="TINYINT" property="currentNode" />
+    <result column="reminder_time_before_starting" jdbcType="TIMESTAMP" property="reminderTimeBeforeStarting" />
+    <result column="reminder_time_before_end" jdbcType="TIMESTAMP" property="reminderTimeBeforeEnd"/>
+    <result column="transfer_reassign_flag" jdbcType="TINYINT" property="transferReassignFlag" />
+    <result column="handle_over_time_status" jdbcType="VARCHAR" property="handleOverTimeStatus" />
+    <result column="supervision_handle_user_id" jdbcType="VARCHAR" property="supervisionHandleUserId" />
+    <result column="supervision_handle_user_name" jdbcType="VARCHAR" property="supervisionHandleUserName" />
+    <result column="approve_status" jdbcType="TINYINT" property="approveStatus" />
+    <result column="region_path" jdbcType="VARCHAR" property="regionPath" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, task_parent_id, task_name, task_start_time, task_end_time, supervision_user_id, 
+    store_id, store_name, business_type, complete_time, task_state, form_id, create_time, 
+    update_time, deleted, cancel_status, submit_time,priority,sop_ids,supervision_task_id,task_grouping,first_approve,secondary_approve,third_approve,
+    current_node,reminder_time_before_starting,reminder_time_before_end,transfer_reassign_flag,handle_over_time_status,
+    supervision_handle_user_id,supervision_handle_user_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from supervision_store_task_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from supervision_store_task_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.supervision.SupervisionStoreTaskDO">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into supervision_store_task_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.taskParentId != null">
+        task_parent_id,
+      </if>
+      <if test="record.taskName != null">
+        task_name,
+      </if>
+      <if test="record.taskStartTime != null">
+        task_start_time,
+      </if>
+      <if test="record.taskEndTime != null">
+        task_end_time,
+      </if>
+      <if test="record.supervisionUserId != null">
+        supervision_user_id,
+      </if>
+      <if test="record.storeId != null">
+        store_id,
+      </if>
+      <if test="record.storeName != null">
+        store_name,
+      </if>
+      <if test="record.businessType != null">
+        business_type,
+      </if>
+      <if test="record.completeTime != null">
+        complete_time,
+      </if>
+      <if test="record.taskState != null">
+        task_state,
+      </if>
+      <if test="record.formId != null">
+        form_id,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+      <if test="record.cancelStatus != null">
+        cancel_status,
+      </if>
+      <if test="record.submitTime != null">
+        submit_time,
+      </if>
+      <if test="record.supervisionTaskId != null">
+        supervision_task_id,
+      </if>
+      <if test="record.sopIds != null">
+        sop_ids,
+      </if>
+      <if test="record.priority != null">
+        priority,
+      </if>
+
+      <if test="record.taskGrouping != null">
+        task_grouping,
+      </if>
+      <if test="record.firstApprove != null">
+        first_approve,
+      </if>
+      <if test="record.secondaryApprove != null">
+        secondary_approve,
+      </if>
+      <if test="record.thirdApprove != null">
+        third_approve,
+      </if>
+      <if test="record.reminderTimeBeforeStarting != null">
+        reminder_time_before_starting,
+      </if>
+      <if test="record.reminderTimeBeforeEnd != null">
+        reminder_time_before_end,
+      </if>
+      <if test="record.supervisionHandleUserId != null">
+        supervision_handle_user_id,
+      </if>
+      <if test="record.supervisionHandleUserName != null">
+        supervision_handle_user_name,
+      </if>
+      <if test="record.approveStatus != null">
+        approve_status,
+      </if>
+      <if test="record.regionPath != null">
+        region_path,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.taskParentId != null">
+        #{record.taskParentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.taskName != null">
+        #{record.taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskStartTime != null">
+        #{record.taskStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskEndTime != null">
+        #{record.taskEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.supervisionUserId != null">
+        #{record.supervisionUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeId != null">
+        #{record.storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeName != null">
+        #{record.storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessType != null">
+        #{record.businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.completeTime != null">
+        #{record.completeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskState != null">
+        #{record.taskState,jdbcType=INTEGER},
+      </if>
+      <if test="record.formId != null">
+        #{record.formId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.cancelStatus != null">
+        #{record.cancelStatus,jdbcType=BIT},
+      </if>
+      <if test="record.submitTime != null">
+        #{record.submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.cancelStatus != null">
+        #{record.cancelStatus,jdbcType=BIT},
+      </if>
+      <if test="record.submitTime != null">
+        #{record.submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.supervisionTaskId != null">
+        #{record.supervisionTaskId},
+      </if>
+      <if test="record.sopIds != null">
+        #{record.sopIds},
+      </if>
+      <if test="record.priority != null">
+        #{record.priority},
+      </if>
+      <if test="record.taskGrouping != null">
+        #{record.taskGrouping},
+      </if>
+      <if test="record.firstApprove != null">
+        #{record.firstApprove},
+      </if>
+      <if test="record.secondaryApprove != null">
+        #{record.secondaryApprove},
+      </if>
+      <if test="record.thirdApprove != null">
+        #{record.thirdApprove},
+      </if>
+      <if test="record.reminderTimeBeforeStarting != null">
+        #{record.reminderTimeBeforeStarting},
+      </if>
+      <if test="record.reminderTimeBeforeEnd != null">
+        #{record.reminderTimeBeforeEnd},
+      </if>
+      <if test="record.supervisionHandleUserId != null">
+        #{record.supervisionHandleUserId},
+      </if>
+      <if test="record.supervisionHandleUserName != null">
+        #{record.supervisionHandleUserName},
+      </if>
+      <if test="record.approveStatus != null">
+        #{record.approveStatus},
+      </if>
+      <if test="record.regionPath != null">
+        #{record.regionPath},
+      </if>
+    </trim>
+  </insert>
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.supervision.SupervisionStoreTaskDO">
+    update supervision_store_task_${enterpriseId}
+    <set>
+      <if test="record.taskParentId != null">
+        task_parent_id = #{record.taskParentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.taskName != null">
+        task_name = #{record.taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskStartTime != null">
+        task_start_time = #{record.taskStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskEndTime != null">
+        task_end_time = #{record.taskEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.supervisionUserId != null">
+        supervision_user_id = #{record.supervisionUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeName != null">
+        store_name = #{record.storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessType != null">
+        business_type = #{record.businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.completeTime != null">
+        complete_time = #{record.completeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskState != null">
+        task_state = #{record.taskState,jdbcType=INTEGER},
+      </if>
+      <if test="record.formId != null">
+        form_id = #{record.formId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.cancelStatus != null">
+        cancel_status = #{record.cancelStatus,jdbcType=BIT},
+      </if>
+      <if test="record.submitTime != null">
+        submit_time = #{record.submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.supervisionHandleUserId != null">
+        supervision_handle_user_id = #{record.supervisionHandleUserId},
+      </if>
+      <if test="record.supervisionHandleUserName != null">
+        supervision_handle_user_name = #{record.supervisionHandleUserName},
+      </if>
+      <if test="record.supervisionTaskId != null">
+        supervision_task_id = #{record.supervisionTaskId},
+      </if>
+
+      <if test="record.taskGrouping != null">
+        task_grouping = #{record.taskGrouping,jdbcType=BIT},
+      </if>
+      <if test="record.firstApprove != null">
+        first_approve = #{record.firstApprove,jdbcType=BIT},
+      </if>
+      <if test="record.secondaryApprove != null">
+        secondary_approve = #{record.secondaryApprove,jdbcType=BIT},
+      </if>
+      <if test="record.thirdApprove != null">
+        third_approve = #{record.thirdApprove,jdbcType=BIT},
+      </if>
+      <if test="record.currentNode != null">
+        current_node = #{record.currentNode,jdbcType=BIT},
+      </if>
+      <if test="record.reminderTimeBeforeStarting != null">
+        reminder_time_before_starting = #{record.reminderTimeBeforeStarting,jdbcType=BIT},
+      </if>
+      <if test="record.reminderTimeBeforeEnd != null">
+        reminder_time_before_end = #{record.reminderTimeBeforeEnd,jdbcType=BIT},
+      </if>
+      <if test="record.transferReassignFlag != null">
+        transfer_reassign_flag = #{record.transferReassignFlag,jdbcType=BIT},
+      </if>
+      <if test="record.handleOverTimeStatus != null">
+        handle_over_time_status = #{record.handleOverTimeStatus,jdbcType=BIT},
+      </if>
+      <if test="record.supervisionHandleUserId != null">
+        supervision_handle_user_id = #{record.supervisionHandleUserId,jdbcType=BIT},
+      </if>
+      <if test="record.supervisionHandleUserName != null">
+        supervision_handle_user_name = #{record.supervisionHandleUserName,jdbcType=BIT},
+      </if>
+      <if test="record.regionPath != null">
+        region_path = #{record.regionPath},
+      </if>
+      <if test="record.approveStatus != null">
+        approve_status = #{record.approveStatus,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != taskParentId">
+         and t.task_parent_id = #{taskParentId,jdbcType=BIGINT}
+      </if>
+      <if test="null != taskName">
+         and t.task_name = #{taskName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != taskStartTime">
+         and t.task_start_time = #{taskStartTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != taskEndTime">
+         and t.task_end_time = #{taskEndTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != supervisionUserId">
+         and t.supervision_user_id = #{supervisionUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != storeId">
+         and t.store_id = #{storeId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != storeName">
+         and t.store_name = #{storeName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != businessType">
+         and t.business_type = #{businessType,jdbcType=VARCHAR}
+      </if>
+      <if test="null != completeTime">
+         and t.complete_time = #{completeTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != taskState">
+         and t.task_state = #{taskState,jdbcType=INTEGER}
+      </if>
+      <if test="null != formId">
+         and t.form_id = #{formId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != updateTime">
+         and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != deleted">
+         and t.deleted = #{deleted,jdbcType=BIT}
+      </if>
+      <if test="null != cancelStatus">
+         and t.cancel_status = #{cancelStatus,jdbcType=BIT}
+      </if>
+      <if test="null != submitTime">
+         and t.submit_time = #{submitTime,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+  </sql>
+
+
+  <update id="storeTaskCancel">
+    update supervision_store_task_${enterpriseId}
+    set cancel_status = 1
+    <where>
+      <if test="taskParentId!=null">
+        and task_parent_id = #{taskParentId,jdbcType=BIGINT}
+      </if>
+      <if test="supervisionTaskId!=null">
+        and supervision_task_id = #{supervisionTaskId,jdbcType=BIGINT}
+      </if>
+      <if test="id!=null">
+        and id = #{id,jdbcType=BIGINT}
+      </if>
+    </where>
+  </update>
+
+
+  <select id="notCancelCountByParentId" resultType="java.lang.Integer">
+    select count(1)
+    from supervision_store_task_${enterpriseId}
+    where supervision_task_id = #{supervisionTaskId}
+    and cancel_status = 0
+  </select>
+
+  <update id="storeTaskDel">
+    update supervision_store_task_${enterpriseId}
+    set deleted = 1
+    where task_parent_id = #{parentId,jdbcType=BIGINT}
+  </update>
+
+  <select id="listByParentId" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from supervision_store_task_${enterpriseId}
+    <where>
+      <if test="parentId!=null">
+        and  task_parent_id = #{parentId}
+      </if>
+      <if test="supervisionTaskId!=null">
+        and  supervision_task_id = #{supervisionTaskId}
+      </if>
+      <if test="storeIds!=null and storeIds.size()>0">
+        <foreach collection="storeIds" item="storeId" separator="," open="and store_id in (" close=")">
+          #{storeId}
+        </foreach>
+      </if>
+      <if test="regionIds != null and regionIds.size >0 ">
+        <foreach collection="regionIds" item="regionId" separator=" or " open="and (" close=" )">
+          region_path like concat('%/', #{regionId}, '/%')
+        </foreach>
+      </if>
+      <if test="userName!=null and userName!=''">
+        and supervision_handle_user_name like concat('%',#{userName},'%')
+      </if>
+      <if test="handleOverTimeStatus!=null and handleOverTimeStatus==1">
+        and (handle_over_time_status = #{handleOverTimeStatus} or (task_state = 0 and handle_over_time_status = 0 and task_end_time <![CDATA[ < ]]> now()))
+      </if>
+      <if test="handleOverTimeStatus!=null and handleOverTimeStatus==0">
+        and  ((handle_over_time_status = 0 AND task_state != 0) or (task_state=0 and  task_end_time > now()) )
+      </if>
+      <if test="completeStatusList!=null and completeStatusList.size()>0">
+        <foreach collection="completeStatusList" item="completeStatus" open="and (" separator="or" close=")">
+          <if test="completeStatus != null and completeStatus.status == 0">
+            (task_state = 0 and cancel_status = 0 )
+          </if>
+          <if test="completeStatus != null and completeStatus.status == 1">
+            ( task_state = 1 and cancel_status = 0)
+          </if>
+          <if test="completeStatus != null and completeStatus.status== 4">
+            ( task_state = 4 and cancel_status = 0)
+          </if>
+          <if test="completeStatus != null and completeStatus.status== 5">
+            ( cancel_status = 1)
+          </if>
+        </foreach>
+      </if>
+    </where>
+    order by id desc
+  </select>
+
+  <select id="countByParentId" resultType="java.lang.Long">
+    select
+    count(1)
+    from supervision_store_task_${enterpriseId}
+    where  task_parent_id = #{parentId}
+    <if test="supervisionTaskId!=null">
+      and  supervision_task_id = #{supervisionTaskId}
+    </if>
+    <if test="storeIds!=null and storeIds.size()>0">
+      <foreach collection="storeIds" item="storeId" separator="," open="and store_id in (" close=")">
+        #{storeId}
+      </foreach>
+    </if>
+    <if test="regionIds != null and regionIds.size >0 ">
+      <foreach collection="regionIds" item="regionId" separator=" or " open="and (" close=" )">
+        region_path like concat('%/', #{regionId}, '/%')
+      </foreach>
+    </if>
+    <if test="userName!=null and userName!=''">
+      and supervision_handle_user_name like concat('%',#{userName},'%')
+    </if>
+    <if test="handleOverTimeStatus!=null and handleOverTimeStatus==1">
+      and (handle_over_time_status = #{handleOverTimeStatus} or (task_state = 0 and handle_over_time_status = 0 and task_end_time <![CDATA[ < ]]> now()))
+    </if>
+    <if test="handleOverTimeStatus!=null and handleOverTimeStatus==0">
+      and ((handle_over_time_status = 0 AND task_state != 0) or (task_state=0 and  task_end_time > now()) )
+    </if>
+    <if test="completeStatusList!=null and completeStatusList.size()>0">
+      <foreach collection="completeStatusList" item="completeStatus" open="and (" separator="or" close=")">
+        <if test="completeStatus != null and completeStatus.status == 0">
+          (task_state = 0 )
+        </if>
+        <if test="completeStatus != null and completeStatus.status == 1">
+          ( task_state = 1)
+        </if>
+        <if test="completeStatus != null and completeStatus.status== 4">
+          ( task_state = 4)
+        </if>
+        <if test="completeStatus != null and completeStatus.status== 5">
+          ( cancel_status = 1)
+        </if>
+      </foreach>
+    </if>
+  </select>
+
+
+  <select id="getSupervisionStoreList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from supervision_store_task_${enterpriseId}
+    where supervision_handle_user_id = #{userId}
+    <if test="taskId!=null and taskId!=''">
+      and  supervision_task_id = #{taskId}
+    </if>
+    <if test="storeName!=null and storeName!=''">
+      and store_name like  concat('%',#{storeName},'%')
+    </if>
+    <if test="handleOverTimeStatus!=null and handleOverTimeStatus==1">
+      and (handle_over_time_status = #{handleOverTimeStatus} or (task_state = 0 and handle_over_time_status = 0 and task_end_time <![CDATA[ < ]]> now()))
+    </if>
+    <if test="handleOverTimeStatus!=null and handleOverTimeStatus==0">
+      and ((handle_over_time_status = 0 AND task_state != 0) or (task_state=0 and  task_end_time > now()) )
+    </if>
+    <if test="taskState != null and taskState == 0">
+      and task_state = 0
+    </if>
+    <if test="taskState != null and taskState == 1">
+      and task_state = 1
+    </if>
+    <if test="taskState != null and taskState== 4">
+      and task_state = 4
+    </if>
+    <if test="taskState != null and taskState== 5">
+      and cancel_status = 1
+    </if>
+    <if test="(taskState != null and taskState!= 5) or taskState==null">
+      and cancel_status = 0
+    </if>
+  </select>
+
+  <select id="noCompleteListByTaskId" resultType="java.lang.Long">
+    select
+    count(1)
+    from supervision_store_task_${enterpriseId}
+    where  supervision_task_id = #{taskId}
+    and task_state = 0
+    and cancel_status= 0
+  </select>
+
+  <select id="completeStatus" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from supervision_store_task_${enterpriseId}
+    where  supervision_task_id = #{taskId}
+    and (task_state = 1 or task_state = 3)
+    order by submit_time desc
+    limit 1
+  </select>
+
+  <select id="listMySupervisionStoreTask" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>,
+    TIMESTAMPDIFF(second,now(),task_end_time) AS cnt
+    from supervision_store_task_${enterpriseId}
+    where supervision_handle_user_id = #{query.supervisionUserId}
+    and deleted = 0 and cancel_status = 0
+    <if test="query.storeId!=null and query.storeId!=''">
+      and store_id = #{query.storeId}
+    </if>
+    <if test="taskStatus != null and taskStatus == 0">
+      and task_state = 0
+    </if>
+    <if test="taskStatus != null and taskStatus == 1">
+      and task_state = #{taskStatus}
+    </if>
+    <if test="taskStatus != null and taskStatus== 4">
+      and task_state = 4
+    </if>
+    <if test="taskStatus != null and taskStatus== 5">
+      and cancel_status = 1
+    </if>
+    <if test="startTime!=null and endTime!=null and startTime!='' and endTime!=''">
+      and task_end_time BETWEEN  #{startTime} and #{endTime}
+    </if>
+    <if test="priority!=null and priority!=null">
+      and priority = #{priority}
+    </if>
+    <if test="handleOverTimeStatus!=null and handleOverTimeStatus==1">
+      and (handle_over_time_status = #{handleOverTimeStatus} or (task_state = 0 and handle_over_time_status = 0 and task_end_time <![CDATA[ < ]]> now()))
+    </if>
+    <if test="handleOverTimeStatus!=null and handleOverTimeStatus==0">
+      and ((handle_over_time_status = 0 AND task_state != 0) or (task_state=0 and  task_end_time > now()) )
+    </if>
+    ORDER BY
+    if(cnt >= 0, 0, 1),
+    if(cnt <![CDATA[ < ]]> 0, abs(cnt), cnt )
+  </select>
+
+  <insert id="batchInsert" keyProperty="records.id" useGeneratedKeys="true">
+    insert into supervision_store_task_${enterpriseId}
+    (
+    `task_parent_id`,
+    `task_name`,
+    `task_start_time`,
+    `task_end_time`,
+    `supervision_user_id`,
+    `create_time`,
+    `task_state`,
+    `business_type`,
+    `store_id`,
+    `store_name`,
+    `form_id`,
+    `supervision_task_id`,
+    `sop_ids`,
+    `priority`,
+    task_grouping,
+    first_approve,
+    secondary_approve,
+    third_approve,
+    reminder_time_before_starting,
+    reminder_time_before_end,
+    supervision_handle_user_id,
+    supervision_handle_user_name,
+    approve_status,
+    region_path
+    )
+    values
+    <foreach collection="records" item="record" separator=",">
+      (
+      #{record.taskParentId},
+      #{record.taskName},
+      #{record.taskStartTime},
+      #{record.taskEndTime},
+      #{record.supervisionUserId},
+      now(),
+      #{record.taskState},
+      #{record.businessType},
+      #{record.storeId},
+      #{record.storeName},
+      #{record.formId},
+      #{record.supervisionTaskId},
+      #{record.sopIds},
+      #{record.priority},
+      #{record.taskGrouping},
+      #{record.firstApprove},
+      #{record.secondaryApprove},
+      #{record.thirdApprove},
+      #{record.reminderTimeBeforeStarting},
+      #{record.reminderTimeBeforeEnd},
+      #{record.supervisionHandleUserId},
+      #{record.supervisionHandleUserName},
+      #{record.approveStatus},
+      #{record.regionPath}
+      )
+    </foreach>
+  </insert>
+
+
+  <select id="getStoreIdList" resultType="com.coolcollege.intelligent.model.supervision.dto.SupervisionStoreDataDTO">
+    select
+    store_id as storeId,
+    ifnull(sum(case when task_state = 0 and cancel_status = 0 and deleted = 0  then 1 else 0 end),0) as count
+    from supervision_store_task_${enterpriseId}
+    where supervision_handle_user_id = #{userId}
+    group by store_id order by count desc
+  </select>
+
+
+
+  <update id="batchUpdateTaskStatus">
+    update supervision_store_task_${enterpriseId}
+    set
+    task_state = CASE id
+    <foreach collection="records" item="record">
+      WHEN #{record.id} THEN #{record.taskState}
+    </foreach>
+    END,
+    complete_time = CASE id
+    <foreach collection="records" item="record">
+      WHEN #{record.id} THEN  ifnull(#{record.completeTime},complete_time)
+    </foreach>
+    END,
+    submit_time = CASE id
+    <foreach collection="records" item="record">
+      WHEN #{record.id} THEN  ifnull(#{record.submitTime},submit_time)
+    </foreach>
+    END,
+    handle_over_time_status = CASE id
+    <foreach collection="records" item="record">
+      WHEN #{record.id} THEN ifnull(#{record.handleOverTimeStatus},handle_over_time_status)
+    </foreach>
+    END,
+    current_node = CASE id
+    <foreach collection="records" item="record">
+      WHEN #{record.id} THEN ifnull(#{record.currentNode},current_node)
+    </foreach>
+    END,
+    approve_status = CASE id
+    <foreach collection="records" item="record">
+      WHEN #{record.id} THEN ifnull(#{record.approveStatus},approve_status)
+    </foreach>
+    END
+    where id in
+    <foreach collection="records" item="record" open="(" separator="," close=")">
+      #{record.id}
+    </foreach>
+  </update>
+
+
+  <update id="batchUpdateStoreTask">
+    update supervision_store_task_${enterpriseId}
+    set
+    supervision_handle_user_id = CASE id
+    <foreach collection="records" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.supervisionHandleUserId},supervision_handle_user_id)
+    </foreach>
+    END,
+    supervision_handle_user_name = CASE id
+    <foreach collection="records" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.supervisionHandleUserName},supervision_handle_user_name)
+    </foreach>
+    END,
+    first_approve = CASE id
+    <foreach collection="records" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.firstApprove},first_approve)
+    </foreach>
+    END,
+    secondary_approve = CASE id
+    <foreach collection="records" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.secondaryApprove},secondary_approve)
+    </foreach>
+    END,
+    third_approve = CASE id
+    <foreach collection="records" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.thirdApprove},third_approve)
+    </foreach>
+    END,
+    supervision_task_id = CASE id
+    <foreach collection="records" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.supervisionTaskId},supervision_task_id)
+    </foreach>
+    END,
+    transfer_reassign_flag = CASE id
+    <foreach collection="records" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.transferReassignFlag},transfer_reassign_flag)
+    </foreach>
+    END
+    where id in
+    <foreach collection="records" item="record" open="(" separator="," close=")">
+      #{record.id}
+    </foreach>
+  </update>
+
+
+  <update id="updateTaskStatus">
+    update supervision_store_task_${enterpriseId}
+    set task_state = #{status} ,
+    current_node = #{currentNode},
+    complete_time = now(),
+    submit_time = now()
+    where id = #{id}
+  </update>
+
+
+  <update id="batchUpdateStateBySupervisionTaskId">
+    update supervision_store_task_${enterpriseId}
+    set task_state = #{status} ,
+    complete_time = now(),
+    submit_time = now()
+    where supervision_task_id in
+    <foreach collection="idList" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </update>
+
+
+  <select id="listSupervisionStoreTask" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from supervision_store_task_${enterpriseId}
+    <if test="ids!=null and ids.size()>0">
+      <foreach collection="ids" item="id" separator="," open="where id in (" close=")">
+        #{id}
+      </foreach>
+    </if>
+  </select>
+
+  <select id="listSupervisionStoreTaskByFormId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from supervision_store_task_${enterpriseId}
+    where task_state = 1
+    and form_id = #{formId}
+    <if test="startTime!=null and endTime!=null">
+      and submit_time BETWEEN  #{startTime} and #{endTime}
+    </if>
+    <if test="taskParentIds!=null and taskParentIds.size()>0">
+      <foreach collection="taskParentIds" item="taskParentId" separator="," open="and task_parent_id in (" close=")">
+        #{taskParentId}
+      </foreach>
+    </if>
+  </select>
+
+  <select id="countSupervisionStoreTaskByFormId" resultType="java.lang.Long">
+    select
+    count(1)
+    from supervision_store_task_${enterpriseId}
+    where task_state = 1
+    and form_id = #{formId}
+    <if test="startTime!=null and endTime!=null and startTime!='' and endTime!=''">
+      and submit_time BETWEEN  #{startTime} and #{endTime}
+    </if>
+    <if test="taskParentIds!=null and taskParentIds.size()>0">
+      <foreach collection="taskParentIds" item="taskParentId" separator="," open="and task_parent_id in (" close=")">
+        #{taskParentId}
+      </foreach>
+    </if>
+  </select>
+
+  <select id="listSupervisionStoreTaskIdList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from supervision_store_task_${enterpriseId}
+    where id in
+    <foreach collection="idList" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+  </select>
+
+
+  <update id="updateByParentId">
+    update supervision_store_task_${enterpriseId}
+    <set>
+      <if test="taskName != null">
+        task_name = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskGrouping != null and taskGrouping!=''">
+        task_grouping = #{taskGrouping,jdbcType=VARCHAR},
+      </if>
+      <if test="taskEndTime != null">
+        task_end_time = #{taskEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reminderTimeBeforeEnd != null">
+        reminder_time_before_end = #{reminderTimeBeforeEnd},
+      </if>
+    </set>
+    where task_parent_id = #{parentId,jdbcType=BIGINT}
+  </update>
+
+  <select id="listSupervisionStoreTaskBySupervisionTaskId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from supervision_store_task_${enterpriseId}
+    <where>
+      <if test="filterTaskState!=null and filterTaskState==true ">
+        and task_state = 0
+      </if>
+      <if test="filterCancel!=null and filterCancel==true ">
+        and cancel_status = 0
+      </if>
+      <if test="ids!=null and ids.size()>0">
+        <foreach collection="ids" item="supervisionTaskId" separator="," open="and supervision_task_id in (" close=")">
+          #{supervisionTaskId}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+  <select id="listStoreTaskBySupervisionTaskId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from supervision_store_task_${enterpriseId}
+    <where>
+      <if test="storeName!=null and storeName!=''">
+        and store_name like  concat('%',#{storeName},'%')
+      </if>
+      <if test="filterTransferReassign!=null and filterTransferReassign==true">
+        and transfer_reassign_flag = 0
+      </if>
+      <if test="filterCancel!=null and filterCancel==true">
+        and cancel_status = 0
+      </if>
+      <if test="filterComplete!=null and filterComplete==true">
+        and task_state != 1
+      </if>
+      <if test="ids!=null and ids.size()>0">
+        <foreach collection="ids" item="supervisionTaskId" separator="," open="and supervision_task_id in (" close=")">
+          #{supervisionTaskId}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+
+  <select id="countStoreTaskBySupervisionTaskId" resultType="java.lang.Integer">
+    select
+    count(1)
+    from supervision_store_task_${enterpriseId}
+    <where>
+      <if test="ids!=null and ids.size()>0">
+        <foreach collection="ids" item="supervisionTaskId" separator="," open="and supervision_task_id in (" close=")">
+          #{supervisionTaskId}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+
+  <select id="listReminderBeforeSupervisionTask" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from supervision_store_task_${enterpriseId}
+    where task_state = 0 and cancel_status = 0
+    and reminder_time_before_starting = #{reminderTimeBeforeStarting}
+  </select>
+  <select id="listReminderAfterSupervisionTask" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from supervision_store_task_${enterpriseId}
+    where task_state = 0 and cancel_status = 0
+    and reminder_time_before_end = #{reminderTimeAfterEnd}
+  </select>
+
+
+  <select id="supervisionStoreTaskBasicData" resultType="com.coolcollege.intelligent.model.supervision.dto.SupervisionStoreTaskBasicDataDTO">
+    select
+    supervision_task_id as supervisionTaskId,
+    ifnull(sum(case when cancel_status = 0  then 1 else 0 end),0) filterCancelCount,
+    count(1) as  count,
+    max(submit_time) as maxSubmitTime,
+    max(complete_time) as maxCompleteTime,
+    ifnull(sum(case when task_state = 0 and cancel_status = 0  then 1 else 0 end),0) handleNum,
+    ifnull(sum(case when task_state = 1 and cancel_status = 0 then 1 else 0 end),0)  completeNum,
+    ifnull(sum(case when task_state = 4 and cancel_status = 0 then 1 else 0 end),0)  approveNum,
+    ifnull(sum(case when (handle_over_time_status = 1  or (handle_over_time_status = 0 and task_end_time <![CDATA[ < ]]> now()) )   and cancel_status = 0  then 1 else 0 end),0)  handleOverTimeNum,
+    ifnull(sum(case when cancel_status = 1 then 1 else 0 end),0)  cancelNum
+    from supervision_store_task_${enterpriseId}
+    <where>
+      <if test="taskIds!=null and taskIds.size()>0">
+        <foreach collection="taskIds" item="taskId" separator="," open="and supervision_task_id in (" close=")">
+          #{taskId}
+        </foreach>
+      </if>
+    </where>
+    group by supervision_task_id
+  </select>
+
+
+  <update id="batchUpdateStoreTaskStatus">
+    update supervision_store_task_${enterpriseId}
+    set
+    task_state = CASE id
+    <foreach collection="records" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.taskState},task_state)
+    </foreach>
+    END,
+    cancel_status = CASE id
+    <foreach collection="records" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.cancelStatus},cancel_status)
+    </foreach>
+    END,
+    handle_over_time_status = CASE id
+    <foreach collection="records" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.handleOverTimeStatus},handle_over_time_status)
+    </foreach>
+    END
+    where id in
+    <foreach collection="records" item="record" open="(" separator="," close=")">
+      #{record.id}
+    </foreach>
+  </update>
+
+  <update id="updateHandleOverTimeData">
+    update supervision_store_task_${enterpriseId}
+    set handle_over_time_status = 1
+    where task_state = 0 and task_end_time <![CDATA[ <= ]]> now() and handle_over_time_status = 0
+  </update>
+
+  <select id="correctData" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from supervision_store_task_${enterpriseId}
+    where task_state = 1
+  </select>
+</mapper>

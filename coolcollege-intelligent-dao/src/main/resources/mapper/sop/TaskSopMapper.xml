@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.sop.TaskSopMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.sop.vo.TaskSopVO" id="taskSopVOMap">
+        <result property="id" column="id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="url" column="url"/>
+        <result property="type" column="type"/>
+        <result property="category" column="category"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="createUser" column="create_user"/>
+        <result property="createTime" column="create_time"/>
+        <result property="visibleUser" column="visible_user"/>
+        <result property="visibleRole" column="visible_role"/>
+        <result property="visibleUserName" column="visible_user_name"/>
+        <result property="visibleRoleName" column="visible_role_name"/>
+        <result property="usePersonInfo" column="use_person_info"/>
+        <result property="useRange" column="use_range"/>
+        <result property="useUserids" column="use_userids"/>
+        <result property="businessType" column="business_type"/>
+    </resultMap>
+
+    <insert id="addSopFile" keyProperty="sop.id" useGeneratedKeys="true" >
+        insert into task_sop_${eid}
+        (
+            file_name,
+            url,
+            type,
+            category,
+            create_user_id,
+            create_user,
+            create_time,
+            visible_user,
+            visible_role,
+            visible_user_name,
+            visible_role_name,
+            use_person_info,
+            use_range,
+            use_userids,
+            business_type
+        )
+        values
+        (
+            #{sop.fileName},
+            #{sop.url},
+            #{sop.type},
+            #{sop.category},
+            #{sop.createUserId},
+            #{sop.createUser},
+            now(),
+            #{sop.visibleUser},
+            #{sop.visibleRole},
+            #{sop.visibleUserName},
+            #{sop.visibleRoleName},
+            #{sop.usePersonInfo},
+            #{sop.useRange},
+            #{sop.useUserids},
+            #{sop.businessType}
+        )
+    </insert>
+
+    <insert id="batchInsertSop" keyProperty="sops.id" useGeneratedKeys="true" >
+        insert into task_sop_${eid}
+        (
+        file_name,
+        url,
+        type,
+        category,
+        create_user_id,
+        create_user,
+        create_time,
+        visible_user,
+        visible_role,
+        visible_user_name,
+        visible_role_name,
+        use_person_info,
+        use_range,
+        use_userids,
+        business_type
+        )
+        values
+        <foreach collection="sops" item="sop" separator=",">
+            (
+            #{sop.fileName},
+            #{sop.url},
+            #{sop.type},
+            #{sop.category},
+            #{sop.createUserId},
+            #{sop.createUser},
+            now(),
+            #{sop.visibleUser},
+            #{sop.visibleRole},
+            #{sop.visibleUserName},
+            #{sop.visibleRoleName},
+            #{sop.usePersonInfo},
+            #{sop.useRange},
+            #{sop.useUserids},
+            #{sop.businessType}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="addSopClassify">
+        insert into task_sop_classify_${eid}
+        (classify_name, create_user_id,create_user)
+        values
+        (
+            #{classify.classifyName},
+            #{classify.createUserId},
+            #{classify.createUser}
+        )
+    </insert>
+    <update id="updateSopClassify">
+        update task_sop_classify_${eid}
+        set classify_name = #{classify.classifyName},
+        update_user_id = #{classify.updateUserId},
+        update_user = #{classify.updateUser}
+        where id = #{classify.id}
+    </update>
+
+    <select id="selectAllTaskSop" resultType="com.coolcollege.intelligent.model.sop.dto.TaskSopDTO">
+        select
+            ts.id,
+            ts.file_name as fileName,
+            ts.url,
+            ts.video_url as videoUrl,
+            ts.type,
+            ts.category as category,
+            ts.create_user_id as createUserId,
+            ts.create_user as createUser,
+            ts.create_time as createTime,
+            ts.visible_user as visibleUser,
+            ts.visible_role as visibleRole,
+            ts.visible_user_name as visibleUserName,
+            ts.visible_role_name as visibleRoleName,
+            ts.use_person_info as usePersonInfo,
+            ts.use_range as useRange,
+            ts.use_userids as useUserids,
+            ts.business_type as businessType
+        from task_sop_${eid} ts
+        where ts.is_delete = 0
+        <if test="query.name != null and query.name != '' ">
+            and ts.file_name like concat('%', #{query.name} ,'%')
+        </if>
+        <if test="query.businessType != null and query.businessType != '' ">
+            and (ts.business_type is null or ts.business_type = #{query.businessType})
+        </if>
+        order by ts.id desc
+    </select>
+
+    <select id="selectTaskSopList" resultType="com.coolcollege.intelligent.model.sop.dto.TaskSopDTO">
+        select
+            ts.id,
+            ts.file_name as fileName,
+            ts.url,
+            ts.video_url as videoUrl,
+            ts.type,
+            ts.category as category,
+            ts.create_user_id as createUserId,
+            ts.create_user as createUser,
+            ts.create_time as createTime,
+            ts.visible_user as visibleUser,
+            ts.visible_role as visibleRole,
+            ts.visible_user_name as visibleUserName,
+            ts.visible_role_name as visibleRoleName,
+            ts.use_person_info as usePersonInfo,
+            ts.use_range as useRange,
+            ts.use_userids as useUserids,
+            ts.business_type as businessType
+        from task_sop_${eid} ts
+        where 1 = 1
+        <if test="query.category != null">
+            and ts.category = #{query.category}
+        </if>
+        <if test="query.name != null and query.name != '' ">
+            and ts.file_name like concat('%', #{query.name} ,'%')
+        </if>
+        <if test="query.isDeleted != null ">
+            and ts.is_delete = #{query.isDeleted}
+        </if>
+
+        <if test="query.userId != null and query.userId != ''">
+            and ts.is_delete = #{query.isDeleted}
+        </if>
+        <if test="query.businessType != null and query.businessType != '' ">
+            and (ts.business_type is null or ts.business_type = #{query.businessType})
+        </if>
+        and (ts.use_range = 'all' or ts.use_userids like concat('%,', #{query.userId} ,',%'))
+        order by ts.id desc
+    </select>
+
+    <select id="listByIdList" resultType="com.coolcollege.intelligent.model.sop.vo.TaskSopVO">
+        select
+            id,
+            file_name as fileName,
+            url,
+            video_url as videoUrl,
+            type,
+            category as category,
+            create_user_id as createUserId,
+            create_user as createUser,
+            create_time as createTime,
+            visible_user as visibleUser,
+            visible_role as visibleRole,
+            visible_user_name as visibleUserName,
+            visible_role_name as visibleRoleName,
+            use_person_info as usePersonInfo,
+            use_range as useRange,
+            use_userids as useUserids,
+            business_type as businessType
+        from task_sop_${enterpriseId}
+        where id in
+        <foreach collection="sopIdList" item="sopId" open="(" separator="," close=")">
+            #{sopId}
+        </foreach>
+    </select>
+
+    <select id="getSopById" resultMap="taskSopVOMap">
+        select * from task_sop_${enterpriseId}
+        where id=#{id}
+    </select>
+
+    <update id="batchDeleteSop">
+        update task_sop_${eId}
+        set is_delete = 1
+        where id in
+        <foreach collection="sopIdList" item="sopId" open="(" separator="," close=")">
+            #{sopId}
+        </foreach>
+    </update>
+    <update id="updateSopVisibleUser">
+        update task_sop_${eid}
+        set
+            visible_user = #{sop.visibleUser},
+            visible_role = #{sop.visibleRole},
+            visible_user_name = #{sop.visibleUserName},
+            visible_role_name = #{sop.visibleRoleName},
+            use_person_info = #{sop.usePersonInfo},
+            use_range  = #{sop.useRange},
+            use_userids = #{sop.useUserids}
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="selectSopClassifyList"
+            resultType="com.coolcollege.intelligent.model.sop.dto.TaskSopClassifySelectDTO">
+        select
+            id,
+            classify_name as classifyName
+        from task_sop_classify_${eid}
+    </select>
+
+    <select id="selectAllCategory" resultType="java.lang.String">
+        select distinct category from task_sop_${enterpriseId}
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from task_sop_${enterpriseId} where is_delete = 0;
+    </select>
+
+    <select id="getAllSop" resultType="com.coolcollege.intelligent.model.sop.TaskSopDO">
+        select
+            ts.id,
+            ts.file_name as fileName,
+            ts.url,
+            ts.type,
+            ts.category as category,
+            ts.create_user_id as createUserId,
+            ts.create_user as createUser,
+            ts.create_time as createTime,
+            ts.visible_user as visibleUser,
+            ts.visible_role as visibleRole,
+            ts.visible_user_name as visibleUserName,
+            ts.visible_role_name as visibleRoleName,
+            ts.use_person_info as usePersonInfo,
+            ts.use_range as useRange,
+            ts.use_userids as useUserids,
+            ts.business_type as businessType
+        from task_sop_${eid} ts where ts.is_delete = 0
+    </select>
+
+    <insert id="copySop">
+        insert into task_sop_${eid}
+        (
+        id,
+        file_name,
+        url,
+        type,
+        category,
+        create_user_id,
+        create_user,
+        create_time,
+        visible_user,
+        visible_role,
+        visible_user_name,
+        visible_role_name,
+        use_person_info,
+        use_range,
+        use_userids,
+        business_type
+        )
+        values
+        <foreach collection="sops" item="sop" separator=",">
+            (
+            #{sop.id},
+            #{sop.fileName},
+            #{sop.url},
+            #{sop.type},
+            #{sop.category},
+            #{sop.createUserId},
+            #{sop.createUser},
+            now(),
+            #{sop.visibleUser},
+            #{sop.visibleRole},
+            #{sop.visibleUserName},
+            #{sop.visibleRoleName},
+            #{sop.usePersonInfo},
+            #{sop.useRange},
+            #{sop.useUserids},
+            #{sop.businessType}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteAllSop">
+        delete from task_sop_${eid}
+    </delete>
+
+    <update id="batchUpdateVideoUrl">
+        update task_sop_${enterpriseId}
+        set url = CASE id
+        <foreach collection="sops" item="sop">
+            WHEN #{sop.id} THEN #{sop.url}
+        </foreach>
+        END,
+        video_url = CASE id
+        <foreach collection="sops" item="sop">
+            WHEN #{sop.id} THEN #{sop.videoUrl}
+        </foreach>
+        END
+        where id in
+        <foreach collection="sops" index="index" item="sop"
+                 separator="," open="(" close=")">
+            #{sop.id}
+        </foreach>
+    </update>
+
+    <update id="updateSopUrl">
+        <foreach collection="sops" item="sop" separator=";">
+            update task_sop_${enterpriseId}
+            set url = CASE id
+             <foreach collection="sops" item="sop">
+               WHEN #{sop.id} THEN #{sop.url}
+              </foreach>
+             END,
+             file_name = CASE id
+             <foreach collection="sops" item="sop">
+                WHEN #{sop.id} THEN #{sop.fileName}
+              </foreach>
+             END
+            where id in
+             <foreach collection="sops" index="index" item="sop"
+                     separator="," open="(" close=")">
+              #{sop.id}
+              </foreach>
+        </foreach>
+    </update>
+
+    <select id="selectDisplaySopAndUsedUserContainUserId" resultType="com.coolcollege.intelligent.model.sop.TaskSopDO">
+        select
+        ts.id,
+        ts.file_name as fileName,
+        ts.url,
+        ts.video_url as videoUrl,
+        ts.type,
+        ts.category as category,
+        ts.create_user_id as createUserId,
+        ts.create_user as createUser,
+        ts.create_time as createTime,
+        ts.visible_user as visibleUser,
+        ts.visible_role as visibleRole,
+        ts.visible_user_name as visibleUserName,
+        ts.visible_role_name as visibleRoleName,
+        ts.use_person_info as usePersonInfo,
+        ts.use_range as useRange,
+        ts.use_userids as useUserids,
+        ts.business_type as businessType
+        from task_sop_${enterpriseId} ts
+        where ts.is_delete = 0
+        and (ts.business_type is null or ts.business_type = 'TB_DISPLAY_TASK')
+        and (ts.use_range = 'all' or ts.use_userids like concat('%,', #{userId} ,',%'))
+        <if test="name != null and name != '' ">
+            and ts.file_name like concat('%', #{name} ,'%')
+        </if>
+        <if test="startTime != null and startTime != ''">
+            AND ts.create_time >= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND ts.create_time &lt; #{endTime}
+        </if>
+        order by ts.id desc
+    </select>
+</mapper>

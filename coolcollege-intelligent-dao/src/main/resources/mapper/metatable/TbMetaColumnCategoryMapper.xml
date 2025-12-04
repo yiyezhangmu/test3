@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.metatable.TbMetaColumnCategoryMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.metatable.TbMetaColumnCategoryDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
+    <result column="is_default" jdbcType="TINYINT" property="isDefault" />
+    <result column="create_id" jdbcType="VARCHAR" property="createId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_id" jdbcType="VARCHAR" property="updateId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, category_name, order_num, is_default, create_id, create_time, update_id,
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_meta_column_category_${enterpriseId}
+    where id = #{id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_meta_column_category_${enterpriseId}
+    where id = #{id}
+  </delete>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into tb_meta_column_category_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.categoryName != null">
+        category_name,
+      </if>
+      <if test="record.orderNum != null">
+        order_num,
+      </if>
+      <if test="record.isDefault != null">
+        is_default,
+      </if>
+      <if test="record.createId != null">
+        create_id,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.updateId != null">
+        update_id,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.categoryName != null">
+        #{record.categoryName},
+      </if>
+      <if test="record.orderNum != null">
+        #{record.orderNum},
+      </if>
+      <if test="record.isDefault != null">
+        #{record.isDefault},
+      </if>
+      <if test="record.createId != null">
+        #{record.createId},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+      <if test="record.updateId != null">
+        #{record.updateId},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime},
+      </if>
+    </trim>
+  </insert>
+  <insert id="batchInsertSelective" useGeneratedKeys="true" parameterType="java.util.ArrayList" keyProperty="list.id">
+    insert into tb_meta_column_category_${enterpriseId}
+        (category_name,
+        order_num,
+        is_default,
+        create_id,
+        create_time,
+        update_id,
+        update_time)
+    values
+      <foreach collection="list" separator="," item="record">
+          (#{record.categoryName},
+          #{record.orderNum},
+          #{record.isDefault},
+          #{record.createId},
+          #{record.createTime},
+          #{record.updateId},
+          #{record.updateTime})
+      </foreach>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update tb_meta_column_category_${enterpriseId}
+    <set>
+      <if test="record.categoryName != null">
+        category_name = #{record.categoryName},
+      </if>
+      <if test="record.orderNum != null">
+        order_num = #{record.orderNum},
+      </if>
+      <if test="record.isDefault != null">
+        is_default = #{record.isDefault},
+      </if>
+      <if test="record.createId != null">
+        create_id = #{record.createId},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime},
+      </if>
+      <if test="record.updateId != null">
+        update_id = #{record.updateId},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+  
+  <select id="getMetaColumnCategoryList" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from
+      tb_meta_column_category_${enterpriseId}
+    <where>
+      and category_name != 'AI检查项'
+      <if test="categoryName != null and categoryName !=''">
+        and category_name like concat('%',#{categoryName},'%')
+      </if>
+    </where>
+    order by is_default desc, order_num asc, id desc
+  </select>
+  
+  <select id="getSameNameCategoryCount" resultType="int">
+    select
+      count(1)
+    from
+      tb_meta_column_category_${enterpriseId}
+    where
+      category_name = #{categoryName}
+      <if test="excludeId != null">
+        and id != #{excludeId}
+      </if>
+  </select>
+  
+  <select id="getAllCount" resultType="int">
+    select count(1) from tb_meta_column_category_${enterpriseId}
+  </select>
+
+  <select id="getCategoryList" resultMap="BaseResultMap">
+    select
+      id, category_name
+    from
+      tb_meta_column_category_${enterpriseId}
+    where
+      id in <foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=","> #{categoryId}</foreach>
+  </select>
+  
+  <select id="getCategoryIdByName" resultType="long">
+    select id from tb_meta_column_category_${enterpriseId} where category_name = #{categoryName}
+  </select>
+  
+  <update id="bathUpdateMetaColumnCategory">
+    <foreach collection="updateList" item="record" separator=";">
+      update tb_meta_column_category_${enterpriseId}
+        <set>
+            <if test="record.categoryName != null">
+              category_name = #{record.categoryName},
+            </if>
+            <if test="record.orderNum != null">
+              order_num = #{record.orderNum},
+            </if>
+            <if test="record.isDefault != null">
+              is_default = #{record.isDefault},
+            </if>
+            <if test="record.createId != null">
+              create_id = #{record.createId},
+            </if>
+            <if test="record.createTime != null">
+              create_time = #{record.createTime},
+            </if>
+            <if test="record.updateId != null">
+              update_id = #{record.updateId},
+            </if>
+            <if test="record.updateTime != null">
+              update_time = #{record.updateTime},
+            </if>
+        </set>
+      where id = #{record.id}
+    </foreach>
+  </update>
+
+
+  <select id="getAllCategoryList" resultMap="BaseResultMap">
+    select
+        <include refid="Base_Column_List"/>
+    from
+        tb_meta_column_category_${enterpriseId}
+  </select>
+
+  <insert id="copyCategory">
+    insert into tb_meta_column_category_${enterpriseId}
+    (id,category_name,
+    order_num,
+    is_default,
+    create_id,
+    create_time,
+    update_id,
+    update_time)
+    values
+    <foreach collection="list" separator="," item="record">
+      (#{record.id},#{record.categoryName},
+      #{record.orderNum},
+      #{record.isDefault},
+      #{record.createId},
+      #{record.createTime},
+      #{record.updateId},
+      #{record.updateTime})
+    </foreach>
+  </insert>
+
+  <delete id="deleteAllCategory">
+     delete from tb_meta_column_category_${enterpriseId}
+  </delete>
+  
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.qyy.QyyConversationSceneAuthMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.qyy.QyyConversationSceneAuthDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="scene_code" jdbcType="VARCHAR" property="sceneCode" />
+        <result column="auth_code" jdbcType="VARCHAR" property="authCode" />
+        <result column="role_id" jdbcType="BIGINT" property="roleId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, scene_code, auth_code, role_id, create_time, update_time
+    </sql>
+    <insert id="batchInsertSelective" >
+        <foreach collection="insertList" separator=";" item="record">
+            insert into qyy_conversation_scene_auth_${enterpriseId}
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="record.sceneCode != null">
+                  scene_code,
+                </if>
+                <if test="record.authCode != null">
+                  auth_code,
+                </if>
+                <if test="record.roleId != null">
+                  role_id,
+                </if>
+                <if test="record.createTime != null">
+                  create_time,
+                </if>
+                <if test="record.updateTime != null">
+                  update_time,
+                </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="record.sceneCode != null">
+                  #{record.sceneCode},
+                </if>
+                <if test="record.authCode != null">
+                  #{record.authCode},
+                </if>
+                <if test="record.roleId != null">
+                  #{record.roleId},
+                </if>
+                <if test="record.createTime != null">
+                  #{record.createTime},
+                </if>
+                <if test="record.updateTime != null">
+                  #{record.updateTime},
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" >
+        update qyy_conversation_scene_auth_${enterpriseId}
+        <set>
+            <if test="record.sceneCode != null">
+              scene_code = #{record.sceneCode},
+            </if>
+            <if test="record.authCode != null">
+              auth_code = #{record.authCode},
+            </if>
+            <if test="record.roleId != null">
+              role_id = #{record.roleId},
+            </if>
+            <if test="record.createTime != null">
+              create_time = #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+              update_time = #{record.updateTime},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <select id="getConversationSceneAuth" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            qyy_conversation_scene_auth_${enterpriseId}
+        where
+            scene_code = #{sceneCode}
+    </select>
+
+    <delete id="deleteSceneAuth">
+        delete from qyy_conversation_scene_auth_${enterpriseId} where scene_code = #{sceneCode}
+    </delete>
+
+    <select id="getAuthByRoleIds" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            qyy_conversation_scene_auth_${enterpriseId}
+        where
+            role_id in <foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">#{roleId}</foreach>
+    </select>
+
+
+</mapper>

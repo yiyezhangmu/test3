@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.authentication.UserAuthMappingMapper" >
+    <resultMap id="baseResult" type="com.coolcollege.intelligent.model.authentication.UserAuthMappingDO">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="mappingId" column="mapping_id"/>
+        <result property="type" column="type"/>
+        <result property="source" column="source"/>
+        <result property="createId" column="create_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateId" column="update_id"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <insert id="insertUserAuthMapping">
+        insert into user_auth_mapping_${eid}
+        (
+            `user_id`,
+            `mapping_id`,
+            `type`,
+            `source`,
+            `create_id`,
+            `create_time`
+        )
+        values
+        (
+            #{auth.userId},
+            #{auth.mappingId},
+            #{auth.type},
+            #{auth.source},
+            #{auth.createId},
+            #{auth.createTime}
+        )
+    </insert>
+
+    <insert id="batchInsertUserAuthMapping">
+        insert into user_auth_mapping_${eid}
+        (user_id,mapping_id,type,create_id,create_time)
+        values
+        <foreach collection="list" item="auth" separator=",">
+            (
+            #{auth.userId},
+            #{auth.mappingId},
+            #{auth.type},
+            #{auth.createId},
+            #{auth.createTime}
+            )
+        </foreach>
+    </insert>
+
+    <select id="listUserAuthMappingByUserId" resultMap="baseResult">
+        select * from user_auth_mapping_${eid}
+        where user_id=#{userId}
+    </select>
+
+
+    <select id="getMappingUserAuthMappingByUserId" resultType="string">
+        select mapping_id from user_auth_mapping_${eid}
+        where user_id=#{userId}
+    </select>
+    <select id="countUserAuthCountByUserIdAndStoreId" resultType="java.lang.Integer">
+        select count(1) from user_auth_mapping_${eid}
+        where user_id=#{userId} and type = 'store' and mapping_id = #{storeId}
+    </select>
+    <select id="countUserAuthCountByUserIdAndRegionId" resultType="java.lang.Integer">
+        select count(1) from user_auth_mapping_${eid}
+        where user_id=#{userId} and type = 'region' and
+        <foreach collection="regionIds" item="regionId" open="mapping_id in (" separator="," close=")">
+            #{regionId}
+        </foreach>
+    </select>
+    <select id="listUserAuthMappingByUserIdList" resultMap="baseResult">
+        select * from user_auth_mapping_${eid}
+        <where>
+            <if test="userList!=null and userList.size>0">
+                <foreach collection="userList" item="userId" open="user_id in (" separator="," close=")">
+                    #{userId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+
+    <select id="listUserAuthMappingByMappingList" resultMap="baseResult">
+        select * from user_auth_mapping_${eid}
+        <where>
+            <if test="mappingIdList!=null and mappingIdList.size>0">
+                <foreach collection="mappingIdList" item="mappingId" open="mapping_id in (" separator="," close=")">
+                    #{mappingId}
+                </foreach>
+            </if>
+            <if test="type!=null and type!=''">
+                and type =#{type}
+            </if>
+        </where>
+    </select>
+
+    <select id="listUserAuthMappingByAuth" resultMap="baseResult">
+        select a.id,a.user_id,mapping_id,a.type from user_auth_mapping_${eid} a
+        join enterprise_user_${eid} e on a.user_id= e.user_id
+          <where>
+             e.user_status= '1' and e.active= true
+            <if test="mappingIdList!=null and mappingIdList.size>0">
+                <foreach collection="mappingIdList" item="mappingId" open="and a.mapping_id in (" separator="," close=")">
+                    #{mappingId}
+                </foreach>
+            </if>
+              <if test="type!=null and type!=''">
+                  and a.type =#{type}
+              </if>
+            <if test="(positionType!=null and positionType!='') or (notRoleAuth!=null and notRoleAuth!='')">
+                and a.user_id in (
+                    select
+                        distinct(user_id)
+                from enterprise_user_role_${eid} ur JOIN sys_role_${eid} b on ur.role_id=b.id
+                <where>
+                    <if test="positionType!=null and positionType!=''">
+                        and b.position_type =#{positionType}
+                    </if>
+                    <if test="notRoleAuth!=null and notRoleAuth!=''">
+                        and b.role_auth !=#{notRoleAuth}
+                    </if>
+                </where>
+                )
+            </if>
+        </where>
+    </select>
+    <select id="listUserAuthMappingByUserList" resultMap="baseResult">
+        select * from user_auth_mapping_${eid}
+        <where>
+            <if test="userIdList!=null and userIdList.size>0">
+                <foreach collection="userIdList" item="userId" open="user_id in (" separator="," close=")">
+                    #{userId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="listUserAuthMappingByUserAndType" resultMap="baseResult">
+        select * from user_auth_mapping_${eid}
+        <where>
+           <if test="userId!=null and userId !=''">
+               and user_id=#{userId}
+           </if>
+            <if test="type!=null and type!=''">
+                and type =#{type}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteAuthMappingByIdAndType">
+        delete from user_auth_mapping_${eid}
+        where type=#{type} and mapping_id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteAuthMappingByUserIds">
+        delete from user_auth_mapping_${eid}
+        where user_id in
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+    <delete id="deleteAuthMappingByIds">
+        delete from user_auth_mapping_${eid}
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteAuthMappingByUserIdsAndType">
+        delete from user_auth_mapping_${eid}
+        where type =#{type}
+        and user_id in
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteAuthMappingByUserIdAndTypeAndMappingIds">
+        delete from user_auth_mapping_${eid}
+        where user_id = #{userId}
+        and type =#{type}
+        and mapping_id in
+        <foreach collection="mappingIds" item="mappingId" open="(" separator="," close=")">
+            #{mappingId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteAuthMappingByUserIdAndSource">
+        delete from user_auth_mapping_${eid}
+        where `source` =#{source}
+        and user_id in
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+
+    <select id="selectIdsByUserId" resultType="java.lang.Long">
+        select id from user_auth_mapping_${eid} where user_id = #{userId}
+    </select>
+
+    <select id="selectIdsByUserIds" resultType="java.lang.Long">
+        select id from user_auth_mapping_${eid} where user_id in
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </select>
+
+    <select id="getUserAuthByUserIdAndMappingId" resultMap="baseResult">
+        select * from user_auth_mapping_${eid}
+        where user_id = #{userId} and mapping_id =#{mappingId} and type =#{type}
+    </select>
+
+    <update id="changeRegionToStoreAuth">
+        UPDATE user_auth_mapping_${eid} a,
+            region_${eid} b
+            SET a.mapping_id = b.store_id,
+            a.type = 'store'
+            WHERE
+            a.mapping_id = b.id
+            AND a.type = 'region' and b.region_type = 'store';
+    </update>
+
+    <select id="getUserIdsByMappingIds" resultType="string">
+        select
+            user_id
+        from
+            user_auth_mapping_${enterpriseId}
+        where
+            mapping_id in
+        <foreach collection="mappingIdList" item="mappingId" open="(" separator="," close=")">
+            #{mappingId}
+        </foreach>
+    </select>
+
+    <select id="getUserAuthByMappingIds" resultMap="baseResult">
+        select
+            user_id,
+            mapping_id
+        from
+            user_auth_mapping_${enterpriseId}
+        where
+            mapping_id in
+            <foreach collection="mappingIdList" item="mappingId" open="(" separator="," close=")">
+                #{mappingId}
+            </foreach>
+    </select>
+
+    <select id="getMappingIdsByUserId" resultType="string">
+        select
+            mapping_id
+        from
+            user_auth_mapping_${enterpriseId}
+        where
+            user_id = #{userId}
+    </select>
+    <select id="getRegionIdByUserId" resultType="java.lang.String">
+        select mapping_id
+        from user_auth_mapping_${enterpriseId}
+        where user_id = #{userId}
+    </select>
+
+    <select id="listByUserIdListAndSource" resultMap="baseResult">
+        select *
+        from user_auth_mapping_${eid}
+        where `source` =#{source}
+        and user_id in
+        <foreach collection="userIdList" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </select>
+    <select id="getAllByUserIds" resultMap="baseResult">
+        select *
+        from user_auth_mapping_${enterpriseId}
+        <where>
+            user_id in
+            <foreach collection="userIdsByRoleIdList" item="userId" open="(" separator="," close=")">
+                #{userId}
+            </foreach>
+        </where>
+
+    </select>
+
+</mapper>

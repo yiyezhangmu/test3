@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.safetycheck.TbDataColumnCommentMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.safetycheck.TbDataColumnCommentDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="business_id" jdbcType="BIGINT" property="businessId" />
+    <result column="history_id" jdbcType="BIGINT" property="historyId" />
+    <result column="operate_user_id" jdbcType="VARCHAR" property="operateUserId" />
+    <result column="operate_user_name" jdbcType="VARCHAR" property="operateUserName" />
+    <result column="data_table_id" jdbcType="BIGINT" property="dataTableId" />
+    <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId" />
+    <result column="meta_column_id" jdbcType="BIGINT" property="metaColumnId" />
+    <result column="data_column_id" jdbcType="BIGINT" property="dataColumnId" />
+    <result column="meta_column_name" jdbcType="VARCHAR" property="metaColumnName" />
+    <result column="comment_result" jdbcType="VARCHAR" property="commentResult" />
+    <result column="comment_remark" jdbcType="VARCHAR" property="commentRemark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, business_id, history_id, operate_user_id, operate_user_name, data_table_id, meta_table_id, 
+    meta_column_id, data_column_id, meta_column_name, comment_result, comment_remark, 
+    create_time, update_time, deleted,store_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_data_column_comment_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_data_column_comment_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.safetycheck.TbDataColumnCommentDO">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_data_column_comment_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.businessId != null">
+        business_id,
+      </if>
+      <if test="record.historyId != null">
+        history_id,
+      </if>
+      <if test="record.operateUserId != null">
+        operate_user_id,
+      </if>
+      <if test="record.operateUserName != null">
+        operate_user_name,
+      </if>
+      <if test="record.dataTableId != null">
+        data_table_id,
+      </if>
+      <if test="record.metaTableId != null">
+        meta_table_id,
+      </if>
+      <if test="record.metaColumnId != null">
+        meta_column_id,
+      </if>
+      <if test="record.dataColumnId != null">
+        data_column_id,
+      </if>
+      <if test="record.metaColumnName != null">
+        meta_column_name,
+      </if>
+      <if test="record.commentResult != null">
+        comment_result,
+      </if>
+      <if test="record.commentRemark != null">
+        comment_remark,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+      <if test="record.storeId != null">
+        store_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.businessId != null">
+        #{record.businessId,jdbcType=BIGINT},
+      </if>
+      <if test="record.historyId != null">
+        #{record.historyId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operateUserId != null">
+        #{record.operateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operateUserName != null">
+        #{record.operateUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataTableId != null">
+        #{record.dataTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaTableId != null">
+        #{record.metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaColumnId != null">
+        #{record.metaColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.dataColumnId != null">
+        #{record.dataColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaColumnName != null">
+        #{record.metaColumnName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentResult != null">
+        #{record.commentResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentRemark != null">
+        #{record.commentRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.storeId != null">
+        #{record.storeId},
+      </if>
+    </trim>
+  </insert>
+
+
+  <insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.ArrayList" keyProperty="entityList.id">
+    insert into tb_data_column_comment_${enterpriseId}
+    (
+    business_id,
+    history_id,
+    operate_user_id,
+    operate_user_name,
+    data_table_id,
+    meta_table_id,
+    meta_column_id,
+    data_column_id,
+    meta_column_name,
+    comment_result,
+    comment_remark,
+    create_time,
+    update_time,
+    deleted,
+    store_id
+    )values
+    <foreach collection="entityList" separator="," item="entity">
+      (
+      #{entity.businessId},
+      #{entity.historyId},
+      #{entity.operateUserId},
+      #{entity.operateUserName},
+      #{entity.dataTableId},
+      #{entity.metaTableId},
+      #{entity.metaColumnId},
+      #{entity.dataColumnId},
+      #{entity.metaColumnName},
+      #{entity.commentResult},
+      #{entity.commentRemark},
+      #{entity.createTime},
+      #{entity.updateTime},
+      #{entity.deleted},
+      #{entity.storeId}
+      )
+    </foreach>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.safetycheck.TbDataColumnCommentDO">
+    update tb_data_column_comment_${enterpriseId}
+    <set>
+      <if test="record.businessId != null">
+        business_id = #{record.businessId,jdbcType=BIGINT},
+      </if>
+      <if test="record.historyId != null">
+        history_id = #{record.historyId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operateUserId != null">
+        operate_user_id = #{record.operateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operateUserName != null">
+        operate_user_name = #{record.operateUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataTableId != null">
+        data_table_id = #{record.dataTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaTableId != null">
+        meta_table_id = #{record.metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaColumnId != null">
+        meta_column_id = #{record.metaColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.dataColumnId != null">
+        data_column_id = #{record.dataColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaColumnName != null">
+        meta_column_name = #{record.metaColumnName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentResult != null">
+        comment_result = #{record.commentResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentRemark != null">
+        comment_remark = #{record.commentRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != businessId">
+         and t.business_id = #{businessId,jdbcType=BIGINT}
+      </if>
+      <if test="null != historyId">
+         and t.history_id = #{historyId,jdbcType=BIGINT}
+      </if>
+      <if test="null != operateUserId">
+         and t.operate_user_id = #{operateUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != operateUserName">
+         and t.operate_user_name = #{operateUserName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != dataTableId">
+         and t.data_table_id = #{dataTableId,jdbcType=BIGINT}
+      </if>
+      <if test="null != metaTableId">
+         and t.meta_table_id = #{metaTableId,jdbcType=BIGINT}
+      </if>
+      <if test="null != metaColumnId">
+         and t.meta_column_id = #{metaColumnId,jdbcType=BIGINT}
+      </if>
+      <if test="null != dataColumnId">
+         and t.data_column_id = #{dataColumnId,jdbcType=BIGINT}
+      </if>
+      <if test="null != metaColumnName">
+         and t.meta_column_name = #{metaColumnName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != commentResult">
+         and t.comment_result = #{commentResult,jdbcType=VARCHAR}
+      </if>
+      <if test="null != commentRemark">
+         and t.comment_remark = #{commentRemark,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != updateTime">
+         and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != deleted">
+         and t.deleted = #{deleted,jdbcType=BIT}
+      </if>
+    </trim>
+  </sql>
+
+  <select id="listDataColumnCommentHistory" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_data_column_comment_${enterpriseId}
+    where business_id = #{businessId}
+    and data_column_id = #{dataColumnId}
+    and deleted = 0
+    order by id desc
+  </select>
+
+  <select id="getLatestComment" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from tb_data_column_comment_${enterpriseId} where id in
+    (select max(id) from tb_data_column_comment_${enterpriseId} where business_id = #{businessId}
+    GROUP BY data_column_id)
+  </select>
+
+  <select id="getCommentCount" resultType="com.coolcollege.intelligent.model.safetycheck.vo.DataColumnHasHistoryVO">
+    select data_column_id as dataColumnId,
+            count(1) as commentCount
+    from tb_data_column_comment_${enterpriseId}
+    where business_id = #{businessId}
+    group by data_column_id
+  </select>
+
+  <update id="updateDelByBusinessIds">
+    update tb_data_column_comment_${enterpriseId}
+    set deleted = 1
+    where business_id in (
+    <foreach collection="businessIds" separator="," item="item">
+      #{item}
+    </foreach>
+    )
+  </update>
+
+
+</mapper>

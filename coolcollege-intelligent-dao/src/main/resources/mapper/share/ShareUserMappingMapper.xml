@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.share.ShareUserMappingMapper">
+
+    <insert id="batchInsertMapping">
+        insert into share_user_mapping_${eId}
+        (
+        share_id,
+        user_id
+        )values
+        <foreach collection="userIdList"  separator="," index="index" item="userId">
+            (#{shareId},#{userId})
+        </foreach>
+    </insert>
+    <insert id="batchInsertShareIdAndUserId">
+        <foreach collection="entityList" separator=";" item="entity">
+            insert into share_user_mapping_${eId}
+            (
+            share_id,
+            user_id
+            )values
+        <foreach collection="entity.userIdList"  separator="," index="index" item="userId">
+            (#{entity.shareId},#{userId})
+        </foreach>
+        </foreach>
+    </insert>
+    <delete id="deleteByShareId">
+        delete from share_user_mapping_${eId}
+        where share_id in
+        <foreach collection="shareIdList" item="shareId" separator="," open="(" close=")">
+            #{shareId}
+        </foreach>
+    </delete>
+    <select id="getUserIdListByShareId" resultType="java.lang.String">
+        select user_id
+        from share_user_mapping_${eId}
+        where share_id = #{shareId}
+    </select>
+    <select id="getShareIdListByUserId" resultType="java.lang.String">
+        select distinct share_id
+        from share_user_mapping_${eId}
+        where user_id = #{userId}
+    </select>
+</mapper>

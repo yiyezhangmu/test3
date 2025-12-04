@@ -1,0 +1,1035 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.unifytask.TaskParentMapper">
+
+    <insert id="insertTaskParent" parameterType="com.coolcollege.intelligent.model.unifytask.TaskParentDO"
+            useGeneratedKeys="true" keyProperty="parent.id">
+    INSERT INTO unify_task_parent_${enterpriseId} (
+	task_name,
+	task_type,
+	begin_time,
+	end_time,
+	create_user_id,
+	create_time,
+	task_desc,
+	schedule_id,
+	template_id,
+	parent_status,
+	node_info,
+	update_user_id,
+	update_time,
+	run_rule,
+	task_cycle,
+	run_date,
+	calendar_time,
+	task_info,
+	limit_hour,
+	loop_count,
+	attach_url,
+	region_model,
+	extra_param,
+	store_open_rule_id,
+	product_no,
+    ai_audit
+    )
+    VALUES
+        (#{parent.taskName}, #{parent.taskType},
+    #{parent.beginTime}, #{parent.endTime}, #{parent.createUserId},
+    #{parent.createTime}, #{parent.taskDesc},#{parent.scheduleId},
+    #{parent.templateId}, #{parent.parentStatus},#{parent.nodeInfo},
+    #{parent.updateUserId},#{parent.updateTime},#{parent.runRule},
+    #{parent.taskCycle},#{parent.runDate},#{parent.calendarTime},
+    #{parent.taskInfo},#{parent.limitHour},#{parent.loopCount},
+    #{parent.attachUrl},#{parent.regionModel},#{parent.extraParam},
+    #{parent.storeOpenRuleId},#{parent.productNo},#{parent.aiAudit})
+  </insert>
+
+    <update id="updateParentTaskById">
+        update unify_task_parent_${enterpriseId}
+        <trim prefix="set" suffixOverrides=",">
+            <if test="parent.scheduleId != null and parent.scheduleId != ''">
+                schedule_id=#{parent.scheduleId},
+            </if>
+            <if test="parent.parentStatus != null and parent.parentStatus != ''">
+                parent_status=#{parent.parentStatus},
+            </if>
+            <if test="parent.loopCount != null">
+                loop_count=#{parent.loopCount},
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <update id="updateLoopCountById">
+        update unify_task_parent_${enterpriseId} set loop_count=#{loopCount}  where id=#{id}
+    </update>
+
+    <update id="updateParentByDO">
+        update unify_task_parent_${enterpriseId}
+        <trim prefix="set" suffixOverrides=",">
+            task_desc = #{parent.taskDesc},
+            attach_url = #{parent.attachUrl},
+            update_time = #{parent.updateTime},
+            update_user_id = #{parent.updateUserId},
+            <if test="parent.taskName != null and parent.taskName != ''">
+                task_name=#{parent.taskName},
+            </if>
+            <if test="parent.endTime != null and parent.endTime != ''">
+                end_time=#{parent.endTime},
+            </if>
+            <if test="parent.runDate != null and parent.runDate != ''">
+                run_date=#{parent.runDate},
+            </if>
+            <if test="parent.calendarTime != null and parent.calendarTime != ''">
+                calendar_time=#{parent.calendarTime},
+            </if>
+            <if test="parent.taskInfo != null and parent.taskInfo != ''">
+                task_info=#{parent.taskInfo},
+            </if>
+            <if test="parent.limitHour != null and parent.limitHour != ''">
+                limit_hour=#{parent.limitHour},
+            </if>
+            <if test="parent.runRule != null and parent.runRule != ''">
+                run_rule=#{parent.runRule},
+            </if>
+            <if test="parent.taskCycle != null and parent.taskCycle != ''">
+                task_cycle=#{parent.taskCycle},
+            </if>
+            <if test="parent.nodeInfo != null and parent.nodeInfo != ''">
+                node_info=#{parent.nodeInfo},
+            </if>
+        </trim>
+        where id = #{parent.id}
+    </update>
+
+
+    <update id="updateTaskInfoById">
+        update unify_task_parent_${enterpriseId}
+              set  task_info= #{taskInfo},
+            update_time =  #{updateTime}
+        where id = #{id}
+    </update>
+
+    <update id="clearScheduleIdByTaskId">
+        update unify_task_parent_${enterpriseId}
+        set  schedule_id = null,
+             update_time =  #{updateTime}
+        where id = #{id}
+    </update>
+
+
+    <select id="selectTaskById" resultType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+    select
+        id,
+        task_name as taskName,
+        create_user_id as createUserId,
+        template_id as templateId,
+        parent_status as parentStatus,
+        begin_time as beginTime,
+        end_time as endTime,
+        task_desc as taskDesc,
+        create_time as createTime,
+        node_info as nodeInfo,
+        task_type as taskType,
+        limit_hour as limitHour,
+        run_rule as runRule,
+        task_info as taskInfo,
+        loop_count as loopCount,
+        attach_url as attachUrl,
+        task_cycle as taskCycle,
+        run_date as runDate,
+        calendar_time as calendarTime,
+        schedule_id as scheduleId,
+        status_type as statusType,
+        ai_audit as aiAudit,
+        store_open_rule_id as storeOpenRuleId
+        from unify_task_parent_${enterpriseId}
+        where id= #{taskId}
+    </select>
+
+    <select id="selectParentTaskByUserId" resultType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+        select
+        a.id,
+        a.task_name as taskName,
+        a.task_type as taskType,
+        a.create_user_id as createUserId,
+        a.template_id as templateId,
+        a.schedule_id as scheduleId,
+        a.parent_status as parentStatus,
+        a.begin_time as beginTime,
+        a.end_time as endTime,
+        a.task_desc as taskDesc,
+        c.name as createUserName,
+        a.create_time as createTime,
+        a.run_rule as runRule,
+        a.task_cycle as taskCycle,
+        a.run_date as runDate,
+        a.calendar_time as calendarTime,
+        a.task_info as taskInfo,
+        a.limit_hour as limitHour,
+        a.loop_count as loopCount,
+        a.node_info as nodeInfo,
+        a.status_type as statusType
+        from unify_task_parent_${enterpriseId} a
+        left join enterprise_user_${enterpriseId} c on a.create_user_id=c.user_id
+        where
+        a.create_user_id = #{userId}
+        <if test="query.taskType != null and query.taskType != ''">
+            and a.task_type = #{query.taskType}
+        </if>
+        <if test="query.queryType != null and query.queryType != ''">
+            <choose>
+                <when test="query.queryType=='nostart'">
+                    AND a.begin_time &gt;= UNIX_TIMESTAMP(now())*1000
+                    AND status_type = 1
+                </when>
+                <when test="query.queryType=='ongoing'">
+                    and a.parent_status = 'ongoing'
+                    AND a.begin_time &lt; UNIX_TIMESTAMP(now())*1000
+                    AND status_type = 1
+                </when>
+                <when test="query.queryType=='complete'">
+                    and a.parent_status = 'complete'
+                    AND a.begin_time &lt; UNIX_TIMESTAMP(now())*1000
+                    AND status_type = 1
+                </when>
+                <otherwise>
+                    and a.parent_status is not null
+                </otherwise>
+            </choose>
+        </if>
+        <if test="query.taskName != null and query.taskName != ''">
+            and a.task_name like concat('%',trim(#{query.taskName,jdbcType=VARCHAR}),'%')
+        </if>
+        order by a.create_time desc
+    </select>
+
+    <select id="selectParentTaskByTaskIds" resultType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+        select
+        a.id,
+        a.task_name as taskName,
+        a.task_type as taskType,
+        a.create_user_id as createUserId,
+        a.template_id as templateId,
+        a.schedule_id as scheduleId,
+        a.parent_status as parentStatus,
+        a.begin_time as beginTime,
+        a.end_time as endTime,
+        a.task_desc as taskDesc,
+        c.name as createUserName,
+        a.create_time as createTime,
+        a.run_rule as runRule,
+        a.task_cycle as taskCycle,
+        a.run_date as runDate,
+        a.calendar_time as calendarTime,
+        a.task_info as taskInfo,
+        a.limit_hour as limitHour,
+        a.loop_count as loopCount,
+        a.node_info as nodeInfo,
+        a.status_type as statusType
+        from unify_task_parent_${enterpriseId} a
+        left join enterprise_user_${enterpriseId} c on a.create_user_id=c.user_id
+        where 1=1
+        <foreach collection="list" open="and a.id in (" close=")" separator="," item="taskId">
+            #{taskId}
+        </foreach>
+        order by a.create_time desc
+    </select>
+
+    <select id="selectParentTaskByAdmin" resultType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+        select
+        a.id,
+        a.task_name as taskName,
+        a.task_type as taskType,
+        a.create_user_id as createUserId,
+        a.template_id as templateId,
+        a.schedule_id as scheduleId,
+        a.parent_status as parentStatus,
+        a.begin_time as beginTime,
+        a.end_time as endTime,
+        a.task_desc as taskDesc,
+        c.name as createUserName,
+        a.create_time as createTime,
+        a.run_rule as runRule,
+        a.task_cycle as taskCycle,
+        a.run_date as runDate,
+        a.calendar_time as calendarTime,
+        a.task_info as taskInfo,
+        a.limit_hour as limitHour,
+        a.loop_count as loopCount,
+        a.node_info as nodeInfo,
+        a.status_type as statusType
+        from unify_task_parent_${enterpriseId} a
+        left join enterprise_user_${enterpriseId} c on a.create_user_id=c.user_id
+        where 1=1
+        <if test="query.taskType != null and query.taskType != ''">
+            and a.task_type = #{query.taskType}
+        </if>
+        <if test="query.queryType != null and query.queryType != ''">
+            <choose>
+                <when test="query.queryType=='nostart'">
+                    AND a.begin_time &gt;= UNIX_TIMESTAMP(now())*1000
+                    AND status_type = 1
+                </when>
+                <when test="query.queryType=='ongoing'">
+                    and a.parent_status = 'ongoing'
+                    AND a.begin_time &lt; UNIX_TIMESTAMP(now())*1000
+                    AND status_type = 1
+                </when>
+                <when test="query.queryType=='complete'">
+                    and a.parent_status = 'complete'
+                    AND a.begin_time &lt; UNIX_TIMESTAMP(now())*1000
+                    AND status_type = 1
+                </when>
+                <otherwise>
+                    and a.parent_status is not null
+                </otherwise>
+            </choose>
+        </if>
+        <if test="query.taskName != null and query.taskName != ''">
+            and a.task_name like concat('%',trim(#{query.taskName,jdbcType=VARCHAR}),'%')
+        </if>
+        order by a.create_time desc
+    </select>
+    <select id="selectTaskQuestionList" resultType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+        select
+        a.id,
+        a.task_name as taskName,
+        a.task_type as taskType,
+        a.create_user_id as createUserId,
+        a.template_id as templateId,
+        a.schedule_id as scheduleId,
+        a.parent_status as parentStatus,
+        a.begin_time as beginTime,
+        a.end_time as endTime,
+        a.task_desc as taskDesc,
+        a.create_time as createTime,
+        a.run_rule as runRule,
+        a.task_cycle as taskCycle,
+        a.run_date as runDate,
+        a.calendar_time as calendarTime,
+        a.task_info as taskInfo,
+        a.limit_hour as limitHour,
+        a.loop_count as loopCount
+        from unify_task_parent_${enterpriseId} a
+        <where>
+            <if test="taskType != null and taskType != ''">
+                and a.task_type = #{taskType}
+            </if>
+            <if test="userIdList != null and userIdList.size > 0">
+                <foreach collection="userIdList" open="and a.create_user_id in (" close=")" separator="," item="userId">
+                    #{userId}
+                </foreach>
+            </if>
+            <if test="beginTime != null and beginTime !='' and endTime != null and  endTime != ''">
+                and a.begin_time BETWEEN #{beginTime} and #{endTime}
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+    <select id="selectTaskQuestionListCount" resultType="java.lang.Long">
+        select
+        count(a.id)
+        from unify_task_parent_${enterpriseId} a
+        <where>
+            <if test="taskType != null and taskType != ''">
+                and a.task_type = #{taskType}
+            </if>
+            <if test="userIdList != null and userIdList.size > 0">
+                <foreach collection="userIdList" open="and a.create_user_id in (" close=")" separator="," item="userId">
+                    #{userId}
+                </foreach>
+            </if>
+            <if test="beginTime != null and beginTime !='' and endTime != null and  endTime != ''">
+                and a.begin_time BETWEEN #{beginTime} and #{endTime}
+            </if>
+        </where>
+    </select>
+    <select id="getParentMiddlePageData" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskParentCycleVO">
+        select s.loop_count as loopCount,
+        s.unify_task_id as unifyTaskId,
+        p.task_name as taskName,
+        p.task_type as taskType,
+        p.task_desc as taskDesc,
+        s.sub_begin_time as beginTime,
+        s.sub_end_time as endTime,
+        c.name as createUserName,
+        s.store_name as storeName
+        from
+        (
+        SELECT uts.loop_count,uts.unify_task_id,uts.sub_begin_time, uts.sub_end_time,GROUP_CONCAT(DISTINCT
+        uts.sub_status) as sub_status,GROUP_CONCAT(DISTINCT store.store_name) as store_name from
+        unify_task_sub_${enterpriseId} uts
+        LEFT JOIN store_${enterpriseId} store on uts.store_id =store.store_id where uts.unify_task_id =
+        #{query.unifyTaskId} GROUP BY uts.loop_count
+        ) s
+        LEFT JOIN unify_task_parent_${enterpriseId} p on s.unify_task_id = p.id
+        left join enterprise_user_${enterpriseId} c on p.create_user_id =c.user_id
+        where 1 = 1
+        <if test="query.queryType != null and query.queryType != ''">
+            <choose>
+                <when test="query.queryType=='nostart'">
+                    AND s.sub_begin_time &gt;= UNIX_TIMESTAMP(now())*1000
+                </when>
+                <when test="query.queryType=='ongoing'">
+                    and s.sub_status != 'complete'
+                    AND s.sub_begin_time &lt; UNIX_TIMESTAMP(now())*1000
+                </when>
+                <when test="query.queryType=='complete'">
+                    and s.sub_status = 'complete'
+                    AND s.sub_begin_time &lt; UNIX_TIMESTAMP(now())*1000
+                </when>
+                <otherwise>
+                    and s.sub_status is not null
+                </otherwise>
+            </choose>
+        </if>
+        order by s.loop_count desc
+    </select>
+
+    <select id="getTbDisplayReportPageData"
+            resultType="com.coolcollege.intelligent.model.tbdisplay.vo.TbDisplayTaskDataVO">
+        select uts.store_id as storeId,
+        uts.loop_count as loopCount,
+        uts.unify_task_id as unifyTaskId,
+        uts.sub_begin_time as beginTime,
+        uts.sub_end_time as endTime,
+        concat(FROM_UNIXTIME(uts.sub_begin_time/1000,'%Y-%m-%d
+        %H:%i:%s'),'-',FROM_UNIXTIME(uts.sub_end_time/1000,'%Y-%m-%d %H:%i:%s')) as validTime,
+        FROM_UNIXTIME(uts.create_time/1000,'%Y-%m-%d %H:%i:%s') as createTime,
+        s.store_name as storeName,
+        s.region_id as regionId,
+        s.region_path as storeArea,
+        utp.task_type as taskType,
+        utp.task_name as taskName,
+        utp.task_desc as taskDesc,
+        eu.name as createUserName,
+        udm.origin_mapping_id as metaTableId,
+        udm.mapping_name as tableName
+        from unify_task_sub_${enterpriseId} uts
+        LEFT JOIN unify_task_parent_${enterpriseId} utp on uts.unify_task_id = utp.id
+        left join enterprise_user_${enterpriseId} eu on utp.create_user_id = eu.user_id
+        left join store_${enterpriseId} s on uts.store_id = s.store_id
+        LEFT JOIN unify_data_mapping_${enterpriseId} udm on udm.unify_task_id = utp.id
+        where uts.unify_task_id = #{query.unifyTaskId}
+        <if test="query.loopCount != null">
+            and uts.loop_count=#{query.loopCount}
+        </if>
+        GROUP BY uts.store_id, uts.loop_count
+        order by uts.loop_count asc
+    </select>
+
+
+    <select id="selectParentTaskByTaskId"
+            resultType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+            select
+            a.id,
+            a.task_name as taskName,
+            a.task_type as taskType,
+            a.create_user_id as createUserId,
+            a.template_id as templateId,
+            a.schedule_id as scheduleId,
+            a.parent_status as parentStatus,
+        a.begin_time as beginTime,
+        a.end_time as endTime,
+        a.task_desc as taskDesc,
+        c.name as createUserName,
+        a.create_time as createTime,
+        a.run_rule as runRule,
+        a.task_cycle as taskCycle,
+        a.run_date as runDate,
+        a.calendar_time as calendarTime,
+        a.task_info as taskInfo,
+        a.limit_hour as limitHour,
+        a.loop_count as loopCount,
+        a.node_info as nodeInfo
+        from unify_task_parent_${enterpriseId} a
+        left join enterprise_user_${enterpriseId} c on a.create_user_id=c.user_id
+        where a.id= #{taskId}
+    </select>
+
+    <select id="selectDisplayParentStatistics" resultType="java.lang.Integer">
+        select count(a.id)
+        from unify_task_parent_${enterpriseId} a
+        where a.create_user_id = #{userId}
+        and a.task_type = #{taskType}
+        <if test="status != null and status != ''">
+            <choose>
+                <when test="status=='nostart'">
+                    AND a.begin_time &gt;= UNIX_TIMESTAMP(now())*1000
+                    AND status_type = 1
+                </when>
+                <otherwise>
+                    and a.parent_status = #{status}
+                    AND a.begin_time &lt; UNIX_TIMESTAMP(now())*1000
+                    AND status_type = 1
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+    <select id="selectDisplayParentStatisticsByAdmin" resultType="java.lang.Long">
+        select distinct a.id
+        from unify_task_parent_${enterpriseId} a
+        where a.task_type = #{taskType}
+        <if test="status != null and status != ''">
+            <choose>
+                <when test="status=='nostart'">
+                    AND a.begin_time &gt;= UNIX_TIMESTAMP(now())*1000
+                    AND status_type = 1
+                </when>
+                <otherwise>
+                    and a.parent_status = #{status}
+                    AND a.begin_time &lt; UNIX_TIMESTAMP(now())*1000
+                    AND status_type = 1
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+    <select id="selectParentStatistics" resultType="java.lang.Integer">
+        select IFNULL(count( a.id ) , 0)
+        from unify_task_parent_${enterpriseId} a
+        where a.task_type = #{taskType}
+        <if test="status != null and status != ''">
+            <choose>
+                <when test="status=='nostart'">
+                    AND a.begin_time &gt;= UNIX_TIMESTAMP(now())*1000
+                </when>
+                <when test="status=='ongoing' and overdueTaskContinue != null and overdueTaskContinue == true">
+                    AND run_rule = 'ONCE'
+                    and a.parent_status = #{status}
+                    AND a.begin_time  <![CDATA[ < ]]>  UNIX_TIMESTAMP(now())*1000
+                </when>
+                <when test="status=='ongoing' and overdueTaskContinue != null and overdueTaskContinue == false">
+                    AND run_rule = 'ONCE'
+                    and a.parent_status = #{status}
+                    AND a.begin_time <![CDATA[ < ]]> UNIX_TIMESTAMP(now())*1000
+                    AND a.end_time &gt;= UNIX_TIMESTAMP(now())*1000
+                </when>
+                <when test="status=='complete' and overdueTaskContinue != null and overdueTaskContinue == true">
+                    AND run_rule = 'ONCE'
+                    and a.parent_status = #{status}
+                </when>
+                <when test="status=='complete' and overdueTaskContinue != null and overdueTaskContinue == false">
+                    AND run_rule = 'ONCE'
+                    and (a.parent_status = #{status}
+                    or (
+                    a.parent_status = 'ongoing'
+                    AND a.end_time <![CDATA[ < ]]> UNIX_TIMESTAMP(now())*1000))
+                </when>
+            </choose>
+        </if>
+    </select>
+
+    <select id="selectParentStatisticsCount"
+            resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifyParentStatisticsDTO">
+        select
+        ifnull( count( a.id ), 0 ) AS 'all',
+        <if test="overdueTaskContinue != null and overdueTaskContinue == true">
+            ifnull( sum( CASE WHEN run_rule = 'ONCE'
+            and a.parent_status = 'ongoing'
+            AND a.begin_time  <![CDATA[ < ]]>  UNIX_TIMESTAMP(now())*1000 THEN 1 ELSE 0 END ), 0 ) AS ongoing,
+            ifnull( sum( CASE WHEN run_rule = 'ONCE'
+            and a.parent_status = 'complete' THEN 1 ELSE 0 END ), 0 ) AS complete,
+        </if>
+        <if test="overdueTaskContinue != null and overdueTaskContinue == false">
+            ifnull( sum( CASE WHEN run_rule = 'ONCE'
+            and a.parent_status = 'ongoing'
+            AND a.begin_time <![CDATA[ < ]]> UNIX_TIMESTAMP(now())*1000
+            AND a.end_time &gt;= UNIX_TIMESTAMP(now())*1000 THEN 1 ELSE 0 END ), 0 ) AS ongoing,
+
+            ifnull( sum( CASE WHEN run_rule = 'ONCE'
+            and (a.parent_status = 'complete'
+            or (
+            a.parent_status = 'ongoing'
+            AND a.end_time <![CDATA[ < ]]> UNIX_TIMESTAMP(now())*1000)) THEN 1 ELSE 0 END ), 0 ) AS complete,
+        </if>
+        ifnull( sum( CASE WHEN a.parent_status = 'ongoing' AND a.begin_time &gt;= UNIX_TIMESTAMP(now())*1000 THEN 1 ELSE
+        0
+        END ), 0 ) AS nostart
+
+        from unify_task_parent_${enterpriseId} a
+        where a.task_type = #{taskType}
+    </select>
+
+    <select id="selectEndTaskCount"
+            resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifyParentCount">
+        select a.unify_task_id as unifyTaskId,
+        count(a.id) as count
+        from unify_task_sub_${enterpriseId} a
+        where a.node_no = 'endNode'
+        and a.sub_status = 'complete'
+        <if test="taskList !=null and taskList.size > 0">
+            AND a.unify_task_id in
+            <foreach collection="taskList" item="taskId" separator="," open="(" close=")">
+                #{taskId}
+            </foreach>
+        </if>
+        GROUP BY a.unify_task_id
+    </select>
+
+    <select id="selectParentBeginTimeByTaskId" resultType="java.lang.Long">
+            select
+            a.begin_time
+            from unify_task_parent_${enterpriseId} a
+            where a.id= #{taskId}
+    </select>
+
+    <select id="selectParentTaskById" resultType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+        select
+    a.id,
+    a.task_name as taskName,
+    a.task_type as taskType,
+    a.create_user_id as createUserId,
+    a.template_id as templateId,
+    a.schedule_id as scheduleId,
+    a.parent_status as parentStatus,
+    a.begin_time as beginTime,
+    a.end_time as endTime,
+        a.task_desc as taskDesc,
+        a.create_time as createTime,
+        a.node_info as nodeInfo,
+        a.update_user_id as updateUserId,
+        a.update_time as updateTime,
+        a.run_rule as runRule,
+        a.task_cycle as taskCycle,
+        a.run_date as runDate,
+        a.calendar_time as calendarTime,
+        a.task_info as taskInfo,
+        a.limit_hour as limitHour,
+        a.loop_count as loopCount,
+        a.attach_url as attachUrl,
+        a.region_model as regionModel,
+        a.extra_param as extraParam,
+        a.product_no as productNo,
+        a.store_open_rule_id as storeOpenRuleId,
+        a.status_type as statusType,
+               a.ai_audit as aiAudit
+        from unify_task_parent_${enterpriseId} a
+        where a.id= #{taskId}
+    </select>
+
+    <delete id="delParentTaskByTaskId">
+            delete from unify_task_parent_${enterpriseId}
+            where id= #{taskId}
+    </delete>
+
+    <select id="selectByEnterpriseId" resultType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+        select
+        id,
+        task_name as taskName,
+        create_user_id as createUserId,
+        template_id as templateId,
+        parent_status as parentStatus,
+        begin_time as beginTime,
+        end_time as endTime,
+        task_desc as taskDesc,
+        create_time as createTime,
+        node_info as nodeInfo,
+        loop_count as loopCount
+        from unify_task_parent_${enterpriseId}
+        where task_type = #{taskType}
+    </select>
+
+    <select id="selectTaskByIds" resultType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+        select
+        id,
+        task_name as taskName,
+        task_type as taskType,
+        create_user_id as createUserId,
+        template_id as templateId,
+        schedule_id as scheduleId,
+        parent_status as parentStatus,
+        begin_time as beginTime,
+        end_time as endTime,
+        task_desc as taskDesc,
+        create_time as createTime,
+        node_info as nodeInfo,
+        update_user_id as updateUserId,
+        update_time as updateTime,
+        run_rule as runRule,
+        task_cycle as taskCycle,
+        run_date as runDate,
+        calendar_time as calendarTime,
+        task_info as taskInfo,
+        limit_hour as limitHour,
+        loop_count as loopCount,
+        status_type as statusType
+        from unify_task_parent_${enterpriseId}
+        where id in (
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+    </select>
+    <select id="selectTaskByIdsForMap" resultType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+        select
+        id,
+        task_name as taskName,
+        task_desc as taskDesc
+        from unify_task_parent_${enterpriseId}
+        where id in (
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+    </select>
+    <select id="selectParentTaskBatch" resultType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+        select
+        a.id,
+        a.create_user_id as createUserId,
+        a.end_time as endTime,
+        a.task_info as taskInfo,
+        a.task_desc as taskDesc,
+        a.loop_count as loopCount
+        from unify_task_parent_${enterpriseId} a
+        where a.id in
+        <foreach collection="idList" item="taskId" separator="," open="(" close=")">
+            #{taskId}
+        </foreach>
+    </select>
+    <select id="getExportTotal" resultType="java.lang.Long">
+        select
+        count(0)
+        from (
+        select *
+        from unify_task_sub_${enterpriseId} uts
+        where uts.unify_task_id = #{taskId}
+        GROUP BY uts.store_id, uts.loop_count
+        ) a
+    </select>
+
+    <select id="countTaskReport" resultType="long">
+        select count(a.id)
+        from unify_task_parent_${enterpriseId} a
+        where 1=1
+        <if test="query.taskType != null and query.taskType != ''">
+            <choose>
+                <when test="query.taskType=='PATROL_STORE'">
+                    and a.task_type in ('PATROL_STORE_ONLINE','PATROL_STORE_OFFLINE','PATROL_STORE_PICTURE_ONLINE')
+                </when>
+                <otherwise>
+                    and a.task_type = #{query.taskType}
+                </otherwise>
+            </choose>
+        </if>
+        <if test="query.startTime != null">
+            and a.begin_time >= #{query.startTime, jdbcType=BIGINT}
+        </if>
+        <if test="query.endTime != null">
+            and a.begin_time <![CDATA[ <= ]]> #{query.endTime, jdbcType=BIGINT}
+        </if>
+        <if test="query.taskName != null and query.taskName != ''">
+            and a.task_name like concat(trim(#{query.taskName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="query.createUserId != null and query.createUserId != ''">
+            and a.create_user_id = #{query.createUserId}
+        </if>
+        order by a.create_time desc
+    </select>
+
+    <select id="listTaskReport" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskReportVO">
+        select
+        a.id,
+        a.task_name as taskName,
+        a.task_type as taskType,
+        a.create_user_id as createUserId,
+        a.begin_time as beginTime,
+        a.end_time as endTime,
+        a.task_desc as taskDesc,
+        a.create_time as createTime,
+        a.run_rule as runRule,
+        a.task_cycle as taskCycle,
+        a.run_date as runDate,
+        a.calendar_time as calendarTime,
+        a.task_info as taskInfo,
+        a.node_info as nodeInfo
+        from unify_task_parent_${enterpriseId} a
+        where 1=1
+        <if test="query.taskType != null and query.taskType != ''">
+            <choose>
+                <when test="query.taskType=='PATROL_STORE'">
+                    <choose>
+                        <when test="query.businessType!=null and query.businessType != ''">
+                            and a.task_type = #{query.businessType}
+                        </when>
+                        <otherwise>
+                            and a.task_type in
+                            ('PATROL_STORE_ONLINE','PATROL_STORE_OFFLINE','PATROL_STORE_PICTURE_ONLINE','PATROL_STORE_AI')
+                        </otherwise>
+                    </choose>
+                </when>
+                <otherwise>
+                    and a.task_type = #{query.taskType}
+                </otherwise>
+            </choose>
+        </if>
+        <if test="query.startTime != null">
+            and a.begin_time >= #{query.startTime, jdbcType=BIGINT}
+        </if>
+        <if test="query.endTime != null">
+            and a.begin_time <![CDATA[ <= ]]> #{query.endTime, jdbcType=BIGINT}
+        </if>
+        <if test="query.taskName != null and query.taskName != ''">
+            and a.task_name like concat(trim(#{query.taskName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="query.createUserId != null and query.createUserId != ''">
+            and a.create_user_id = #{query.createUserId}
+        </if>
+        order by a.create_time desc
+    </select>
+
+    <select id="selectParentTaskList" resultType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+        select
+        a.id,
+        a.task_name as taskName,
+        a.task_type as taskType,
+        a.create_user_id as createUserId,
+        a.template_id as templateId,
+        a.schedule_id as scheduleId,
+        a.parent_status as parentStatus,
+        a.begin_time as beginTime,
+        a.end_time as endTime,
+        a.task_desc as taskDesc,
+        a.create_time as createTime,
+        a.run_rule as runRule,
+        a.task_cycle as taskCycle,
+        a.run_date as runDate,
+        a.calendar_time as calendarTime,
+        a.node_info as nodeInfo,
+        a.limit_hour as limitHour,
+        a.loop_count as loopCount,
+        a.product_no as productNo,
+        a.task_info as taskInfo,
+        a.status_type as statusType
+        from unify_task_parent_${enterpriseId} a
+        <where>
+            <if test="query.taskType != null and query.taskType != ''">
+                and a.task_type = #{query.taskType}
+            </if>
+            <if test="query.taskCycle != null and query.taskCycle != ''">
+                and a.task_cycle = #{query.taskCycle}
+            </if>
+            <if test="query.runRule != null and query.runRule != ''">
+                and a.run_rule = #{query.runRule}
+            </if>
+            <if test="query.status != null and query.status != ''">
+                <choose>
+                    <when test="query.status=='nostart' ">
+                        AND a.begin_time > UNIX_TIMESTAMP(now())*1000
+                    </when>
+                    <when test="query.status=='stop' ">
+                        AND a.status_type = 0
+                    </when>
+                    <otherwise>
+                        and a.parent_status = #{query.status} AND a.status_type = 1
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="query.taskName != null and query.taskName != ''">
+                and a.task_name like concat('%', trim(#{query.taskName,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="query.userIdList != null and query.userIdList.size > 0 ">
+                and create_user_id in
+                <foreach collection="query.userIdList" item="userId" separator="," open="(" close=")">
+                    #{userId}
+                </foreach>
+            </if>
+            <if test="query.beginTimeStart != null and query.beginTimeEnd != null">
+                and a.begin_time BETWEEN #{query.beginTimeStart} and #{query.beginTimeEnd}
+            </if>
+
+            <!-- 权限过滤条件 -->
+            <choose>
+                <!-- 管理员可以看到所有任务 -->
+                <when test="isAdmin != null and isAdmin">
+                    <!-- 管理员额外筛选创建人 -->
+                    <if test="query.userIdList != null and query.userIdList.size > 0">
+                        AND a.create_user_id IN
+                        <foreach collection="query.userIdList" item="userId" separator="," open="(" close=")">
+                            #{userId}
+                        </foreach>
+                    </if>
+                </when>
+                <!-- 普通用户只能看到自己创建或参与的任务 -->
+                <otherwise>
+                    AND (
+                    <!-- 自己创建的任务 -->
+                    a.create_user_id = #{userId}
+                    <!-- 或自己参与协作的任务 -->
+                    <if test="unifyTaskIds != null and unifyTaskIds.size > 0">
+                        OR a.id IN
+                        <foreach collection="unifyTaskIds" item="id" separator="," open="(" close=")">
+                            #{id}
+                        </foreach>
+                    </if>
+                    )
+                </otherwise>
+            </choose>
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="listTaskIdsOrderByEndTime" resultType="java.lang.Long">
+        select id from unify_task_parent_${enterpriseId}
+        where id in
+        <foreach collection="idList" item="taskId" separator="," open="(" close=")">
+            #{taskId}
+        </foreach>
+        order by end_time desc
+        limit 200
+    </select>
+    <select id="selectTaskParentForPerson"
+            resultType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+        select
+        id,
+        task_name as taskName,
+        create_user_id as createUserId,
+        template_id as templateId,
+        parent_status as parentStatus,
+        begin_time as beginTime,
+        end_time as endTime,
+        task_desc as taskDesc,
+        create_time as createTime,
+        node_info as nodeInfo,
+        task_type as taskType,
+        limit_hour as limitHour,
+        run_rule as runRule,
+        task_info as taskInfo,
+        loop_count as loopCount,
+        attach_url as attachUrl,
+        task_cycle as taskCycle,
+        run_date as runDate,
+        calendar_time as calendarTime,
+        schedule_id as scheduleId
+        from unify_task_parent_${enterpriseId}
+        <where>
+            task_type = #{params.taskType}
+            <if test="params.createUserIds != null and params.createUserIds.size >0 ">
+                and create_user_id in
+                <foreach collection="params.createUserIds" item="createUserId" open="(" separator="," close=")">
+                    #{createUserId}
+                </foreach>
+            </if>
+            <if test="params.taskName != null and params.taskName != ''">
+                and task_name like concat(#{params.taskName}, '%')
+            </if>
+            <if test="params.beginDate != null">
+                and create_time &gt;= #{params.beginDate}
+            </if>
+            <if test="params.endDate != null">
+                and create_time &lt;= #{params.endDate}
+            </if>
+            <if test="params.parentStatus != null and params.parentStatus == 'nostart'">
+                and begin_time &gt;= (UNIX_TIMESTAMP(now()) * 1000)
+            </if>
+            <if test="params.isOverdue != null">
+                <choose>
+                    <when test="params.isOverdue">
+                        and parent_status = 'ongoing'
+                        and end_time &lt;= (UNIX_TIMESTAMP(now()) * 1000)
+                    </when>
+                    <otherwise>
+                        and (
+                        parent_status = 'complete' or (parent_status = 'ongoing' and end_time &gt;=
+                        (UNIX_TIMESTAMP(now()) * 1000))
+                        )
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+    <select id="getProductNoBySubTaskId" resultType="java.lang.String">
+        select product_no
+        from unify_task_parent_${enterpriseId}
+        where id = #{parentTaskId}
+    </select>
+
+    <update id="updateParentStatusByTaskId">
+        update unify_task_parent_${enterpriseId}
+        set parent_status = #{parentStatus}
+        where id = #{taskId}
+    </update>
+
+    <insert id="copyTaskParent" parameterType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+        insert into unify_task_parent_${enterpriseId}
+        (id, task_name, task_type, begin_time, end_time, create_user_id,
+        create_time, task_desc, schedule_id, template_id, parent_status,
+        node_info,update_user_id,update_time,run_rule,task_cycle,run_date,
+        calendar_time,task_info,limit_hour,loop_count,attach_url,region_model,extra_param)
+        values
+        (#{parent.id}, #{parent.taskName}, #{parent.taskType},
+        #{parent.beginTime}, #{parent.endTime}, #{parent.createUserId},
+        #{parent.createTime}, #{parent.taskDesc},#{parent.scheduleId},
+        #{parent.templateId}, #{parent.parentStatus},#{parent.nodeInfo},
+        #{parent.updateUserId},#{parent.updateTime},#{parent.runRule},
+        #{parent.taskCycle},#{parent.runDate},#{parent.calendarTime},#{parent.taskInfo},#{parent.limitHour},#{parent.loopCount},#{parent.attachUrl},#{parent.regionModel},#{parent.extraParam})
+    </insert>
+
+    <update id="updateSuperVisionParent">
+        update unify_task_parent_${enterpriseId}
+        set parent_status = #{parent.taskName},
+            begin_time = #{parent.beginTime},
+            end_time = #{parent.beginTime},
+            task_desc = #{parent.taskDesc}
+        where id = #{parent.id}
+    </update>
+    <update id="stopTask">
+        update unify_task_parent_${enterpriseId}
+        set status_type = 0,
+        schedule_id = null,
+        update_time =  now()
+        where id = #{parentTaskId}
+    </update>
+
+    <select id="getByExtraParam" resultType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+    select
+    id,
+    task_name as taskName,
+    create_user_id as createUserId,
+        template_id as templateId,
+        parent_status as parentStatus,
+        begin_time as beginTime,
+        end_time as endTime,
+        task_desc as taskDesc,
+        create_time as createTime,
+        node_info as nodeInfo,
+        task_type as taskType,
+        limit_hour as limitHour,
+        run_rule as runRule,
+        task_info as taskInfo,
+        loop_count as loopCount,
+        attach_url as attachUrl,
+        task_cycle as taskCycle,
+        run_date as runDate,
+        calendar_time as calendarTime,
+        schedule_id as scheduleId
+        from unify_task_parent_${enterpriseId}
+        where task_type= 'QUESTION_ORDER' and extra_param = #{extraParam}
+    </select>
+    <select id="getByRuleIds" resultType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+        select *
+        from unify_task_parent_${enterpriseId}
+        <where>
+            <if test="storeOpenRuleIds != null and storeOpenRuleIds.size > 0">
+                store_open_rule_id in
+                <foreach collection="storeOpenRuleIds" item="ruleId" open="(" close=")" separator=",">
+                    #{ruleId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="selectSxTask" resultType="com.coolcollege.intelligent.model.unifytask.TaskParentDO">
+        select * from unify_task_parent_${eid} where task_type in ('ACHIEVEMENT_NEW_RELEASE','ACHIEVEMENT_OLD_PRODUCTS_OFF')
+    </select>
+
+    <select id="selectIdByName" resultType="java.lang.Long">
+        SELECT
+        id,
+        task_name as taskName
+        FROM unify_task_parent_${enterpriseId}
+        WHERE task_name like concat('%', #{name}, '%')
+    </select>
+</mapper>

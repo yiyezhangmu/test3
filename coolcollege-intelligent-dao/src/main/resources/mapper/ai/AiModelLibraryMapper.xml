@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.ai.AiModelLibraryMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.ai.entity.AiModelLibraryDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="alias_code" jdbcType="VARCHAR" property="aliasCode" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="display" jdbcType="BIT" property="display" />
+    <result column="platform_code" jdbcType="BIGINT" property="platformCode" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="sync_get_result" jdbcType="BIT" property="syncGetResult" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="extend_info" jdbcType="VARCHAR" property="extendInfo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, code, alias_code, type, display, platform_code, remark, sync_get_result, create_time,
+    update_time, extend_info
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into ai_model_library
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        name,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="aliasCode != null">
+        alias_code,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="display != null">
+        display,
+      </if>
+      <if test="platformCode != null">
+        platform_code,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="syncGetResult != null">
+        sync_get_result,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="extendInfo != null">
+        extend_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name},
+      </if>
+      <if test="code != null">
+        #{code},
+      </if>
+      <if test="aliasCode != null">
+        #{aliasCode},
+      </if>
+      <if test="type != null">
+        #{type},
+      </if>
+      <if test="display != null">
+        #{display},
+      </if>
+      <if test="platformCode != null">
+        #{platformCode},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      <if test="syncGetResult != null">
+        #{syncGetResult},
+      </if>
+      <if test="createTime != null">
+        #{createTime},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime},
+      </if>
+      <if test="extendInfo != null">
+        #{extendInfo},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update ai_model_library
+    <set>
+      <if test="name != null">
+        name = #{name},
+      </if>
+      <if test="code != null">
+        code = #{code},
+      </if>
+      <if test="aliasCode != null">
+        alias_code = #{aliasCode},
+      </if>
+      <if test="type != null">
+        type = #{type},
+      </if>
+      <if test="display != null">
+        display = #{display},
+      </if>
+      <if test="platformCode != null">
+        platform_code = #{platformCode},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      <if test="syncGetResult != null">
+        sync_get_result = #{syncGetResult},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+      <if test="extendInfo != null">
+        extend_info = #{extendInfo},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <select id="getList" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM ai_model_library
+    <where>
+      <if test="display != null">
+        AND display = #{display}
+      </if>
+      <if test="type != null">
+        AND type = #{type}
+      </if>
+    </where>
+    ORDER BY platform_code ASC, name ASC
+  </select>
+
+  <select id="getByCode" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM ai_model_library
+    WHERE type = #{type} AND (code = #{code} OR alias_code = #{code})
+  </select>
+
+  <select id="getModelMapByCodes" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM ai_model_library
+    <where>
+      type = 'model'
+      <foreach collection="codes" item="code" separator=" OR " open=" AND (" close=")">
+        (code = #{code} OR alias_code = #{code})
+      </foreach>
+    </where>
+  </select>
+</mapper>

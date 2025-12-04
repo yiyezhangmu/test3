@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseDeviceCaptureInfoMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.enterprise.entity.EnterpriseDeviceCaptureInfoDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="enterprise_id" jdbcType="VARCHAR" property="enterpriseId" />
+    <result column="device_id" jdbcType="VARCHAR" property="deviceId" />
+    <result column="channel_no" jdbcType="VARCHAR" property="channelNo" />
+    <result column="business_type" jdbcType="VARCHAR" property="businessType" />
+    <result column="business_id" jdbcType="VARCHAR" property="businessId" />
+    <result column="capture_task_id" jdbcType="VARCHAR" property="captureTaskId" />
+    <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
+    <result column="file_id" jdbcType="VARCHAR" property="fileId" />
+    <result column="task_result" jdbcType="INTEGER" property="taskResult" />
+    <result column="resource" jdbcType="VARCHAR" property="resource" />
+    <result column="error_code" jdbcType="VARCHAR" property="errorCode" />
+    <result column="error_msg" jdbcType="VARCHAR" property="errorMsg" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, enterprise_id, device_id, channel_no, business_type, business_id, capture_task_id, 
+    pic_url, file_id, task_result, resource, error_code, error_msg, create_time, update_time
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into enterprise_device_capture_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="enterpriseId != null">
+        enterprise_id,
+      </if>
+      <if test="deviceId != null">
+        device_id,
+      </if>
+      <if test="channelNo != null">
+        channel_no,
+      </if>
+      <if test="businessType != null">
+        business_type,
+      </if>
+      <if test="businessId != null">
+        business_id,
+      </if>
+      <if test="captureTaskId != null">
+        capture_task_id,
+      </if>
+      <if test="picUrl != null">
+        pic_url,
+      </if>
+      <if test="fileId != null">
+        file_id,
+      </if>
+      <if test="taskResult != null">
+        task_result,
+      </if>
+      <if test="resource != null">
+        resource,
+      </if>
+      <if test="errorCode != null">
+        error_code,
+      </if>
+      <if test="errorMsg != null">
+        error_msg,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="enterpriseId != null">
+        #{enterpriseId},
+      </if>
+      <if test="deviceId != null">
+        #{deviceId},
+      </if>
+      <if test="channelNo != null">
+        #{channelNo},
+      </if>
+      <if test="businessType != null">
+        #{businessType},
+      </if>
+      <if test="businessId != null">
+        #{businessId},
+      </if>
+      <if test="captureTaskId != null">
+        #{captureTaskId},
+      </if>
+      <if test="picUrl != null">
+        #{picUrl},
+      </if>
+      <if test="fileId != null">
+        #{fileId},
+      </if>
+      <if test="taskResult != null">
+        #{taskResult},
+      </if>
+      <if test="resource != null">
+        #{resource},
+      </if>
+      <if test="errorCode != null">
+        #{errorCode},
+      </if>
+      <if test="errorMsg != null">
+        #{errorMsg},
+      </if>
+      <if test="createTime != null">
+        #{createTime},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update enterprise_device_capture_info
+    <set>
+      <if test="enterpriseId != null">
+        enterprise_id = #{enterpriseId},
+      </if>
+      <if test="deviceId != null">
+        device_id = #{deviceId},
+      </if>
+      <if test="channelNo != null">
+        channel_no = #{channelNo},
+      </if>
+      <if test="businessType != null">
+        business_type = #{businessType},
+      </if>
+      <if test="businessId != null">
+        business_id = #{businessId},
+      </if>
+      <if test="captureTaskId != null">
+        capture_task_id = #{captureTaskId},
+      </if>
+      <if test="picUrl != null">
+        pic_url = #{picUrl},
+      </if>
+      <if test="fileId != null">
+        file_id = #{fileId},
+      </if>
+      <if test="taskResult != null">
+        task_result = #{taskResult},
+      </if>
+      <if test="resource != null">
+        resource = #{resource},
+      </if>
+      <if test="errorCode != null">
+        error_code = #{errorCode},
+      </if>
+      <if test="errorMsg != null">
+        error_msg = #{errorMsg},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+    <select id="selectList"
+            resultType="com.coolcollege.intelligent.model.enterprise.entity.EnterpriseDeviceCaptureInfoDO">
+        select * from enterprise_device_capture_info where enterprise_id = #{enterpriseId} and task_result = 0
+        <if test="lastId != null">
+            AND id > #{lastId}
+        </if>
+        <if test="createTime != null">
+            AND create_time &lt;= #{createTime}
+        </if>
+        ORDER BY id ASC
+    </select>
+    <select id="selectByTaskId"
+            resultType="com.coolcollege.intelligent.model.enterprise.entity.EnterpriseDeviceCaptureInfoDO">
+        select * from enterprise_device_capture_info where capture_task_id = #{captureTaskId}
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO enterprise_device_capture_info
+        (enterprise_id, device_id, channel_no, business_type, business_id, capture_task_id,
+        pic_url, file_id, task_result, resource, error_code, error_msg)
+        VALUES
+        <foreach collection="records" item="record" separator=",">
+            (#{record.enterpriseId}, #{record.deviceId}, #{record.channelNo},
+            #{record.businessType}, #{record.businessId}, #{record.captureTaskId},
+            #{record.picUrl}, #{record.fileId}, #{record.taskResult},
+            #{record.resource}, #{record.errorCode}, #{record.errorMsg})
+        </foreach>
+    </insert>
+
+</mapper>

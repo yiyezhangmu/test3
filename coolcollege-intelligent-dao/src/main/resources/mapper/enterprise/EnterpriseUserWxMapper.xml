@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseUserWxMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.enterprise.EnterpriseUserWxDO">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="country" jdbcType="VARCHAR" property="country" />
+    <result column="headimgurl" jdbcType="VARCHAR" property="headimgurl" />
+    <result column="unionid" jdbcType="VARCHAR" property="unionid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, openid, nickname, sex, province, city, country, headimgurl, unionid
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id">
+    insert into enterprise_user_wx_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.id != null">
+        id,
+      </if>
+      <if test="record.userId != null">
+        user_id,
+      </if>
+      <if test="record.openid != null">
+        openid,
+      </if>
+      <if test="record.nickname != null">
+        nickname,
+      </if>
+      <if test="record.sex != null">
+        sex,
+      </if>
+      <if test="record.province != null">
+        province,
+      </if>
+      <if test="record.city != null">
+        city,
+      </if>
+      <if test="record.country != null">
+        country,
+      </if>
+      <if test="record.headimgurl != null">
+        headimgurl,
+      </if>
+      <if test="record.unionid != null">
+        unionid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.id != null">
+        #{record.id},
+      </if>
+      <if test="record.userId != null">
+        #{record.userId},
+      </if>
+      <if test="record.openid != null">
+        #{record.openid},
+      </if>
+      <if test="record.nickname != null">
+        #{record.nickname},
+      </if>
+      <if test="record.sex != null">
+        #{record.sex},
+      </if>
+      <if test="record.province != null">
+        #{record.province},
+      </if>
+      <if test="record.city != null">
+        #{record.city},
+      </if>
+      <if test="record.country != null">
+        #{record.country},
+      </if>
+      <if test="record.headimgurl != null">
+        #{record.headimgurl},
+      </if>
+      <if test="record.unionid != null">
+        #{record.unionid},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update enterprise_user_wx_${enterpriseId}
+    <set>
+      <if test="record.userId != null">
+        user_id = #{record.userId},
+      </if>
+      <if test="record.openid != null">
+        openid = #{record.openid},
+      </if>
+      <if test="record.nickname != null">
+        nickname = #{record.nickname},
+      </if>
+      <if test="record.sex != null">
+        sex = #{record.sex},
+      </if>
+      <if test="record.province != null">
+        province = #{record.province},
+      </if>
+      <if test="record.city != null">
+        city = #{record.city},
+      </if>
+      <if test="record.country != null">
+        country = #{record.country},
+      </if>
+      <if test="record.headimgurl != null">
+        headimgurl = #{record.headimgurl},
+      </if>
+      <if test="record.unionid != null">
+        unionid = #{record.unionid},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+
+  <select id="getByOpenId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from enterprise_user_wx_${enterpriseId}
+    where openid = #{openid}
+  </select>
+  
+  <select id="getOpenIdsByUserIds" resultType="string">
+    select openid from enterprise_user_wx_${enterpriseId} where user_id in
+    <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+      #{userId}
+    </foreach>
+  </select>
+</mapper>

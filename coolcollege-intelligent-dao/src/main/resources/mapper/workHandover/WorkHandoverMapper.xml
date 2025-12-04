@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.workHandover.WorkHandoverMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.workHandover.WorkHandoverDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="enterprise_id" jdbcType="VARCHAR" property="enterpriseId" />
+    <result column="transfer_user_id" jdbcType="VARCHAR" property="transferUserId" />
+    <result column="transfer_user_name" jdbcType="VARCHAR" property="transferUserName" />
+    <result column="handover_user_id" jdbcType="VARCHAR" property="handoverUserId" />
+    <result column="handover_user_name" jdbcType="VARCHAR" property="handoverUserName" />
+    <result column="handover_content" jdbcType="VARCHAR" property="handoverContent" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="complete_time" jdbcType="TIMESTAMP" property="completeTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, transfer_user_id, transfer_user_name, handover_user_id, handover_user_name, handover_content,
+    status, remark, create_user_id, create_user_name, create_time,enterprise_id,complete_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from enterprise_work_handover
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from enterprise_work_handover
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.workHandover.WorkHandoverDO"
+          keyColumn="id" keyProperty="params.id" useGeneratedKeys="true">
+    insert into enterprise_work_handover
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="params.enterpriseId != null">
+        enterprise_id,
+      </if>
+      <if test="params.transferUserId != null">
+        transfer_user_id,
+      </if>
+      <if test="params.transferUserName != null">
+        transfer_user_name,
+      </if>
+      <if test="params.handoverUserId != null">
+        handover_user_id,
+      </if>
+      <if test="params.handoverUserName != null">
+        handover_user_name,
+      </if>
+      <if test="params.handoverContent != null">
+        handover_content,
+      </if>
+      <if test="params.status != null">
+        status,
+      </if>
+      <if test="params.remark != null">
+        remark,
+      </if>
+      <if test="params.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="params.createUserName != null">
+        create_user_name,
+      </if>
+      <if test="params.createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="params.enterpriseId != null">
+        #{params.enterpriseId,jdbcType=VARCHAR},
+      </if>
+      <if test="params.transferUserId != null">
+        #{params.transferUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="params.transferUserName != null">
+        #{params.transferUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="params.handoverUserId != null">
+        #{params.handoverUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="params.handoverUserName != null">
+        #{params.handoverUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="params.handoverContent != null">
+        #{params.handoverContent,jdbcType=VARCHAR},
+      </if>
+      <if test="params.status != null">
+        #{params.status,jdbcType=INTEGER},
+      </if>
+      <if test="params.remark != null">
+        #{params.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="params.createUserId != null">
+        #{params.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="params.createUserName != null">
+        #{params.createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="params.createTime != null">
+        #{params.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.workHandover.WorkHandoverDO">
+    update enterprise_work_handover
+    <set>
+      <if test="params.transferUserId != null">
+        transfer_user_id = #{params.transferUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="params.transferUserName != null">
+        transfer_user_name = #{params.transferUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="params.handoverUserId != null">
+        handover_user_id = #{params.handoverUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="params.handoverUserName != null">
+        handover_user_name = #{params.handoverUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="params.handoverContent != null">
+        handover_content = #{params.handoverContent,jdbcType=VARCHAR},
+      </if>
+      <if test="params.status != null">
+        status = #{params.status,jdbcType=INTEGER},
+      </if>
+      <if test="params.remark != null">
+        remark = #{params.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="params.createUserId != null">
+        create_user_id = #{params.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="params.createUserName != null">
+        create_user_name = #{params.createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="params.createTime != null">
+        create_time = #{params.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="params.completeTime != null">
+        complete_time = #{params.completeTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{params.id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != transferUserId">
+         and t.transfer_user_id = #{transferUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != transferUserName">
+         and t.transfer_user_name = #{transferUserName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != handoverUserId">
+         and t.handover_user_id = #{handoverUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != handoverUserName">
+         and t.handover_user_name = #{handoverUserName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != handoverContent">
+         and t.handover_content = #{handoverContent,jdbcType=VARCHAR}
+      </if>
+      <if test="null != status">
+         and t.status = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="null != remark">
+         and t.remark = #{remark,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createUserId">
+         and t.create_user_id = #{createUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createUserName">
+         and t.create_user_name = #{createUserName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+  </sql>
+
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from enterprise_work_handover
+    where enterprise_id = #{enterpriseId}
+    <if test="name != null and name !=''">
+      and (transfer_user_name like concat('%',#{name},'%') or handover_user_name like concat('%',#{name},'%'))
+    </if>
+    order by create_time desc
+  </select>
+</mapper>

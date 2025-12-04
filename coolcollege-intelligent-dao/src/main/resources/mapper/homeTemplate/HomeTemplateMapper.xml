@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.homeTemplate.HomeTemplateMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.homeTemplate.HomeTemplateDO">
+        <id column="id" property="id" />
+        <result column="template_name"  property="templateName"/>
+        <result column="template_description" property="templateDescription"/>
+        <result column="is_default" property="isDefault"/>
+        <result column="deleted" property="deleted"/>
+        <result column="pc_components_json" property="pcComponentsJson"/>
+        <result column="app_components_json" property="appComponentsJson"/>
+        <result column="create_id" property="createId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,template_name,template_description,is_default,deleted,pc_components_json,
+        app_components_json,create_id,create_time,update_id,update_time
+    </sql>
+
+    <insert id="batchInsert" keyColumn="id" keyProperty="list.id" useGeneratedKeys="true">
+        INSERT into home_template_${enterpriseId}
+        (
+        template_name,
+        template_description,
+        is_default,
+        deleted,
+        pc_components_json,
+        app_components_json,
+        create_id,
+        create_time,
+        update_id,
+        update_time
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.templateName},
+            #{item.templateDescription},
+            #{item.isDefault},
+            #{item.deleted},
+            #{item.pcComponentsJson},
+            #{item.appComponentsJson},
+            #{item.createId},
+            #{item.createTime},
+            #{item.updateId},
+            #{item.updateTime}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deletedByIds">
+        delete from home_template_${enterpriseId}  where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateById" parameterType="com.coolcollege.intelligent.model.homeTemplate.HomeTemplateDO">
+        update home_template_${enterpriseId}
+        SET
+        <trim suffixOverrides=",">
+            <if test="entity.templateName != null and entity.templateName !='' ">
+                `template_name` = #{entity.templateName},
+            </if>
+            <if test="entity.templateDescription != null and entity.templateDescription !='' ">
+                `template_description` = #{entity.templateDescription},
+            </if>
+            <if test="entity.deleted != null and entity.deleted !='' ">
+                `deleted` = #{entity.deleted},
+            </if>
+            <if test="entity.pcComponentsJson != null and entity.pcComponentsJson !='' ">
+                `pc_components_json` = #{entity.pcComponentsJson},
+            </if>
+            <if test="entity.appComponentsJson != null and entity.appComponentsJson !='' ">
+                `app_components_json` = #{entity.appComponentsJson},
+            </if>
+            <if test="entity.updateId != null and entity.updateId !='' ">
+                `update_id` = #{entity.updateId},
+            </if>
+        </trim>
+        where id = #{entity.id}
+    </update>
+
+    <select id="selectById" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"></include>
+        from home_template_${enterpriseId}
+        where id = #{id}
+    </select>
+
+
+    <insert id="insert" keyColumn="id" keyProperty="entity.id" useGeneratedKeys="true">
+        INSERT into home_template_${enterpriseId}
+        (
+        template_name,
+        template_description,
+        is_default,
+        deleted,
+        pc_components_json,
+        app_components_json,
+        create_id,
+        create_time,
+        update_id,
+        update_time
+        ) VALUES
+            (
+            #{entity.templateName},
+            #{entity.templateDescription},
+            #{entity.isDefault},
+            #{entity.deleted},
+            #{entity.pcComponentsJson},
+            #{entity.appComponentsJson},
+            #{entity.createId},
+            #{entity.createTime},
+            #{entity.updateId},
+            #{entity.updateTime}
+            )
+    </insert>
+
+
+    <insert id="insertIdTemplate">
+        INSERT into home_template_${enterpriseId}
+        (
+            id,
+            template_name,
+            template_description,
+            is_default,
+            deleted,
+            pc_components_json,
+            app_components_json,
+            create_id,
+            create_time,
+            update_id,
+            update_time
+        ) VALUES
+        (
+            #{entity.id},
+            #{entity.templateName},
+            #{entity.templateDescription},
+            #{entity.isDefault},
+            #{entity.deleted},
+            #{entity.pcComponentsJson},
+            #{entity.appComponentsJson},
+            #{entity.createId},
+            #{entity.createTime},
+            #{entity.updateId},
+            #{entity.updateTime}
+        )
+        ON DUPLICATE KEY UPDATE template_name=values(template_name), deleted=values(deleted), update_time = values(update_time)
+    </insert>
+
+    <select id="selectAllData" resultType="com.coolcollege.intelligent.model.homeTemplate.HomeTemplateDO" >
+        select
+        id,template_name,template_description,is_default,deleted,create_id,create_time,update_id,update_time
+        from home_template_${enterpriseId}
+        where deleted = 0
+        <if test="templateName!=null and templateName!=''">
+            and template_name like concat('%', #{templateName}, '%')
+        </if>
+        order by create_time desc,id desc
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"></include>
+        from home_template_${enterpriseId} where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+</mapper>

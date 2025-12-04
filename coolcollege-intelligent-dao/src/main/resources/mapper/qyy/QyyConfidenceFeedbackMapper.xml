@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.qyy.QyyConfidenceFeedbackMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.qyy.QyyConfidenceFeedbackDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="user_id" jdbcType="VARCHAR" property="userId" />
+        <result column="region_id" jdbcType="BIGINT" property="regionId" />
+        <result column="conversation_id" jdbcType="VARCHAR" property="conversationId" />
+        <result column="score" jdbcType="DECIMAL" property="score" />
+        <result column="measure" jdbcType="VARCHAR" property="measure" />
+        <result column="resource_support" jdbcType="VARCHAR" property="resourceSupport" />
+        <result column="deleted" jdbcType="BIT" property="deleted" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, username, user_id, region_id, conversation_id, score, measure, resource_support, deleted, create_time, update_time
+    </sql>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="record.id">
+        insert into qyy_confidence_feedback_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.username != null">
+              username,
+            </if>
+            <if test="record.userId != null">
+              user_id,
+            </if>
+            <if test="record.regionId != null">
+              region_id,
+            </if>
+            <if test="record.conversationId != null">
+              conversation_id,
+            </if>
+            <if test="record.score != null">
+              score,
+            </if>
+            <if test="record.measure != null">
+              measure,
+            </if>
+            <if test="record.resourceSupport != null">
+              resource_support,
+            </if>
+            <if test="record.deleted != null">
+                deleted,
+            </if>
+            <if test="record.createTime != null">
+              create_time,
+            </if>
+            <if test="record.updateTime != null">
+              update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.username != null">
+              #{record.username},
+            </if>
+            <if test="record.userId != null">
+              #{record.userId},
+            </if>
+            <if test="record.regionId != null">
+              #{record.regionId},
+            </if>
+            <if test="record.conversationId != null">
+              #{record.conversationId},
+            </if>
+            <if test="record.score != null">
+              #{record.score},
+            </if>
+            <if test="record.measure != null">
+              #{record.measure},
+            </if>
+            <if test="record.resourceSupport != null">
+              #{record.resourceSupport},
+            </if>
+            <if test="record.deleted != null">
+                #{record.deleted},
+            </if>
+            <if test="record.createTime != null">
+              #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+              #{record.updateTime},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update qyy_confidence_feedback_${enterpriseId}
+        <set>
+            <if test="record.username != null">
+              username = #{record.username},
+            </if>
+            <if test="record.userId != null">
+              user_id = #{record.userId},
+            </if>
+            <if test="record.regionId != null">
+              region_id = #{record.regionId},
+            </if>
+            <if test="record.conversationId != null">
+              conversation_id = #{record.conversationId},
+            </if>
+            <if test="record.score != null">
+              score = #{record.score},
+            </if>
+            <if test="record.measure != null">
+              measure = #{record.measure},
+            </if>
+            <if test="record.resourceSupport != null">
+              resource_support = #{record.resourceSupport},
+            </if>
+            <if test="record.deleted != null">
+                deleted = #{record.deleted},
+            </if>
+            <if test="record.createTime != null">
+              create_time = #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+              update_time = #{record.updateTime},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <select id="getConfidenceFeedback" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            qyy_confidence_feedback_${enterpriseId}
+        where
+            id = #{id} and deleted = '0'
+    </select>
+
+    <select id="getConfidenceFeedbackPage" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            qyy_confidence_feedback_${enterpriseId}
+        where
+            deleted = '0'
+            <if test="userIds != null and userIds.size()>0">
+                and user_id in <foreach collection="userIds" separator="," open="(" close=")" item="userId">#{userId}</foreach>
+            </if>
+            <if test="beginTime != null">
+                and create_time > #{beginTime}
+            </if>
+            <if test="endTime != null">
+                and #{endTime} > create_time
+            </if>
+        order by id desc
+    </select>
+
+
+    <select id="getConfidenceFeedbackPageCount" resultType="long">
+        select
+            count(id)
+        from
+            qyy_confidence_feedback_${enterpriseId}
+        where
+            deleted = '0'
+            <if test="userIds != null and userIds.size()>0">
+                and user_id in <foreach collection="userIds" separator="," open="(" close=")" item="userId">#{userId}</foreach>
+            </if>
+            <if test="beginTime != null">
+                and create_time > #{beginTime}
+            </if>
+            <if test="endTime != null">
+                and #{endTime} > create_time
+            </if>
+    </select>
+    <select id="getConfidenceFeedbackId" resultType="long">
+        select id
+        from qyy_confidence_feedback_${enterpriseId}
+        where
+        deleted = '0'
+        <if test="insert.username != null">
+            and username = #{insert.username}
+        </if>
+        <if test="insert.userId != null">
+            and user_id = #{insert.userId}
+        </if>
+        <if test="insert.regionId != null">
+            and region_id = #{insert.regionId}
+        </if>
+        <if test="insert.conversationId != null">
+            and conversation_id = #{insert.conversationId}
+        </if>
+        <if test="insert.score != null">
+            and score = #{insert.score}
+        </if>
+        <if test="insert.measure != null">
+            and measure = #{insert.measure}
+        </if>
+        <if test="insert.createTime != null">
+            and create_time = #{insert.createTime}
+        </if>
+        <if test="insert.updateTime != null">
+            and update_time = #{insert.updateTime}
+        </if>
+    </select>
+
+</mapper>

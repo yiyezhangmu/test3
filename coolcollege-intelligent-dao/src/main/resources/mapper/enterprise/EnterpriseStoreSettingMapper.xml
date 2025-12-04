@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseStoreSettingMapper">
+    <insert id="insertOrUpdate">
+        insert into enterprise_store_setting
+        (
+        enterprise_id,
+        picture_set,
+        field_edit,
+        info_change_remind,
+        create_time,
+        create_user_id,
+        update_time,
+        update_user_id,
+        extend_field_info,
+        perfection_field,
+        store_license_effective_time,
+        user_license_effective_time,
+        notification_push_user
+        )values
+        (
+        #{eId,jdbcType=VARCHAR},
+        #{entity.pictureSet,jdbcType=TINYINT},
+        #{entity.fieldEdit,jdbcType=TINYINT},
+        #{entity.infoChangeRemind,jdbcType=TINYINT},
+        #{entity.createTime,jdbcType=BIGINT},
+        #{entity.createUserId,jdbcType=VARCHAR},
+        #{entity.updateTime,jdbcType=BIGINT},
+        #{entity.updateUserId,jdbcType=VARCHAR},
+        #{entity.extendFieldInfo,jdbcType=VARCHAR},
+        #{entity.perfectionField,jdbcType=VARCHAR},
+        #{entity.storeLicenseEffectiveTime},
+        #{entity.userLicenseEffectiveTime},
+        #{entity.notificationPushUser}
+        )
+        ON  DUPLICATE KEY UPDATE
+        picture_set=#{entity.pictureSet,jdbcType=TINYINT},
+        field_edit=#{entity.fieldEdit,jdbcType=TINYINT},
+        perfection_field=#{entity.perfectionField,jdbcType=TINYINT},
+        info_change_remind=#{entity.infoChangeRemind,jdbcType=TINYINT},
+        update_time=#{entity.updateTime,jdbcType=BIGINT},
+        update_user_id=#{entity.updateUserId,jdbcType=VARCHAR},
+        notification_push_user = #{entity.notificationPushUser}
+
+    </insert>
+    <update id="updateExtendField">
+        update enterprise_store_setting
+        set extend_field_info=#{extendField}
+        where enterprise_id = #{eId}
+    </update>
+    <update id="updateStoreTimeSetting">
+        update enterprise_store_setting
+        set store_license_effective_time=#{storeLicenseEffectiveTime},
+            user_license_effective_time=#{userLicenseEffectiveTime}
+        where enterprise_id = #{eId}
+    </update>
+    <update id="updateLicensesSetting">
+        update enterprise_store_setting
+        <set>
+            <if test="needUploadLicenseUserStr != null and needUploadLicenseUserStr != ''">
+                need_upload_license_user=#{needUploadLicenseUserStr},
+            </if>
+            <if test="noNeedUploadLicenseRegionStr != null and noNeedUploadLicenseRegionStr != ''">
+                no_need_upload_license_region=#{noNeedUploadLicenseRegionStr},
+            </if>
+            <if test="noNeedUploadLicenseUserStr != null and noNeedUploadLicenseUserStr != ''">
+                no_need_upload_license_user=#{noNeedUploadLicenseUserStr},
+            </if>
+        </set>
+        where enterprise_id = #{eid}
+    </update>
+    <select id="getEnterpriseStoreSetting"
+            resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseStoreSettingDO">
+        select
+        enterprise_id as enterpriseId,
+        picture_set as pictureSet,
+        field_edit as fieldEdit,
+        info_change_remind as infoChangeRemind,
+        create_time as createTime,
+        create_user_id as createUserId,
+        update_time as updateTime,
+        update_user_id as updateUserId,
+        extend_field_info as extendFieldInfo,
+        perfection_field as perfectionField,
+        store_license_effective_time as storeLicenseEffectiveTime,
+        user_license_effective_time as userLicenseEffectiveTime,
+        notification_push_user as notificationPushUser,
+        no_need_upload_license_user as noNeedUploadLicenseUser,
+        no_need_upload_license_region as noNeedUploadLicenseRegion,
+        need_upload_license_user as needUploadLicenseUser
+        from enterprise_store_setting
+        where enterprise_id = #{eId}
+    </select>
+</mapper>

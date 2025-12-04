@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.mapstrack.MapStrackMapper" >
+
+
+  
+
+    <select id="getStoreList" resultType="java.util.Map">
+        select distinct
+               s.store_id,
+               s.store_name,
+               s.longitude_latitude,
+               s.location_address,
+               s.vds_corp_id as aliyun_corp_id
+        from store_${map.eid} s
+        where s.is_delete = #{map.isDelete}
+        <if test="map.storeIds != null and map.storeIds.size() > 0 ">
+            and s.store_id in
+            <foreach collection="map.storeIds" item="storeId" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="map.store_name != null and map.store_name != '' ">
+            and s.store_name like concat('%', #{map.store_name}, '%')
+        </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,1387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.question.TbQuestionRecordMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.question.TbQuestionRecordDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="unify_task_id" jdbcType="BIGINT" property="unifyTaskId"/>
+        <result column="store_id" jdbcType="VARCHAR" property="storeId"/>
+        <result column="task_store_id" jdbcType="BIGINT" property="taskStoreId"/>
+        <result column="create_type" jdbcType="INTEGER" property="createType"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+        <result column="store_name" jdbcType="VARCHAR" property="storeName"/>
+        <result column="region_id" jdbcType="BIGINT" property="regionId"/>
+        <result column="region_path" jdbcType="VARCHAR" property="regionPath"/>
+        <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId"/>
+        <result column="meta_column_id" jdbcType="BIGINT" property="metaColumnId"/>
+        <result column="data_column_id" jdbcType="BIGINT" property="dataColumnId"/>
+        <result column="handle_user_id" jdbcType="VARCHAR" property="handleUserId"/>
+        <result column="handle_user_name" jdbcType="VARCHAR" property="handleUserName"/>
+        <result column="handle_time" jdbcType="TIMESTAMP" property="handleTime"/>
+        <result column="handle_action_key" jdbcType="VARCHAR" property="handleActionKey"/>
+        <result column="handle_remark" jdbcType="VARCHAR" property="handleRemark"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="learn_first" jdbcType="BIT" property="learnFirst"/>
+        <result column="attach_url" jdbcType="VARCHAR" property="attachUrl"/>
+        <result column="task_name" jdbcType="VARCHAR" property="taskName"/>
+        <result column="sub_begin_time" jdbcType="TIMESTAMP" property="subBeginTime"/>
+        <result column="sub_end_time" jdbcType="TIMESTAMP" property="subEndTime"/>
+        <result column="complete_time" jdbcType="TIMESTAMP" property="completeTime"/>
+        <result column="approve_user_id" jdbcType="VARCHAR" property="approveUserId"/>
+        <result column="approve_user_name" jdbcType="VARCHAR" property="approveUserName"/>
+        <result column="approve_time" jdbcType="TIMESTAMP" property="approveTime"/>
+        <result column="approve_action_key" jdbcType="VARCHAR" property="approveActionKey"/>
+        <result column="approve_remark" jdbcType="VARCHAR" property="approveRemark"/>
+        <result column="second_approve_user_id" jdbcType="VARCHAR" property="secondApproveUserId"/>
+        <result column="second_approve_action_key" jdbcType="VARCHAR" property="secondApproveActionKey"/>
+        <result column="third_approve_user_id" jdbcType="VARCHAR" property="thirdApproveUserId"/>
+        <result column="third_approve_action_key" jdbcType="VARCHAR" property="thirdApproveActionKey"/>
+        <result column="question_type" jdbcType="VARCHAR" property="questionType"/>
+        <result column="parent_question_id" jdbcType="BIGINT" property="parentQuestionId"/>
+        <result column="task_desc" jdbcType="VARCHAR" property="taskDesc"/>
+        <result column="parent_question_name" jdbcType="VARCHAR" property="parentQuestionName"/>
+        <result column="first_handle_time" jdbcType="TIMESTAMP" property="firstHandleTime"/>
+        <result column="first_approve_time" jdbcType="TIMESTAMP" property="firstApproveTime"/>
+        <result column="approve_pass_count" jdbcType="BIGINT" property="approvePassCount"/>
+        <result column="approve_reject_count" jdbcType="BIGINT" property="approveRejectCount"/>
+        <result column="loop_count" jdbcType="BIGINT" property="loopCount"/>
+        <result column="node_no" jdbcType="BIGINT" property="nodeNo"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , unify_task_id, store_id, task_store_id, create_type, create_time, create_user_id, update_time,
+    deleted, store_name, region_id, region_path, meta_table_id, meta_column_id, data_column_id, 
+    handle_user_id, handle_user_name, handle_time, handle_action_key, handle_remark, status, learn_first,
+    attach_url, task_name, sub_begin_time, sub_end_time, complete_time, approve_user_id, 
+    approve_user_name, approve_time, approve_action_key, approve_remark,second_approve_user_id,second_approve_action_key,
+    third_approve_user_id,third_approve_action_key,question_type,parent_question_id,task_desc,parent_question_name,first_handle_time,
+    first_approve_time,approve_pass_count,approve_reject_count,loop_count,node_no
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_question_record_${enterpriseId}
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByTaskIdAndStoreId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_question_record_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+        and store_id = #{storeId}
+        and loop_count = #{loopCount}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from tb_question_record_${enterpriseId}
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.question.TbQuestionRecordDO"
+            keyProperty="record.id" useGeneratedKeys="true">
+        insert into tb_question_record_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.unifyTaskId != null">
+                unify_task_id,
+            </if>
+            <if test="record.storeId != null">
+                store_id,
+            </if>
+            <if test="record.taskStoreId != null">
+                task_store_id,
+            </if>
+            <if test="record.createType != null">
+                create_type,
+            </if>
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id,
+            </if>
+            <if test="record.updateTime != null">
+                update_time,
+            </if>
+            <if test="record.deleted != null">
+                deleted,
+            </if>
+            <if test="record.storeName != null">
+                store_name,
+            </if>
+            <if test="record.regionId != null">
+                region_id,
+            </if>
+            <if test="record.regionPath != null">
+                region_path,
+            </if>
+            <if test="record.metaTableId != null">
+                meta_table_id,
+            </if>
+            <if test="record.metaColumnId != null">
+                meta_column_id,
+            </if>
+            <if test="record.dataColumnId != null">
+                data_column_id,
+            </if>
+            <if test="record.handleUserId != null">
+                handle_user_id,
+            </if>
+            <if test="record.handleUserName != null">
+                handle_user_name,
+            </if>
+            <if test="record.handleTime != null">
+                handle_time,
+            </if>
+            <if test="record.handleActionKey != null">
+                handle_action_key,
+            </if>
+            <if test="record.handleRemark != null">
+                handle_remark,
+            </if>
+            <if test="record.status != null">
+                status,
+            </if>
+            <if test="record.learnFirst != null">
+                learn_first,
+            </if>
+            <if test="record.attachUrl != null">
+                attach_url,
+            </if>
+            <if test="record.taskName != null">
+                task_name,
+            </if>
+            <if test="record.subBeginTime != null">
+                sub_begin_time,
+            </if>
+            <if test="record.subEndTime != null">
+                sub_end_time,
+            </if>
+            <if test="record.completeTime != null">
+                complete_time,
+            </if>
+            <if test="record.approveUserId != null">
+                approve_user_id,
+            </if>
+            <if test="record.approveUserName != null">
+                approve_user_name,
+            </if>
+            <if test="record.approveTime != null">
+                approve_time,
+            </if>
+            <if test="record.approveActionKey != null">
+                approve_action_key,
+            </if>
+            <if test="record.approveRemark != null">
+                approve_remark,
+            </if>
+            <if test="record.questionType != null">
+                question_type,
+            </if>
+            <if test="record.loopCount != null">
+                loop_count,
+            </if>
+            <if test="record.taskDesc!= null">
+                task_desc,
+            </if>
+            <if test="record.parentQuestionId!= null">
+                parent_question_id,
+            </if>
+            <if test="record.parentQuestionName!= null">
+                parent_question_name,
+            </if>
+            <if test="record.nodeNo!= null">
+                node_no,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.unifyTaskId != null">
+                #{record.unifyTaskId,jdbcType=BIGINT},
+            </if>
+            <if test="record.storeId != null">
+                #{record.storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.taskStoreId != null">
+                #{record.taskStoreId,jdbcType=BIGINT},
+            </if>
+            <if test="record.createType != null">
+                #{record.createType,jdbcType=INTEGER},
+            </if>
+            <if test="record.createTime != null">
+                #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createUserId != null">
+                #{record.createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.deleted != null">
+                #{record.deleted,jdbcType=BIT},
+            </if>
+            <if test="record.storeName != null">
+                #{record.storeName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.regionId != null">
+                #{record.regionId,jdbcType=BIGINT},
+            </if>
+            <if test="record.regionPath != null">
+                #{record.regionPath,jdbcType=VARCHAR},
+            </if>
+            <if test="record.metaTableId != null">
+                #{record.metaTableId,jdbcType=BIGINT},
+            </if>
+            <if test="record.metaColumnId != null">
+                #{record.metaColumnId,jdbcType=BIGINT},
+            </if>
+            <if test="record.dataColumnId != null">
+                #{record.dataColumnId,jdbcType=BIGINT},
+            </if>
+            <if test="record.handleUserId != null">
+                #{record.handleUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.handleUserName != null">
+                #{record.handleUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.handleTime != null">
+                #{record.handleTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.handleActionKey != null">
+                #{record.handleActionKey,jdbcType=VARCHAR},
+            </if>
+            <if test="record.handleRemark != null">
+                #{record.handleRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="record.status != null">
+                #{record.status,jdbcType=VARCHAR},
+            </if>
+            <if test="record.learnFirst != null">
+                #{record.learnFirst,jdbcType=BIT},
+            </if>
+            <if test="record.attachUrl != null">
+                #{record.attachUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.taskName != null">
+                #{record.taskName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.subBeginTime != null">
+                #{record.subBeginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.subEndTime != null">
+                #{record.subEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.completeTime != null">
+                #{record.completeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.approveUserId != null">
+                #{record.approveUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.approveUserName != null">
+                #{record.approveUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.approveTime != null">
+                #{record.approveTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.approveActionKey != null">
+                #{record.approveActionKey,jdbcType=VARCHAR},
+            </if>
+            <if test="record.approveRemark != null">
+                #{record.approveRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="record.questionType != null">
+                #{record.questionType},
+            </if>
+            <if test="record.loopCount != null">
+                #{record.loopCount},
+            </if>
+            <if test="record.taskDesc!= null">
+                #{record.taskDesc},
+            </if>
+            <if test="record.parentQuestionId!= null">
+                #{record.parentQuestionId},
+            </if>
+            <if test="record.parentQuestionName!= null">
+                #{record.parentQuestionName},
+            </if>
+            <if test="record.nodeNo!= null">
+                #{record.nodeNo},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.coolcollege.intelligent.model.question.TbQuestionRecordDO">
+        update tb_question_record_${enterpriseId}
+        <set>
+            <if test="record.unifyTaskId != null">
+                unify_task_id = #{record.unifyTaskId,jdbcType=BIGINT},
+            </if>
+            <if test="record.storeId != null">
+                store_id = #{record.storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.taskStoreId != null">
+                task_store_id = #{record.taskStoreId,jdbcType=BIGINT},
+            </if>
+            <if test="record.createType != null">
+                create_type = #{record.createType,jdbcType=INTEGER},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id = #{record.createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.deleted != null">
+                deleted = #{record.deleted,jdbcType=BIT},
+            </if>
+            <if test="record.storeName != null">
+                store_name = #{record.storeName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.regionId != null">
+                region_id = #{record.regionId,jdbcType=BIGINT},
+            </if>
+            <if test="record.regionPath != null">
+                region_path = #{record.regionPath,jdbcType=VARCHAR},
+            </if>
+            <if test="record.metaTableId != null">
+                meta_table_id = #{record.metaTableId,jdbcType=BIGINT},
+            </if>
+            <if test="record.metaColumnId != null">
+                meta_column_id = #{record.metaColumnId,jdbcType=BIGINT},
+            </if>
+            <if test="record.dataColumnId != null">
+                data_column_id = #{record.dataColumnId,jdbcType=BIGINT},
+            </if>
+            <if test="record.handleUserId != null">
+                handle_user_id = #{record.handleUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.handleUserName != null">
+                handle_user_name = #{record.handleUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.handleTime != null">
+                handle_time = #{record.handleTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.handleActionKey != null">
+                handle_action_key = #{record.handleActionKey,jdbcType=VARCHAR},
+            </if>
+            <if test="record.handleRemark != null">
+                handle_remark = #{record.handleRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=VARCHAR},
+            </if>
+            <if test="record.learnFirst != null">
+                learn_first = #{record.learnFirst,jdbcType=BIT},
+            </if>
+            <if test="record.attachUrl != null">
+                attach_url = #{record.attachUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.taskName != null">
+                task_name = #{record.taskName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.subBeginTime != null">
+                sub_begin_time = #{record.subBeginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.subEndTime != null">
+                sub_end_time = #{record.subEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.completeTime != null">
+                complete_time = #{record.completeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.approveUserId != null">
+                approve_user_id = #{record.approveUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.approveUserName != null">
+                approve_user_name = #{record.approveUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.approveTime != null">
+                approve_time = #{record.approveTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.approveActionKey != null">
+                approve_action_key = #{record.approveActionKey,jdbcType=VARCHAR},
+            </if>
+            <if test="record.approveRemark != null">
+                approve_remark = #{record.approveRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="record.secondApproveUserId != null">
+                second_approve_user_id = #{record.secondApproveUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.secondApproveActionKey != null">
+                second_approve_action_key = #{record.secondApproveActionKey,jdbcType=VARCHAR},
+            </if>
+            <if test="record.thirdApproveUserId != null">
+                third_approve_user_id = #{record.thirdApproveUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.thirdApproveActionKey != null">
+                third_approve_action_key = #{record.thirdApproveActionKey,jdbcType=VARCHAR},
+            </if>
+            <if test="record.firstHandleTime != null">
+                first_handle_time = #{record.firstHandleTime},
+            </if>
+            <if test="record.firstApproveTime != null">
+                first_approve_time = #{record.firstApproveTime},
+            </if>
+            <if test="record.approvePassCount != null">
+                approve_pass_count = #{record.approvePassCount},
+            </if>
+            <if test="record.approveRejectCount != null">
+                approve_reject_count = #{record.approveRejectCount},
+            </if>
+            <if test="record.parentQuestionName != null">
+                parent_question_name = #{record.parentQuestionName},
+            </if>
+            <if test="record.parentQuestionId != null">
+                parent_question_id = #{record.parentQuestionId},
+            </if>
+            <if test="record.taskDesc != null">
+                task_desc = #{record.taskDesc},
+            </if>
+            <if test="record.nodeNo != null">
+                node_no = #{record.nodeNo},
+            </if>
+        </set>
+        where id = #{record.id,jdbcType=BIGINT}
+    </update>
+    <update id="deleteByUnifyTaskId">
+        update tb_question_record_${enterpriseId}
+        set deleted = 1
+        where unify_task_id = #{unifyTaskId}
+    </update>
+    <update id="deleteById">
+        update tb_question_record_${enterpriseId}
+        set deleted = 1
+        where id = #{id}
+    </update>
+    <sql id="dynamicQuery">
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="null != id">
+                and t.id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="null != unifyTaskId">
+                and t.unify_task_id = #{unifyTaskId,jdbcType=BIGINT}
+            </if>
+            <if test="null != storeId">
+                and t.store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="null != taskStoreId">
+                and t.task_store_id = #{taskStoreId,jdbcType=BIGINT}
+            </if>
+            <if test="null != createType">
+                and t.create_type = #{createType,jdbcType=INTEGER}
+            </if>
+            <if test="null != createTime">
+                and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="null != createUserId">
+                and t.create_user_id = #{createUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="null != updateTime">
+                and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="null != deleted">
+                and t.deleted = #{deleted,jdbcType=BIT}
+            </if>
+            <if test="null != storeName">
+                and t.store_name = #{storeName,jdbcType=VARCHAR}
+            </if>
+            <if test="null != regionId">
+                and t.region_id = #{regionId,jdbcType=BIGINT}
+            </if>
+            <if test="null != regionPath">
+                and t.region_path = #{regionPath,jdbcType=VARCHAR}
+            </if>
+            <if test="null != metaTableId">
+                and t.meta_table_id = #{metaTableId,jdbcType=BIGINT}
+            </if>
+            <if test="null != metaColumnId">
+                and t.meta_column_id = #{metaColumnId,jdbcType=BIGINT}
+            </if>
+            <if test="null != dataColumnId">
+                and t.data_column_id = #{dataColumnId,jdbcType=BIGINT}
+            </if>
+            <if test="null != handleUserId">
+                and t.handle_user_id = #{handleUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="null != handleUserName">
+                and t.handle_user_name = #{handleUserName,jdbcType=VARCHAR}
+            </if>
+            <if test="null != handleActionKey">
+                and t.handle_action_key = #{handleActionKey,jdbcType=VARCHAR}
+            </if>
+            <if test="null != handleRemark">
+                and t.handle_remark = #{handleRemark,jdbcType=VARCHAR}
+            </if>
+            <if test="null != status">
+                and t.status = #{status,jdbcType=VARCHAR}
+            </if>
+            <if test="null != learnFirst">
+                and t.learn_first = #{learnFirst,jdbcType=BIT}
+            </if>
+            <if test="null != attachUrl">
+                and t.attach_url = #{attachUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="null != taskName">
+                and t.task_name = #{taskName,jdbcType=VARCHAR}
+            </if>
+            <if test="null != subBeginTime">
+                and t.sub_begin_time = #{subBeginTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="null != subEndTime">
+                and t.sub_end_time = #{subEndTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="null != completeTime">
+                and t.complete_time = #{completeTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="null != approveUserId">
+                and t.approve_user_id = #{approveUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="null != approveUserName">
+                and t.approve_user_name = #{approveUserName,jdbcType=VARCHAR}
+            </if>
+            <if test="null != approveActionKey">
+                and t.approve_action_key = #{approveActionKey,jdbcType=VARCHAR}
+            </if>
+            <if test="null != approveRemark">
+                and t.approve_remark = #{approveRemark,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+
+    <select id="taskQuestionRecord" resultType="com.coolcollege.intelligent.model.question.TbQuestionRecordDO">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_question_record_${enterpriseId}
+        where deleted = 0
+        and status = 'endNode'
+        <if test="beginTime!=null and endTime != null">
+            and create_time between #{beginTime} and #{endTime}
+        </if>
+        <if test="completeBeginDate!=null and completeEndDate != null">
+            and complete_time between #{completeBeginDate} and #{completeEndDate}
+        </if>
+        <if test="metaTableId!=null">
+            and meta_table_id = #{metaTableId}
+        </if>
+        <if test="metaColumnIdList != null and metaColumnIdList.size > 0">
+            AND meta_column_id in
+            <foreach collection="metaColumnIdList" item="metaColumnId" open="(" separator="," close=")">
+                #{metaColumnId}
+            </foreach>
+        </if>
+        <if test="storeIdList != null and storeIdList.size > 0">
+            AND store_id in
+            <foreach collection="storeIdList" item="storeId" open="(" separator="," close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="regionPath != null">
+            AND region_path LIKE concat( #{regionPath}, '%' )
+        </if>
+        <if test="taskName != null and taskName != ''">
+            AND (task_name LIKE concat( #{taskName}, '%' ) or parent_question_name LIKE concat( #{taskName}, '%' )
+                     or id LIKE concat(  '%', #{taskName}, '%' ) or parent_question_id LIKE concat(  '%', #{taskName}, '%') )
+        </if>
+        <if test="questionType != null and questionType != ''">
+            AND question_type = #{questionType}
+        </if>
+        <if test="regionPathList !=null and regionPathList.size() > 0">
+            AND
+            <foreach collection="regionPathList" separator="or" close=")" open=" (" item="region">
+                region_path like concat(#{region}, '%')
+            </foreach>
+        </if>
+        <if test="createUserIdList !=null and createUserIdList.size() > 0">
+            AND create_user_id in
+            <foreach collection="createUserIdList" item="createUserId" open="(" separator="," close=")">
+                #{createUserId}
+            </foreach>
+        </if>
+        order by id desc
+    </select>
+
+    <sql id="selectQuestionRecordListQuery">
+        <trim prefixOverrides="AND | OR">
+            <if test="beginCreateDate != null">
+                AND create_time &gt; #{beginCreateDate, jdbcType=TIMESTAMP}
+            </if>
+            <if test="endCreateDate != null">
+                AND create_time &lt; #{endCreateDate, jdbcType=TIMESTAMP}
+            </if>
+            <if test="fullRegionPath != null and fullRegionPath != ''">
+                AND region_path like concat(#{fullRegionPath, jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="fullRegionPathList != null and fullRegionPathList.size>0">
+                AND (
+                <foreach item="regionPath" collection="fullRegionPathList" separator=" OR ">
+                    region_path LIKE concat(#{regionPath}, '%')
+                </foreach>
+                )
+            </if>
+            <if test="handleUserId != null and handleUserId != ''">
+                AND handle_user_id = #{handleUserId, jdbcType=VARCHAR}
+            </if>
+            <if test="approveUserId != null and approveUserId != ''">
+                and approve_user_id = #{approveUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="secondApproveUserId != null and secondApproveUserId != ''">
+                and second_approve_user_id = #{secondApproveUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="thirdApproveUserId != null and thirdApproveUserId != ''">
+                and third_approve_user_id = #{thirdApproveUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                AND `status` = #{status, jdbcType=VARCHAR}
+            </if>
+            <if test="metaTableId != null">
+                AND meta_table_id = #{metaTableId, jdbcType=BIGINT}
+            </if>
+            <if test="metaColumnIds != null and metaColumnIds.size > 0">
+                AND meta_column_id in
+                <foreach collection="metaColumnIds" item="metaColumnId" open="(" separator="," close=")">
+                    #{metaColumnId, jdbcType=BIGINT}
+                </foreach>
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                AND create_user_id = #{createUserId, jdbcType=VARCHAR}
+            </if>
+            <if test="taskName != null and taskName != ''">
+                AND task_name like concat(#{taskName, jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="storeId != null and storeId != ''">
+                AND store_id = #{storeId, jdbcType=VARCHAR}
+            </if>
+            <if test="storeIds != null and storeIds.size > 0 ">
+                <foreach collection="storeIds" item="storeId" open="AND store_id in(" separator="," close=")">
+                    #{storeId, jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="questionType != null and questionType != ''">
+                AND question_type = #{questionType, jdbcType=VARCHAR}
+            </if>
+            <if test="unifyTaskId != null">
+                and unify_task_id = #{unifyTaskId}
+            </if>
+            <if test="questionParentInfoId != null">
+                and parent_question_id = #{questionParentInfoId}
+            </if>
+            <if test="nodeNo != null and nodeNo != ''">
+                and node_no = #{nodeNo}
+            </if>
+            <if test="questionParentInfoIdList != null and questionParentInfoIdList.size > 0">
+                AND parent_question_id in
+                <foreach collection="questionParentInfoIdList" item="parentQuestionId" open="(" separator="," close=")">
+                    #{parentQuestionId, jdbcType=BIGINT}
+                </foreach>
+            </if>
+            <if test="isOverdue != null">
+                <choose>
+                    <when test="isOverdue">
+                        AND
+                        (
+                        (`status` != 'endNode' AND now() &gt; sub_end_time)
+                        OR
+                        (`status` = 'endNode' AND complete_time &gt; sub_end_time)
+                        )
+                    </when>
+                    <otherwise>
+                        AND
+                        (
+                        (`status` != 'endNode' AND now() &lt; sub_end_time)
+                        OR
+                        (`status` = 'endNode' AND complete_time &lt; sub_end_time)
+                        )
+                    </otherwise>
+                </choose>
+            </if>
+            and deleted = 0
+        </trim>
+    </sql>
+
+    <select id="selectQuestionRecordList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        tb_question_record_${enterpriseId}
+        WHERE
+        <include refid="selectQuestionRecordListQuery"/>
+        order by create_time desc
+    </select>
+    <select id="countQuestionRecords" resultType="java.lang.Long">
+        SELECT
+        count(*)
+        FROM
+        tb_question_record_${enterpriseId}
+        WHERE
+        <include refid="selectQuestionRecordListQuery"/>
+    </select>
+
+    <update id="clearUserIdById">
+        update tb_question_record_${enterpriseId} set approve_user_id = '', approve_user_name = '',
+                                                      handle_user_id = '', handle_user_name ='' ,
+                                                      second_approve_user_id = '',third_approve_user_id = ''
+        where id = #{id}
+    </update>
+
+    <select id="questionList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        tb_question_record_${enterpriseId}
+        WHERE
+        <trim prefixOverrides="AND | OR">
+            <if test="param.beginCreateDate!=null and param.endCreateDate != null">
+                and create_time between FROM_UNIXTIME(#{param.beginCreateDate}/1000) and FROM_UNIXTIME(#{param.endCreateDate}/1000)
+            </if>
+            <if test="param.handleUserId != null and param.handleUserId != ''">
+                AND handle_user_id = #{param.handleUserId, jdbcType=VARCHAR}
+            </if>
+            <if test="param.approveUserId != null and param.approveUserId != ''">
+                and approve_user_id = #{param.approveUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="param.secondApproveUserId != null and param.secondApproveUserId != ''">
+                and second_approve_user_id = #{param.secondApproveUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="param.thirdApproveUserId != null and param.thirdApproveUserId != ''">
+                and third_approve_user_id = #{param.thirdApproveUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="param.status != null and param.status != ''">
+                AND `status` = #{param.status, jdbcType=VARCHAR}
+            </if>
+            <if test="param.createUserId != null and param.createUserId != ''">
+                AND create_user_id = #{param.createUserId, jdbcType=VARCHAR}
+            </if>
+            <if test="param.taskName != null and param.taskName != ''">
+                AND task_name like concat(#{param.taskName, jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="param.storeId != null and param.storeId != ''">
+                AND store_id = #{param.storeId, jdbcType=VARCHAR}
+            </if>
+            <if test="param.questionType != null and param.questionType != ''">
+                AND question_type = #{param.questionType, jdbcType=VARCHAR}
+            </if>
+            <if test="param.isOverdue != null">
+                <choose>
+                    <when test="param.isOverdue">
+                        AND
+                        (
+                        (`status` != 'endNode' AND now() &gt; sub_end_time)
+                        OR
+                        (`status` = 'endNode' AND complete_time &gt; sub_end_time)
+                        )
+                    </when>
+                    <otherwise>
+                        AND
+                        (
+                        (`status` != 'endNode' AND now() &lt; sub_end_time)
+                        OR
+                        (`status` = 'endNode' AND complete_time &lt; sub_end_time)
+                        )
+                    </otherwise>
+                </choose>
+            </if>
+            and deleted = 0
+        </trim>
+        order by id desc
+    </select>
+    <select id="selectQuestionTaskCount"
+            resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifySubStatisticsDTO">
+        SELECT
+            ifnull(count(a.id), 0) as 'all',
+            ifnull( sum( CASE WHEN a.status = '1' THEN 1 ELSE 0 END ), 0 ) AS handle,
+            ifnull(sum( CASE WHEN a.status = '2' THEN 1 ELSE 0 END ),0) AS approver,
+            ifnull(sum( CASE WHEN a.status = 'endNode' THEN 1 ELSE 0 END ),0) AS complete
+        from tb_question_record_${enterpriseId} a
+        where a.unify_task_id = #{unifyTaskId}
+          and deleted = 0
+    </select>
+    <select id="selectDataColumnId" resultType="java.lang.Long">
+        SELECT a.data_column_id
+        from tb_question_record_${enterpriseId} a
+        where a.unify_task_id = #{unifyTaskId}
+          and a.deleted = 0 limit 1
+    </select>
+    <select id="getByDataColumnId" resultType="com.coolcollege.intelligent.model.question.TbQuestionRecordDO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        tb_question_record_${enterpriseId}
+        where data_column_id = #{dataColumnId}
+        <if test="isStoreWork==true">
+            and question_type = 'storeWork'
+        </if>
+        <if test="isStoreWork==false">
+            and question_type != 'storeWork'
+        </if>
+        and deleted = 0
+        limit 1
+    </select>
+    <select id="selectListDataColumnIdList" resultType="com.coolcollege.intelligent.model.question.TbQuestionRecordDO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        tb_question_record_${enterpriseId}
+        where deleted = 0
+        and question_type != 'storeWork'
+        and data_column_id in
+        <foreach collection="dataColumnIdList" item="dataColumnId" open="(" separator="," close=")">
+            #{dataColumnId, jdbcType=BIGINT}
+        </foreach>
+    </select>
+    <select id="selectSubQuestionDetailList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        tb_question_record_${enterpriseId}
+        WHERE
+        <trim prefixOverrides="AND | OR">
+            <if test="param.beginCreateDate!=null and param.endCreateDate != null">
+                and create_time between FROM_UNIXTIME(#{param.beginCreateDate}/1000) and FROM_UNIXTIME(#{param.endCreateDate}/1000)
+            </if>
+            <if test="param.status != null and param.status != ''">
+                AND `status` = #{param.status, jdbcType=VARCHAR}
+            </if>
+            <if test="param.statusList != null and param.statusList.size > 0">
+                AND `status` in
+                <foreach collection="param.statusList" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="param.createUserId != null and param.createUserId != ''">
+                AND create_user_id = #{param.createUserId, jdbcType=VARCHAR}
+            </if>
+            <if test="param.createUserIds != null and param.createUserIds.size > 0">
+                AND create_user_id in
+                <foreach collection="param.createUserIds" item="createUserId" open="(" separator="," close=")">
+                    #{createUserId, jdbcType=BIGINT}
+                </foreach>
+            </if>
+            <if test="param.storeIds != null and param.storeIds.size > 0">
+                AND store_id in
+                <foreach collection="param.storeIds" item="storeId" open="(" separator="," close=")">
+                    #{storeId}
+                </foreach>
+            </if>
+            <if test="param.storeId != null and param.storeId != ''">
+                AND store_id = #{param.storeId, jdbcType=VARCHAR}
+            </if>
+            <if test="param.taskName != null and param.taskName != ''">
+                AND (task_name like concat(#{param.taskName, jdbcType=VARCHAR}, '%')  or parent_question_name like concat(#{param.taskName, jdbcType=VARCHAR}, '%'))
+            </if>
+            <if test="param.questionType != null and param.questionType != ''">
+                AND question_type = #{param.questionType, jdbcType=VARCHAR}
+            </if>
+            <if test="param.questionCode != null and param.questionCode!=''">
+                AND (id like concat('%',#{param.questionCode}, '%')  or parent_question_id like concat('%',#{param.questionCode}, '%'))
+            </if>
+            <if test="fullRegionPath != null and fullRegionPath!=''">
+                AND region_path LIKE concat( #{fullRegionPath}, '%' )
+            </if>
+            <if test="fullRegionPathList != null and fullRegionPathList.size>0">
+                AND (
+                <foreach item="regionPath" collection="fullRegionPathList" separator=" OR ">
+                    region_path LIKE concat(#{regionPath}, '%')
+                </foreach>
+                )
+            </if>
+            <if test="param.handleUserId != null and param.handleUserId != ''">
+                AND handle_user_id = #{param.handleUserId, jdbcType=VARCHAR}
+            </if>
+            <if test="param.approveUserId != null and param.approveUserId != ''">
+                and approve_user_id = #{param.approveUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="param.secondApproveUserId != null and param.secondApproveUserId != ''">
+                and second_approve_user_id = #{param.secondApproveUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="param.thirdApproveUserId != null and param.thirdApproveUserId != ''">
+                and third_approve_user_id = #{param.thirdApproveUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="param.metaTableId != null">
+                AND meta_table_id = #{param.metaTableId, jdbcType=BIGINT}
+            </if>
+            <if test="param.metaTableIds != null and !param.metaTableIds.isEmpty()">
+                AND meta_table_id IN 
+                <foreach collection="param.metaTableIds" item="metaTableId" open="(" close=")" separator=",">
+                    #{metaTableId}
+                </foreach>
+            </if>
+            <if test="param.metaColumnIds != null and param.metaColumnIds.size > 0">
+                AND meta_column_id in
+                <foreach collection="param.metaColumnIds" item="metaColumnId" open="(" separator="," close=")">
+                    #{metaColumnId, jdbcType=BIGINT}
+                </foreach>
+            </if>
+            <if test="param.isOverdue != null">
+                <choose>
+                    <when test="param.isOverdue">
+                        AND
+                        (
+                        (`status` != 'endNode' AND now() &gt; sub_end_time)
+                        OR
+                        (`status` = 'endNode' AND complete_time &gt; sub_end_time)
+                        )
+                    </when>
+                    <otherwise>
+                        AND
+                        (
+                        (`status` != 'endNode' AND now() &lt; sub_end_time)
+                        OR
+                        (`status` = 'endNode' AND complete_time &lt; sub_end_time)
+                        )
+                    </otherwise>
+                </choose>
+            </if>
+            and deleted = 0
+        </trim>
+        order by create_time desc
+    </select>
+
+    <select id="countSubQuestionDetailList" resultType="java.lang.Long">
+        SELECT
+        count(1) as count
+        FROM
+        tb_question_record_${enterpriseId}
+        WHERE
+        <trim prefixOverrides="AND | OR">
+            <if test="param.beginCreateDate!=null and param.endCreateDate != null">
+                and create_time between FROM_UNIXTIME(#{param.beginCreateDate}/1000) and FROM_UNIXTIME(#{param.endCreateDate}/1000)
+            </if>
+            <if test="param.status != null and param.status != ''">
+                AND `status` = #{param.status, jdbcType=VARCHAR}
+            </if>
+            <if test="param.createUserId != null and param.createUserId != ''">
+                AND create_user_id = #{param.createUserId, jdbcType=VARCHAR}
+            </if>
+            <if test="param.createUserIds != null and param.createUserIds.size > 0">
+                AND create_user_id in
+                <foreach collection="param.createUserIds" item="createUserId" open="(" separator="," close=")">
+                    #{createUserId, jdbcType=BIGINT}
+                </foreach>
+            </if>
+            <if test="param.taskName != null and param.taskName != ''">
+                AND task_name like concat(#{param.taskName, jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="param.questionType != null and param.questionType != ''">
+                AND question_type = #{param.questionType, jdbcType=VARCHAR}
+            </if>
+            <if test="param.questionCode != null and param.questionCode!=''">
+                AND (id like concat('%',#{param.questionCode}, '%')  or parent_question_id like concat('%',#{param.questionCode}, '%'))
+            </if>
+            <if test="fullRegionPath != null and fullRegionPath!=''">
+                AND region_path LIKE concat( #{fullRegionPath}, '%' )
+            </if>
+            <if test="fullRegionPathList != null and fullRegionPathList.size>0">
+                AND (
+                <foreach item="regionPath" collection="fullRegionPathList" separator=" OR ">
+                    region_path LIKE concat(#{regionPath}, '%')
+                </foreach>
+                )
+            </if>
+            <if test="param.handleUserId != null and param.handleUserId != ''">
+                AND handle_user_id = #{param.handleUserId, jdbcType=VARCHAR}
+            </if>
+            <if test="param.approveUserId != null and param.approveUserId != ''">
+                and approve_user_id = #{param.approveUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="param.secondApproveUserId != null and param.secondApproveUserId != ''">
+                and second_approve_user_id = #{param.secondApproveUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="param.thirdApproveUserId != null and param.thirdApproveUserId != ''">
+                and third_approve_user_id = #{param.thirdApproveUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="param.metaTableId != null">
+                AND meta_table_id = #{param.metaTableId, jdbcType=BIGINT}
+            </if>
+            <if test="param.metaTableIds != null and !param.metaTableIds.isEmpty()">
+                AND meta_table_id IN
+                <foreach collection="param.metaTableIds" item="metaTableId" open="(" close=")" separator=",">
+                    #{metaTableId}
+                </foreach>
+            </if>
+            <if test="param.metaColumnIds != null and param.metaColumnIds.size > 0">
+                AND meta_column_id in
+                <foreach collection="param.metaColumnIds" item="metaColumnId" open="(" separator="," close=")">
+                    #{metaColumnId, jdbcType=BIGINT}
+                </foreach>
+            </if>
+            <if test="param.isOverdue != null">
+                <choose>
+                    <when test="param.isOverdue">
+                        AND
+                        (
+                        (`status` != 'endNode' AND now() &gt; sub_end_time)
+                        OR
+                        (`status` = 'endNode' AND complete_time &gt; sub_end_time)
+                        )
+                    </when>
+                    <otherwise>
+                        AND
+                        (
+                        (`status` != 'endNode' AND now() &lt; sub_end_time)
+                        OR
+                        (`status` = 'endNode' AND complete_time &lt; sub_end_time)
+                        )
+                    </otherwise>
+                </choose>
+            </if>
+            and deleted = 0
+        </trim>
+        order by create_time desc
+    </select>
+    <select id="questionListByTaskStoreIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        tb_question_record_${enterpriseId}
+        WHERE deleted = 0
+        and  task_store_id in
+        <foreach collection="taskStoreIdList" item="taskStoreId" open="(" separator="," close=")">
+            #{taskStoreId}
+        </foreach>
+        order by create_time desc
+    </select>
+    <select id="getStoreQuestion" resultType="com.coolcollege.intelligent.model.question.dto.StoreQuestionDTO">
+        SELECT
+        store_id as storeId,
+        ifnull(sum(CASE WHEN status = 1 THEN 1 ELSE 0 END),0) as unHandleQuestionCount
+        FROM
+        tb_question_record_${enterpriseId}
+        WHERE deleted = 0
+        and  store_id in
+        <foreach collection="storeIdList" item="storeId" open="(" separator="," close=")">
+            #{storeId}
+        </foreach>
+        group by store_id
+    </select>
+    <select id="questionListByTaskId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        tb_question_record_${enterpriseId}
+        WHERE deleted = 0
+        and unify_task_id in
+        <foreach collection="unifyTaskIds" item="unifyTaskId" open="(" separator="," close=")">
+            #{unifyTaskId}
+        </foreach>
+        <if test="status != null and status != ''">
+            AND `status` = #{status}
+        </if>
+        order by create_time desc
+    </select>
+
+    <select id="selectQuestionStageDate"
+            resultType="com.coolcollege.intelligent.model.question.dto.QuestionStageDateDTO">
+        SELECT
+        status AS status,
+        count(1) AS stageQuestionCount
+        from tb_question_record_${enterpriseId}
+        where deleted = 0
+        <if test="entity.questionType!=null and entity.questionType!=''">
+            and question_type = #{entity.questionType}
+        </if>
+        <if test="entity.metaTableId!=null">
+            and meta_table_id = #{entity.metaTableId}
+        </if>
+        <if test="entity.beginCreateDate!=null and entity.endCreateDate != null">
+            and create_time between FROM_UNIXTIME(#{entity.beginCreateDate}/1000) and FROM_UNIXTIME(#{entity.endCreateDate}/1000)
+        </if>
+        <if test="entity.metaColumnIds != null and entity.metaColumnIds.size > 0">
+            AND meta_column_id in
+            <foreach collection="entity.metaColumnIds" item="metaColumnId" open="(" separator="," close=")">
+                #{metaColumnId, jdbcType=BIGINT}
+            </foreach>
+        </if>
+        <if test="fullRegionPath != null and fullRegionPath!=''">
+            AND region_path LIKE concat( #{fullRegionPath}, '%' )
+        </if>
+        group by status
+    </select>
+
+    <select id="getRectifiedQuestionCount" resultType="java.lang.Integer">
+        SELECT
+        count(1) AS rectifiedQuestionCount
+        from tb_question_record_${enterpriseId}
+        where deleted = 0 and first_handle_time is not null
+        <if test="entity.questionType!=null and entity.questionType!=''">
+            and question_type = #{entity.questionType}
+        </if>
+        <if test="entity.metaTableId!=null">
+            and meta_table_id = #{entity.metaTableId}
+        </if>
+        <if test="entity.beginCreateDate!=null and entity.endCreateDate != null">
+            and create_time between FROM_UNIXTIME(#{entity.beginCreateDate}/1000) and FROM_UNIXTIME(#{entity.endCreateDate}/1000)
+        </if>
+        <if test="entity.metaColumnIds != null and entity.metaColumnIds.size > 0">
+            AND meta_column_id in
+            <foreach collection="entity.metaColumnIds" item="metaColumnId" open="(" separator="," close=")">
+                #{metaColumnId, jdbcType=BIGINT}
+            </foreach>
+        </if>
+        <if test="fullRegionPath != null and fullRegionPath!=''">
+            AND region_path LIKE concat( #{fullRegionPath}, '%' )
+        </if>
+    </select>
+
+    <select id="handleStageOverdueCount" resultType="java.lang.Integer">
+        SELECT
+        ifnull( sum( CASE WHEN first_handle_time is not null and  first_handle_time>sub_end_time THEN 1 ELSE 0 END ), 0 )+
+        ifnull( sum( CASE WHEN first_handle_time is null and  now()>sub_end_time THEN 1 ELSE 0 END ), 0 ) AS rectificationStageOverdueCount
+        from tb_question_record_${enterpriseId}
+        where deleted = 0 and status = 1
+        <if test="entity.questionType!=null and entity.questionType!=''">
+            and question_type = #{entity.questionType}
+        </if>
+        <if test="entity.metaTableId!=null">
+            and meta_table_id = #{entity.metaTableId}
+        </if>
+        <if test="entity.beginCreateDate!=null and entity.endCreateDate != null">
+            and create_time between FROM_UNIXTIME(#{entity.beginCreateDate}/1000) and FROM_UNIXTIME(#{entity.endCreateDate}/1000)
+        </if>
+        <if test="entity.metaColumnIds != null and entity.metaColumnIds.size > 0">
+            AND meta_column_id in
+            <foreach collection="entity.metaColumnIds" item="metaColumnId" open="(" separator="," close=")">
+                #{metaColumnId, jdbcType=BIGINT}
+            </foreach>
+        </if>
+        <if test="fullRegionPath != null and fullRegionPath!=''">
+            AND region_path LIKE concat( #{fullRegionPath}, '%' )
+        </if>
+    </select>
+
+    <select id="completeStageOverdueCount" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        from tb_question_record_${enterpriseId}
+        where deleted = 0 and status = 'endNode' and complete_time>sub_end_time
+        <if test="entity.questionType!=null and entity.questionType!=''">
+            and question_type = #{entity.questionType}
+        </if>
+        <if test="entity.metaTableId!=null">
+            and meta_table_id = #{entity.metaTableId}
+        </if>
+        <if test="entity.beginCreateDate!=null and entity.endCreateDate != null">
+            and create_time between FROM_UNIXTIME(#{entity.beginCreateDate}/1000) and FROM_UNIXTIME(#{entity.endCreateDate}/1000)
+        </if>
+        <if test="entity.metaColumnIds != null and entity.metaColumnIds.size > 0">
+            AND meta_column_id in
+            <foreach collection="entity.metaColumnIds" item="metaColumnId" open="(" separator="," close=")">
+                #{metaColumnId, jdbcType=BIGINT}
+            </foreach>
+        </if>
+        <if test="fullRegionPath != null and fullRegionPath!=''">
+            AND region_path LIKE concat( #{fullRegionPath}, '%' )
+        </if>
+    </select>
+
+    <select id="questionTotalDuration" resultType="java.lang.Long">
+        SELECT
+        ifnull(sum(TIMESTAMPDIFF(minute,first_handle_time,complete_time)),0) as duration
+        from tb_question_record_${enterpriseId}
+        where deleted = 0 and status = 'endNode'
+        <if test="entity.questionType!=null and entity.questionType!=''">
+            and question_type = #{entity.questionType}
+        </if>
+        <if test="entity.metaTableId!=null">
+            and meta_table_id = #{entity.metaTableId}
+        </if>
+        <if test="entity.beginCreateDate!=null and entity.endCreateDate != null">
+            and create_time between FROM_UNIXTIME(#{entity.beginCreateDate}/1000) and FROM_UNIXTIME(#{entity.endCreateDate}/1000)
+        </if>
+        <if test="entity.metaColumnIds != null and entity.metaColumnIds.size > 0">
+            AND meta_column_id in
+            <foreach collection="entity.metaColumnIds" item="metaColumnId" open="(" separator="," close=")">
+                #{metaColumnId, jdbcType=BIGINT}
+            </foreach>
+        </if>
+        <if test="fullRegionPath != null and fullRegionPath!=''">
+            AND region_path LIKE concat( #{fullRegionPath}, '%' )
+        </if>
+    </select>
+
+    <select id="approveStagePassOrRejectCount" resultType="com.coolcollege.intelligent.model.question.dto.QuestionStageDateDTO">
+        SELECT
+        ifnull(sum(approve_pass_count),0) as passCount,
+        ifnull(sum(approve_reject_count),0) as rejectCount
+        from tb_question_record_${enterpriseId}
+        where deleted = 0
+        <if test="entity.questionType!=null and entity.questionType!=''">
+            and question_type = #{entity.questionType}
+        </if>
+        <if test="entity.metaTableId!=null">
+            and meta_table_id = #{entity.metaTableId}
+        </if>
+        <if test="entity.beginCreateDate!=null and entity.endCreateDate != null">
+            and create_time between FROM_UNIXTIME(#{entity.beginCreateDate}/1000) and FROM_UNIXTIME(#{entity.endCreateDate}/1000)
+        </if>
+        <if test="entity.metaColumnIds != null and entity.metaColumnIds.size > 0">
+            AND meta_column_id in
+            <foreach collection="entity.metaColumnIds" item="metaColumnId" open="(" separator="," close=")">
+                #{metaColumnId, jdbcType=BIGINT}
+            </foreach>
+        </if>
+        <if test="fullRegionPath != null and fullRegionPath!=''">
+            AND region_path LIKE concat( #{fullRegionPath}, '%' )
+        </if>
+    </select>
+
+    <select id="questionListByIds" resultMap="BaseResultMap">
+        SELECT
+            <include refid="Base_Column_List"/>
+        FROM
+            tb_question_record_${enterpriseId}
+        WHERE  id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        order by create_time desc
+    </select>
+    
+    <select id="getUserCreateQuestionInfo" resultType="com.coolcollege.intelligent.model.operationboard.dto.UserDetailStatisticsDTO">
+        select
+            create_user_id as userId,
+            count(id) as createQuestionNum,
+            sum(if(status = 'endNode',1,0)) as finishQuestionNum
+        from
+            tb_question_record_${enterpriseId}
+        where
+            create_user_id in <foreach collection="userIds" item="userId" open="(" close=")" separator=",">#{userId}</foreach>
+            <if test="questionTypes != null and questionTypes.size() > 0">
+                and question_type in <foreach collection="questionTypes" item="questionType" open="(" close=")" separator=",">#{questionType}</foreach>
+            </if>
+            <if test="beginDate != null">
+                and create_time >= #{beginDate}
+            </if>
+            <if test="endDate != null">
+                and #{endDate} >= create_time
+            </if>
+        group by userId
+        order by createQuestionNum desc
+    </select>
+
+    <select id="getUserCreateQuestionRecordByUserId" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            tb_question_record_${enterpriseId}
+        where
+            create_user_id in <foreach collection="userIds" item="userId" open="(" close=")" separator=",">#{userId}</foreach>
+            <if test="questionTypes != null and questionTypes.size() > 0">
+                and question_type in <foreach collection="questionTypes" item="questionType" open="(" close=")" separator=",">#{questionType}</foreach>
+            </if>
+            <if test="beginDate != null">
+                and create_time >= #{beginDate}
+            </if>
+            <if test="endDate != null">
+                and #{endDate} >= create_time
+            </if>
+    </select>
+
+    <select id="getUserCreateQuestionRecordByStoreId" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            tb_question_record_${enterpriseId}
+        where
+            store_id in <foreach collection="storeIds" item="storeId" open="(" close=")" separator=",">#{storeId}</foreach>
+            <if test="questionTypes != null and questionTypes.size() > 0">
+                and question_type in <foreach collection="questionTypes" item="questionType" open="(" close=")" separator=",">#{questionType}</foreach>
+            </if>
+            <if test="beginDate != null">
+                and create_time >= #{beginDate}
+            </if>
+            <if test="endDate != null">
+                and #{endDate} >= create_time
+            </if>
+    </select>
+    
+    <select id="getQuestionTypeByUnifyTaskId" resultType="string">
+        select
+            question_type
+        from
+            tb_question_record_${enterpriseId}
+        where unify_task_id = #{unifyTaskId} limit 1
+    </select>
+    <select id="selectByUnifyTaskIds"
+            resultType="com.coolcollege.intelligent.model.question.TbQuestionRecordDO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        tb_question_record_${enterpriseId}
+        WHERE
+        unify_task_id in
+        <foreach collection="unifyTaskIds" open="(" close=")" separator="," item="unifyTaskId">
+            #{unifyTaskId}
+        </foreach>
+    </select>
+
+    <update id="updateQuestionRecordFinish">
+        update tb_question_record_${enterpriseId}
+        <set>
+            <if test="approveUserId != null and approveUserId!=''">
+                approve_user_id = #{approveUserId},
+            </if>
+            <if test="approveUserName != null and approveUserName!=''">
+                approve_user_name = #{approveUserName},
+            </if>
+            <if test="approveActionKey != null and approveActionKey!=''">
+                approve_action_key = #{approveActionKey},
+            </if>
+            <if test="approveTime != null">
+                approve_time = #{approveTime},
+            </if>
+            status = 'endNode', complete_time = now()
+        </set>
+        where unify_task_id = #{unifyTaskId}
+    </update>
+
+    <update id="updateHandleInfoByTaskId">
+        update tb_question_record_${enterpriseId}
+        set handle_time = #{handleTime} , handle_user_id = #{handleUserId}
+        , handle_user_name = #{handleUserName}, handle_action_key = #{handleActionKey}
+        where unify_task_id = #{unifyTaskId}
+    </update>
+    
+    <select id="getSubQuestionByParentUnifyTaskId" resultType="com.coolcollege.intelligent.model.question.TbQuestionRecordDO">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_question_record_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+    </select>
+
+    <update id="correctRegionIdAndPath">
+        UPDATE tb_question_record_${enterpriseId} a
+        INNER JOIN store_${enterpriseId} b ON a.store_id = b.store_id
+        SET a.region_id = b.region_id, a.region_path = b.region_path
+        WHERE a.unify_task_id = #{unifyTaskId}
+    </update>
+
+    <select id="selectByTaskStore" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM tb_question_record_${enterpriseId}
+        <where>
+            <foreach collection="taskStoreList" item="taskStore" separator=" OR " open="(" close=")">
+                unify_task_id = #{taskStore.unifyTaskId} AND store_id = #{taskStore.storeId} AND loop_count = #{taskStore.loopCount}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM tb_question_record_${enterpriseId}
+        WHERE id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getCountQuestionTypeAndDataColumnId" resultType="int">
+        SELECT
+            COUNT(1)
+        FROM
+            tb_question_record_${enterpriseId}
+        WHERE
+            data_column_id = #{dataColumnId} AND question_type = #{questionType}
+    </select>
+</mapper>

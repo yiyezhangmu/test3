@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseFollowRecordsMapper">
+
+    <insert id="save"  keyProperty="id" useGeneratedKeys="true">
+        INSERT into boss_enterprise_follow_records
+        (
+        id,
+        clues_id,
+        create_id,
+        create_name,
+        create_time,
+        update_id,
+        update_name,
+        update_time,
+        record_describe
+        ) VALUES (
+        #{entity.id},
+        #{entity.cluesId},
+        #{entity.createId},
+        #{entity.createName},
+        #{entity.createTime},
+        #{entity.updateId},
+        #{entity.updateName},
+        #{entity.updateTime},
+        #{entity.recordDescribe}
+        )
+    </insert>
+
+
+    <update id="update" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseCluesDO">
+        update boss_enterprise_follow_records
+        <trim prefix="set" suffixOverrides=",">
+            <if test="entity.recordDescribe != null">
+                record_describe=#{entity.recordDescribe},
+            </if>
+            <if test="entity.updateName != null">
+                update_name=#{entity.updateName},
+            </if>
+            <if test="entity.updateId != null">
+                update_id=#{entity.updateId},
+            </if>
+            <if test="entity.updateTime != null">
+                update_time=#{entity.updateTime},
+            </if>
+        </trim>
+        where id = #{entity.id}
+    </update>
+
+    <delete id="deleteById">
+        delete
+        from boss_enterprise_follow_records
+        where id = #{id}
+    </delete>
+
+    <select id="list" resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseFollowRecordsDTO">
+        select
+        id,
+        clues_id,
+        create_id,
+        create_name,
+        create_time,
+        update_id,
+        update_name,
+        update_time,
+        record_describe
+        from boss_enterprise_follow_records
+        <where>
+            <if test="cluesId">
+                and clues_id = #{cluesId}
+            </if>
+        </where>
+    </select>
+</mapper>

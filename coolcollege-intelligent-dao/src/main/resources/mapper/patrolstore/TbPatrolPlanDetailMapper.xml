@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.patrolstore.TbPatrolPlanDetailMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.patrolstore.entity.TbPatrolPlanDetailDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="plan_id" jdbcType="BIGINT" property="planId" />
+    <result column="plan_date" jdbcType="DATE" property="planDate" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="supervisor_id" jdbcType="VARCHAR" property="supervisorId" />
+    <result column="supervisor_name" jdbcType="VARCHAR" property="supervisorName" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="finish_time" jdbcType="TIMESTAMP" property="finishTime" />
+    <result column="business_id" jdbcType="BIGINT" property="businessId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, plan_id, plan_date, store_id, store_name, supervisor_id, supervisor_name, status, 
+    finish_time, business_id, create_time, create_user_id, update_time, update_user_id, deleted
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into tb_patrol_plan_detail_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.planId != null">
+        plan_id,
+      </if>
+      <if test="record.planDate != null">
+        plan_date,
+      </if>
+      <if test="record.storeId != null">
+        store_id,
+      </if>
+      <if test="record.storeName != null">
+        store_name,
+      </if>
+      <if test="record.supervisorId != null">
+        supervisor_id,
+      </if>
+      <if test="record.supervisorName != null">
+        supervisor_name,
+      </if>
+      <if test="record.status != null">
+        status,
+      </if>
+      <if test="record.finishTime != null">
+        finish_time,
+      </if>
+      <if test="record.businessId != null">
+        business_id,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.planId != null">
+        #{record.planId},
+      </if>
+      <if test="record.planDate != null">
+        #{record.planDate},
+      </if>
+      <if test="record.storeId != null">
+        #{record.storeId},
+      </if>
+      <if test="record.storeName != null">
+        #{record.storeName},
+      </if>
+      <if test="record.supervisorId != null">
+        #{record.supervisorId},
+      </if>
+      <if test="record.supervisorName != null">
+        #{record.supervisorName},
+      </if>
+      <if test="record.status != null">
+        #{record.status},
+      </if>
+      <if test="record.finishTime != null">
+        #{record.finishTime},
+      </if>
+      <if test="record.businessId != null">
+        #{record.businessId},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update tb_patrol_plan_detail_${enterpriseId}
+    <set>
+      <if test="record.planId != null">
+        plan_id = #{record.planId},
+      </if>
+      <if test="record.planDate != null">
+        plan_date = #{record.planDate},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId},
+      </if>
+      <if test="record.storeName != null">
+        store_name = #{record.storeName},
+      </if>
+      <if test="record.supervisorId != null">
+        supervisor_id = #{record.supervisorId},
+      </if>
+      <if test="record.supervisorName != null">
+        supervisor_name = #{record.supervisorName},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status},
+      </if>
+      <if test="record.finishTime != null">
+        finish_time = #{record.finishTime},
+      </if>
+      <if test="record.businessId != null">
+        business_id = #{record.businessId},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+
+  <insert id="insertBatch" useGeneratedKeys="true" keyProperty="list.id">
+    insert into tb_patrol_plan_detail_${enterpriseId}
+    (
+      plan_id,
+      plan_date,
+      store_id,
+      store_name,
+      supervisor_id,
+      supervisor_name,
+      status,
+      business_id,
+      create_user_id,
+      update_user_id
+    )
+    values
+    <foreach collection="list" item="entity" separator=",">
+      (
+      #{entity.planId},
+      #{entity.planDate},
+      #{entity.storeId},
+      #{entity.storeName},
+      #{entity.supervisorId},
+      #{entity.supervisorName},
+      #{entity.status},
+      #{entity.businessId},
+      #{entity.createUserId},
+      #{entity.updateUserId}
+      )
+    </foreach>
+  </insert>
+
+  <select id="getByPlanId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_patrol_plan_detail_${enterpriseId}
+    where
+      deleted = 0
+      and plan_id = #{planId}
+  </select>
+
+  <update id="removeDetail">
+    update tb_patrol_plan_detail_${enterpriseId}
+    set deleted = 1,
+        update_user_id = #{userId},
+        update_time = now()
+    where id in
+    <foreach collection="ids" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+
+  <update id="removeDetailByPlanId">
+    update tb_patrol_plan_detail_${enterpriseId}
+    set
+      deleted = 1,
+      update_user_id = #{userId},
+      update_time = now()
+    where plan_id = #{planId}
+  </update>
+  
+  <select id="getLatestPatrolTime" resultMap="BaseResultMap">
+    select store_id,
+           max(sign_end_time) as finish_time
+    from tb_patrol_store_record_${enterpriseId}
+    where deleted = 0
+      and status = 1
+      AND FIND_IN_SET(#{metaTableId}, meta_table_ids)
+      and business_check_type = 'PATROL_STORE'
+      and store_id in
+    <foreach collection="storeIds" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+    group by store_id
+  </select>
+
+  <update id="batchUpdate">
+    <foreach collection="updateList" item="record" separator=";">
+        update tb_patrol_plan_detail_${enterpriseId}
+        <set>
+          <if test="record.planId != null">
+            plan_id = #{record.planId},
+          </if>
+          <if test="record.planDate != null">
+            plan_date = #{record.planDate},
+          </if>
+          <if test="record.storeId != null">
+            store_id = #{record.storeId},
+          </if>
+          <if test="record.storeName != null">
+            store_name = #{record.storeName},
+          </if>
+          <if test="record.supervisorId != null">
+            supervisor_id = #{record.supervisorId},
+          </if>
+          <if test="record.supervisorName != null">
+            supervisor_name = #{record.supervisorName},
+          </if>
+          <if test="record.status != null">
+            status = #{record.status},
+          </if>
+          <if test="record.finishTime != null">
+            finish_time = #{record.finishTime},
+          </if>
+          <if test="record.businessId != null">
+            business_id = #{record.businessId},
+          </if>
+          <if test="record.createTime != null">
+            create_time = #{record.createTime},
+          </if>
+          <if test="record.createUserId != null">
+            create_user_id = #{record.createUserId},
+          </if>
+          <if test="record.updateTime != null">
+            update_time = #{record.updateTime},
+          </if>
+          <if test="record.updateUserId != null">
+            update_user_id = #{record.updateUserId},
+          </if>
+          <if test="record.deleted != null">
+            deleted = #{record.deleted},
+          </if>
+        </set>
+        where id = #{record.id}
+    </foreach>
+  </update>
+
+  <update id="updateFinishTimeAndStatus">
+    update
+      tb_patrol_plan_detail_${enterpriseId}
+    set
+      finish_time = now(),
+      status = 1
+    where business_id = #{businessId}
+  </update>
+
+  <select id="getPlanDetailByBusinessId" resultMap="BaseResultMap">
+    select * from tb_patrol_plan_detail_${enterpriseId} where business_id = #{businessId}
+  </select>
+
+  <select id="getFinishNumByPlanId" resultType="int">
+    select count(1) from tb_patrol_plan_detail_${enterpriseId} where plan_id = #{planId} and status = 1
+  </select>
+
+  <select id="getNumByPlanId" resultType="int">
+    select count(1) from tb_patrol_plan_detail_${enterpriseId} where plan_id = #{planId} and deleted = 0
+  </select>
+
+    <!--$var enterpriseId=e17cd2dc350541df8a8b0af9bd27f77d -->
+    <select id="getPatrolRecordToDo" resultMap="BaseResultMap">
+        select store_id,
+               store_name,
+               business_id,
+               plan_date,
+               plan_id
+        from tb_patrol_plan_detail_${enterpriseId}
+        <where>
+            deleted = 0
+            and status = '0'
+            and supervisor_id = #{record.supervisorId}
+            and business_id is not null
+            <if test="record.queryDay != null and record.queryDay != ''">
+                and plan_date = #{record.queryDay}
+            </if>
+            <if test="record.startDay != null and record.startDay != ''">
+                and plan_date >= #{record.startDay}
+            </if>
+            <if test="record.endDay != null and record.endDay != ''">
+                and <![CDATA[plan_date <= #{record.endDay}]]>
+            </if>
+        </where>
+    </select>
+
+  <select id="getPatrolPlanDetailCount" resultType="long">
+    select
+      count(1)
+    from tb_patrol_plan_detail_${enterpriseId} a inner join tb_patrol_plan_${enterpriseId} b on a.plan_id = b.id
+    <where>
+      and a.deleted = 0 and b.deleted = 0
+      <if test="record.supervisorId != null and record.supervisorId != ''">
+        and b.supervisor_id = #{record.supervisorId}
+      </if>
+      <if test="record.planMonth != null and record.planMonth != ''">
+        and b.plan_month = #{record.planMonth}
+      </if>
+      <if test="record.auditStatus != null">
+        and b.audit_status = #{record.auditStatus}
+      </if>
+      <if test="record.supervisorIds != null and record.supervisorIds.size() != 0">
+        and b.supervisor_id in
+        <foreach collection="record.supervisorIds" item="item" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+  <select id="getPatrolPlanDetailExportList" resultType="com.coolcollege.intelligent.model.patrolstore.vo.PatrolPlanDetailExportVO">
+    select
+      c.name as supervisorUsername,
+      b.plan_name as planName,
+      b.plan_month as planMonth,
+      a.plan_date as planDate,
+      a.store_id as storeNum,
+      a.store_name as storeName,
+      if(a.`status`=1, '已完成', '未完成') as status
+    from
+      tb_patrol_plan_detail_${enterpriseId} a
+        inner join tb_patrol_plan_${enterpriseId} b on a.plan_id = b.id
+        inner join enterprise_user_${enterpriseId} c on b.supervisor_id = c.user_id
+    where
+      a.deleted = 0 and b.deleted = 0
+      <if test="record.supervisorId != null and record.supervisorId != ''">
+        and b.supervisor_id = #{record.supervisorId}
+      </if>
+      <if test="record.planMonth != null and record.planMonth != ''">
+        and b.plan_month = #{record.planMonth}
+      </if>
+      <if test="record.auditStatus != null">
+        and b.audit_status = #{record.auditStatus}
+      </if>
+      <if test="record.supervisorIds != null and record.supervisorIds.size() != 0">
+        and b.supervisor_id in
+        <foreach collection="record.supervisorIds" item="item" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+  </select>
+
+</mapper>

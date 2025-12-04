@@ -1,0 +1,10 @@
+FROM kdz-registry.cn-hangzhou.cr.aliyuncs.com/public/centos7_jdk8:141_devtool
+MAINTAINER Fisher "gaofeng@coolcollege.cn"
+VOLUME /tmp
+RUN mkdir -p /opt/apps/coolcollege
+ADD coolcollege-intelligent-dingding-web/target/coolcollege-intelligent-dingding-web-1.0.0.jar /coolcollege-intelligent-dingding-web-1.0.0.jar
+RUN bash -c 'touch /coolcollege-intelligent-dingding-web-1.0.0.jar'
+ENV TZ 'Asia/Shanghai'
+EXPOSE 30100
+ENTRYPOINT ["java","-jar","/coolcollege-intelligent-dingding-web-1.0.0.jar"]
+

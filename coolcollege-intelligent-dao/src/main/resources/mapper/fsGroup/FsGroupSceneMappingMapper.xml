@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.fsGroup.FsGroupSceneMappingMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.fsGroup.FsGroupSceneMappingDO" id="FsGroupSceneMappingMap">
+        <result property="id" column="id" jdbcType="BIGINT"/>
+        <result property="chatId" column="chat_id" jdbcType="VARCHAR"/>
+        <result property="sceneId" column="scene_id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    <sql id="baseSql">
+        id as id,chat_id as chatId,scene_id as sceneId,create_time as createTime   </sql>
+    <!--查询单个-->
+    <select id="queryById" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupSceneMappingDO">
+        select
+          <include refid="baseSql"></include>
+        from fs_group_scene_mapping_${eid}
+        where id = #{id}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from fs_group_scene_mapping_${eid}
+        <where>
+            <if test="fsGroupSceneMappingDO.id != null">
+                and id = #{fsGroupSceneMappingDO.id}
+            </if>
+            <if test="fsGroupSceneMappingDO.chatId != null">
+                and chat_id = #{fsGroupSceneMappingDO.chatId}
+            </if>
+            <if test="fsGroupSceneMappingDO.sceneId != null">
+                and scene_id = #{fsGroupSceneMappingDO.sceneId}
+            </if>
+            <if test="fsGroupSceneMappingDO.createTime != null">
+                and create_time = #{fsGroupSceneMappingDO.createTime}
+            </if>
+
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="fsGroupSceneMappingDO.id" useGeneratedKeys="true">
+        insert into fs_group_scene_mapping_${eid}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fsGroupSceneMappingDO.chatId != null">
+                chat_id,
+            </if>
+            <if test="fsGroupSceneMappingDO.sceneId != null">
+                scene_id,
+            </if>
+            <if test="fsGroupSceneMappingDO.createTime != null">
+                create_time,
+            </if>
+     </trim>
+        values 
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fsGroupSceneMappingDO.chatId != null">
+                #{fsGroupSceneMappingDO.chatId},
+            </if>
+            <if test="fsGroupSceneMappingDO.sceneId != null">
+                #{fsGroupSceneMappingDO.sceneId},
+            </if>
+            <if test="fsGroupSceneMappingDO.createTime != null">
+                #{fsGroupSceneMappingDO.createTime},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" keyProperty="dos.id" useGeneratedKeys="true">
+        insert into fs_group_scene_mapping_${eid}(chat_id, scene_id, create_time)
+        values
+        <foreach collection="dos" item="do" separator=",">
+        (#{do.chatId}, #{do.sceneId}, #{do.createTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="dos.id" useGeneratedKeys="true">
+        insert IGNORE into fs_group_scene_mapping_${eid}(chat_id,  scene_id, create_time)
+        values
+        <foreach collection="dos" item="do" separator=",">
+            (#{do.chatId}, #{do.sceneId}, #{do.createTime})
+        </foreach>
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update fs_group_scene_mapping_${eid}
+        <set>
+            <if test="fsGroupSceneMappingDO.chatId != null">
+                chat_id = #{fsGroupSceneMappingDO.chatId},
+            </if>
+            <if test="fsGroupSceneMappingDO.sceneId != null">
+                scene_id = #{fsGroupSceneMappingDO.sceneId},
+            </if>
+            <if test="fsGroupSceneMappingDO.createTime != null">
+                create_time = #{fsGroupSceneMappingDO.createTime},
+            </if>
+        </set>
+        where id = #{fsGroupSceneMappingDO.id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from fs_group_scene_mapping_${eid} where id = #{id}
+    </delete>
+    <delete id="deleteByChatId">
+        delete from fs_group_scene_mapping_${eid} where chat_id = #{chatId}
+    </delete>
+    <delete id="deleteByIds">
+        delete from fs_group_scene_mapping_${eid}
+        where id
+        <foreach collection="ids" item="id" open="in (" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="queryByChatIds" resultMap="FsGroupSceneMappingMap">
+        select
+        <include refid="baseSql"></include>
+        from fs_group_scene_mapping_${eid}
+        where chat_id
+        <foreach collection="chatIds" item="chatId" open="in (" separator="," close=")">
+            #{chatId}
+        </foreach>
+    </select>
+
+    <select id="selectGroupByQuery" resultType="com.coolcollege.intelligent.model.fsGroup.vo.FsGroupVO">
+        select
+            g.name as name,
+            g.chat_id as chatId,
+            g.create_time as createTime,
+            sm.id as sceneMappingId
+        from fs_group_scene_mapping_${eid} sm
+        inner join fs_group_${eid} g
+        on sm.chat_id = g.chat_id
+        <where>
+            <if test="query.sceneId != null and query.sceneId!=''">
+                and sm.scene_id = #{query.sceneId}
+            </if>
+            <if test="query.groupName !=null and query.groupName!=''">
+                and g.name like CONCAT('%',#{query.groupName},'%')
+            </if>
+        </where>
+    </select>
+    <select id="getGroupSceneIdsConfig" resultType="java.lang.Long">
+        select scene_id
+        from fs_group_scene_mapping_${eid}
+        where chat_id=#{chatId}
+    </select>
+    <select id="queryIdAndNameByChatId" resultType="com.coolcollege.intelligent.model.fsGroup.vo.IdAndNameVO">
+        select
+            f.id as id,f.name as name
+        from fs_group_scene_mapping_${eid}  fm
+        inner join fs_group_scene_${eid} f
+        on fm.scene_id=f.id
+        where fm.chat_id = #{chatId}
+    </select>
+</mapper>
+

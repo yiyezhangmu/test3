@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.authentication.AuthenticationMapper" >
+
+    <!--S 角色查询-->
+    <select id="queryRoles" resultType="com.coolcollege.intelligent.model.authentication.AuthenticationDO">
+        SELECT
+            user_id         as userId,
+            name         as name,
+            department   as department,
+            position     as position,
+            is_admin     as isAdmin
+        FROM enterprise_user_${enterpriseId}
+        <where>
+            1 = 1
+            <if test="map.name != null and map.name != ''">
+               and name like concat('%',trim(#{map.name,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="map.isAdmin  == '1'.toString()">
+                and is_admin = 1
+            </if>
+            and active = true
+        </where>
+    </select>
+
+    <!--S 员工查询-->
+    <select id="queryEmployee" resultType="com.coolcollege.intelligent.model.authentication.AuthenticationDO">
+        SELECT
+        user_id         as userId,
+        name         as name,
+        department   as department,
+        position     as position,
+        is_admin     as isAdmin
+        FROM enterprise_user_${enterpriseId}
+        <where>
+            1 = 1
+            <if test="map.name != null and map.name != ''">
+                and name like concat('%',trim(#{map.name,jdbcType=VARCHAR}),'%')
+            </if>
+            <choose>
+                <when test="map.isAdmin  == '1'.toString()">
+                   and is_admin = 0
+                </when>
+                <otherwise>
+                    and user_id = #{map.user_id,jdbcType=VARCHAR}
+                </otherwise>
+            </choose>
+            and active = true
+        </where>
+    </select>
+
+    <!--S 角色更新-->
+    <update id="updateRoles">
+           UPDATE enterprise_user_${enterpriseId}
+           SET
+            is_admin = #{map.is_admin}
+           WHERE
+            user_id = #{map.user_id}
+    </update>
+
+    <!--S 部门查询-->
+    <select id="queryDepartment" resultType="String">
+        SELECT
+        name
+        FROM sys_department_${enterpriseId}
+        where id in
+            <foreach collection="departments" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+    </select>
+
+    <!--S 角色批量更新管理员-->
+    <update id="batchUpdateRoles">
+        update enterprise_user_${enterpriseId}
+        set
+        is_admin = 1
+        where user_id in
+        <foreach collection="map.user_id" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <!--S 角色批量更新非管理员-->
+    <update id="batchUpdateUser">
+        update enterprise_user_${enterpriseId}
+        set
+        is_admin = 0
+        where user_id in
+        <foreach collection="map.user_id" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+
+
+</mapper>

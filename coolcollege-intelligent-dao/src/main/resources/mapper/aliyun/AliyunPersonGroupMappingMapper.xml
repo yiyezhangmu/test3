@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.aliyun.AliyunPersonGroupMappingMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.aliyun.AliyunPersonGroupMappingDO" id="BaseMap">
+        <result property="id" column="id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="personGroupId" column="person_group_id"/>
+
+        <result property="createTime" column="create_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateId" column="update_id"/>
+    </resultMap>
+
+    <insert id="insertAliyunPersonMappingGroup">
+        insert into aliyun_person_group_mapping_${eid}
+        (
+        customer_id,
+        person_group_id,
+        create_id,
+        create_time
+                )
+        values
+        (
+        #{aliyunPersonGroupMappingDO.customerId},
+        #{aliyunPersonGroupMappingDO.personGroupId},
+        #{aliyunPersonGroupMappingDO.createId},
+        #{aliyunPersonGroupMappingDO.createTime}
+        )
+    </insert>
+
+    <update id="updateAliyunPersonMappingGroup">
+        update aliyun_person_group_mapping_${eid}
+        set person_group_id=#{aliyunPersonGroupMappingDO.personGroupId},
+        update_id=#{aliyunPersonGroupMappingDO.updateId},
+        update_time=#{aliyunPersonGroupMappingDO.updateTime}
+        where customer_id = #{aliyunPersonGroupMappingDO.customerId}
+    </update>
+
+    <delete id="deleteAliyunPerosnMappingGroupByCustomer">
+        delete from  aliyun_person_group_mapping_${eid}
+        where customer_id = #{customerId}
+    </delete>
+
+    <delete id="deleteAliyunPerosnMappingGroupByGroup">
+        delete from  aliyun_person_group_mapping_${eid}
+        where person_group_id = #{groupId}
+    </delete>
+
+    <select id="getAliyunPersonMappingByCustomer" resultMap="BaseMap">
+        select * from
+        aliyun_person_group_mapping_${eid}
+        where customer_id=#{customerId}
+    </select>
+
+    <select id="listAliyunPersonMappingByGroup" resultMap="BaseMap">
+        select * from
+        aliyun_person_group_mapping_${eid}
+        where person_group_id=#{groupId}
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.fsGroup.FsGroupSceneMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.fsGroup.FsGroupSceneDO" id="FsGroupSceneMap">
+        <result property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="img" column="img" jdbcType="VARCHAR"/>
+        <result property="linkAddress" column="link_address" jdbcType="VARCHAR"/>
+        <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    <sql id="baseSql">
+        id as id,name as name,scene_code as sceneCode,remark as remark,img as img,link_address as linkAddress,create_user_id as createUserId,create_time as createTime    </sql>
+
+    <!--查询单个-->
+    <select id="queryById" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupSceneDO">
+        select
+          <include refid="baseSql"></include>
+        from fs_group_scene_${eid}
+        where id = #{id}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from fs_group_scene_${eid}
+        <where>
+            <if test="fsGroupSceneDO.id != null">
+                and id = #{fsGroupSceneDO.id}
+            </if>
+            <if test="fsGroupSceneDO.name != null and fsGroupSceneDO.name != ''">
+                and name = #{fsGroupSceneDO.name}
+            </if>
+            <if test="fsGroupSceneDO.sceneCode != null and fsGroupSceneDO.sceneCode != ''">
+                and scene_code = #{fsGroupSceneDO.sceneCode}
+            </if>
+            <if test="fsGroupSceneDO.remark != null and fsGroupSceneDO.remark != ''">
+                and remark = #{fsGroupSceneDO.remark}
+            </if>
+            <if test="fsGroupSceneDO.img != null and fsGroupSceneDO.img != ''">
+                and img = #{fsGroupSceneDO.img}
+            </if>
+            <if test="fsGroupSceneDO.linkAddress != null and fsGroupSceneDO.linkAddress != ''">
+                and link_address = #{fsGroupSceneDO.linkAddress}
+            </if>
+            <if test="fsGroupSceneDO.createUserId != null and fsGroupSceneDO.createUserId != ''">
+                and create_user_id = #{fsGroupSceneDO.createUserId}
+            </if>
+            <if test="fsGroupSceneDO.createTime != null">
+                and create_time = #{fsGroupSceneDO.createTime}
+            </if>
+        </where>
+    </select>
+    <select id="queryByCode" resultType="java.lang.Long">
+        select
+            id
+        from fs_group_scene_${eid}
+        where scene_code = #{code}
+    </select>
+    <select id="selectByQuery" resultType="com.coolcollege.intelligent.model.fsGroup.vo.FsGroupSceneVO">
+        select
+            <include refid="baseSql"></include>
+            ,b.groupCount as groupCount
+        from fs_group_scene_${eid} a
+        left join
+        (SELECT scene_id,COUNT(*)as groupCount FROM fs_group_scene_mapping_${eid} GROUP BY scene_id) b
+        on a.id=b.scene_id
+        <where>
+            <if test="query.name!=null and query.name!=''">
+                and a.name like concat('%',#{query.name},'%')
+            </if>
+        </where>
+        order by a.create_time asc
+    </select>
+    <select id="queryByIds" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupSceneDO">
+        select <include refid="baseSql"></include>
+        from fs_group_scene_${eid}
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="fsGroupSceneDO.id" useGeneratedKeys="true">
+        insert into fs_group_scene_${eid}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fsGroupSceneDO.name != null and fsGroupSceneDO.name != ''">
+                name,
+            </if>
+            <if test="fsGroupSceneDO.sceneCode != null and fsGroupSceneDO.sceneCode != ''">
+                and scene_code,
+            </if>
+            <if test="fsGroupSceneDO.remark != null and fsGroupSceneDO.remark != ''">
+                remark,
+            </if>
+            <if test="fsGroupSceneDO.img != null and fsGroupSceneDO.img != ''">
+                img,
+            </if>
+            <if test="fsGroupSceneDO.linkAddress != null and fsGroupSceneDO.linkAddress != ''">
+                link_address,
+            </if>
+            <if test="fsGroupSceneDO.createUserId != null and fsGroupSceneDO.createUserId != ''">
+                create_user_id,
+            </if>
+            <if test="fsGroupSceneDO.createTime != null">
+                create_time,
+            </if>
+     </trim>
+        values 
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fsGroupSceneDO.name != null and fsGroupSceneDO.name != ''">
+                #{fsGroupSceneDO.name},
+            </if>
+            <if test="fsGroupSceneDO.sceneCode != null and fsGroupSceneDO.sceneCode != ''">
+                #{fsGroupSceneDO.sceneCode}
+            </if>
+            <if test="fsGroupSceneDO.remark != null and fsGroupSceneDO.remark != ''">
+                #{fsGroupSceneDO.remark},
+            </if>
+            <if test="fsGroupSceneDO.img != null and fsGroupSceneDO.img != ''">
+                #{fsGroupSceneDO.img},
+            </if>
+            <if test="fsGroupSceneDO.linkAddress != null and fsGroupSceneDO.linkAddress != ''">
+                #{fsGroupSceneDO.linkAddress},
+            </if>
+            <if test="fsGroupSceneDO.createUserId != null and fsGroupSceneDO.createUserId != ''">
+                #{fsGroupSceneDO.createUserId},
+            </if>
+            <if test="fsGroupSceneDO.createTime != null">
+                #{fsGroupSceneDO.createTime},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" keyProperty="dos.id" useGeneratedKeys="true">
+        insert into fs_group_scene_${eid}(name, scene_code,remark, img, link_address, create_user_id, create_time)
+        values
+        <foreach collection="dos" item="do" separator=",">
+        (#{do.name},#{do.sceneCode}, #{do.remark}, #{do.img}, #{do.linkAddress}, #{do.createUserId}, #{do.createTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="dos.id" useGeneratedKeys="true">
+        insert into fs_group_scene_${eid}(name, scene_code,remark, img, link_address, create_user_id, create_time)
+        values
+        <foreach collection="dos" item="do" separator=",">
+            (#{do.name}, #{do.sceneCode},#{do.remark}, #{do.img}, #{do.linkAddress}, #{do.createUserId}, #{do.createTime})
+        </foreach>
+        on duplicate key update
+        name = values(name),
+        scene_code = values(scene_code),
+        remark = values(remark),
+        img = values(img),
+        link_address = values(link_address),
+        create_user_id = values(create_user_id),
+        create_time = values(create_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update fs_group_scene_${eid}
+        <set>
+            <if test="fsGroupSceneDO.name != null and fsGroupSceneDO.name != ''">
+                name = #{fsGroupSceneDO.name},
+            </if>
+            <if test="fsGroupSceneDO.sceneCode != null and fsGroupSceneDO.sceneCode != ''">
+                scene_code=#{fsGroupSceneDO.sceneCode}
+            </if>
+            <if test="fsGroupSceneDO.remark != null and fsGroupSceneDO.remark != ''">
+                remark = #{fsGroupSceneDO.remark},
+            </if>
+            <if test="fsGroupSceneDO.img != null and fsGroupSceneDO.img != ''">
+                img = #{fsGroupSceneDO.img},
+            </if>
+            <if test="fsGroupSceneDO.linkAddress != null and fsGroupSceneDO.linkAddress != ''">
+                link_address = #{fsGroupSceneDO.linkAddress},
+            </if>
+            <if test="fsGroupSceneDO.createUserId != null and fsGroupSceneDO.createUserId != ''">
+                create_user_id = #{fsGroupSceneDO.createUserId},
+            </if>
+            <if test="fsGroupSceneDO.createTime != null">
+                create_time = #{fsGroupSceneDO.createTime},
+            </if>
+        </set>
+        where id = #{fsGroupSceneDO.id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from fs_group_scene_${eid} where id = #{id}
+    </delete>
+
+</mapper>
+

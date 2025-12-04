@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.qyy.QyyWeeklyNewspaperDataMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.qyy.WeeklyNewspaperDataDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="mondy_of_week" jdbcType="TIMESTAMP" property="mondyOfWeek" />
+        <result column="ding_dept_id" jdbcType="VARCHAR" property="dingDeptId" />
+        <result column="comp_rank" jdbcType="VARCHAR" property="compRank" />
+        <result column="national_rank" jdbcType="VARCHAR" property="nationalRank" />
+        <result column="month_target" jdbcType="VARCHAR" property="monthTarget" />
+        <result column="month_achieve_rate" jdbcType="VARCHAR" property="monthAchieveRate" />
+        <result column="week_target" jdbcType="VARCHAR" property="weekTarget" />
+        <result column="week_achieve" jdbcType="VARCHAR" property="weekAchieve" />
+        <result column="week_associated_rate" jdbcType="VARCHAR" property="weekAssociatedRate" />
+        <result column="sales_volums" jdbcType="VARCHAR" property="salesVolums" />
+
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        mondy_of_week,
+        ding_dept_id,
+        comp_rank,
+        national_rank,
+        month_target,
+        month_achieve_rate,
+        week_target,
+        week_achieve,
+        week_associated_rate,
+        sales_volums
+    </sql>
+    <insert id="pushWeeklyNewspaperDate">
+        INSERT INTO qyy_newspaper_achieve_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mondyOfWeek != null">
+                mondy_of_week,
+            </if>
+            <if test="dingDeptId != null and dingDeptId != ''">
+                ding_dept_id,
+            </if>
+            <if test="storeAchieve.compRank != null and storeAchieve.compRank != ''">
+                comp_rank,
+            </if>
+            <if test="storeAchieve.nationalRank != null and storeAchieve.nationalRank != ''">
+                national_rank,
+            </if>
+            <if test="storeAchieve.monthTarget != null and storeAchieve.monthTarget != ''">
+                month_target,
+            </if>
+            <if test="storeAchieve.monthAchieveRate != null and storeAchieve.monthAchieveRate != ''">
+                month_achieve_rate,
+            </if>
+            <if test="storeAchieve.weekTarget != null and storeAchieve.weekTarget != ''">
+                week_target,
+            </if>
+            <if test="storeAchieve.weekAchieve != null and storeAchieve.weekAchieve != ''">
+                week_achieve,
+            </if>
+            <if test="storeAchieve.weekAssociatedRate != null and storeAchieve.weekAssociatedRate != ''">
+                week_associated_rate,
+            </if>
+            <if test="salesJson != null and salesJson != ''">
+                sales_volums,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mondyOfWeek != null">
+                #{mondyOfWeek},
+            </if>
+            <if test="dingDeptId != null and dingDeptId != ''">
+                #{dingDeptId},
+            </if>
+            <if test="storeAchieve.compRank != null and storeAchieve.compRank != ''">
+                #{storeAchieve.compRank},
+            </if>
+            <if test="storeAchieve.nationalRank != null and storeAchieve.nationalRank != ''">
+                #{storeAchieve.nationalRank},
+            </if>
+            <if test="storeAchieve.monthTarget != null and storeAchieve.monthTarget != ''">
+                #{storeAchieve.monthTarget},
+            </if>
+            <if test="storeAchieve.monthAchieveRate != null and storeAchieve.monthAchieveRate != ''">
+                #{storeAchieve.monthAchieveRate},
+            </if>
+            <if test="storeAchieve.weekTarget != null and storeAchieve.weekTarget != ''">
+                #{storeAchieve.weekTarget},
+            </if>
+            <if test="storeAchieve.weekAchieve != null and storeAchieve.weekAchieve != ''">
+                #{storeAchieve.weekAchieve},
+            </if>
+            <if test="storeAchieve.weekAssociatedRate != null and storeAchieve.weekAssociatedRate != ''">
+                #{storeAchieve.weekAssociatedRate},
+            </if>
+            <if test="salesJson != null and salesJson != ''">
+                #{salesJson},
+            </if>
+        </trim>
+        ON DUPLICATE KEY
+        UPDATE  comp_rank = values(comp_rank),
+        national_rank = values(national_rank),
+        month_target = values(month_target),
+        month_achieve_rate = values(month_achieve_rate),
+        week_target = values(week_target),
+        week_achieve = values(week_achieve),
+        week_associated_rate = values(week_associated_rate),
+        sales_volums = values(sales_volums)
+    </insert>
+    <insert id="insertHistory">
+        INSERT INTO qyy_newspaper_history_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null and userId != ''">
+                user_id,
+            </if>
+            <if test="name!=null and name != ''">
+                user_name,
+            </if>
+            <if test="id!=null and id != ''">
+                newspaper_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId!=null and userId != ''">
+                #{userId},
+            </if>
+            <if test="name!=null and name != ''">
+                #{name},
+            </if>
+            <if test="id!=null and id != ''">
+                #{id},
+            </if>
+        </trim>
+    </insert>
+    <select id="getWeekLyAchieve" resultType="java.lang.String">
+        SELECT week_achieve
+        FROM qyy_newspaper_achieve_${enterpriseId}
+        WHERE ding_dept_id = #{thirdDeptId}
+        ORDER BY mondy_of_week
+        limit 1
+    </select>
+    <select id="getWeeklyNewspaperDate"
+            resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM qyy_newspaper_achieve_${enterpriseId}
+        WHERE mondy_of_week = #{mondyOfWeek}
+        AND ding_dept_id = #{dingDeptId}
+    </select>
+    <select id="countReadNum" resultType="java.lang.Integer">
+        SELECT COUNT(*) AS count
+        FROM (
+            SELECT user_id
+            FROM qyy_newspaper_history_${enterpriseId}
+            WHERE newspaper_id = #{id}
+            GROUP BY user_id
+        ) AS unique_users;
+    </select>
+    <select id="readPeople" resultType="com.coolcollege.intelligent.model.qyy.QyyReadPeopleDO">
+        select
+        id as id,
+        user_id as userId,
+        user_name as username,
+        newspaper_id as newspaperId
+        from qyy_newspaper_history_${enterpriseId}
+        where newspaper_id = #{id}
+        group by user_id
+    </select>
+    <select id="getWeekLyAchieveByThirdIdList"
+            resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM qyy_newspaper_achieve_${enterpriseId}
+        <where>
+            <if test="thirdIdList != null and thirdIdList.size()>0">
+                and ding_dept_id in (
+                <foreach collection="thirdIdList" item="id" separator=",">
+                    #{id}
+                </foreach>
+                )
+            </if>
+        </where>
+    </select>
+
+</mapper>

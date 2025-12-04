@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.order.EnterpriseOrderConsumerMapper">
+    <insert id="batchInsertEnterpriseOrderConsumer">
+        insert into enterprise_order_consumer (
+        goods_code,
+        item_code,
+        total_actual_pay_fee,
+        pay_time,
+        buy_corp_id,
+        quantity,
+        biz_order_id,
+        order_source,
+        handler_user_name,
+        handler_user_id,
+        deal_status
+        )values
+        <foreach collection="list" item="enterpriseOrderConsumer" separator=",">
+            (
+            #{enterpriseOrderConsumer.goodsCode},
+            #{enterpriseOrderConsumer.itemCode},
+            #{enterpriseOrderConsumer.totalActualPayFee},
+            #{enterpriseOrderConsumer.payTime},
+            #{enterpriseOrderConsumer.buyCorpId},
+            #{enterpriseOrderConsumer.quantity},
+            #{enterpriseOrderConsumer.bizOrderId},
+            #{enterpriseOrderConsumer.orderSource},
+            #{enterpriseOrderConsumer.handlerUserName},
+            #{enterpriseOrderConsumer.handlerUserId},
+            #{enterpriseOrderConsumer.dealStatus}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

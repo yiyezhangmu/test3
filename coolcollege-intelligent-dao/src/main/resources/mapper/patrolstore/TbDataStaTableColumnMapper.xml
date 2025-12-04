@@ -1,0 +1,2220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.patrolstore.TbDataStaTableColumnMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.patrolstore.TbDataStaTableColumnDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="task_id" jdbcType="BIGINT" property="taskId" />
+        <result column="sub_task_id" jdbcType="BIGINT" property="subTaskId" />
+        <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+        <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+        <result column="region_id" jdbcType="BIGINT" property="regionId" />
+        <result column="business_id" jdbcType="BIGINT" property="businessId" />
+        <result column="business_type" jdbcType="VARCHAR" property="businessType" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
+        <result column="data_table_id" jdbcType="BIGINT" property="dataTableId" />
+        <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId" />
+        <result column="meta_column_id" jdbcType="BIGINT" property="metaColumnId" />
+        <result column="meta_column_name" jdbcType="VARCHAR" property="metaColumnName" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+        <result column="supervisor_id" jdbcType="VARCHAR" property="supervisorId" />
+        <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+        <result column="check_result" jdbcType="VARCHAR" property="checkResult" />
+        <result column="check_result_id" jdbcType="BIGINT" property="checkResultId" />
+        <result column="check_result_name" jdbcType="VARCHAR" property="checkResultName" />
+        <result column="check_pics" jdbcType="VARCHAR" property="checkPics" />
+        <result column="check_text" jdbcType="VARCHAR" property="checkText" />
+        <result column="check_video" jdbcType="VARCHAR" property="checkVideo" />
+        <result column="check_score" jdbcType="DECIMAL" property="checkScore" />
+        <result column="handler_user_id" jdbcType="VARCHAR" property="handlerUserId" />
+        <result column="check_user_id" jdbcType="VARCHAR" property="checkUserId" />
+        <result column="re_check_user_id" jdbcType="VARCHAR" property="reCheckUserId" />
+        <result column="task_question_status" jdbcType="VARCHAR" property="taskQuestionStatus" />
+        <result column="task_question_id" jdbcType="BIGINT" property="taskQuestionId" />
+        <result column="submit_status" jdbcType="TINYINT" property="submitStatus" />
+        <result column="business_status" jdbcType="TINYINT" property="businessStatus" />
+        <result column="deleted" jdbcType="TINYINT" property="deleted" />
+        <result column="create_date" jdbcType="VARCHAR" property="createDate" />
+        <result column="region_way" jdbcType="VARCHAR" property="regionWay" />
+        <result column="reward_penalt_money" jdbcType="DECIMAL" property="rewardPenaltMoney" />
+        <result column="patrol_store_time" jdbcType="TIMESTAMP" property="patrolStoreTime" />
+        <result column="store_scene_id" jdbcType="BIGINT" property="storeSceneId" />
+        <result column="store_scene_name" jdbcType="VARCHAR" property="storeSceneName" />
+        <result column="score_times" jdbcType="DECIMAL" property="scoreTimes" />
+        <result column="award_times" jdbcType="DECIMAL" property="awardTimes" />
+        <result column="weight_percent" jdbcType="DECIMAL" property="weightPercent" />
+        <result column="column_max_score" jdbcType="DECIMAL" property="columnMaxScore" />
+        <result column="column_max_award" jdbcType="DECIMAL" property="columnMaxAward" />
+        <result column="patrol_type" jdbcType="VARCHAR" property="patrolType" />
+        <result column="check_result_reason" jdbcType="VARCHAR" property="checkResultReason" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, task_id, sub_task_id, store_id, store_name, region_id, business_id, business_type,
+        create_time, edit_time, data_table_id, meta_table_id, meta_column_id, meta_column_name,
+        description, create_user_id, supervisor_id, category_name, check_result, check_result_id,
+        check_result_name, check_pics, check_text, check_video, check_score, handler_user_id,
+        check_user_id, re_check_user_id, task_question_status, task_question_id, submit_status,
+        business_status, deleted, create_date, region_way, reward_penalt_money, patrol_store_time,
+        store_scene_id, store_scene_name, score_times, award_times, weight_percent, column_max_score,
+        column_max_award,column_type,patrol_type, check_result_reason
+  </sql>
+
+    <insert id="insertSelective"  keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into tb_data_sta_table_column_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.taskId != null">
+                task_id,
+            </if>
+            <if test="record.subTaskId != null">
+                sub_task_id,
+            </if>
+            <if test="record.storeId != null">
+                store_id,
+            </if>
+            <if test="record.storeName != null">
+                store_name,
+            </if>
+            <if test="record.regionId != null">
+                region_id,
+            </if>
+            <if test="record.businessId != null">
+                business_id,
+            </if>
+            <if test="record.businessType != null">
+                business_type,
+            </if>
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.editTime != null">
+                edit_time,
+            </if>
+            <if test="record.dataTableId != null">
+                data_table_id,
+            </if>
+            <if test="record.metaTableId != null">
+                meta_table_id,
+            </if>
+            <if test="record.metaColumnId != null">
+                meta_column_id,
+            </if>
+            <if test="record.metaColumnName != null">
+                meta_column_name,
+            </if>
+            <if test="record.description != null">
+                description,
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id,
+            </if>
+            <if test="record.supervisorId != null">
+                supervisor_id,
+            </if>
+            <if test="record.categoryName != null">
+                category_name,
+            </if>
+            <if test="record.checkResult != null">
+                check_result,
+            </if>
+            <if test="record.checkResultId != null">
+                check_result_id,
+            </if>
+            <if test="record.checkResultName != null">
+                check_result_name,
+            </if>
+            <if test="record.checkPics != null">
+                check_pics,
+            </if>
+            <if test="record.checkText != null">
+                check_text,
+            </if>
+            <if test="record.checkVideo != null">
+                check_video,
+            </if>
+            <if test="record.checkScore != null">
+                check_score,
+            </if>
+            <if test="record.handlerUserId != null">
+                handler_user_id,
+            </if>
+            <if test="record.checkUserId != null">
+                check_user_id,
+            </if>
+            <if test="record.reCheckUserId != null">
+                re_check_user_id,
+            </if>
+            <if test="record.taskQuestionStatus != null">
+                task_question_status,
+            </if>
+            <if test="record.taskQuestionId != null">
+                task_question_id,
+            </if>
+            <if test="record.submitStatus != null">
+                submit_status,
+            </if>
+            <if test="record.businessStatus != null">
+                business_status,
+            </if>
+            <if test="record.deleted != null">
+                deleted,
+            </if>
+            <if test="record.createDate != null">
+                create_date,
+            </if>
+            <if test="record.regionWay != null">
+                region_way,
+            </if>
+            <if test="record.rewardPenaltMoney != null">
+                reward_penalt_money,
+            </if>
+            <if test="record.patrolStoreTime != null">
+                patrol_store_time,
+            </if>
+            <if test="record.storeSceneId != null">
+                store_scene_id,
+            </if>
+            <if test="record.storeSceneName != null">
+                store_scene_name,
+            </if>
+            <if test="record.scoreTimes != null">
+                score_times,
+            </if>
+            <if test="record.awardTimes != null">
+                award_times,
+            </if>
+            <if test="record.weightPercent != null">
+                weight_percent,
+            </if>
+            <if test="record.columnMaxScore != null">
+                column_max_score,
+            </if>
+            <if test="record.columnMaxAward != null">
+                column_max_award,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.taskId != null">
+                #{record.taskId},
+            </if>
+            <if test="record.subTaskId != null">
+                #{record.subTaskId},
+            </if>
+            <if test="record.storeId != null">
+                #{record.storeId},
+            </if>
+            <if test="record.storeName != null">
+                #{record.storeName},
+            </if>
+            <if test="record.regionId != null">
+                #{record.regionId},
+            </if>
+            <if test="record.businessId != null">
+                #{record.businessId},
+            </if>
+            <if test="record.businessType != null">
+                #{record.businessType},
+            </if>
+            <if test="record.createTime != null">
+                #{record.createTime},
+            </if>
+            <if test="record.editTime != null">
+                #{record.editTime},
+            </if>
+            <if test="record.dataTableId != null">
+                #{record.dataTableId},
+            </if>
+            <if test="record.metaTableId != null">
+                #{record.metaTableId},
+            </if>
+            <if test="record.metaColumnId != null">
+                #{record.metaColumnId},
+            </if>
+            <if test="record.metaColumnName != null">
+                #{record.metaColumnName},
+            </if>
+            <if test="record.description != null">
+                #{record.description},
+            </if>
+            <if test="record.createUserId != null">
+                #{record.createUserId},
+            </if>
+            <if test="record.supervisorId != null">
+                #{record.supervisorId},
+            </if>
+            <if test="record.categoryName != null">
+                #{record.categoryName},
+            </if>
+            <if test="record.checkResult != null">
+                #{record.checkResult},
+            </if>
+            <if test="record.checkResultId != null">
+                #{record.checkResultId},
+            </if>
+            <if test="record.checkResultName != null">
+                #{record.checkResultName},
+            </if>
+            <if test="record.checkPics != null">
+                #{record.checkPics},
+            </if>
+            <if test="record.checkText != null">
+                #{record.checkText},
+            </if>
+            <if test="record.checkVideo != null">
+                #{record.checkVideo},
+            </if>
+            <if test="record.checkScore != null">
+                #{record.checkScore},
+            </if>
+            <if test="record.handlerUserId != null">
+                #{record.handlerUserId},
+            </if>
+            <if test="record.checkUserId != null">
+                #{record.checkUserId},
+            </if>
+            <if test="record.reCheckUserId != null">
+                #{record.reCheckUserId},
+            </if>
+            <if test="record.taskQuestionStatus != null">
+                #{record.taskQuestionStatus},
+            </if>
+            <if test="record.taskQuestionId != null">
+                #{record.taskQuestionId},
+            </if>
+            <if test="record.submitStatus != null">
+                #{record.submitStatus},
+            </if>
+            <if test="record.businessStatus != null">
+                #{record.businessStatus},
+            </if>
+            <if test="record.deleted != null">
+                #{record.deleted},
+            </if>
+            <if test="record.createDate != null">
+                #{record.createDate},
+            </if>
+            <if test="record.regionWay != null">
+                #{record.regionWay},
+            </if>
+            <if test="record.rewardPenaltMoney != null">
+                #{record.rewardPenaltMoney},
+            </if>
+            <if test="record.patrolStoreTime != null">
+                #{record.patrolStoreTime},
+            </if>
+            <if test="record.storeSceneId != null">
+                #{record.storeSceneId},
+            </if>
+            <if test="record.storeSceneName != null">
+                #{record.storeSceneName},
+            </if>
+            <if test="record.scoreTimes != null">
+                #{record.scoreTimes},
+            </if>
+            <if test="record.awardTimes != null">
+                #{record.awardTimes},
+            </if>
+            <if test="record.weightPercent != null">
+                #{record.weightPercent},
+            </if>
+            <if test="record.columnMaxScore != null">
+                #{record.columnMaxScore},
+            </if>
+            <if test="record.columnMaxAward != null">
+                #{record.columnMaxAward},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update tb_data_sta_table_column_${enterpriseId}
+        <set>
+            <if test="record.taskId != null">
+                task_id = #{record.taskId},
+            </if>
+            <if test="record.subTaskId != null">
+                sub_task_id = #{record.subTaskId},
+            </if>
+            <if test="record.storeId != null">
+                store_id = #{record.storeId},
+            </if>
+            <if test="record.storeName != null">
+                store_name = #{record.storeName},
+            </if>
+            <if test="record.regionId != null">
+                region_id = #{record.regionId},
+            </if>
+            <if test="record.businessId != null">
+                business_id = #{record.businessId},
+            </if>
+            <if test="record.businessType != null">
+                business_type = #{record.businessType},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.editTime != null">
+                edit_time = #{record.editTime},
+            </if>
+            <if test="record.dataTableId != null">
+                data_table_id = #{record.dataTableId},
+            </if>
+            <if test="record.metaTableId != null">
+                meta_table_id = #{record.metaTableId},
+            </if>
+            <if test="record.metaColumnId != null">
+                meta_column_id = #{record.metaColumnId},
+            </if>
+            <if test="record.metaColumnName != null">
+                meta_column_name = #{record.metaColumnName},
+            </if>
+            <if test="record.description != null">
+                description = #{record.description},
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id = #{record.createUserId},
+            </if>
+            <if test="record.supervisorId != null">
+                supervisor_id = #{record.supervisorId},
+            </if>
+            <if test="record.categoryName != null">
+                category_name = #{record.categoryName},
+            </if>
+            <if test="record.checkResult != null">
+                check_result = #{record.checkResult},
+            </if>
+            <if test="record.checkResultId != null">
+                check_result_id = #{record.checkResultId},
+            </if>
+            <if test="record.checkResultName != null">
+                check_result_name = #{record.checkResultName},
+            </if>
+            <if test="record.checkPics != null">
+                check_pics = #{record.checkPics},
+            </if>
+            <if test="record.checkText != null">
+                check_text = #{record.checkText},
+            </if>
+            <if test="record.checkVideo != null">
+                check_video = #{record.checkVideo},
+            </if>
+            <if test="record.checkScore != null">
+                check_score = #{record.checkScore},
+            </if>
+            <if test="record.handlerUserId != null">
+                handler_user_id = #{record.handlerUserId},
+            </if>
+            <if test="record.checkUserId != null">
+                check_user_id = #{record.checkUserId},
+            </if>
+            <if test="record.reCheckUserId != null">
+                re_check_user_id = #{record.reCheckUserId},
+            </if>
+            <if test="record.taskQuestionStatus != null">
+                task_question_status = #{record.taskQuestionStatus},
+            </if>
+            <if test="record.taskQuestionId != null">
+                task_question_id = #{record.taskQuestionId},
+            </if>
+            <if test="record.submitStatus != null">
+                submit_status = #{record.submitStatus},
+            </if>
+            <if test="record.businessStatus != null">
+                business_status = #{record.businessStatus},
+            </if>
+            <if test="record.deleted != null">
+                deleted = #{record.deleted},
+            </if>
+            <if test="record.createDate != null">
+                create_date = #{record.createDate},
+            </if>
+            <if test="record.regionWay != null">
+                region_way = #{record.regionWay},
+            </if>
+            <if test="record.rewardPenaltMoney != null">
+                reward_penalt_money = #{record.rewardPenaltMoney},
+            </if>
+            <if test="record.patrolStoreTime != null">
+                patrol_store_time = #{record.patrolStoreTime},
+            </if>
+            <if test="record.storeSceneId != null">
+                store_scene_id = #{record.storeSceneId},
+            </if>
+            <if test="record.storeSceneName != null">
+                store_scene_name = #{record.storeSceneName},
+            </if>
+            <if test="record.scoreTimes != null">
+                score_times = #{record.scoreTimes},
+            </if>
+            <if test="record.awardTimes != null">
+                award_times = #{record.awardTimes},
+            </if>
+            <if test="record.weightPercent != null">
+                weight_percent = #{record.weightPercent},
+            </if>
+            <if test="record.columnMaxScore != null">
+                column_max_score = #{record.columnMaxScore},
+            </if>
+            <if test="record.columnMaxAward != null">
+                column_max_award = #{record.columnMaxAward},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+    <select id="getListBySubTaskIdAndTaskId"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where task_id = #{taskId}
+        <foreach collection="subTaskIdList" item="subTaskId" separator="," open="and sub_task_id in (" close=")">
+            #{subTaskId}
+        </foreach>
+    </select>
+    <select id="statisticsUser"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsUserDTO">
+        select
+        create_user_id as userId,
+        sum(if(task_question_id>0,1,0)) as totalQuestionNum,
+        sum(if(task_question_status = 'HANDLE',1,0)) as todoQuestionNum,
+        sum(if(task_question_status = 'RECHECK',1,0)) as unRecheckQuestionNum,
+        sum(if(task_question_status = 'FINISH',1,0)) as finishQuestionNum
+        from tb_data_sta_table_column_${enterpriseId}
+        where  deleted = 0
+        and business_status = 1
+        and business_type = 'PATROL_STORE'
+        <if test="beginDate != null and endDate !=null">
+            and create_time between #{beginDate} and #{endDate}
+        </if>
+        <foreach collection="userIdList" close=")" separator="," open="and create_user_id in (" item="userId">
+            #{userId}
+        </foreach>
+        group by userId
+    </select>
+    <select id="getListByRecordIdListForMap"
+            resultType="com.coolcollege.intelligent.model.patrolstore.TbDataStaTableColumnDO">
+        select
+        business_id as businessId, check_pics as checkPics,check_score as checkScore
+        from tb_data_sta_table_column_${enterpriseId}
+        where deleted = 0 and business_id in
+        <foreach collection="recordIdList" open=" (" close=")" item="recordId" separator=",">
+            #{recordId}
+        </foreach>
+    </select>
+    <insert id="batchInsert" keyColumn="id" keyProperty="list.id" useGeneratedKeys="true">
+        insert into tb_data_sta_table_column_${enterpriseId}
+        (category_name,
+        data_table_id,
+        meta_table_id,
+        meta_column_id,
+        meta_column_name,
+        description,
+        create_user_id,
+        supervisor_id,
+        store_id,
+        store_name,
+        region_id,
+        region_way,
+        task_id,
+        sub_task_id,
+        business_id,
+        business_type,
+        store_scene_id,
+        store_scene_name,
+        create_date,
+        create_time,
+        patrol_store_time,
+        column_type,
+        patrol_type,
+        check_pics,
+        check_result,
+        check_result_id,
+        check_result_name,
+        check_text,
+        check_video,
+        check_score,
+        check_result_reason,
+        score_times,
+        award_times,
+        weight_percent
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.categoryName},
+            #{item.dataTableId},
+            #{item.metaTableId},
+            #{item.metaColumnId},
+            #{item.metaColumnName},
+            #{item.description},
+            #{item.createUserId},
+            #{item.supervisorId},
+            #{item.storeId},
+            #{item.storeName},
+            #{item.regionId},
+            #{item.regionWay},
+            #{item.taskId},
+            #{item.subTaskId},
+            #{item.businessId},
+            #{item.businessType},
+            #{item.storeSceneId},
+            #{item.storeSceneName},
+            #{item.createDate},
+            #{item.createTime},
+            now(),
+            #{item.columnType},
+            #{item.patrolType},
+             <choose>
+                 <when test="item.checkPics != null">
+                     #{item.checkPics}
+                 </when>
+                 <otherwise>
+                     ''
+                 </otherwise>
+             </choose>,
+            #{item.checkResult},
+            #{item.checkResultId},
+            #{item.checkResultName},
+            #{item.checkText},
+            #{item.checkVideo},
+            #{item.checkScore},
+            #{item.checkResultReason},
+            #{item.scoreTimes},
+            #{item.awardTimes},
+            #{item.weightPercent}
+            )
+        </foreach>
+    </insert>
+
+    <update id="batchUpdate">
+        update tb_data_sta_table_column_${enterpriseId}
+        <set>
+            check_result = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.checkResult},check_result)
+            </foreach>
+            END,
+            check_result_id = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.checkResultId},check_result_id)
+            </foreach>
+            END,
+            check_result_name = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.checkResultName},check_result_name)
+            </foreach>
+            END,
+            check_pics = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.checkPics},check_pics)
+            </foreach>
+            END,
+            check_video = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.checkVideo},check_video)
+            </foreach>
+            END,
+            check_text = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.checkText},check_text)
+            </foreach>
+            END,
+            check_score = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.checkScore},check_score)
+            </foreach>
+            END,
+            reward_penalt_money = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.rewardPenaltMoney},reward_penalt_money)
+            </foreach>
+            END,
+            score_times = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.scoreTimes},score_times)
+            </foreach>
+            END,
+            award_times = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.awardTimes},award_times)
+            </foreach>
+            END,
+            weight_percent = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.weightPercent},weight_percent)
+            </foreach>
+            END,
+            column_max_score = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.columnMaxScore},column_max_score)
+            </foreach>
+            END,
+            column_max_award = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.columnMaxAward},column_max_award)
+            </foreach>
+            END,
+            check_result_reason = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.checkResultReason},check_result_reason)
+            </foreach>
+            END,
+            handler_user_id = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.handlerUserId},handler_user_id)
+            </foreach>
+            END,
+            patrol_store_time = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.patrolStoreTime},patrol_store_time)
+            </foreach>
+            END,
+            submit_status = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.submitStatus},submit_status)
+            </foreach>
+            END,
+            <if test="submit">
+                submit_status = 1,
+            </if>
+        </set>
+        where
+        id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item.id}
+        </foreach>
+        )
+        and business_id = #{businessId}
+        and business_type = #{businessType}
+        and data_table_id = #{dataTableId}
+        and deleted = 0
+    </update>
+
+    <update id="batchUpdateResult">
+        update tb_data_sta_table_column_${enterpriseId}
+        <set>
+            check_result = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.checkResult},check_result)
+            </foreach>
+            END,
+            check_result_id = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.checkResultId},check_result_id)
+            </foreach>
+            END,
+            check_result_name = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.checkResultName},check_result_name)
+            </foreach>
+            END,
+            check_pics = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.checkPics},check_pics)
+            </foreach>
+            END,
+            check_video = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.checkVideo},check_video)
+            </foreach>
+            END,
+            check_text = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.checkText},check_text)
+            </foreach>
+            END,
+            check_score = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.checkScore},check_score)
+            </foreach>
+            END,
+            reward_penalt_money = CASE id
+            <foreach collection="list" separator=" " item="item">
+                WHEN #{item.id} THEN IFNULL(#{item.rewardPenaltMoney},reward_penalt_money)
+            </foreach>
+            END,
+        </set>
+        where
+        id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item.id}
+        </foreach>
+        )
+    </update>
+
+    <select id="patrolStoreStatisticsStore"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsStoreDTO">
+        select
+        store_id as storeId,
+        sum(if(task_question_id != 0,1,0)) as totalQuestionNum,
+        sum(if(task_question_status = 'HANDLE',1,0)) as todoQuestionNum,
+        sum(if(task_question_status = 'RECHECK',1,0)) as unRecheckQuestionNum,
+        sum(if(task_question_status = 'FINISH',1,0)) as finishQuestionNum
+        from tb_data_sta_table_column_${enterpriseId}
+        where store_id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        ) and create_time between #{beginDate} and #{endDate}
+        and business_type = 'PATROL_STORE'
+        and deleted = 0
+        and business_status = 1
+        group by store_id
+    </select>
+
+    <select id="patrolStoreStatisticsRegionPathLeft"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsStoreDTO">
+        select store_id                                        as storeId,
+               store_name                                      as storeName,
+               count(distinct business_id)                     as patrolNum,
+               count(distinct supervisor_id)                   as patrolPersonNum,
+               sum(if(task_question_id != 0, 1, 0))            as totalQuestionNum,
+               sum(if(task_question_status = 'HANDLE', 1, 0))  as todoQuestionNum,
+               sum(if(task_question_status = 'RECHECK', 1, 0)) as unRecheckQuestionNum,
+               sum(if(task_question_status = 'FINISH', 1, 0))  as finishQuestionNum
+        from tb_data_sta_table_column_${enterpriseId}
+        where region_way like concat(#{regionPathLeft}, '%')
+          and create_time between #{beginDate} and #{endDate}
+          and business_type = 'PATROL_STORE'
+          and deleted = 0
+          and business_status = 1
+        group by store_id
+    </select>
+
+    <select id="selectByBusinessIdAndMetaTableIds"
+            resultType="com.coolcollege.intelligent.model.patrolstore.TbDataStaTableColumnDO">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where business_id = #{businessId}
+        and meta_table_id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <update id="updateDelByBusinessIds">
+        update tb_data_sta_table_column_${enterpriseId}
+        set deleted = 1
+        where business_id in (
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>
+        ) and business_type = #{businessType}
+    </update>
+    <delete id="delByBusinessIdAndMetaTableIds">
+        delete from tb_data_sta_table_column_${enterpriseId}
+        where business_id = #{businessId}
+        and meta_table_id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="deleteAbsoluteByBusinessId">
+        delete from tb_data_sta_table_column_${enterpriseId}
+        where business_id = #{businessId}
+    </delete>
+    <update id="updateBusinessStatus">
+        update tb_data_sta_table_column_${enterpriseId}
+        set business_status = 1, sub_task_id = #{subTaskId}, supervisor_id = #{supervisorId}
+        where business_id = #{businessId}
+        and business_type = #{businessType}
+    </update>
+    <select id="existNotCheckByBusinessId" resultType="java.lang.Integer">
+        select exists (
+            select *
+            from tb_data_sta_table_column_${enterpriseId}
+            where business_id = #{businessId}
+            and business_type = #{businessType}
+            and check_result = ''
+            and column_type != 5
+            and deleted = 0
+            limit 1)
+    </select>
+
+    <select id="selectByMetaTableId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where meta_table_id = #{metaTableId}
+        <if test="businessType != null and businessType != ''">
+            and business_type = #{businessType}
+        </if>
+        and deleted = 0
+    </select>
+    <select id="selectByDataTableId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where data_table_id = #{dataTableId}
+        and deleted = 0
+    </select>
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where id = #{id}
+        and deleted = 0
+    </select>
+
+    <select id="selectByBusinessIdAndTaskId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where business_id = #{businessId}
+        and task_id = #{taskId}
+        and deleted = 0
+    </select>
+
+    <select id="selectByBusinessId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where business_id = #{businessId}
+        and business_type = #{businessType}
+        and deleted = 0
+    </select>
+
+    <select id="selectCategoryStatisticsListByBusinessId"
+            resultType="com.coolcollege.intelligent.model.metatable.vo.CategoryStatisticsVO">
+        select
+            data_table_id as dataTableId,
+            category_name as categoryName,
+            count(*) as totalNum,
+            sum(if(check_result='PASS',1,0)) as passNum,
+            sum(if(check_result='FAIL',1,0)) as failNum,
+            sum(if(check_result='INAPPLICABLE',1,0)) as inapplicableNum,
+            sum(check_score) as totalCheckScore,
+            sum(column_max_score) as totalScore
+        from tb_data_sta_table_column_${enterpriseId}
+        where business_id = #{businessId}
+        and business_type = #{businessType}
+        and deleted = 0
+        group by data_table_id, category_name
+    </select>
+
+    <select id="selectStoreSceneIdByBusinessId" resultType="java.lang.Long">
+        select
+            DISTINCT store_scene_id
+        from tb_data_sta_table_column_${enterpriseId}
+        where business_id = #{businessId}
+        and business_type = #{businessType}
+        and store_scene_id is not null
+        and deleted = 0
+    </select>
+
+    <select id="selectByTaskQuestionId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where task_question_id = #{taskQuestionId}
+        and deleted = 0
+    </select>
+
+    <update id="updateTaskQuestionId">
+        update tb_data_sta_table_column_${enterpriseId}
+        set task_question_id = #{record.taskQuestionId},
+        task_question_status = #{record.taskQuestionStatus}
+        where id = #{record.id}
+    </update>
+    <update id="updateTaskQuestionStatus">
+        update tb_data_sta_table_column_${enterpriseId}
+        set task_question_status = #{record.taskQuestionStatus}
+        where task_question_id = #{record.taskQuestionId}
+        <if test="record.id != null">
+            and id = #{record.id}
+        </if>
+        and deleted = 0
+    </update>
+    <update id="delTaskQuestion">
+        update tb_data_sta_table_column_${enterpriseId}
+        set task_question_id = 0,
+        task_question_status = ""
+        where task_question_id = #{taskQuestionId}
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        and deleted = 0
+    </update>
+    <select id="dataStaColumnStatistics" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        <where>
+            <if test="regionPathLeft != null">
+                and region_way like concat(#{regionPathLeft}, '%')
+            </if>
+            <if test="query.storeId != null">
+                and store_id = #{query.storeId}
+            </if>
+            <if test="query.businessId != null">
+                and business_id = #{query.businessId}
+            </if>
+            <if test="query.createUserId != null">
+                and create_user_id = #{query.createUserId}
+            </if>
+            <if test="query.metaTableId != null">
+                and meta_table_id = #{query.metaTableId}
+            </if>
+            <if test="query.metaColumnId != null">
+                and meta_column_id = #{query.metaColumnId}
+            </if>
+            <if test="query.dataTableId != null">
+                and data_table_id = #{query.dataTableId}
+            </if>
+            <if test="query.checkResult != null">
+                and check_result = #{query.checkResult}
+            </if>
+            <if test="query.businessStatus != null">
+                and business_status = #{query.businessStatus}
+            </if>
+            and create_time between #{query.beginDate} and #{query.endDate}
+            and business_type = #{businessType}
+            and deleted = 0
+            <if test="query.onlyQuestion != null and query.onlyQuestion == true">
+                and task_question_id != 0
+            </if>
+        </where>
+        ORDER BY create_time desc,id desc
+    </select>
+    <select id="dataStaColumnStatisticsCount" resultType="java.lang.Long">
+        select count(id)
+        from tb_data_sta_table_column_${enterpriseId}
+        <where>
+            <if test="regionPathLeft != null">
+                and region_way like concat(#{regionPathLeft}, '%')
+            </if>
+            <if test="query.storeId != null">
+                and store_id = #{query.storeId}
+            </if>
+            <if test="query.businessId != null">
+                and business_id = #{query.businessId}
+            </if>
+            <if test="query.createUserId != null">
+                and create_user_id = #{query.createUserId}
+            </if>
+            <if test="query.metaTableId != null">
+                and meta_table_id = #{query.metaTableId}
+            </if>
+            <if test="query.metaColumnId != null">
+                and meta_column_id = #{query.metaColumnId}
+            </if>
+            <if test="query.dataTableId != null">
+                and data_table_id = #{query.dataTableId}
+            </if>
+            <if test="query.checkResult != null">
+                and check_result = #{query.checkResult}
+            </if>
+            <if test="query.businessStatus != null">
+                and business_status = #{query.businessStatus}
+            </if>
+            and create_time between #{query.beginDate} and #{query.endDate}
+            and business_type = #{businessType}
+            and deleted = 0
+            <if test="query.onlyQuestion != null and query.onlyQuestion == true">
+                and task_question_id != 0
+            </if>
+        </where>
+    </select>
+    <select id="dataStaColumnNumCount" resultType="java.lang.Integer">
+        select count(id)
+        from tb_data_sta_table_column_${enterpriseId}
+        where business_id = #{businessId}
+        and deleted = 0
+    </select>
+    <select id="dataStaColumnNotSubmitCount" resultType="java.lang.Integer">
+        select count(id)
+        from tb_data_sta_table_column_${enterpriseId}
+        where data_table_id = #{dataTableId}
+          and submit_status = 0
+          and deleted = 0
+    </select>
+    <select id="selectFailByBusinessId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where business_id = #{businessId}
+        and business_type = #{businessType}
+        and check_result = 'FAIL'
+        and deleted = 0
+        and task_question_id = 0
+    </select>
+    <select id="getListByRecordIdList"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where deleted = 0 and business_id in
+            <foreach collection="recordIdList" open=" (" close=")" item="recordId" separator=",">
+                #{recordId}
+            </foreach>
+    </select>
+
+    <select id="getVOListByRecordIdList"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.TbMetaStaColumnVO">
+        select
+           id, business_id as businessId, meta_column_name as columnName, check_result as checkResult, meta_column_id as metaColumnId,meta_table_id as metaTableId,
+        task_id as taskId,region_id as regionId,create_time as createTime, store_scene_id as storeSceneId,store_scene_name as storeSceneName,
+        check_score as checkScore , check_result_name as checkResultName, check_pics as checkPics,
+        check_text as checkText, check_result_id as checkResultId,check_video as checkVideo,
+        award_times as awardTimes,score_times as scoreTimes,weight_percent as weightPercent,column_type as columnType
+        ,column_max_score as columnMaxScore,column_max_award as columnMaxAward,reward_penalt_money as rewardPenaltMoney
+        from tb_data_sta_table_column_${enterpriseId}
+        where deleted = 0
+        <if test="recordIdList != null and recordIdList.size > 0">
+            and business_id in
+            <foreach collection="recordIdList" open=" (" close=")" item="recordId" separator=",">
+                #{recordId}
+            </foreach>
+        </if>
+        <if test="query != null">
+            <if test="query.storeId != null and query.storeId != ''">
+                and store_id = #{query.storeId}
+            </if>
+            <if test="query.checkResult != null and query.checkResult != ''">
+                and check_result = #{query.checkResult}
+            </if>
+            <if test="query.beginDate != null and query.endDate != null">
+                and create_time  BETWEEN #{query.beginDate} and #{query.endDate}
+            </if>
+            <if test="query.metaTableIds != null and query.metaTableIds.size() > 0">
+                and meta_table_id in <foreach collection="query.metaTableIds" separator="," open="(" close=")" item="metaTableId">
+                 #{metaTableId}
+                </foreach>
+            </if>
+            <if test="query.isComplete != null and query.isComplete">
+                and business_status = 1
+            </if>
+        </if>
+    </select>
+
+    <!--$var enterpriseId=e17cd2dc350541df8a8b0af9bd27f77d -->
+    <select id="getVOListByRecordIdAndPatrolStoreTime"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.TbMetaStaColumnVO">
+        select
+        c.id, c.business_id as businessId, c.meta_column_name as columnName, c.check_result as checkResult, c.meta_column_id as metaColumnId,c.meta_table_id as metaTableId,
+        c.task_id as taskId,c.region_id as regionId,c.create_time as createTime,
+        c.check_score as checkScore , c.check_result_name as checkResultName, c.check_pics as checkPics,
+        c.check_text as checkText, c.check_result_id as checkResultId,c.check_video as checkVideo,c.store_scene_id as storeSceneId,
+        c.store_scene_name as storeSceneName,c.award_times as awardTimes,c.score_times as scoreTimes,c.reward_penalt_money as rewardPenaltMoney,c.weight_percent as weightPercent,
+        c.column_max_score as columnMaxScore,
+        c.column_max_award as columnMaxAward,
+        c.column_type as columnType,
+        c.check_result_reason as checkResultReason,
+        c.patrol_type as patrolType,
+        c.supervisor_id as supervisorId,
+        c.data_table_id as dataTableId
+        from tb_data_sta_table_column_${enterpriseId} c
+        <if test="query.signOutBeginDate != null and query.signOutEndDate != null or query.signInBeginDate != null and query.signInEndDate != null">
+            LEFT JOIN tb_patrol_store_record_${enterpriseId} r ON c.business_id = r.id
+        </if>
+        where c.deleted = 0
+        <if test="recordIdList != null and recordIdList.size > 0">
+            and c.business_id in
+            <foreach collection="recordIdList" open=" (" close=")" item="recordId" separator=",">
+                #{recordId}
+            </foreach>
+        </if>
+        <if test="query != null">
+            <if test="query.storeId != null and query.storeId != ''">
+                and c.store_id = #{query.storeId}
+            </if>
+            <if test="query.checkResult != null and query.checkResult != ''">
+                and c.check_result = #{query.checkResult}
+            </if>
+            <if test="query.beginDate != null and query.endDate != null">
+                and c.create_time  BETWEEN #{query.beginDate} and #{query.endDate}
+            </if>
+            <if test="query.metaTableIds != null and query.metaTableIds.size() > 0">
+                and c.meta_table_id in
+                <foreach collection="query.metaTableIds" separator="," open="(" close=")" item="metaTableId">
+                    #{metaTableId}
+                </foreach>
+            </if>
+            <if test="query.metaColumnIds != null and query.metaColumnIds.size() > 0">
+                and c.meta_column_id in
+                <foreach collection="query.metaColumnIds" separator="," open="(" close=")" item="metaColumnId">
+                    #{metaColumnId}
+                </foreach>
+            </if>
+            <if test="query.regionPath != null and query.regionPath != ''">
+                and c.region_way like concat(#{query.regionPath},'%')
+            </if>
+            <if test="query.isComplete != null and query.isComplete">
+                and c.business_status = 1
+            </if>
+            <if test="query.supervisorIds != null and query.supervisorIds.size() > 0">
+                and c.supervisor_id in
+                <foreach collection="query.supervisorIds" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="query.signOutBeginDate != null and query.signOutEndDate != null">
+                and r.sign_end_time between #{query.signOutBeginDate} and #{query.signOutEndDate}
+            </if>
+            <if test="query.signInBeginDate != null and query.signInEndDate != null">
+                and r.sign_start_time between #{query.signInBeginDate} and #{query.signInEndDate}
+            </if>
+        </if>
+        ORDER BY c.id desc
+    </select>
+
+    <select id="getVOListByRecordIdListCount"
+            resultType="java.lang.Long">
+        select
+        count(c.id)
+        from tb_data_sta_table_column_${enterpriseId} c
+        <if test="query.signOutBeginDate != null and query.signOutEndDate != null or query.signInBeginDate != null and query.signInEndDate != null">
+            LEFT JOIN tb_patrol_store_record_${enterpriseId} r ON c.business_id = r.id
+        </if>
+        where c.deleted = 0
+        <if test="recordIdList != null and recordIdList.size > 0">
+            and c.business_id in
+            <foreach collection="recordIdList" open=" (" close=")" item="recordId" separator=",">
+                #{recordId}
+            </foreach>
+        </if>
+        <if test="query != null">
+            <if test="query.storeId != null and query.storeId != ''">
+                and c.store_id = #{query.storeId}
+            </if>
+            <if test="query.checkResult != null and query.checkResult != ''">
+                and c.check_result = #{query.checkResult}
+            </if>
+            <if test="query.beginDate != null and query.endDate != null">
+                and c.create_time  BETWEEN #{query.beginDate} and #{query.endDate}
+            </if>
+            <if test="query.metaTableIds != null and query.metaTableIds.size() > 0">
+                and c.meta_table_id in
+                <foreach collection="query.metaTableIds" separator="," open="(" close=")" item="metaTableId">
+                    #{metaTableId}
+                </foreach>
+            </if>
+            <if test="query.metaColumnIds != null and query.metaColumnIds.size() > 0">
+                and c.meta_column_id in
+                <foreach collection="query.metaColumnIds" separator="," open="(" close=")" item="metaColumnId">
+                    #{metaColumnId}
+                </foreach>
+            </if>
+            <if test="query.regionPath != null and query.regionPath != ''">
+                and c.region_way like concat(#{query.regionPath},'%')
+            </if>
+            <if test="query.signOutBeginDate != null and query.signOutEndDate != null">
+                and r.sign_end_time between #{query.signOutBeginDate} and #{query.signOutEndDate}
+            </if>
+            <if test="query.signInBeginDate != null and query.signInEndDate != null">
+                and r.sign_start_time between #{query.signInBeginDate} and #{query.signInEndDate}
+            </if>
+        </if>
+    </select>
+    <select id="statisticsColumnCount"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsDataStaTableDTO">
+        select
+        data_table_id as dataTableId,
+        count(*) as totalColumnCount,
+        sum(if(check_result='PASS',1,0)) as passColumnCount,
+        sum(if(check_result='FAIL',1,0)) as failColumnCount,
+        sum(if(check_result='INAPPLICABLE',1,0)) as inapplicableColumnCount,
+        sum(check_score) as score
+        from tb_data_sta_table_column_${enterpriseId}
+        where data_table_id in (
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+        group by data_table_id
+    </select>
+    <select id="statisticsColumnCountByBusinessId"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsDataStaTableDTO">
+        select
+        business_id as businessId,
+        count(*) as totalColumnCount,
+        sum(if(check_result='PASS',1,0)) as passColumnCount,
+        sum(if(check_result='FAIL',1,0)) as failColumnCount,
+        sum(if(check_result='INAPPLICABLE',1,0)) as inapplicableColumnCount,
+        ifnull( sum(check_score) , 0 )as score,
+        ifnull( sum(reward_penalt_money) , 0 )as rewardPenaltMoney
+        from tb_data_sta_table_column_${enterpriseId}
+        where business_id in (
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+        group by business_id
+    </select>
+
+    <select id="statisticsColumnCountByBusinessIdGroupByDataTableId"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsDataStaTableCountDTO">
+        select
+        data_table_id as dataTableId,
+        business_id as businessId,
+        count(*) as totalColumnCount,
+        ifnull( sum(check_score) , 0 )as checkScore
+        from tb_data_sta_table_column_${enterpriseId}
+        where business_id in (
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+        group by data_table_id
+    </select>
+    <select id="statisticsColumnPerTable"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsColumnDTO">
+        select
+        meta_column_id as columnId,
+        meta_column_name as columnName,
+        count(distinct create_user_id) as usePersonNum,
+        count(distinct business_id) as patrolStoreNum,
+        count(0) as patrolNum,
+        sum(if(task_question_id=0,0,1)) as totalQuestionNum,
+        sum(if(task_question_status = 'HANDLE',1,0)) as todoQuestionNum,
+        sum(if(task_question_status = 'RECHECK',1,0)) as unRecheckQuestionNum,
+        sum(if(task_question_status = 'FINISH',1,0)) as finishQuestionNum,
+        sum(if(check_result = 'PASS',1,0)) as patrolOkNum,
+        sum(if(check_result = 'FAIl',1,0)) as patrolFailNum,
+        sum(if(check_result = 'INAPPLICABLE',1,0)) as patrolInapplicableNum
+        from tb_data_sta_table_column_${enterpriseId}
+        where deleted = 0
+        and business_status = 1
+        and business_type = 'PATROL_STORE'
+        <if test="beginDate!=null and endDate != null ">
+            and create_time > #{beginDate}
+            and create_time &lt; #{endDate}
+        </if>
+        <foreach collection="columnIdList" item="columnId" close=")" open="and meta_column_id in (" separator=",">
+            #{columnId}
+        </foreach>
+        group by meta_column_id
+    </select>
+
+
+    <select id="statisticsColumnPerTable_COUNT"  resultType="long">
+        select
+            count(distinct meta_column_id)
+        from tb_data_sta_table_column_${enterpriseId}
+        where deleted = 0
+        and business_status = 1
+        and business_type = 'PATROL_STORE'
+        <if test="beginDate!=null and endDate != null ">
+            and create_time > #{beginDate}
+            and create_time &lt; #{endDate}
+        </if>
+        <foreach collection="columnIdList" item="columnId" close=")" open="and meta_column_id in (" separator=",">
+            #{columnId}
+        </foreach>
+    </select>
+
+    <select id="patrolStoreStatisticsMetaStaTable"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsMetaStaTableDTO">
+        select
+        meta_table_id as metaTableId,
+        count(distinct meta_column_id) as columnNum,
+        count(distinct business_id) as patrolNum,
+        count(distinct supervisor_id) as usePersonNum,
+        count(distinct store_id) as patrolStoreNum,
+        sum(if(task_question_id != 0,1,0)) as totalQuestionNum,
+        sum(if(task_question_status = 'HANDLE',1,0)) as todoQuestionNum,
+        sum(if(task_question_status = 'RECHECK',1,0)) as unRecheckQuestionNum,
+        sum(if(task_question_status = 'FINISH',1,0)) as finishQuestionNum
+        from tb_data_sta_table_column_${enterpriseId}
+        where meta_table_id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        ) and create_time between #{beginDate} and #{endDate}
+        and deleted = 0
+        and business_status = 1
+        and business_type = 'PATROL_STORE'
+        group by meta_table_id
+    </select>
+    <select id="patrolStoreStatisticsRegionColumn"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsRegionDTO">
+        select
+        sum(if(task_question_id != 0,1,0)) as totalQuestionNum,
+        sum(if(task_question_status = 'HANDLE',1,0)) as todoQuestionNum,
+        sum(if(task_question_status = 'RECHECK',1,0)) as unRecheckQuestionNum,
+        sum(if(task_question_status = 'FINISH',1,0)) as finishQuestionNum
+        from tb_data_sta_table_column_${eid}
+        where create_time between #{beginDate} and #{endDate}
+        <choose>
+            <when test="storeIds != null and storeIds.size() >0">
+                and store_id in
+                <foreach collection="storeIds" item="storeId" open="(" close=")" separator=",">
+                    #{storeId}
+                </foreach>
+            </when>
+            <otherwise>
+                <if test="!isRoot">
+                    and region_way like concat(#{regionPath}, '%')
+                </if>
+            </otherwise>
+        </choose>
+        and business_type = 'PATROL_STORE'
+        and business_status = 1
+        and deleted = 0
+    </select>
+
+    <select id="getQuestionNum"
+            resultType="java.lang.Integer">
+        select
+        sum(if(task_question_id != 0,1,0))
+        from tb_data_sta_table_column_${enterpriseId}
+        <where>
+            <if test="metaTableIds !=null and metaTableIds.size()>0">
+                and meta_table_id in (
+                <foreach collection="metaTableIds" item="metaTableId" separator=",">
+                    #{metaTableId}
+                </foreach>
+                )
+            </if>
+            and create_time between #{beginDate} and #{endDate}
+            and deleted = 0
+            and business_type = 'PATROL_STORE'
+        </where>
+    </select>
+
+
+    <select id="appUserStatistics"
+            resultType="com.coolcollege.intelligent.model.operationboard.dto.UserStatisticsDTO">
+        select
+        sum(if(task_question_id !=0,1,0)) as totalQuestionNum,
+        sum(if(task_question_status = 'HANDLE',1,0)) as todoQuestionNum,
+        sum(if(task_question_status = 'FINISH',1,0)) as finishQuestionNum
+        from tb_data_sta_table_column_${enterpriseId}
+        where create_time between #{beginDate} and #{endDate}
+        and business_type = 'PATROL_STORE'
+        and deleted = 0
+        and business_status = 1
+        and create_user_id in (
+        <foreach collection="userIdList" item="userId" separator=",">
+            #{userId}
+        </foreach>
+        )
+    </select>
+    <select id="getPatrolQuestionListByUserIdList"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        <where>
+            and business_type = 'PATROL_STORE'
+            and deleted = 0
+            and supervisor_id in (
+            <foreach collection="userIdList" item="userId" separator=",">
+                #{userId}
+            </foreach>
+            )
+            <if test="beginDate != null and endDate !=null">
+                and create_time between #{beginDate} and #{endDate}
+            </if>
+            and task_question_id != 0
+            and business_status = 1
+        </where>
+    </select>
+    <select id="getPatrolQuestionListByStoreIdList"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        <where>
+            and business_type = 'PATROL_STORE'
+            and deleted = 0
+            and store_id in (
+            <foreach collection="storeIdList" item="storeId" separator=",">
+                #{storeId}
+            </foreach>
+            )
+            <if test="beginDate != null and endDate !=null">
+                and create_time between #{beginDate} and #{endDate}
+            </if>
+            and task_question_id != 0
+        </where>
+    </select>
+    <select id="getPatrolQuestionListByRecordIdList"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        <where>
+            and business_type = 'PATROL_STORE'
+            and deleted = 0
+            and business_id in (
+            <foreach collection="recordIdList" item="recordId">
+                #{recordId}
+            </foreach>
+            )
+            <if test="beginDate != null and endDate !=null">
+                and create_time between #{beginDate} and #{endDate}
+            </if>
+            and task_question_id != 0
+        </where>
+    </select>
+    <select id="userDetailStatistics"
+            resultType="com.coolcollege.intelligent.model.operationboard.dto.UserDetailStatisticsDTO">
+        select supervisor_id as userId,
+        sum(if(task_question_id = 0,0,1)) as createQuestionNum,
+        sum(if(task_question_id !=0 and task_question_status = 'FINISH',1,0)) as finishQuestionNum
+        from tb_data_sta_table_column_${enterpriseId}
+        <where>
+            and business_type = 'PATROL_STORE'
+            and deleted = 0
+            <if test="userIdList != null and userIdList.size() > 0">
+                and supervisor_id in (
+                <foreach collection="userIdList" item="userId" separator=",">
+                    #{userId}
+                </foreach>
+                )
+            </if>
+            and create_time between #{beginDate} and #{endDate}
+            and business_status = 1
+        </where>
+        group by userId
+        order by createQuestionNum
+        <if test="orderType == 'asc'">
+            asc
+        </if>
+        <if test="orderType == 'desc'">
+            desc
+        </if>
+    </select>
+
+    <select id="tableBoardRankQuestionNum"
+            resultType="com.coolcollege.intelligent.model.operationboard.dto.TableBoardRankDTO">
+        select meta_table_id                        as metaTableId,
+               sum(if(task_question_id != 0, 1, 0)) as totalQuestionNum
+        from tb_data_sta_table_column_${enterpriseId}
+        where create_time between #{beginDate} and #{endDate}
+          and deleted = 0
+          and business_status = 1
+          and business_type = 'PATROL_STORE'
+          <if test="metaTableIds !=null and metaTableIds.size()>0" >
+              and meta_table_id in (
+              <foreach collection="metaTableIds" item="metaTableId" separator=",">
+                  #{metaTableId}
+              </foreach>
+              )
+          </if>
+        group by meta_table_id
+    </select>
+
+    <select id="tableBoardTrendQuestionNum"
+            resultType="com.coolcollege.intelligent.model.operationboard.dto.TableBoardTrendDTO">
+        select
+        create_date as createDate,
+        sum(if(task_question_id != 0, 1, 0)) as totalQuestionNum
+        from tb_data_sta_table_column_${enterpriseId}
+        <where>
+            <if test="query.metaTableIds != null and query.metaTableIds.size()>0">
+            and meta_table_id in (
+            <foreach collection="query.metaTableIds" separator="," item="tableId">
+                #{tableId}
+            </foreach>
+            )
+            </if>
+            <if test="query.storeIds != null">
+                and store_id in (
+                <foreach collection="query.storeIds" separator="," item="item">
+                    #{item}
+                </foreach>
+                )
+            </if>
+            <if test="query.regionPathLeft != null">
+                and region_way like concat(#{query.regionPathLeft}, '%')
+            </if>
+            and create_time between #{query.beginDate} and #{query.endDate}
+            and deleted = 0
+            and business_status = 1
+            and business_type = 'PATROL_STORE'
+        </where>
+        group by create_date
+    </select>
+    <select id="patrolStoreStatisticsRegionRecord"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsRegionDTO">
+        select
+        count(distinct store_id) as patrolStoreNum,
+        count(id) as patrolNum,
+        count(distinct supervisor_id) as patrolPersonNum,
+        sum(if(sub_task_id = 0,0,1)) as taskPatrolNum
+        from tb_patrol_store_record_${eid}
+        <if test="storeIds == null or storeIds.size()==0">
+            force index(idx_create_time_region_way)
+        </if>
+        where create_time between #{beginDate} and #{endDate}
+        <choose>
+            <when test="storeIds != null and storeIds.size()>0" >
+                and store_id in
+                <foreach collection="storeIds" item="storeId" separator="," open="(" close=")">
+                    #{storeId}
+                </foreach>
+            </when>
+            <otherwise>
+            <if test="!isRoot">
+                and region_way like concat(#{regionPath}, '%')
+            </if>
+            </otherwise>
+        </choose>
+        and status = 1
+        and deleted = 0
+    </select>
+    <select id="selectStorePatrolNum"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsRankDTO">
+        SELECT
+            store_id storeId,
+            count(id) `count`
+        from tb_patrol_store_record_${eid}
+        where create_time between #{beginDate} and #{endDate}
+        and status = 1
+        and deleted = 0
+        <choose>
+            <when test="isRoot" />
+            <otherwise>
+                and region_way like concat(#{path}, '%')
+            </otherwise>
+        </choose>
+        group by store_id
+    </select>
+    <select id="selectStoreProblemNum"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsRankDTO">
+        SELECT
+        store_id storeId,
+        sum(if(task_question_id != 0,1,0)) `count`
+        from tb_data_sta_table_column_${eid}
+        where create_time between #{beginDate} and #{endDate}
+        and deleted = 0
+        <choose>
+            <when test="isRoot" />
+            <otherwise>
+                and region_way like concat(#{path}, '%')
+            </otherwise>
+        </choose>
+        group by store_id
+    </select>
+    <select id="selectStorePatrolList"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsDTO">
+        SELECT
+            store_id storeId,
+            supervisor_id userId,
+            supervisor_name userName,
+            count(distinct id) `count`,
+            true checked,
+            MAX(create_time) lastTime
+        FROM
+        tb_patrol_store_record_${eid}
+        WHERE
+        create_time between #{query.beginDate} and #{query.endDate}
+        and store_id in
+        <foreach collection="storeIds" item="storeId" open="(" separator="," close=")">
+            #{storeId}
+        </foreach>
+        and status = 1
+        AND deleted = 0
+        GROUP BY store_id
+    </select>
+
+    <select id="getListByMetaColumnId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where business_type = 'PATROL_STORE'
+        and deleted = 0
+        and meta_column_id = #{metaColumnId}
+        and create_time between #{beginDate} and #{endDate}
+        and business_status = 1
+        <if test="regionPath!= null and regionPath != ''">
+            and region_way like concat(#{regionPath},'%')
+        </if>
+        <if test="storeIds != null and storeIds.size()>0">
+            <foreach collection="storeIds" open="and store_id in("  close=")" separator="," item="storeId">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="checkResult != null and checkResult != ''">
+            and check_result = #{checkResult}
+        </if>
+        order by create_time desc
+    </select>
+
+    <select id="regionQuestionNumRank"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsProblemRankDTO">
+        select
+        store_id as storeId,
+        store_name as storeName,
+        region_id as regionId,
+        count(1) as count,
+        sum(if(task_question_status = 'FINISH',1,0)) as finishQuestionNum
+        from tb_data_sta_table_column_${enterpriseId}
+        where deleted = 0
+        and create_time between #{startTime} and #{endTime}
+        and task_question_id != 0
+        and region_way like concat(#{regionPath},'%')
+        group by storeId
+        order by count desc
+        limit 10
+    </select>
+    <select id="getListByQuestionIds"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where deleted =0
+        <if test="questionIds != null and questionIds.size()>0">
+        and task_question_id in (
+            <foreach collection="questionIds" item="questionId" separator=",">
+                #{questionId}
+            </foreach>
+            )
+        </if>
+    </select>
+    <select id="statisticWorkOrder"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsTableDTO">
+
+            SELECT
+            count( 1 ) AS allWorkOrderNum,
+            COALESCE(sum(case when task_question_status='FINISH' then 1 else 0 end),0) as comWorkOrderNum
+            FROM
+            tb_data_sta_table_column_${enterpriseId}
+            WHERE
+            meta_table_id = #{query.metaTableId}
+            AND task_question_id > 0
+            AND create_time BETWEEN #{query.beginDate}
+            AND #{query.endDate}
+        <if test="regionPath != null">
+            AND region_way LIKE concat( #{regionPath}, '%' )
+        </if>
+        <if test="storeId != null">
+            AND store_id = #{storeId}
+        </if>
+    </select>
+
+    <select id="statisticMetaColumn"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsTableColumnDTO">
+
+            SELECT
+            meta_column_id AS metaColumnId,
+            sum(case when check_result='FAIL' then 1 else 0 end) as failTimes,
+            sum(check_score) as checkScore,
+            count(DISTINCT business_id) as checkTimes
+            FROM
+            tb_data_sta_table_column_${enterpriseId}
+            WHERE
+            meta_table_id = #{query.metaTableId}
+            AND deleted = 0
+            AND business_status=1
+            AND create_time BETWEEN #{query.beginDate}
+            AND #{query.endDate}
+        <if test="regionPath != null">
+            AND region_way LIKE concat( #{regionPath}, '%' )
+        </if>
+        <if test="storeId != null">
+            AND store_id = #{storeId}
+        </if>
+        GROUP BY
+        meta_column_id
+
+    </select>
+    <select id="statisticsColumnDetail"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreColumnStatisticsDTO">
+        select
+        meta_column_id as metaColumnId,
+        `meta_column_name` as columnName,
+        category_name as category,
+        count(0) as checkNum,
+        sum(if(check_result ='PASS',1,0)) as qualifiedNum,
+        sum(if(check_result ='FAIL',1,0)) as unqualifiedNum,
+        sum(if(check_result ='INAPPLICABLE',1,0)) as unsuitableNum,
+        sum(check_score) as realTotalScore,
+        sum(if(task_question_id != 0,1,0)) as totalQuestionNum,
+        sum(if(task_question_status = 'FINISH',1,0)) as completeQuestionNum,
+        store_scene_name as storeSceneName
+        from tb_data_sta_table_column_${enterpriseId}
+        where deleted = 0
+        and business_status = 1
+        <choose>
+            <when test="regionPath != null and regionPath != ''">
+                and region_way like concat(#{regionPath},'%')
+            </when>
+            <otherwise>
+                and store_id in (
+                <foreach collection="storeIds" item="storeId" separator=",">
+                    #{storeId}
+                </foreach>
+                )
+            </otherwise>
+        </choose>
+        <if test="metaColumnIds != null and metaColumnIds.size()>0">
+            and meta_column_id in <foreach collection="metaColumnIds" item="metaColumnId" separator="," open="(" close=")"> #{metaColumnId}</foreach>
+        </if>
+        and create_time between #{beginDate} and #{endDate}
+        and meta_table_id = #{tableId}
+        group by meta_column_id
+    </select>
+
+    <select id="statisticsPatrolStoreResult"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreResultAnalyzeDTO">
+        select
+        sum(if(check_result ='PASS',1,0)) as qualifiedNum,
+        sum(if(check_result ='FAIL',1,0)) as unqualifiedNum,
+        sum(if(check_result ='INAPPLICABLE',1,0)) as unsuitableNum,
+        count(0) as totalNum
+        from tb_data_sta_table_column_${enterpriseId}
+        where deleted = 0
+        and business_status = 1
+        <choose>
+            <when test="regionPath != null and regionPath != ''">
+                and region_way like concat(#{regionPath},'%')
+            </when>
+            <otherwise>
+                and store_id in (
+                <foreach collection="storeIds" item="storeId" separator=",">
+                    #{storeId}
+                </foreach>
+                )
+            </otherwise>
+        </choose>
+        and create_time between #{beginDate} and #{endDate}
+        and meta_table_id = #{tableId}
+    </select>
+    <select id="columnQuestionTrend"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.ColumnQuestionTrendDTO">
+        select
+        sum(if(task_question_id != 0,1,0)) as questionNum,
+        create_date as `date`
+        from tb_data_sta_table_column_${enterpriseId}
+        where deleted = 0
+        and business_status = 1
+        <choose>
+            <when test="regionPath != null and regionPath != ''">
+                and region_way like concat(#{regionPath},'%')
+            </when>
+            <otherwise>
+                and store_id in (
+                <foreach collection="storeIds" item="storeId" separator=",">
+                    #{storeId}
+                </foreach>
+                )
+            </otherwise>
+        </choose>
+        and create_time between #{beginDate} and #{endDate}
+        and meta_table_id = #{tableId}
+        group by create_date
+    </select>
+    <select id="columnDetailList"
+            resultType="com.coolcollege.intelligent.model.patrolstore.dto.ColumnDetailListDTO">
+        select
+        store_id as storeId,
+        store_name as storeName,
+        create_time as checkTime,
+        checkResult as checkStatus,
+        supervisor_id as checkPersonName
+        from tb_data_sta_table_column_${enterpriseId}
+        where deleted = 0
+        and business_status = 1
+        <choose>
+            <when test="regionPath != null and regionPath != ''">
+                and region_way like concat(#{regionPath},'%')
+            </when>
+            <otherwise>
+                and store_id in (
+                <foreach collection="storeIds" item="storeId" separator=",">
+                    #{storeId}
+                </foreach>
+                )
+            </otherwise>
+        </choose>
+        and create_time between #{beginDate} and #{endDate}
+        and meta_column_id = #{metaColumnId}
+        <if test="checkStatus != null and checkStatus != ''">
+            and check_result = #{checkStatus}
+        </if>
+    </select>
+    <select id="questionList"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where deleted = 0
+        and business_status = 1
+        <choose>
+            <when test="regionPath != null and regionPath != ''">
+                and region_way like concat(#{regionPath},'%')
+            </when>
+            <otherwise>
+                and store_id in (
+                <foreach collection="storeIds" item="storeId" separator=",">
+                    #{storeId}
+                </foreach>
+                )
+            </otherwise>
+        </choose>
+        <if test="getDirectStore==true">
+            and region_id = #{regionId}
+        </if>
+        <if test="status!=null and status !=''">
+            and task_question_status = #{status}
+        </if>
+        and create_time between #{beginDate} and #{endDate}
+        and task_question_id > 0
+        <if test="tableId != null and tableId != ''">
+            AND  meta_table_id = #{tableId}
+        </if>
+    </select>
+    <select id="columnAnalyze" resultType="com.coolcollege.intelligent.model.patrolstore.dto.ColumnAnalyzeDTO">
+        select
+        count(distinct store_id) as checkStoreNum,
+        count(distinct business_id) as checkNum,
+        sum(if(task_question_id != 0,1,0)) as questionNum,
+        sum(if(check_result='PASS',1,0)) as qualifiedNum
+        from tb_data_sta_table_column_${enterpriseId}
+        where deleted = 0
+        and business_status = 1
+        <choose>
+            <when test="regionPath != null and regionPath != ''">
+                and region_way like concat(#{regionPath},'%')
+            </when>
+            <otherwise>
+                and store_id in (
+                <foreach collection="storeIds" item="storeId" separator=",">
+                    #{storeId}
+                </foreach>
+                )
+            </otherwise>
+        </choose>
+        and create_time between #{beginDate} and #{endDate}
+        and meta_table_id = #{tableId}
+
+    </select>
+
+    <select id="selectByBusinessIdList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where 1 = 1
+        <if test="businessIdList != null and businessIdList.size()>0">
+            and business_id in (
+            <foreach collection="businessIdList" item="businessId" separator=",">
+                #{businessId}
+            </foreach>
+            )
+        </if>
+        <if test="metaColumnIdList != null and metaColumnIdList.size()>0">
+            and meta_column_id in (
+            <foreach collection="metaColumnIdList" item="metaColumnId" separator=",">
+                #{metaColumnId}
+            </foreach>
+            )
+        </if>
+    </select>
+
+    <update id="batchUpdateVideo">
+        update tb_data_sta_table_column_${enterpriseId}
+        set check_video =
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case id" close="end">
+            when #{item.id} then #{item.checkVideo}
+        </foreach>
+        where
+        id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item.id}
+        </foreach>
+        )
+        and deleted = 0
+    </update>
+
+    <update id="updateVideo">
+        update tb_data_sta_table_column_${enterpriseId}
+        set check_video = #{query.checkVideo}
+        where id = #{query.id}
+        and deleted = 0
+    </update>
+
+    <select id="getGroupDataByStore" resultType="com.coolcollege.intelligent.model.patrolstore.dto.SummaryByStoreDTO">
+        select
+        count(1) as patrolNum,
+        sum(if(check_result = 'PASS',1,0)) as passNum,
+        sum(if(check_result = 'FAIL',1,0)) as failedNum,
+        sum(if(check_result = 'INAPPLICABLE',1,0)) as unapplicableNum,
+        store_id,
+        store_name
+        from tb_data_sta_table_column_${enterpriseId}
+        where business_type = 'PATROL_STORE'
+        and deleted = 0
+        <if test="metaColumnId!=null and metaColumnId !=''">
+            and meta_column_id = #{metaColumnId}
+        </if>
+        and create_time between #{beginDate} and #{endDate}
+        and business_status = 1
+        <if test="regionPath!=null and regionPath !=''">
+            and region_way like concat(#{regionPath},'%')
+        </if>
+        <if test="storeIds != null and storeIds.size()>0">
+            <foreach collection="storeIds" open="and store_id in("  close=")" separator="," item="storeId">
+                #{storeId}
+            </foreach>
+        </if>
+        GROUP BY  store_id
+        order by patrolNum desc
+    </select>
+
+    <select id="getCountGroupByMetaColumnId" resultType="java.util.HashMap" >
+        select
+        check_result as checkResult,
+        count(1) as count
+        from tb_data_sta_table_column_${enterpriseId}
+        where
+        business_type = 'PATROL_STORE'
+        and deleted = 0
+        and create_time between #{beginDate}
+        and #{endDate}
+        and business_status = 1
+        <if test="metaColumnId != null and metaColumnId !=''">
+            and meta_column_id = #{metaColumnId}
+        </if>
+        <if test="storeIds != null and storeIds.size()>0">
+            and store_id in (
+            <foreach collection="storeIds" item="storeId" separator=",">
+                #{storeId}
+            </foreach>
+            )
+        </if>
+        <if test="regionPath!=null and regionPath !=''">
+            and region_way like concat(#{regionPath},'%')
+        </if>
+        group by check_result
+    </select>
+
+    <select id="selectStaColumnData"
+            resultType="com.coolcollege.intelligent.model.metatable.vo.TaskStoreMetaTableColVO">
+        select
+           meta_column_id as metaTableColumnId,
+           meta_column_name AS metaTableColumnName,
+           check_pics AS checkPics,
+           check_text AS checkText,
+           check_video AS checkVideo
+        from tb_data_sta_table_column_${eid}
+        where data_table_id = #{dataTableId}
+        <if test="metaTableId != null">
+            and meta_table_id = #{metaTableId}
+        </if>
+        <if test="columnIds != null and columnIds.size > 0">
+            and meta_column_id in (
+            <foreach collection="columnIds" item="colId" separator=",">
+                #{colId}
+            </foreach>
+            )
+        </if>
+    </select>
+    <select id="selectByIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where id = #{id}
+    </select>
+
+    <select id="getTbDataColumnListByUnifyTaskIds" resultMap="BaseResultMap">
+        select
+            *
+        from
+            tb_data_sta_table_column_${enterpriseId}
+        where
+            task_id in <foreach collection="unifyTaskIds" open="(" close=")" separator="," item="unifyTaskId">#{unifyTaskId}</foreach>
+        order by id asc
+    </select>
+    <select id="selectPatrolStoreReviewListByBusinessId" resultMap="BaseResultMap">
+        SELECT *
+        FROM tb_data_sta_table_column_${enterpriseId}
+        where
+            business_id in
+            <foreach collection="recordIds" open="(" close=")" separator="," item="recordId">#{recordId}</foreach>
+        order by id desc
+    </select>
+    <select id="selectCountPatrolStoreReviewListByBusinessId" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM tb_data_sta_table_column_${enterpriseId}
+        where
+            business_id in
+            <foreach collection="recordIds" open="(" close=")" separator="," item="recordId">#{recordId}</foreach>
+    </select>
+    <select id="selectByTaskIdAndMetaColumnId"
+            resultType="com.coolcollege.intelligent.model.patrolstore.TbDataStaTableColumnDO">
+        select <include refid="Base_Column_List"/>
+        from tb_data_sta_table_column_${enterpriseId}
+        where task_id = #{taskId}
+        and meta_column_id = #{metaColumnId}
+        and store_id = #{storeId}
+        and deleted = 0
+    </select>
+
+
+    <delete id="deleteByIds">
+        delete from tb_data_sta_table_column_${enterpriseId}
+        where id in <foreach collection="ids" item="id" open="(" close=")" separator=",">#{id}</foreach>
+    </delete>
+
+    <insert id="copyDataColumn">
+        insert into tb_data_sta_table_column_${enterpriseId}
+        (id,
+        category_name,
+        data_table_id,
+        meta_table_id,
+        meta_column_id,
+        meta_column_name,
+        description,
+        create_user_id,
+        supervisor_id,
+        store_id,
+        store_name,
+        region_id,
+        region_way,
+        task_id,
+        sub_task_id,
+        business_id,
+        business_type,
+        store_scene_id,
+        store_scene_name,
+        create_date,
+        patrol_store_time,
+        column_type,
+        check_pics,
+        create_time,
+        edit_time,
+        check_result,
+        check_result_id,
+        check_result_name,
+        check_text,
+        check_video,
+        check_score,
+        handler_user_id,
+        check_user_id,
+        re_check_user_id,
+        task_question_status,
+        task_question_id,
+        submit_status,
+        business_status,
+        `deleted`,
+        `reward_penalt_money`,
+        score_times,
+        award_times,
+        weight_percent,
+        column_max_score,
+        column_max_award
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},
+            #{item.categoryName},
+            #{item.dataTableId},
+            #{item.metaTableId},
+            #{item.metaColumnId},
+            #{item.metaColumnName},
+            #{item.description},
+            #{item.createUserId},
+            #{item.supervisorId},
+            #{item.storeId},
+            #{item.storeName},
+            #{item.regionId},
+            #{item.regionWay},
+            #{item.taskId},
+            #{item.subTaskId},
+            #{item.businessId},
+            #{item.businessType},
+            #{item.storeSceneId},
+            #{item.storeSceneName},
+            #{item.createDate},
+            #{item.patrolStoreTime},
+            #{item.columnType},
+            #{item.checkPics},
+            #{item.createTime},
+            #{item.editTime},
+            #{item.checkResult},
+            #{item.checkResultId},
+            #{item.checkResultName},
+            #{item.checkText},
+            #{item.checkVideo},
+            #{item.checkScore},
+            #{item.handlerUserId},
+            #{item.checkUserId},
+            #{item.reCheckUserId},
+            #{item.taskQuestionStatus},
+            #{item.taskQuestionId},
+            #{item.submitStatus},
+            #{item.businessStatus},
+            #{item.deleted},
+            #{item.rewardPenaltMoney},
+            #{item.scoreTimes},
+            #{item.awardTimes},
+            #{item.weightPercent},
+            #{item.columnMaxScore},
+            #{item.columnMaxAward}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateHandlerUserIdByBusinessId">
+        update tb_data_sta_table_column_${enterpriseId}
+        set handler_user_id = #{handlerUserId}, patrol_store_time = #{patrolStoreTime}
+        where business_id = #{businessId}
+        and business_type = #{businessType}
+    </update>
+    <update id="updateByList">
+        <foreach collection="tbDataStaTableColumnDOs" item="item" separator=";">
+            UPDATE tb_data_sta_table_column_${enterpriseId}
+            SET check_result = #{item.checkResult},
+            check_result_id = #{item.checkResultId},
+            check_result_name = #{item.checkResultName},
+            check_pics = #{item.checkPics},
+            check_text = #{item.checkText},
+            check_video = #{item.checkVideo},
+            check_score = #{item.checkScore},
+            submit_status = #{item.submitStatus},
+            reward_penalt_money = #{item.rewardPenaltMoney},
+            weight_percent = #{item.weightPercent},
+            column_max_score = #{item.columnMaxScore},
+            column_max_award = #{item.columnMaxAward}
+            WHERE id = #{item.id}
+        </foreach>
+    </update>
+
+    <select id="getFailReason" resultType="java.lang.String">
+        select check_result_reason from tb_data_sta_table_column_${enterpriseId}
+        where business_id = #{businessId}
+        and data_table_id = #{dataTableId}
+        and deleted = 0
+        and check_result_reason != ''
+    </select>
+
+    <select id="selectDataColumn" resultMap="BaseResultMap">
+        select * from tb_data_sta_table_column_${enterpriseId}
+        where data_table_id in
+            <foreach collection="dataTableIds" item="item" open="(" separator="," close=")">
+                    #{item}
+            </foreach>
+        and deleted = 0
+    </select>
+
+    <select id="getCheckDetailList"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.DataStaTableColumnVO">
+        select * from tb_data_sta_table_column_${enterpriseId}
+        where  id in
+        <foreach collection="businessIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and deleted = 0
+    </select>
+
+    <update id="correctRegionIdAndPath">
+        UPDATE tb_data_sta_table_column_${enterpriseId} a
+        INNER JOIN store_${enterpriseId} b ON a.store_id = b.store_id
+        SET a.region_id = b.region_id, a.region_way = b.region_path
+        WHERE a.task_id = #{unifyTaskId}
+    </update>
+
+</mapper>

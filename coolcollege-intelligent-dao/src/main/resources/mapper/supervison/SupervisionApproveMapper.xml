@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.supervision.SupervisionApproveMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.supervision.SupervisionApproveDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="task_id" jdbcType="BIGINT" property="taskId" />
+    <result column="task_parent_id" jdbcType="BIGINT" property="taskParentId" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="approve_user_id" jdbcType="VARCHAR" property="approveUserId" />
+    <result column="approve_user_name" jdbcType="VARCHAR" property="approveUserName" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_time, task_id, task_parent_id, task_name, approve_user_id, approve_user_name, 
+    type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from supervision_approve_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from supervision_approve_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.supervision.SupervisionApproveDO">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into supervision_approve_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.taskId != null">
+        task_id,
+      </if>
+      <if test="record.taskParentId != null">
+        task_parent_id,
+      </if>
+      <if test="record.taskName != null">
+        task_name,
+      </if>
+      <if test="record.approveUserId != null">
+        approve_user_id,
+      </if>
+      <if test="record.approveUserName != null">
+        approve_user_name,
+      </if>
+      <if test="record.type != null">
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.createTime != null">
+        #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskId != null">
+        #{record.taskId,jdbcType=BIGINT},
+      </if>
+      <if test="record.taskParentId != null">
+        #{record.taskParentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.taskName != null">
+        #{record.taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approveUserId != null">
+        #{record.approveUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approveUserName != null">
+        #{record.approveUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        #{record.type,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.supervision.SupervisionApproveDO">
+    update supervision_approve_${enterpriseId}
+    <set>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskId != null">
+        task_id = #{taskId,jdbcType=BIGINT},
+      </if>
+      <if test="taskParentId != null">
+        task_parent_id = #{taskParentId,jdbcType=BIGINT},
+      </if>
+      <if test="taskName != null">
+        task_name = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="approveUserId != null">
+        approve_user_id = #{approveUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="approveUserName != null">
+        approve_user_name = #{approveUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != taskId">
+         and t.task_id = #{taskId,jdbcType=BIGINT}
+      </if>
+      <if test="null != taskParentId">
+         and t.task_parent_id = #{taskParentId,jdbcType=BIGINT}
+      </if>
+      <if test="null != taskName">
+         and t.task_name = #{taskName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != approveUserId">
+         and t.approve_user_id = #{approveUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != approveUserName">
+         and t.approve_user_name = #{approveUserName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != type">
+         and t.type = #{type,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+
+  <select id="selectByTaskIdList" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from supervision_approve_${enterpriseId}
+    where task_id in
+    <foreach item="taskId" index="index" collection="taskIdList"
+             open="(" separator="," close=")">
+      #{taskId,jdbcType=BIGINT}
+    </foreach>
+    and type = #{type}
+  </select>
+
+
+  <insert id="batchInsert">
+    insert into supervision_approve_${enterpriseId}
+    (
+    create_time,
+    task_id,
+    task_parent_id,
+    task_name,
+    approve_user_id,
+    approve_user_name,
+    type
+    )
+    values
+    <foreach collection="records" item="record" separator=",">
+      (
+      #{record.createTime},
+      #{record.taskId},
+      #{record.taskParentId},
+      #{record.taskName},
+      #{record.approveUserId},
+      #{record.approveUserName},
+      #{record.type}
+      )
+    </foreach>
+  </insert>
+
+
+  <delete id="batchDelete">
+    delete from supervision_approve_${enterpriseId}
+    where type = #{type}
+    <if test="taskIdList!=null and taskIdList.size()>0">
+      <foreach collection="taskIdList" separator="," open="and task_id in (" item="taskId" close=")">
+        #{taskId}
+      </foreach>
+    </if>
+  </delete>
+
+
+  <select id="selectApproveDataByUserId" resultType="java.lang.Integer">
+    select
+    count(1)
+    from supervision_approve_${enterpriseId}
+    where approve_user_id = #{userId}
+    limit 1
+  </select>
+
+  <select id="getApproveCountByUserId" resultType="com.coolcollege.intelligent.model.supervision.dto.SupervisionApproveCountDTO">
+    select
+    ifnull(sum(case when type='store' then 1 else 0 end),0) as storeTaskCount,
+    ifnull(sum(case when type='person' then 1 else 0 end),0) as personTaskCount
+    from supervision_approve_${enterpriseId}
+    where approve_user_id = #{userId}
+    <if test="taskName!=null and taskName!=''">
+      and task_name like  concat('%', #{taskName}, '%')
+    </if>
+  </select>
+
+
+
+  <select id="getSupervisionApproveData" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from supervision_approve_${enterpriseId}
+    where approve_user_id = #{userId}
+    <if test="taskName!=null and taskName!=''">
+      and task_name like  concat('%', #{taskName}, '%')
+    </if>
+    <if test="type!=null and type!=''">
+      and type = #{type}
+    </if>
+    order by create_time desc
+  </select>
+
+  <select id="getSupervisionApproveDataByTaskId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from supervision_approve_${enterpriseId}
+    where approve_user_id = #{userId}
+      and type = #{type}
+  and task_id = #{taskId} limit 1
+  </select>
+
+
+  <delete id="batchDeleteByTaskParentId" >
+    delete from supervision_approve_${enterpriseId}
+    <where>
+      <if test="taskPatentId!=null">
+        and task_parent_id = #{taskPatentId}
+      </if>
+      <if test="type">
+        and type = #{type}
+      </if>
+      <if test="taskIds!=null and taskIds.size()>0">
+        <foreach collection="taskIds" open="and task_id in(" close=")" item="taskId" separator="," >
+          #{taskId}
+        </foreach>
+      </if>
+    </where>
+  </delete>
+</mapper>

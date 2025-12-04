@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.device.DeviceChannelMapper">
+    <resultMap id="baseMap" type="com.coolcollege.intelligent.model.device.DeviceChannelDO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="device_id" property="deviceId" />
+        <result column="parent_device_id" property="parentDeviceId" />
+        <result column="status" property="status" />
+        <result column="channel_no" property="channelNo"/>
+        <result column="channel_name" property="channelName"/>
+        <result column="has_ptz" property="hasPtz"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="support_capture" property="supportCapture"/>
+        <result column="support_passenger" property="supportPassenger"/>
+        <result column="enable_passenger" property="enablePassenger"/>
+        <result column="store_scene_id" property="storeSceneId"/>
+        <result column="remark" property="remark"/>
+        <result column="extend_info" property="extendInfo"/>
+    </resultMap>
+
+    <insert id="batchInsertOrUpdateDeviceChannel">
+        insert into device_channel_${eid}
+        (
+        parent_device_id,
+        device_id,
+        channel_no,
+        channel_name,
+        status,
+        has_ptz,
+        create_time,
+        update_time,
+        support_capture,
+        support_passenger,
+        extend_info
+        )
+        values
+        <foreach collection="list" item="it" separator=",">
+            (
+            #{it.parentDeviceId},
+            #{it.deviceId},
+            #{it.channelNo},
+            #{it.channelName},
+            #{it.status},
+            #{it.hasPtz},
+            #{it.createTime},
+            #{it.updateTime},
+            #{it.supportCapture},
+            #{it.supportPassenger},
+            #{it.extendInfo}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE device_id=values(device_id),
+        status=values(status),update_time=values(update_time),support_capture= values(support_capture), extend_info=values(extend_info)
+    </insert>
+
+    <select id="listDeviceChannelByDeviceId" resultMap="baseMap">
+           select *
+           from device_channel_${eid}
+           where
+           <foreach collection="parentDeviceIdList" open="parent_device_id in(" close=")" separator="," item="deviceId">
+               #{deviceId}
+           </foreach>
+           <if test="storeSceneId != null">
+               and store_scene_id = #{storeSceneId}
+           </if>
+
+    </select>
+    <select id="listDeviceChannelByIdList" resultMap="baseMap">
+        select *
+        from device_channel_${eid}
+        where
+        <foreach collection="idList" open="id in(" close=")" separator="," item="deviceId">
+            #{deviceId}
+        </foreach>
+    </select>
+    <select id="selectDeviceChannelById" resultMap="baseMap">
+        select *
+        from device_channel_${eid}
+        where  id=#{id}
+
+    </select>
+    <update id="updateDeviceChannelById" >
+        update 
+            device_channel_${eid}
+        set channel_name=#{channelName},has_ptz=#{hasPtz},store_scene_id=#{storeSceneId}
+        <if test="remark != null">
+            , remark = #{remark}
+        </if>
+        <if test="deviceStatus != null">
+            , status = #{deviceStatus}
+        </if>
+        where  id=#{id}
+    </update>
+
+
+    <delete id="batchDeleteDeviceChannelById">
+        delete from device_channel_${eid} where <foreach collection="idList" item="item" open="id in(" separator="," close=")" >
+        #{item}
+    </foreach>
+    </delete>
+    <delete id="batchDeleteDeviceChannelByDeviceId">
+        delete from device_channel_${eid} where <foreach collection="parentDeviceIdList" item="item" open="parent_device_id in(" separator="," close=")" >
+        #{item}
+    </foreach>
+    </delete>
+
+    <delete id="batchDeleteChannelByChannelNo">
+        delete from device_channel_${eid} where
+        parent_device_id=#{parentDeviceId}
+        <if test="channelNoList!=null and channelNoList.size>0">
+            <foreach collection="channelNoList" item="item" open="and channel_no in(" separator="," close=")" >
+                #{item}
+            </foreach>
+        </if>
+    </delete>
+
+    <update id="updateDeviceChannalByDeviceId">
+        update device_channel_${eid} set support_capture = 1
+        where
+        <foreach collection="deviceIdList" open="parent_device_id in(" close=")" separator="," item="deviceId">
+            #{deviceId}
+        </foreach>
+
+    </update>
+
+    <update id="updatePassengerDeviceChannalByDeviceId">
+        update device_channel_${eid} set enable_passenger = #{enablePassenger}
+        where
+        <foreach collection="deviceIdList" open="parent_device_id in(" close=")" separator="," item="deviceId">
+            #{deviceId}
+        </foreach>
+    </update>
+
+
+    <select id="selectDeviceChannelByParentId" resultMap="baseMap">
+        select *
+        from device_channel_${eid}
+        where  parent_device_id = #{parentDeviceId}
+        and channel_no = #{channelNo}
+    </select>
+
+    <update id="updateDeviceChannelStatus">
+        update device_channel_${eid}
+        set
+        status = CASE id
+        <foreach collection="list" item="record">
+            WHEN #{record.id} THEN IFNULL(#{record.status},status)
+        </foreach>
+        END
+        where
+        id in
+        <foreach collection="list" item="record" open="(" separator="," close=")">
+            #{record.id}
+        </foreach>
+    </update>
+
+    <select id="getDeviceChannelByParentId" resultMap="baseMap">
+        select *
+        from device_channel_${eid}
+        where parent_device_id = #{parentDeviceId}
+    </select>
+
+    <select id="getDeviceChannelSummaryData" resultType="com.coolcollege.intelligent.model.device.dto.DeviceSummaryDataDTO">
+        SELECT
+        ifnull(count(*), 0) as ipcTotal,
+        ifnull(sum(case when status='online' then 1 else 0 end),0) as ipcDeviceOnlineNum,
+        ifnull(sum(case when status='offline' then 1 else 0 end),0) as ipcDeviceOfflineNum
+        FROM device_channel_${eid}
+        <where>
+            <foreach collection="parentDeviceIdList" open="parent_device_id in(" close=")" separator="," item="deviceId">
+                #{deviceId}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="getDeviceChannelCount" resultType="integer">
+        select
+            count(a.id)
+        from
+            device_channel_${eid} a inner join device_${eid} b on a.parent_device_id = b.device_id
+        where b.has_child_device = '1'
+    </select>
+
+    <select id="getByParentDeviceIds" resultMap="baseMap">
+        SELECT id,device_id,parent_device_id,status,channel_no,channel_name,store_scene_id,
+               has_ptz,create_time,update_time,support_capture,support_passenger,enable_passenger,remark
+        FROM device_channel_${eid}
+        <where>
+            parent_device_id IN
+            <foreach item="deviceId" collection="deviceIds" separator="," open="(" close=")">
+                #{deviceId}
+            </foreach>
+            <if test="storeSceneIds != null and !storeSceneIds.isEmpty()">
+                AND store_scene_id IN
+                <foreach item="storeSceneId" collection="storeSceneIds" separator="," open="(" close=")">
+                    #{storeSceneId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    
+    <delete id="deleteChannel">
+        <foreach collection="channelList" separator=";" item="channel">
+            delete from device_channel_${enterpriseId} where parent_device_id = #{channel.parentDeviceId} and channel_no = #{channel.channelNo}
+        </foreach>
+    </delete>
+</mapper>

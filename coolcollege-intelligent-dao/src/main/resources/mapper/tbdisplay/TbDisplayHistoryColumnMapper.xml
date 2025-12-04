@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.tbdisplay.TbDisplayHistoryColumnMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.tbdisplay.TbDisplayHistoryColumnDO">
+
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="record_id" jdbcType="BIGINT" property="recordId" />
+    <result column="history_id" jdbcType="BIGINT" property="historyId" />
+    <result column="meta_column_id" jdbcType="BIGINT" property="metaColumnId" />
+    <result column="data_column_id" jdbcType="BIGINT" property="dataColumnId" />
+    <result column="operate_type" jdbcType="VARCHAR" property="operateType" />
+    <result column="operate_user_id" jdbcType="BIGINT" property="operateUserId" />
+    <result column="operate_user_name" jdbcType="VARCHAR" property="operateUserName" />
+    <result column="photo" jdbcType="VARCHAR" property="photo" />
+    <result column="score" jdbcType="DECIMAL" property="score" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="is_temp" jdbcType="TINYINT" property="isTemp" />
+    <result column="photo_array" jdbcType="VARCHAR" property="photoArray" />
+    <result column="check_type" jdbcType="TINYINT" property="checkType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+
+    id, create_time, update_time, deleted, record_id, history_id, meta_column_id, data_column_id, 
+    operate_type, operate_user_id, operate_user_name, photo, score, remark, is_temp, photo_array,check_type
+  </sql>
+  <insert id="batchInsert" keyProperty="list.id" useGeneratedKeys="true">
+    insert into tb_display_history_column_${enterpriseId} (create_time, update_time, deleted,
+    record_id, history_id, meta_column_id,
+    data_column_id, operate_type, operate_user_id,
+    operate_user_name, photo, score,
+    remark, is_temp, photo_array
+    )VALUES
+    <foreach collection="list" item="item" separator=",">
+      (
+      now(), now(), #{item.deleted,jdbcType=BIT},
+      #{item.recordId,jdbcType=BIGINT}, #{item.historyId,jdbcType=BIGINT}, #{item.metaColumnId,jdbcType=BIGINT},
+      #{item.dataColumnId,jdbcType=BIGINT}, #{item.operateType,jdbcType=VARCHAR}, #{item.operateUserId,jdbcType=BIGINT},
+      #{item.operateUserName,jdbcType=VARCHAR}, #{item.photo,jdbcType=VARCHAR}, #{item.score,jdbcType=INTEGER},
+      #{item.remark,jdbcType=VARCHAR}, #{item.isTemp,jdbcType=TINYINT}, #{item.photoArray,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.tbdisplay.TbDisplayHistoryColumnDO">
+
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_display_history_column_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+      <if test="record.recordId != null">
+        record_id,
+      </if>
+      <if test="record.historyId != null">
+        history_id,
+      </if>
+      <if test="record.metaColumnId != null">
+        meta_column_id,
+      </if>
+      <if test="record.dataColumnId != null">
+        data_column_id,
+      </if>
+      <if test="record.operateType != null">
+        operate_type,
+      </if>
+      <if test="record.operateUserId != null">
+        operate_user_id,
+      </if>
+      <if test="record.operateUserName != null">
+        operate_user_name,
+      </if>
+      <if test="record.photo != null">
+        photo,
+      </if>
+      <if test="record.score != null">
+        score,
+      </if>
+      <if test="record.remark != null">
+        remark,
+      </if>
+      <if test="record.isTemp != null">
+        is_temp,
+      </if>
+      <if test="record.photoArray != null">
+        photo_array,
+      </if>
+      <if test="record.checkType != null">
+        check_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.updateTime != null">
+        #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.recordId != null">
+        #{record.recordId,jdbcType=BIGINT},
+      </if>
+      <if test="record.historyId != null">
+        #{record.historyId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaColumnId != null">
+        #{record.metaColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.dataColumnId != null">
+        #{record.dataColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operateType != null">
+        #{record.operateType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operateUserId != null">
+        #{record.operateUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operateUserName != null">
+        #{record.operateUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photo != null">
+        #{record.photo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.score != null">
+        #{record.score},
+      </if>
+      <if test="record.remark != null">
+        #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isTemp != null">
+        #{record.isTemp,jdbcType=TINYINT},
+      </if>
+      <if test="record.photoArray != null">
+        #{record.photoArray,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkType != null">
+        #{record.checkType,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.tbdisplay.TbDisplayHistoryColumnDO">
+    update tb_display_history_column_${enterpriseId}
+    <set>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.recordId != null">
+        record_id = #{record.recordId,jdbcType=BIGINT},
+      </if>
+      <if test="record.historyId != null">
+        history_id = #{record.historyId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaColumnId != null">
+        meta_column_id = #{record.metaColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.dataColumnId != null">
+        data_column_id = #{record.dataColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operateType != null">
+        operate_type = #{record.operateType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operateUserId != null">
+        operate_user_id = #{record.operateUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operateUserName != null">
+        operate_user_name = #{record.operateUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photo != null">
+        photo = #{record.photo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.score != null">
+        score = #{record.score},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isTemp != null">
+        is_temp = #{record.isTemp,jdbcType=TINYINT},
+      </if>
+      <if test="record.photoArray != null">
+        photo_array = #{record.photoArray,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+  <select id="getListByHistoryId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_display_history_column_${enterpriseId}
+    where history_id in (
+    <foreach collection="historyIdList" item="item" separator=",">
+      #{item}
+    </foreach>
+    )
+  </select>
+  <select id="getListByRecordIdList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_display_history_column_${enterpriseId}
+    where record_id in (
+    <foreach collection="recordIdList" item="item" separator=",">
+      #{item}
+    </foreach>
+    )
+    and deleted = 0  and is_temp = 0 and remark is not null  and remark !='' and operate_type !='handle'
+  </select>
+
+</mapper>

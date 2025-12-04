@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.patrolstore.TbDataStaColumnExtendInfoMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.patrolstore.entity.TbDataStaColumnExtendInfoDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="business_id" jdbcType="BIGINT" property="businessId" />
+    <result column="sub_task_id" jdbcType="BIGINT" property="subTaskId" />
+    <result column="ai_check_result" jdbcType="VARCHAR" property="aiCheckResult" />
+    <result column="ai_check_result_id" jdbcType="BIGINT" property="aiCheckResultId" />
+    <result column="ai_check_result_name" jdbcType="VARCHAR" property="aiCheckResultName" />
+    <result column="ai_check_text" jdbcType="VARCHAR" property="aiCheckText" />
+    <result column="ai_check_score" jdbcType="DECIMAL" property="aiCheckScore" />
+    <result column="ai_status" jdbcType="BIT" property="aiStatus" />
+    <result column="ai_fail_reason" jdbcType="VARCHAR" property="aiFailReason" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="ai_check_pics" jdbcType="VARCHAR" property="aiCheckPics" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, business_id, sub_task_id, ai_check_result, ai_check_result_id, ai_check_result_name, ai_check_text, ai_check_score,
+    ai_status, ai_fail_reason, create_time, create_user_id, update_time, update_user_id, 
+    deleted, ai_check_pics
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into tb_data_sta_column_extend_info_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.aiCheckResult != null">
+        ai_check_result,
+      </if>
+      <if test="record.aiCheckResultId != null">
+        ai_check_result_id,
+      </if>
+      <if test="record.aiCheckResultName != null">
+        ai_check_result_name,
+      </if>
+      <if test="record.aiCheckText != null">
+        ai_check_text,
+      </if>
+      <if test="record.aiCheckScore != null">
+        ai_check_score,
+      </if>
+      <if test="record.aiStatus != null">
+        ai_status,
+      </if>
+      <if test="record.aiFailReason != null">
+        ai_fail_reason,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+      <if test="record.aiCheckPics != null">
+        ai_check_pics,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.aiCheckResult != null">
+        #{record.aiCheckResult},
+      </if>
+      <if test="record.aiCheckResultId != null">
+        #{record.aiCheckResultId},
+      </if>
+      <if test="record.aiCheckResultName != null">
+        #{record.aiCheckResultName},
+      </if>
+      <if test="record.aiCheckText != null">
+        #{record.aiCheckText},
+      </if>
+      <if test="record.aiCheckScore != null">
+        #{record.aiCheckScore},
+      </if>
+      <if test="record.aiStatus != null">
+        #{record.aiStatus},
+      </if>
+      <if test="record.aiFailReason != null">
+        #{record.aiFailReason},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted},
+      </if>
+      <if test="record.aiCheckPics != null">
+        #{record.aiCheckPics},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update tb_data_sta_column_extend_info_${enterpriseId}
+    <set>
+      <if test="record.aiCheckResult != null">
+        ai_check_result = #{record.aiCheckResult},
+      </if>
+      <if test="record.aiCheckResultId != null">
+        ai_check_result_id = #{record.aiCheckResultId},
+      </if>
+      <if test="record.aiCheckResultName != null">
+        ai_check_result_name = #{record.aiCheckResultName},
+      </if>
+      <if test="record.aiCheckText != null">
+        ai_check_text = #{record.aiCheckText},
+      </if>
+      <if test="record.aiCheckScore != null">
+        ai_check_score = #{record.aiCheckScore},
+      </if>
+      <if test="record.aiStatus != null">
+        ai_status = #{record.aiStatus},
+      </if>
+      <if test="record.aiFailReason != null">
+        ai_fail_reason = #{record.aiFailReason},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted},
+      </if>
+      <if test="record.aiCheckPics != null">
+        ai_check_pics = #{record.aiCheckPics},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+
+
+  <insert id="batchInsertOrUpdateDataColumnExtendInfo">
+    <foreach collection="insertList" separator=";" item="record">
+      insert into tb_data_sta_column_extend_info_${enterpriseId}
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="record.id != null">
+          id,
+        </if>
+        <if test="record.businessId != null">
+          business_id,
+        </if>
+        <if test="record.subTaskId != null">
+          sub_task_id,
+        </if>
+        <if test="record.aiCheckResult != null">
+          ai_check_result,
+        </if>
+        <if test="record.aiCheckResultId != null">
+          ai_check_result_id,
+        </if>
+        <if test="record.aiCheckResultName != null">
+          ai_check_result_name,
+        </if>
+        <if test="record.aiCheckPics != null">
+          ai_check_pics,
+        </if>
+        <if test="record.aiCheckText != null">
+          ai_check_text,
+        </if>
+        <if test="record.aiCheckScore != null">
+          ai_check_score,
+        </if>
+        <if test="record.aiStatus != null">
+          ai_status,
+        </if>
+        <if test="record.aiFailReason != null">
+          ai_fail_reason,
+        </if>
+        <if test="record.createUserId != null">
+          create_user_id,
+        </if>
+        <if test="record.updateUserId != null">
+          update_user_id,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="record.id != null">
+          #{record.id},
+        </if>
+        <if test="record.businessId != null">
+          #{record.businessId},
+        </if>
+        <if test="record.subTaskId != null">
+          #{record.subTaskId},
+        </if>
+        <if test="record.aiCheckResult != null">
+          #{record.aiCheckResult},
+        </if>
+        <if test="record.aiCheckResultId != null">
+          #{record.aiCheckResultId},
+        </if>
+        <if test="record.aiCheckResultName != null">
+          #{record.aiCheckResultName},
+        </if>
+        <if test="record.aiCheckPics != null">
+          #{record.aiCheckPics},
+        </if>
+        <if test="record.aiCheckText != null">
+          #{record.aiCheckText},
+        </if>
+        <if test="record.aiCheckScore != null">
+          #{record.aiCheckScore},
+        </if>
+        <if test="record.aiStatus != null">
+          #{record.aiStatus},
+        </if>
+        <if test="record.aiFailReason != null">
+          #{record.aiFailReason},
+        </if>
+        <if test="record.createUserId != null">
+          #{record.createUserId},
+        </if>
+        <if test="record.updateUserId != null">
+          #{record.updateUserId},
+        </if>
+      </trim>
+      ON DUPLICATE KEY UPDATE
+      <if test="record.businessId != null">
+        business_id = values(business_id),
+      </if>
+      <if test="record.subTaskId != null">
+        sub_task_id = values(sub_task_id),
+      </if>
+      <if test="record.aiCheckResult != null">
+        ai_check_result = values(ai_check_result),
+      </if>
+      <if test="record.aiCheckResultId != null">
+        ai_check_result_id = values(ai_check_result_id),
+      </if>
+      <if test="record.aiCheckResultName != null">
+        ai_check_result_name = values(ai_check_result_name),
+      </if>
+      <if test="record.aiCheckPics != null">
+        ai_check_pics = values(ai_check_pics),
+      </if>
+      <if test="record.aiCheckText != null">
+        ai_check_text = values(ai_check_text),
+      </if>
+      <if test="record.aiCheckScore != null">
+        ai_check_score = values(ai_check_score),
+      </if>
+      <if test="record.aiStatus != null">
+        ai_status = values(ai_status),
+      </if>
+      <if test="record.aiFailReason != null">
+        ai_fail_reason = values(ai_fail_reason),
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = values(update_user_id),
+      </if>
+      update_time = now()
+    </foreach>
+  </insert>
+
+  <select id="checkHasProcessingColumn" resultType="java.lang.Boolean">
+    SELECT COUNT(1) = 0
+    FROM tb_data_sta_column_extend_info_${enterpriseId}
+    WHERE business_id = #{businessId} AND ai_status = 1
+  </select>
+
+  <select id="selectById" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_data_sta_column_extend_info_${enterpriseId}
+    where id = #{id}
+    and deleted = 0
+  </select>
+
+  <select id="selectTimeoutProcessingRecords" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM tb_data_sta_column_extend_info_${enterpriseId}
+    WHERE ai_status = 1
+    AND deleted = 0
+    <![CDATA[ AND create_time < DATE_SUB(NOW(), INTERVAL #{timeoutMinutes} MINUTE) ]]>
+  </select>
+
+  <update id="updateAiStatusByJob">
+    UPDATE tb_data_sta_column_extend_info_${enterpriseId}
+    SET ai_status = 3,
+        ai_fail_reason = #{failReason},
+        update_time = NOW()
+    WHERE deleted = 0 and  ai_status = 1
+    AND id IN
+    <foreach collection="idList" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </update>
+
+  <update id="resetAiStatus">
+    UPDATE tb_data_sta_column_extend_info_${enterpriseId}
+    SET ai_status = 1,
+        ai_check_result = null,
+        ai_check_result_id = 0,
+        ai_check_result_name = null,
+        ai_check_text = null,
+        ai_check_score = null,
+        ai_check_pics = null,
+        ai_fail_reason = null,
+        update_time = NOW()
+    WHERE deleted = 0 and  business_id = #{businessId}
+  </update>
+
+</mapper>

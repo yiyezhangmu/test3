@@ -1,0 +1,1384 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.unifytask.TaskStoreMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="edit_time" jdbcType="TIMESTAMP" property="editTime"/>
+        <result column="node_no" jdbcType="VARCHAR" property="nodeNo"/>
+        <result column="unify_task_id" jdbcType="BIGINT" property="unifyTaskId"/>
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="store_id" jdbcType="BIGINT" property="storeId"/>
+        <result column="region_id" jdbcType="BIGINT" property="regionId"/>
+        <result column="region_way" jdbcType="VARCHAR" property="regionWay"/>
+        <result column="handle_time" jdbcType="TIMESTAMP" property="handleTime"/>
+        <result column="task_cycle" jdbcType="VARCHAR" property="taskCycle"/>
+        <result column="run_rule" jdbcType="VARCHAR" property="runRule"/>
+        <result column="action_key" jdbcType="VARCHAR" property="actionKey"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="sub_status" jdbcType="VARCHAR" property="subStatus"/>
+        <result column="flow_state" jdbcType="VARCHAR" property="flowState"/>
+        <result column="biz_code" jdbcType="VARCHAR" property="bizCode"/>
+        <result column="task_data" jdbcType="VARCHAR" property="taskData"/>
+        <result column="loop_count" jdbcType="BIGINT" property="loopCount"/>
+        <result column="sub_begin_time" jdbcType="TIMESTAMP" property="subBeginTime"/>
+        <result column="sub_end_time" jdbcType="TIMESTAMP" property="subEndTime"/>
+        <result column="handler_end_time" jdbcType="TIMESTAMP" property="handlerEndTime"/>
+        <result column="store_name" jdbcType="VARCHAR" property="storeName"/>
+        <result column="cc_user_ids" jdbcType="LONGVARCHAR" property="ccUserIds"/>
+        <result column="extend_info" jdbcType="LONGVARCHAR" property="extendInfo"/>
+        <result column="handler_user_id" jdbcType="VARCHAR" property="handlerUserId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , create_time, edit_time,store_id,
+        unify_task_id,node_no, loop_count,
+        create_user_id,task_type,run_rule,
+        task_cycle,handle_time,action_key,region_id,region_way,
+        remark,
+        flow_state,sub_status,biz_code,task_data,sub_begin_time,sub_end_time, store_name, handler_end_time,cc_user_ids,extend_info,handler_user_id
+    </sql>
+    <sql id="Select_Base_Column_List">
+        a.id as id,
+        a.node_no as nodeNo,
+        a.store_id as storeId,
+        a.unify_task_id as unifyTaskId,
+        a.create_user_id as createUserId,
+        a.loop_count as loopCount,
+        a.task_type as taskType,
+        a.run_rule as runRule,
+        a.task_cycle as taskCycle,
+        a.handle_time as handleTime,
+        a.action_key as actionKey,
+        a.remark as remark,
+        a.flow_state as flowState,
+        a.sub_status as subStatus,
+        a.task_data as taskData,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime,
+        a.region_id as regionId,
+        a.region_way as regionWay,
+        a.store_name as storeName,
+        a.handler_end_time as handlerEndTime,
+        a.create_time as createTime,
+        a.cc_user_ids as ccUserIds,
+        a.extend_info as extendInfo,
+        a.handler_user_id as handlerUserId
+    </sql>
+    <insert id="batchInsertTaskStore" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="list.id">
+        insert into unify_task_store_${enterpriseId}
+        (create_time, edit_time,store_id,
+        unify_task_id,node_no, loop_count,
+        create_user_id,task_type,run_rule,
+        task_cycle,handle_time,action_key,
+        remark,region_id,region_way,
+        flow_state,sub_status,biz_code,task_data,sub_begin_time,sub_end_time, store_name,cc_user_ids, extend_info, handler_end_time)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (now(), now(),#{item.storeId},
+            #{item.unifyTaskId},#{item.nodeNo},#{item.loopCount},
+            #{item.createUserId},#{item.taskType},#{item.runRule},
+            #{item.taskCycle},#{item.handleTime},#{item.actionKey},
+            #{item.remark},#{item.regionId},#{item.regionWay},
+            #{item.flowState},#{item.subStatus},#{item.bizCode},#{item.taskData},
+            #{item.subBeginTime},#{item.subEndTime},#{item.storeName},#{item.ccUserIds},#{item.extendInfo}, #{item.handlerEndTime})
+        </foreach>
+    </insert>
+    
+    <insert id="batchAddTaskStore" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="storeTaskList.id">
+        <foreach collection="storeTaskList" separator=";" item="task">
+            insert into unify_task_store_${enterpriseId}
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="task.id != null">
+                    id,
+                </if>
+                <if test="task.createTime != null">
+                    create_time,
+                </if>
+                <if test="task.editTime != null">
+                    edit_time,
+                </if>
+                <if test="task.storeId != null">
+                    store_id,
+                </if>
+                <if test="task.unifyTaskId != null">
+                    unify_task_id,
+                </if>
+                <if test="task.regionId != null">
+                    region_id,
+                </if>
+                <if test="task.nodeNo != null">
+                    node_no,
+                </if>
+                <if test="task.loopCount != null">
+                    loop_count,
+                </if>
+                <if test="task.createUserId != null">
+                    create_user_id,
+                </if>
+                <if test="task.taskType != null">
+                    task_type,
+                </if>
+                <if test="task.runRule != null">
+                    run_rule,
+                </if>
+                <if test="task.taskCycle != null">
+                    task_cycle,
+                </if>
+                <if test="task.handleTime != null">
+                    handle_time,
+                </if>
+                <if test="task.actionKey != null">
+                    action_key,
+                </if>
+                <if test="task.remark != null">
+                    remark,
+                </if>
+                <if test="task.flowState != null">
+                    flow_state,
+                </if>
+                <if test="task.subStatus != null">
+                    sub_status,
+                </if>
+                <if test="task.bizCode != null">
+                    biz_code,
+                </if>
+                <if test="task.taskData != null">
+                    task_data,
+                </if>
+                <if test="task.subBeginTime != null">
+                    sub_begin_time,
+                </if>
+                <if test="task.subEndTime != null">
+                    sub_end_time,
+                </if>
+                <if test="task.regionWay != null">
+                    region_way,
+                </if>
+                <if test="task.storeName != null">
+                    store_name,
+                </if>
+                <if test="task.handlerEndTime != null">
+                    handler_end_time,
+                </if>
+                <if test="task.ccUserIds != null">
+                    cc_user_ids,
+                </if>
+                <if test="task.extendInfo != null">
+                    extend_info,
+                </if>
+                <if test="task.handlerUserId != null">
+                    handler_user_id,
+                </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="task.id != null">
+                    #{task.id},
+                </if>
+                <if test="task.createTime != null">
+                    #{task.createTime},
+                </if>
+                <if test="task.editTime != null">
+                    #{task.editTime},
+                </if>
+                <if test="task.storeId != null">
+                    #{task.storeId},
+                </if>
+                <if test="task.unifyTaskId != null">
+                    #{task.unifyTaskId},
+                </if>
+                <if test="task.regionId != null">
+                    #{task.regionId},
+                </if>
+                <if test="task.nodeNo != null">
+                    #{task.nodeNo},
+                </if>
+                <if test="task.loopCount != null">
+                    #{task.loopCount},
+                </if>
+                <if test="task.createUserId != null">
+                    #{task.createUserId},
+                </if>
+                <if test="task.taskType != null">
+                    #{task.taskType},
+                </if>
+                <if test="task.runRule != null">
+                    #{task.runRule},
+                </if>
+                <if test="task.taskCycle != null">
+                    #{task.taskCycle},
+                </if>
+                <if test="task.handleTime != null">
+                    #{task.handleTime},
+                </if>
+                <if test="task.actionKey != null">
+                    #{task.actionKey},
+                </if>
+                <if test="task.remark != null">
+                    #{task.remark},
+                </if>
+                <if test="task.flowState != null">
+                    #{task.flowState},
+                </if>
+                <if test="task.subStatus != null">
+                    #{task.subStatus},
+                </if>
+                <if test="task.bizCode != null">
+                    #{task.bizCode},
+                </if>
+                <if test="task.taskData != null">
+                    #{task.taskData},
+                </if>
+                <if test="task.subBeginTime != null">
+                    #{task.subBeginTime},
+                </if>
+                <if test="task.subEndTime != null">
+                    #{task.subEndTime},
+                </if>
+                <if test="task.regionWay != null">
+                    #{task.regionWay},
+                </if>
+                <if test="task.storeName != null">
+                    #{task.storeName},
+                </if>
+                <if test="task.handlerEndTime != null">
+                    #{task.handlerEndTime},
+                </if>
+                <if test="task.ccUserIds != null">
+                    #{task.ccUserIds},
+                </if>
+                <if test="task.extendInfo != null">
+                    #{task.extendInfo},
+                </if>
+                <if test="task.handlerUserId != null">
+                    #{task.handlerUserId},
+                </if>
+            </trim>
+            <trim prefix="on duplicate key update" suffixOverrides=",">
+                <if test="task.nodeNo != null">
+                    node_no = #{task.nodeNo},
+                </if>
+                <if test="task.taskType != null">
+                    task_type = #{task.taskType},
+                </if>
+                <if test="task.runRule != null">
+                    run_rule = #{task.runRule},
+                </if>
+                <if test="task.taskCycle != null">
+                    task_cycle = #{task.taskCycle},
+                </if>
+                <if test="task.handleTime != null">
+                    handle_time = #{task.handleTime},
+                </if>
+                <if test="task.actionKey != null">
+                    action_key = #{task.actionKey},
+                </if>
+                <if test="task.remark != null">
+                    remark = #{task.remark},
+                </if>
+                <if test="task.flowState != null">
+                    flow_state = #{task.flowState},
+                </if>
+                <if test="task.subStatus != null">
+                    sub_status = #{task.subStatus},
+                </if>
+                <if test="task.bizCode != null">
+                    biz_code = #{task.bizCode},
+                </if>
+                <if test="task.taskData != null">
+                    task_data = #{task.taskData},
+                </if>
+                <if test="task.subBeginTime != null">
+                    sub_begin_time = #{task.subBeginTime},
+                </if>
+                <if test="task.subEndTime != null">
+                    sub_end_time = #{task.subEndTime},
+                </if>
+                <if test="task.regionWay != null">
+                    region_way = #{task.regionWay},
+                </if>
+                <if test="task.storeName != null">
+                    store_name = #{task.storeName},
+                </if>
+                <if test="task.handlerEndTime != null">
+                    handler_end_time = #{task.handlerEndTime},
+                </if>
+                <if test="task.ccUserIds != null">
+                    cc_user_ids = #{task.ccUserIds},
+                </if>
+                <if test="task.extendInfo != null">
+                    extend_info = #{task.extendInfo},
+                </if>
+                <if test="task.handlerUserId != null">
+                    handler_user_id = #{task.handlerUserId},
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from unify_task_store_${enterpriseId}
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectStoreClearList"
+            resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        <include refid="Select_Base_Column_List" />
+        FROM
+        unify_task_store_${enterpriseId} a
+        where a.store_id = #{query.storeId}
+        AND a.task_type  <![CDATA[ <> ]]> 'PATROL_STORE_INFORMATION'
+        AND a.task_type  <![CDATA[ <> ]]> 'DISPLAY_TASK'
+        AND a.task_type  <![CDATA[ <> ]]> 'PATROL_STORE_AI'
+        <if test="query.selectTime != null and query.selectTime != ''">
+            and a.sub_begin_time <![CDATA[ <= ]]> #{query.selectTime}
+        </if>
+        <if test="query.selectBeginTime != null and query.selectBeginTime != ''">
+            and a.sub_end_time >= #{query.selectBeginTime}
+        </if>
+        <if test="query.taskCycle != null and query.taskCycle != ''">
+            and a.task_cycle = #{query.taskCycle}
+        </if>
+        <if test="query.runRule != null and query.runRule != ''">
+            and a.run_rule = #{query.runRule}
+        </if>
+        <if test="query.subStatus != null and query.subStatus != ''">
+            and a.sub_status = #{query.subStatus}
+        </if>
+        <if test="query.overdueTask != null and query.overdueTask == false and query.currDay != null and query.currDay == true">
+            and
+            CASE
+            WHEN a.task_type != 'TB_DISPLAY_TASK' THEN a.sub_end_time >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="query.handlerOvertimeTaskContinue != null and query.handlerOvertimeTaskContinue == false and query.currDay != null and query.currDay == true">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK'  and node_no = 1 THEN a.handler_end_time  >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="query.approverOvertimeTaskContinue != null and query.approverOvertimeTaskContinue == false and query.currDay != null and query.currDay == true">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK' and node_no != 1  THEN a.sub_end_time >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        order by a.sub_end_time asc
+    </select>
+        <select id="selectOverdueStoreClearList"
+            resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        <include refid="Select_Base_Column_List" />
+        FROM
+        unify_task_store_${enterpriseId} a
+        where a.store_id = #{query.storeId}
+        and a.sub_status = 'ongoing'
+        and a.sub_end_time <![CDATA[ < ]]> now()
+        AND a.task_type  <![CDATA[ <> ]]> 'PATROL_STORE_INFORMATION'
+        AND a.task_type  <![CDATA[ <> ]]> 'DISPLAY_TASK'
+        <if test="query.selectTime != null and query.selectTime != '' ">
+            and a.sub_end_time <![CDATA[ <= ]]> #{query.selectTime}
+        </if>
+        <if test="query.taskCycle != null and query.taskCycle != ''">
+            and a.task_cycle = #{query.taskCycle}
+        </if>
+        <if test="query.runRule != null and query.runRule != ''">
+            and a.run_rule = #{query.runRule}
+        </if>
+        <if test="query.handlerOvertimeTaskContinue != null and query.handlerOvertimeTaskContinue == false">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK'  and node_no = 1 THEN a.handler_end_time  >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="query.approverOvertimeTaskContinue != null and query.approverOvertimeTaskContinue == false">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK' and node_no != 1  THEN a.sub_end_time >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="query.overdueTask != null and query.overdueTask==false">
+            and
+            CASE
+            WHEN a.task_type != 'TB_DISPLAY_TASK' THEN a.sub_end_time >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        order by a.sub_end_time asc
+        limit 100
+    </select>
+
+    <select id="selectTaskStatusNum" resultType="com.coolcollege.intelligent.model.unifytask.dto.TaskNumDTO">
+        SELECT
+            DATE_FORMAT(sub_begin_time, '%Y%m%d') as taskBeginDate,
+            DATE_FORMAT(sub_end_time, '%Y%m%d') as taskEndDate,
+            node_no as nodeNo,
+            count( 1 ) AS taskNum
+        FROM
+        unify_task_store_${enterpriseId} a
+        where a.store_id = #{query.storeId}
+        AND a.task_type  <![CDATA[ <> ]]> 'PATROL_STORE_INFORMATION'
+        AND a.task_type  <![CDATA[ <> ]]> 'DISPLAY_TASK'
+        AND a.task_type  <![CDATA[ <> ]]> 'PATROL_STORE_AI'
+        <if test="query.selectTime != null and query.selectTime != ''">
+            and a.sub_begin_time <![CDATA[ <= ]]> #{query.selectTime}
+        </if>
+        <if test="query.selectBeginTime != null and query.selectBeginTime != ''">
+            and a.sub_end_time >= #{query.selectBeginTime}
+        </if>
+        <if test="query.taskCycle != null and query.taskCycle != ''">
+            and a.task_cycle = #{query.taskCycle}
+        </if>
+        <if test="query.runRule != null and query.runRule != ''">
+            and a.run_rule = #{query.runRule}
+        </if>
+        <if test="query.subStatus != null and query.subStatus != ''">
+            and a.sub_status = #{query.subStatus}
+        </if>
+        <if test="query.overdueTask != null and query.overdueTask == false and query.currDay != null and query.currDay == true">
+            and
+            CASE
+            WHEN a.task_type != 'TB_DISPLAY_TASK' THEN a.sub_end_time >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="query.handlerOvertimeTaskContinue != null and query.handlerOvertimeTaskContinue == false and query.currDay != null and query.currDay == true">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK'  and node_no = 1 THEN a.handler_end_time  >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="query.approverOvertimeTaskContinue != null and query.approverOvertimeTaskContinue == false and query.currDay != null and query.currDay == true">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK' and node_no != 1  THEN a.sub_end_time >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        group by taskBeginDate, taskEndDate, nodeNo
+    </select>
+
+
+    <select id="getTaskStore" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from unify_task_store_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+        and store_id = #{storeId}
+        and loop_count = #{loopCount}
+    </select>
+    <select id="getTaskQuestionStore" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from unify_task_store_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+        <if test="storeId!=null">
+            and store_id = #{storeId}
+        </if>
+        <if test="loopCount!=null">
+            and loop_count = #{loopCount}
+        </if>
+        limit 1
+    </select>
+    <update id="updateByPrimaryKey" parameterType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        update unify_task_store_${enterpriseId}
+        <trim prefix="set" suffixOverrides=",">
+            <if test="item.nodeNo!=null and item.nodeNo !=''">
+                node_no = #{item.nodeNo},
+            </if>
+            <if test="item.loopCount!=null">
+                loop_count = #{item.loopCount},
+            </if>
+            <if test="item.taskType!=null">
+                task_type = #{item.taskType},
+            </if>
+            <if test="item.runRule!=null">
+                run_rule = #{item.runRule},
+            </if>
+            <if test="item.taskCycle!=null">
+                task_cycle = #{item.taskCycle},
+            </if>
+            <if test="item.handleTime!=null">
+                handle_time = #{item.handleTime},
+            </if>
+            <if test="item.actionKey!=null">
+                action_key = #{item.actionKey},
+            </if>
+            <if test="item.remark!=null">
+                remark = #{item.remark},
+            </if>
+            <if test="item.flowState!=null">
+                flow_state = #{item.flowState},
+            </if>
+            <if test="item.subStatus!=null">
+                sub_status = #{item.subStatus},
+            </if>
+            <if test="item.bizCode!=null">
+                biz_code = #{item.bizCode},
+            </if>
+            <if test="item.taskData!=null">
+                task_data = #{item.taskData},
+            </if>
+            <if test="#{item.subBeginTime}!=null">
+                sub_begin_time = #{item.subBeginTime},
+            </if>
+            <if test="item.subEndTime!=null">
+                sub_end_time = #{item.subEndTime}
+            </if>
+        </trim>
+        where id = #{item.id,jdbcType=BIGINT}
+    </update>
+    <delete id="delTaskStoreByParentTaskId">
+        delete from unify_task_store_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+    </delete>
+    <delete id="delTaskStoreById">
+        delete from unify_task_store_${enterpriseId}
+        where id = #{id}
+    </delete>
+    <select id="listByUnifyTaskId" resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        <include refid="Select_Base_Column_List" />
+        FROM
+        unify_task_store_${enterpriseId} a
+        where a.unify_task_id = #{unifyTaskId}
+    </select>
+
+    <select id="listByStoreIdAndLoopCount" resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        <include refid="Select_Base_Column_List" />
+        FROM
+        unify_task_store_${enterpriseId} a
+        where a.unify_task_id = #{unifyTaskId}
+        <if test="loopCount != null ">
+            and loop_count = #{loopCount}
+        </if>
+        <if test="storeIdList != null and storeIdList.size()>0">
+            and store_id in (
+            <foreach collection="storeIdList" separator="," item="storeId">
+                #{storeId}
+            </foreach>
+            )
+        </if>
+    </select>
+
+    <select id="selectTbDisplayParentStatistics" resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        select <include refid="Select_Base_Column_List" />
+        from unify_task_store_${enterpriseId} a
+        where a.unify_task_id = #{unifyTaskId}
+    </select>
+
+    <select id="listStoreIdByUnifyTaskId" resultType="java.lang.String">
+        select distinct a.store_id
+        from unify_task_store_${enterpriseId} a
+        where a.unify_task_id = #{unifyTaskId}
+    </select>
+    <select id="patrolStoreStatisticsRegionColumn"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsRegionDTO">
+        select
+        count(1) as totalQuestionNum,
+        sum(if(node_no = '1',1,0)) as todoQuestionNum,
+        sum(if(node_no = '2',1,0)) as unRecheckQuestionNum,
+        sum(if(node_no = 'endNode',1,0)) as finishQuestionNum
+        from unify_task_store_${enterpriseId}
+        <if test="isRoot or (regionPath != null and regionPath != '')">
+            force index (idx_create_time_task_type)
+        </if>
+        where task_type = 'QUESTION_ORDER'
+        and create_time between #{beginDate} and #{endDate}
+        <choose>
+            <when test="isRoot"></when>
+            <when test="regionPath != null and regionPath != ''">
+                and region_way like concat(#{regionPath},'%')
+            </when>
+            <otherwise>
+                <if test="storeIds !=null and storeIds.size()>0">
+                    and store_id in(
+                    <foreach collection="storeIds" item="storeId" separator=",">
+                        #{storeId}
+                    </foreach>
+                    )
+                </if>
+            </otherwise>
+        </choose>
+    </select>
+    <select id="regionQuestionNumRank"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsProblemRankDTO">
+        select
+        store_id as storeId,
+        count(0) as `count`,
+        region_id as regionId,
+        sum(if(node_no = 'endNode',1,0)) as finishQuestionNum
+        from unify_task_store_${enterpriseId}
+        where task_type = 'QUESTION_ORDER'
+        and create_time between #{startTime} and #{endTime}
+        and region_way like concat(#{regionPath},'%')
+        group by store_id
+        order by `count` desc
+        limit 10
+    </select>
+    <select id="getTaskStoreByRegionPathOrStoreId"
+            resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        <include refid="Select_Base_Column_List" />
+        FROM
+        unify_task_store_${enterpriseId} a
+        <if test="questionType != null and questionType != '' or metaTableId != null or metaColumnIds != null and metaColumnIds.size > 0">
+            LEFT JOIN tb_question_record_${enterpriseId} b ON a.id = b.task_store_id
+        </if>
+        where a.task_type = 'QUESTION_ORDER'
+        and a.create_time between #{beginDate} and #{endDate}
+        <if test="regionPath != null and regionPath != ''">
+            and a.region_way like concat(#{regionPath},'%')
+        </if>
+        <if test="getDirectStore == true ">
+            and a.region_id = #{regionId}
+        </if>
+        <if test="nodeNo != null and nodeNo != '' ">
+            and a.node_no = #{nodeNo}
+        </if>
+        <if test="storeIdList != null and storeIdList.size()>0">
+        and a.store_id in (
+            <foreach collection="storeIdList" separator="," item="storeId">
+                #{storeId}
+            </foreach>
+            )
+        </if>
+        <if test="questionType != null">
+            and b.question_type = #{questionType}
+        </if>
+        <if test="metaTableId != null">
+            AND b.meta_table_id = #{metaTableId}
+        </if>
+        <if test="metaColumnIds != null and metaColumnIds.size > 0">
+            AND b.meta_column_id IN
+            <foreach collection="metaColumnIds" item="metaColumnId" open="(" separator="," close=")">
+                #{metaColumnId}
+            </foreach>
+        </if>
+        <if test="isOverDue != null and isOverDue">
+            AND  now() > a.handler_end_time
+        </if>
+        order by id desc
+    </select>
+    <select id="listByUnifyTaskIds" resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        <include refid="Select_Base_Column_List" />
+        FROM
+        unify_task_store_${enterpriseId} a
+        where task_type = 'QUESTION_ORDER'
+        <if test="nodeNo != null and nodeNo != '' ">
+            and node_no = #{nodeNo}
+        </if>
+        and unify_task_id in (
+        <foreach collection="taskIdList" item="taskId" separator=",">
+            #{taskId}
+        </foreach>
+        )
+    </select>
+    <select id="selectTaskCount"
+            resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifyTaskStoreCount">
+        SELECT
+        a.unify_task_id AS unifyTaskId,
+        ifnull( count( a.id ), 0 ) AS totalCount,
+        ifnull( sum( CASE WHEN a.sub_status = 'complete' THEN 1 ELSE 0 END ), 0 ) AS completeCount,
+        ifnull(sum( CASE WHEN a.sub_status = 'ongoing' AND sub_begin_time <![CDATA[ <= ]]>  now( ) AND sub_end_time > now( ) THEN 1 ELSE 0 END ),0) AS ongoingCount,
+        ifnull( sum( CASE WHEN a.sub_status = 'ongoing' AND sub_end_time<![CDATA[ < ]]> now( ) THEN 1 ELSE 0 END ), 0 ) AS ongoingCountOve
+        from unify_task_store_${enterpriseId} a
+        where
+        a.unify_task_id in
+         <foreach collection="taskIdList" item="taskId" separator="," open="(" close=")">
+            #{taskId}
+         </foreach>
+        GROUP BY a.unify_task_id
+    </select>
+    <select id="selectDisplayTaskCount"
+            resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifySubStatisticsDTO">
+        SELECT
+        a.unify_task_id AS unifyTaskId,
+        ifnull( count( a.id ), 0 ) AS 'all',
+        ifnull( sum( CASE WHEN a.node_no = '1' THEN 1 ELSE 0 END ), 0 ) AS handle,
+        ifnull(sum( CASE WHEN a.node_no = '2' THEN 1 ELSE 0 END ),0) AS approver,
+        ifnull(sum( CASE WHEN a.node_no = '3' THEN 1 ELSE 0 END ),0) AS recheck,
+        ifnull(sum( CASE WHEN a.node_no = 'endNode' THEN 1 ELSE 0 END ),0) AS complete
+        from unify_task_store_${enterpriseId} a
+        where
+            a.unify_task_id = #{taskId}
+          and a.loop_count = #{loopCount}
+    </select>
+    <select id="selectTaskStoreCount"
+            resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifyTaskStoreCount">
+        SELECT
+        a.unify_task_id AS unifyTaskId,
+        ifnull( count( a.id ), 0 ) AS totalCount,
+        ifnull( sum( CASE WHEN a.sub_status = 'complete' THEN 1 ELSE 0 END ), 0 ) AS completeCount,
+        ifnull( sum( CASE WHEN a.node_no = '2' THEN 1 ELSE 0 END ), 0 ) AS approveCount,
+        ifnull( sum( CASE WHEN a.node_no = '1' THEN 1 ELSE 0 END ), 0 ) AS ongoingCount,
+        ifnull( sum( CASE WHEN a.sub_status = 'ongoing' AND sub_end_time<![CDATA[ < ]]> now( ) THEN 1 ELSE 0 END ), 0 ) AS ongoingCountOve
+        from unify_task_store_${enterpriseId} a
+        where
+        a.unify_task_id = #{taskId}
+        and a.loop_count = #{loopCount}
+    </select>
+    <select id="selectTaskStoreCountByUnifyTaskIds"
+            resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifyTaskStoreCount">
+        SELECT
+        a.unify_task_id AS unifyTaskId,
+        ifnull( count( a.id ), 0 ) AS totalCount,
+        ifnull( sum( CASE WHEN a.sub_status = 'complete' THEN 1 ELSE 0 END ), 0 ) AS completeCount,
+        ifnull( sum( CASE WHEN a.node_no = '2' THEN 1 ELSE 0 END ), 0 ) AS approveCount,
+        ifnull( sum( CASE WHEN a.node_no = '1' THEN 1 ELSE 0 END ), 0 ) AS ongoingCount,
+        ifnull( sum( CASE WHEN a.sub_status = 'ongoing' AND sub_end_time<![CDATA[ < ]]> now( ) THEN 1 ELSE 0 END ), 0 ) AS ongoingCountOve
+        from unify_task_store_${enterpriseId} a
+        where
+        a.unify_task_id in
+        <foreach collection="taskIds" item="taskId" open="(" close=")" separator=",">
+            #{taskId}
+        </foreach>
+        and a.loop_count = #{loopCount}
+    </select>
+    <select id="selectTaskStageCount"
+            resultType="java.lang.Long">
+        SELECT
+            ifnull(count( DISTINCT a.loop_count ), 0)
+        from unify_task_store_${enterpriseId} a
+        where
+            a.unify_task_id = #{taskId}
+        <if test="status != null and status !=''">
+            and a.sub_status = #{status}
+        </if>
+    </select>
+    <select id="taskStoreList"
+            resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        <include refid="Select_Base_Column_List" />
+        FROM
+        unify_task_store_${enterpriseId} a
+        where a.unify_task_id = #{query.unifyTaskId}
+        and a.loop_count = #{query.loopCount}
+        <if test="query.storeName != null and query.storeName != ''">
+            and a.store_name  like concat( #{query.storeName},'%')
+        </if>
+        <if test="query.nodeNo != null and query.nodeNo != ''">
+            and a.node_no = #{query.nodeNo}
+        </if>
+        <if test="query.overdueTaskContinue != null and query.overdueTaskContinue == false and query.nodeNo == null">
+            and (a.sub_end_time <![CDATA[ > ]]>  now() or a.sub_status = 'complete')
+        </if>
+        <if test="query.overdueTaskContinue != null and query.overdueTaskContinue == false and query.nodeNo != null and query.nodeNo != ''">
+            and a.sub_end_time <![CDATA[ > ]]>  now()
+        </if>
+        <if test="query.overdue != null and query.overdue == false">
+            and ( a.sub_end_time >= now() or  (a.sub_status = 'complete' and a.handle_time <![CDATA[ <= ]]>  a.sub_end_time))
+        </if>
+        <if test="query.overdue != null and query.overdue == true">
+            and ((a.sub_status = 'ongoing' and a.sub_end_time <![CDATA[ < ]]>  now()) or (a.sub_status = 'complete' and a.handle_time <![CDATA[ > ]]>  a.sub_end_time))
+        </if>
+        <if test="query.subStatus != null and query.subStatus != ''">
+            <if test="query.subStatus=='ongoing' and query.overdueTaskContinue != null and query.overdueTaskContinue == false">
+                and a.sub_status = #{query.subStatus}
+                AND a.sub_end_time  <![CDATA[ >= ]]>  now()
+            </if>
+            <if test="query.subStatus=='ongoing' and query.overdueTaskContinue != null and query.overdueTaskContinue == true">
+                and a.sub_status = #{query.subStatus}
+            </if>
+            <if test="query.subStatus=='complete' and query.overdueTaskContinue != null and query.overdueTaskContinue == true">
+                and a.sub_status = #{query.subStatus}
+            </if>
+            <if test="query.subStatus=='complete' and query.overdueTaskContinue != null and query.overdueTaskContinue == false">
+                and (a.sub_status = #{query.subStatus} or a.sub_end_time <![CDATA[ < ]]>  now())
+            </if>
+           <if test="query.overdue != null and query.subStatus=='complete' and query.overdue == true and
+                    query.overdueTaskContinue != null and query.overdueTaskContinue == false">
+                and (a.handle_time > a.sub_end_time or (a.sub_status = 'ongoing' and a.sub_end_time <![CDATA[ < ]]>  now()))
+           </if>
+            <if test="query.overdue != null and query.subStatus=='complete' and query.overdue == true and
+                    query.overdueTaskContinue != null and query.overdueTaskContinue == true">
+                and a.handle_time > a.sub_end_time
+            </if>
+            <if test="query.overdue != null and query.subStatus=='complete' and query.overdue == false">
+                and a.handle_time <![CDATA[ <= ]]>  a.sub_end_time
+            </if>
+            <if test="query.overdue != null and query.subStatus=='ongoing' and query.overdue == true">
+                and a.sub_end_time <![CDATA[ < ]]> now()
+            </if>
+            <if test="query.overdue != null and query.subStatus=='ongoing' and query.overdue == false">
+                and a.sub_end_time >= now()
+            </if>
+        </if>
+        order by a.sub_end_time asc
+    </select>
+
+    <select id="taskStoreListExistUnifyTaskIds"
+            resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        <include refid="Select_Base_Column_List" />
+        FROM
+        unify_task_store_${enterpriseId} a
+        where
+        a.loop_count = #{query.loopCount}
+        <if test="query.unifyTaskIds != null and query.unifyTaskIds.size > 0">
+            and a.unify_task_id in
+            <foreach collection="query.unifyTaskIds" item="unifyTaskId" open="(" close=")" separator=",">
+                #{unifyTaskId}
+            </foreach>
+        </if>
+
+        <if test="query.storeName != null and query.storeName != ''">
+            and a.store_name  like concat('%',#{query.storeName},'%')
+        </if>
+        <if test="query.nodeNo != null and query.nodeNo != ''">
+            and a.node_no = #{query.nodeNo}
+        </if>
+        <if test="query.overdueTaskContinue != null and query.overdueTaskContinue == false and query.nodeNo == null">
+            and (a.sub_end_time <![CDATA[ > ]]>  now() or a.sub_status = 'complete')
+        </if>
+        <if test="query.overdueTaskContinue != null and query.overdueTaskContinue == false and query.nodeNo != null and query.nodeNo != ''">
+            and a.sub_end_time <![CDATA[ > ]]>  now()
+        </if>
+        <if test="query.overdue != null and query.overdue == false">
+            and ( a.sub_end_time >= now() or  (a.sub_status = 'complete' and a.handle_time <![CDATA[ <= ]]>  a.sub_end_time))
+        </if>
+        <if test="query.overdue != null and query.overdue == true">
+            and ((a.sub_status = 'ongoing' and a.sub_end_time <![CDATA[ < ]]>  now()) or (a.sub_status = 'complete' and a.handle_time <![CDATA[ > ]]>  a.sub_end_time))
+        </if>
+        <if test="query.subStatus != null and query.subStatus != ''">
+            <if test="query.subStatus=='ongoing' and query.overdueTaskContinue != null and query.overdueTaskContinue == false">
+                and a.sub_status = #{query.subStatus}
+                AND a.sub_end_time  <![CDATA[ >= ]]>  now()
+            </if>
+            <if test="query.subStatus=='ongoing' and query.overdueTaskContinue != null and query.overdueTaskContinue == true">
+                and a.sub_status = #{query.subStatus}
+            </if>
+            <if test="query.subStatus=='complete' and query.overdueTaskContinue != null and query.overdueTaskContinue == true">
+                and a.sub_status = #{query.subStatus}
+            </if>
+            <if test="query.subStatus=='complete' and query.overdueTaskContinue != null and query.overdueTaskContinue == false">
+                and (a.sub_status = #{query.subStatus} or a.sub_end_time <![CDATA[ < ]]>  now())
+            </if>
+            <if test="query.overdue != null and query.subStatus=='complete' and query.overdue == true and
+                    query.overdueTaskContinue != null and query.overdueTaskContinue == false">
+                and (a.handle_time > a.sub_end_time or (a.sub_status = 'ongoing' and a.sub_end_time <![CDATA[ < ]]>  now()))
+            </if>
+            <if test="query.overdue != null and query.subStatus=='complete' and query.overdue == true and
+                    query.overdueTaskContinue != null and query.overdueTaskContinue == true">
+                and a.handle_time > a.sub_end_time
+            </if>
+            <if test="query.overdue != null and query.subStatus=='complete' and query.overdue == false">
+                and a.handle_time <![CDATA[ <= ]]>  a.sub_end_time
+            </if>
+            <if test="query.overdue != null and query.subStatus=='ongoing' and query.overdue == true">
+                and a.sub_end_time <![CDATA[ < ]]> now()
+            </if>
+            <if test="query.overdue != null and query.subStatus=='ongoing' and query.overdue == false">
+                and a.sub_end_time >= now()
+            </if>
+        </if>
+        <if test="query.createTime != null and query.endTime != null">
+            and a.create_time between #{query.createTime} and #{query.endTime}
+        </if>
+        order by a.sub_end_time asc
+    </select>
+
+    <select id="taskStoreAllList"
+            resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        <include refid="Select_Base_Column_List" />
+        FROM
+        unify_task_store_${enterpriseId} a
+        where a.unify_task_id = #{query.unifyTaskId}
+        <if test="query.loopCount != null">
+            and a.loop_count = #{query.loopCount}
+        </if>
+    </select>
+    <select id="taskStageList"
+            resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskStoreStageVO">
+        SELECT
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime,
+        a.handle_time as handleTime,
+        a.unify_task_id AS unifyTaskId,
+        a.loop_count as loopCount,
+        ifnull(count( a.id ), 0) AS totalCount,
+        ifnull(sum( CASE WHEN a.sub_status = 'complete' THEN 1 ELSE 0 END ), 0) AS completeCount,
+        ifnull(sum( CASE WHEN a.sub_status = 'ongoing' and sub_begin_time  <![CDATA[ <= ]]>  now() THEN 1 ELSE 0 END ),0) AS ongoingCount,
+        ifnull(sum( CASE WHEN a.sub_status = 'ongoing' and sub_begin_time > now() THEN 1 ELSE 0 END ),0) AS ongoingCountOve
+        FROM
+        unify_task_store_${enterpriseId} a
+        where a.unify_task_id = #{unifyTaskId}
+        GROUP BY a.loop_count
+        order by a.loop_count desc
+    </select>
+
+    <select id="statisticsTaskNumByUnifyTaskIds" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskReportVO">
+        SELECT unify_task_id id,COUNT(*) buildTaskNum
+        ,sum(case when node_no = '1' and sub_status != 'delete' then 1 else 0 end) waitDealTaskNum
+        ,sum(case when node_no = '1' and sub_end_time <![CDATA[ < ]]> now() then 1 else 0 end) waitDealOverdueTaskNum
+        ,sum(case when node_no = '2' then 1 else 0 end) waitApproveDealTaskNum
+        ,sum(case when node_no = '2' and sub_end_time <![CDATA[ < ]]> now() then 1 else 0 end) waitApproveDealOverdueTaskNum
+        ,sum(case when sub_status = 'complete' and sub_status != 'delete' then 1 else 0 end) completeTaskNum
+        ,sum(case when sub_status = 'complete' and handle_time > sub_end_time then 1 else 0 end) completeOverdueTaskNum
+        from unify_task_store_${enterpriseId} where
+        unify_task_id in (
+        <foreach collection="taskIdList" item="taskId" separator=",">
+            #{taskId}
+        </foreach>
+        ) GROUP BY unify_task_id
+    </select>
+    
+    <select id="getTaskFinishStorePage" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskFinishStoreVO">
+        select
+            a.unify_task_id as unifyTaskId,
+            a.store_id as storeId,
+            a.loop_count as loopCount
+        from
+            unify_task_store_${enterpriseId} a
+        where
+        a.unify_task_id = #{query.unifyTaskId} and a.sub_status != 'delete'
+        <if test="query.statusType == 0">
+            and node_no = '1'
+        </if>
+        <if test="query.statusType == 1">
+            and sub_status = 'complete'
+        </if>
+    </select>
+
+    <select id="selectForSubTaskListByTaskId" resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        a.unify_task_id as unifyTaskId,
+        a.store_id as storeId,
+        a.loop_count as loopCount
+        FROM
+        unify_task_store_${enterpriseId} a
+        WHERE
+        1=1
+        <choose>
+            <when test="selectType=='complete'">
+                and a.node_no = 'endNode'
+                and a.sub_status = 'complete'
+            </when>
+            <otherwise>
+                and a.sub_status is not null
+            </otherwise>
+        </choose>
+        <if test="list !=null and list.size > 0">
+            and a.store_id in
+            <foreach collection="list" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="query.unifyTaskId != null">
+            and a.unify_task_id = #{query.unifyTaskId}
+        </if>
+        <if test="query.taskType != null and query.taskType != ''">
+            and a.task_type = #{query.taskType}
+        </if>
+        <if test="query.storeName != null and query.storeName != ''">
+            and a.store_name like concat('%',trim(#{query.storeName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="query.loopCount != null">
+            and a.loop_count = #{query.loopCount}
+        </if>
+        order by a.create_time desc,a.id desc
+    </select>
+
+    <select id="listMyCreateTask" resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        a.unify_task_id as unifyTaskId,
+        a.store_id as storeId,
+        a.loop_count as loopCount
+        FROM
+        unify_task_store_${enterpriseId} a
+        WHERE  a.task_type != 'DISPLAY_TASK' and a.create_user_id = #{createUserId}
+        <if test="storeIdList != null and storeIdList.size > 0">
+            and a.store_id in
+            <foreach collection="storeIdList" item="storeId" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        order by a.create_time desc
+    </select>
+
+    <update id="updateExtendAndCcInfoByTaskStoreId">
+        update unify_task_store_${enterpriseId}
+        set extend_info = #{extendInfo}
+        <if test="ccUserIds !=null and ccUserIds!=''">
+            ,cc_user_ids = #{ccUserIds}
+        </if>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updatedCcInfoByTaskStoreId">
+        update unify_task_store_${enterpriseId}
+        set cc_user_ids = #{ccUserIds}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updatedHandlerUserByTaskStoreId">
+        update unify_task_store_${enterpriseId}
+        set handler_user_id = #{userId}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="deleteTaskStoreById">
+        update unify_task_store_${enterpriseId}
+        set sub_status = "delete"
+        where id = #{taskStoreId}
+    </update>
+
+    <update id="deleteTaskStoreByIds">
+        update unify_task_store_${enterpriseId}
+        set sub_status = "delete"
+        where id in
+        <foreach collection="taskStoreIds" item="taskStoreId" separator="," open="(" close=")">
+            #{taskStoreId}
+        </foreach>
+    </update>
+    <select id="listTaskStoreByEid" resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        a.id as id,
+        a.node_no as nodeNo,
+        a.store_id as storeId,
+        a.unify_task_id as unifyTaskId,
+        a.create_user_id as createUserId,
+        a.loop_count as loopCount,
+        a.task_type as taskType,
+        a.create_time as createTime
+        FROM
+        unify_task_store_${enterpriseId} a
+        WHERE  a.task_type != 'DISPLAY_TASK'
+        <if test="isRunIncrement != null and isRunIncrement">
+            and a.extend_info is null
+        </if>
+        <if test="maxId != null">
+            <![CDATA[ and a.id >= #{maxId}]]>
+        </if>
+        order by a.id asc
+    </select>
+
+    <select id="selectStoreByTaskIds" resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifyStoreDTO">
+        select
+        distinct
+        store_id as storeId,
+        unify_task_id as unifyTaskId
+        from unify_task_store_${enterpriseId}
+        where unify_task_id in
+        <foreach collection="taskIdList" item="taskId" separator="," open="(" close=")">
+            #{taskId}
+        </foreach>
+    </select>
+
+    <select id="listByTaskIdAndStoreIdList" resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        select
+        <include refid="Select_Base_Column_List" />
+        from unify_task_store_${enterpriseId} a
+        where a.unify_task_id in
+        <foreach collection="taskIdList" item="taskId" separator="," open="(" close=")">
+            #{taskId}
+        </foreach>
+        <if test="storeIdList !=null and storeIdList.size >0 ">
+            <foreach collection="storeIdList" open="and a.store_id in (" close=")" separator="," item="storeId">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="loopCount != null ">
+            and loop_count = #{loopCount}
+        </if>
+    </select>
+
+    <select id="selectExtendAndCcInfoByTaskStoreIds" resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        select id as id, extend_info as extendInfo, cc_user_ids as ccUserIds
+        from unify_task_store_${enterpriseId}
+        where id in
+        <foreach collection="taskStoreIdList" item="taskStoreId" separator="," open="(" close=")">
+            #{taskStoreId}
+        </foreach>
+    </select>
+    <select id="countByUnifyTaskIdAndTime" resultType="java.lang.Integer">
+        select
+            count(*)
+        from unify_task_store_${enterpriseId}
+        where unify_task_id = #{unifyTaskId}
+        and create_time between #{startTime, jdbcType=TIMESTAMP} and #{endTime, jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="selectLastStoreQuestion" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from unify_task_store_${enterpriseId}
+        where store_id = #{storeId}
+        and task_type = 'QUESTION_ORDER'
+        order by id desc limit 1
+    </select>
+    <select id="listMyCreateTaskByTaskTypes"
+            resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        a.unify_task_id as unifyTaskId,
+        a.store_id as storeId,
+        a.loop_count as loopCount
+        FROM
+        unify_task_store_${enterpriseId} a
+        WHERE  a.task_type != 'DISPLAY_TASK' and a.create_user_id = #{createUserId}
+        <if test="storeIdList != null and storeIdList.size > 0">
+            and a.store_id in
+            <foreach collection="storeIdList" item="storeId" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="taskTypes != null and taskTypes.size > 0">
+            and a.task_type in
+            <foreach collection="taskTypes" item="taskType" separator="," open="(" close=")">
+                #{taskType}
+            </foreach>
+        </if>
+        order by a.create_time desc
+    </select>
+
+    <select id="getStoreTaskByUnifyTaskId" resultMap="BaseResultMap">
+        select
+            *
+        from
+            unify_task_store_${enterpriseId}
+        where
+            unify_task_id = #{unifyTaskId}
+            <if test="beginTime != null">
+                and create_time >= #{beginTime}
+            </if>
+            <if test="endTime != null">
+                and #{endTime} >= create_time
+            </if>
+        order by id
+    </select>
+
+
+    <insert id="copyTaskStore">
+        insert into unify_task_store_${enterpriseId}
+        (id, create_time, edit_time,store_id,
+        unify_task_id,node_no, loop_count,
+        create_user_id,task_type,run_rule,
+        task_cycle,handle_time,action_key,
+        remark,region_id,region_way,
+        flow_state,sub_status,biz_code,task_data,sub_begin_time,sub_end_time, store_name,cc_user_ids, extend_info, handler_end_time)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},now(), now(),#{item.storeId},
+            #{item.unifyTaskId},#{item.nodeNo},#{item.loopCount},
+            #{item.createUserId},#{item.taskType},#{item.runRule},
+            #{item.taskCycle},#{item.handleTime},#{item.actionKey},
+            #{item.remark},#{item.regionId},#{item.regionWay},
+            #{item.flowState},#{item.subStatus},#{item.bizCode},#{item.taskData},
+            #{item.subBeginTime},#{item.subEndTime},#{item.storeName},#{item.ccUserIds},#{item.extendInfo}, #{item.handlerEndTime})
+        </foreach>
+    </insert>
+
+    <select id="listByUnifyIds" resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        <include refid="Select_Base_Column_List" />
+        FROM
+        unify_task_store_${enterpriseId} a
+        where id in (
+        <foreach collection="idList" item="taskId" separator=",">
+            #{taskId}
+        </foreach>
+        )
+        <if test="nodeNo != null and nodeNo != '' ">
+            and node_no = #{nodeNo}
+        </if>
+    </select>
+    <select id="getCcUserCountByUnifyTaskId" resultType="java.lang.Integer">
+        select count(a.id)
+        FROM
+        unify_task_store_${enterpriseId} a
+        where
+        a.unify_task_id = #{unifyTaskId}
+        and cc_user_ids like concat('%,',#{ccUserId},',%')
+    </select>
+    <select id="selectTaskStoreListByStoreId"
+            resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        <include refid="Select_Base_Column_List" />
+        FROM
+        unify_task_store_${enterpriseId} a
+        where a.store_id = #{storeId}
+        AND a.task_type  in (
+            'PATROL_STORE_ONLINE', 'PATROL_STORE_OFFLINE', 'TB_DISPLAY_TASK'
+        )
+        and a.sub_begin_time <![CDATA[ <= ]]> #{endTime}
+        and a.sub_end_time >= #{beginTime}
+        order by a.sub_end_time asc
+    </select>
+    <select id="selectByUnifyTaskId" resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        select <include refid="Base_Column_List"/>
+        from unify_task_store_${enterpriseId}
+        where unify_task_id = #{parentTaskId}
+    </select>
+    <select id="taskStoreListByIdList"
+            resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        <include refid="Select_Base_Column_List" />
+        FROM
+        unify_task_store_${enterpriseId} a
+        where id in
+        <foreach collection="taskStoreIdList" item="taskStoreId" separator="," open="(" close=")">
+            #{taskStoreId}
+        </foreach>
+    </select>
+
+    <select id="selectDisplayTaskStore" resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        <include refid="Select_Base_Column_List" />
+        FROM unify_task_store_${enterpriseId} a
+        <where>
+            task_type = 'TB_DISPLAY_TASK'
+            <if test="unifyTaskIds != null and !unifyTaskIds.isEmpty()">
+                AND unify_task_id in
+                <foreach collection="unifyTaskIds" item="unifyTaskId" open="(" close=")" separator=",">
+                    #{unifyTaskId}
+                </foreach>
+            </if>
+            <if test="ids != null and !ids.isEmpty()">
+                AND id in
+                <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY create_time DESC
+        <if test="returnLimit != null">
+            LIMIT #{returnLimit}
+        </if>
+    </select>
+
+    <update id="updateExtendAndCcInfoAndClearHandlerUser">
+        update unify_task_store_${enterpriseId}
+        set extend_info = #{extendInfo}
+        <if test="ccUserIds !=null and ccUserIds!=''">
+            ,cc_user_ids = #{ccUserIds}
+        </if>
+        <if test="clearHandlerUser">
+            ,handler_user_id = NULL
+        </if>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="getDisplayTaskDBCount"
+            resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifySubStatisticsDTO">
+        SELECT
+        COUNT(*) AS 'all',
+        SUM(CASE WHEN node_no = '1' THEN 1 ELSE 0 END) AS handle,
+        SUM(CASE WHEN node_no = '2' THEN 1 ELSE 0 END) AS approver,
+        SUM(CASE WHEN node_no = '3' THEN 1 ELSE 0 END) AS recheck,
+        SUM(CASE WHEN node_no = '4' THEN 1 ELSE 0 END) AS thirdApprove,
+        SUM(CASE WHEN node_no = '5' THEN 1 ELSE 0 END) AS fourApprove,
+        SUM(CASE WHEN node_no = '6' THEN 1 ELSE 0 END) AS fiveApprove,
+        SUM(CASE WHEN node_no = 'endNode' THEN 1 ELSE 0 END) AS complete
+        FROM unify_task_store_${enterpriseId}
+        <where>
+            <!-- 处理 UnifyTaskId 条件 -->
+            <choose>
+                <when test="query.unifyTaskIds != null and query.unifyTaskIds.size() > 0">
+                    AND unify_task_id IN
+                    <foreach collection="query.unifyTaskIds" item="taskId" open="(" separator="," close=")">
+                        #{taskId}
+                    </foreach>
+                </when>
+                <when test="query.unifyTaskId != null">
+                    AND unify_task_id = #{query.unifyTaskId}
+                </when>
+            </choose>
+
+            <!-- 处理 LoopCount 条件 -->
+            <if test="query.loopCount != null">
+                AND loop_count = #{query.loopCount}
+            </if>
+
+            <!-- 处理 CcUserId 条件 -->
+            <if test="query.ccUserId != null and query.ccUserId != ''">
+                AND cc_user_ids LIKE CONCAT('%', #{query.ccUserId}, '%')
+            </if>
+
+            <!-- 处理 UserId 条件 -->
+            <if test="query.userId != null and query.userId != ''">
+                AND extend_info LIKE CONCAT('%', #{query.userId}, '%')
+            </if>
+
+            <!-- 处理 HandleUserId 条件 -->
+            <if test="query.handleUserId != null and query.handleUserId != ''">
+                AND handler_user_ids LIKE CONCAT('%', #{query.handleUserId}, '%')
+            </if>
+
+            <!-- 排除已删除状态 -->
+            AND sub_status != 'DELETE'
+
+            <!-- 临时忽略 nodeNo 条件 -->
+            <if test="query.nodeNo != null">
+                <!-- 这里不添加条件，但在查询后需要恢复 query.nodeNo 的值 -->
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDisplayTaskStoreDBList"
+            resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT *
+        FROM unify_task_store_${enterpriseId}
+        <where>
+            <!-- 处理 UnifyTaskId 条件 -->
+            <choose>
+                <when test="query.unifyTaskIds != null and query.unifyTaskIds.size() > 0">
+                    AND unify_task_id IN
+                    <foreach collection="query.unifyTaskIds" item="taskId" open="(" separator="," close=")">
+                        #{taskId}
+                    </foreach>
+                </when>
+                <otherwise>
+                    AND unify_task_id = #{query.unifyTaskId}
+                </otherwise>
+            </choose>
+
+            <!-- 处理 LoopCount 条件 -->
+            <if test="query.loopCount != null">
+                AND loop_count = #{query.loopCount}
+            </if>
+
+            <!-- 处理 StoreName 条件 -->
+            <if test="query.storeName != null and query.storeName != ''">
+                AND store_name LIKE CONCAT('%', #{query.storeName}, '%')
+            </if>
+
+            <!-- 处理 NodeNo 条件 -->
+            <if test="query.nodeNo != null and query.nodeNo != '' and (query.approveAll == null or !query.approveAll)">
+                AND node_no = #{query.nodeNo}
+            </if>
+
+            <!-- 处理 ApproveAll 条件 -->
+            <if test="query.approveAll != null and query.approveAll">
+                AND node_no IN ('2', '3', '4', '5', '6')
+            </if>
+
+            <!-- 处理 CcUserId 条件 -->
+            <if test="query.ccUserId != null and query.ccUserId != ''">
+                AND cc_user_ids LIKE CONCAT('%', #{query.ccUserId}, '%')
+            </if>
+
+            <!-- 处理 UserId 条件 -->
+            <if test="query.userId != null and query.userId != ''">
+                AND extend_info LIKE CONCAT('%', #{query.userId}, '%')
+            </if>
+
+            <!-- 排除已删除状态 -->
+            AND sub_status != 'DELETE'
+
+            <!-- 处理 HandleUserId 条件 -->
+            <if test="query.handleUserId != null and query.handleUserId != ''">
+                AND handler_user_ids LIKE CONCAT('%', #{query.handleUserId}, '%')
+            </if>
+        </where>
+        ORDER BY id
+    </select>
+</mapper>

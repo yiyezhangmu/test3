@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.aianalysis.AiAnalysisReportMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.aianalysis.AiAnalysisReportDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="rule_id" jdbcType="BIGINT" property="ruleId"/>
+        <result column="report_name" jdbcType="VARCHAR" property="reportName"/>
+        <result column="store_id" jdbcType="VARCHAR" property="storeId"/>
+        <result column="report_push_time" jdbcType="TIMESTAMP" property="reportPushTime"/>
+        <result column="report_date" jdbcType="DATE" property="reportDate"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="ai_result" jdbcType="LONGVARCHAR" property="aiResult"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , rule_id, report_name, store_id, report_push_time, report_date, create_time, ai_result
+    </sql>
+    <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into ai_analysis_report_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.ruleId != null">
+                rule_id,
+            </if>
+            <if test="record.reportName != null">
+                report_name,
+            </if>
+            <if test="record.storeId != null">
+                store_id,
+            </if>
+            <if test="record.reportPushTime != null">
+                report_push_time,
+            </if>
+            <if test="record.reportDate != null">
+                report_date,
+            </if>
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.aiResult != null">
+                ai_result,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.ruleId != null">
+                #{record.ruleId},
+            </if>
+            <if test="record.reportName != null">
+                #{record.reportName},
+            </if>
+            <if test="record.storeId != null">
+                #{record.storeId},
+            </if>
+            <if test="record.reportPushTime != null">
+                #{record.reportPushTime},
+            </if>
+            <if test="record.reportDate != null">
+                #{record.reportDate},
+            </if>
+            <if test="record.createTime != null">
+                #{record.createTime},
+            </if>
+            <if test="record.aiResult != null">
+                #{record.aiResult},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update ai_analysis_report_${enterpriseId}
+        <set>
+            <if test="record.ruleId != null">
+                rule_id = #{record.ruleId},
+            </if>
+            <if test="record.reportName != null">
+                report_name = #{record.reportName},
+            </if>
+            <if test="record.storeId != null">
+                store_id = #{record.storeId},
+            </if>
+            <if test="record.reportPushTime != null">
+                report_push_time = #{record.reportPushTime},
+            </if>
+            <if test="record.reportDate != null">
+                report_date = #{record.reportDate},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.aiResult != null">
+                ai_result = #{record.aiResult},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <select id="getSimpleListByIds" resultType="com.coolcollege.intelligent.model.aianalysis.vo.AiAnalysisReportSimpleVO">
+        SELECT id, store_id, report_date
+        FROM ai_analysis_report_${enterpriseId}
+        WHERE id IN
+        <foreach item="id" collection="ids" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        ORDER BY report_push_time DESC, id DESC;
+    </select>
+
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ai_analysis_report_${enterpriseId}
+        WHERE id = #{id}
+    </select>
+
+    <select id="getExistRule" resultType="java.lang.Long">
+        SELECT DISTINCT rule_id FROM ai_analysis_report_${enterpriseId}
+        WHERE rule_id IN
+        <foreach item="ruleId" collection="ruleIds" separator="," open="(" close=")">
+            #{ruleId}
+        </foreach>
+        AND report_date = #{date}
+    </select>
+
+    <select id="getListByPushTime" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM ai_analysis_report_${enterpriseId}
+        WHERE report_push_time >= #{startTime} AND report_push_time &lt;= #{endTime}
+    </select>
+
+    <select id="getReportByRuleIds" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM ai_analysis_report_${enterpriseId}
+        WHERE rule_id IN
+        <foreach item="ruleId" collection="ruleIds" separator="," open="(" close=")">
+            #{ruleId}
+        </foreach>
+        AND report_date = #{reportDate}
+    </select>
+
+    <delete id="deleteByRuleIds">
+        DELETE FROM ai_analysis_report_${enterpriseId}
+        WHERE rule_id IN
+        <foreach item="ruleId" collection="ruleIds" separator="," open="(" close=")">
+            #{ruleId}
+        </foreach>
+        AND report_date = #{reportDate}
+    </delete>
+</mapper>

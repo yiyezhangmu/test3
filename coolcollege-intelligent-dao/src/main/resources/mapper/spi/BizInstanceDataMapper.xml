@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.spi.BizInstanceDataMapper">
+    <insert id="insertOrUpdate" parameterType="com.coolcollege.intelligent.model.spi.BizInstanceDataDO">
+        insert into biz_instance_data
+        (action,instance_id,order_biz_id,order_id,product_code,sku_id,trial,expired_on,template,create_time)
+        values
+        (
+        #{action, jdbcType=VARCHAR},
+        #{instanceId, jdbcType=VARCHAR},
+        #{orderBizId, jdbcType=VARCHAR},
+        #{orderId, jdbcType=VARCHAR},
+        #{productCode, jdbcType=VARCHAR},
+        #{skuId, jdbcType=VARCHAR},
+        #{trial, jdbcType=BOOLEAN},
+        #{expiredOn, jdbcType=TIMESTAMP},
+        #{template, jdbcType=VARCHAR},
+        sysdate()
+        )
+        ON DUPLICATE KEY UPDATE action = #{action, jdbcType=VARCHAR}, update_time = sysdate()
+    </insert>
+
+    <!-- 续费实例 -->
+    <update id="renewInstance" parameterType="com.coolcollege.intelligent.model.spi.BizInstanceDataDO">
+        update biz_instance_data set
+        <if test="orderId != null and orderId != ''">
+            order_id = #{orderId, jdbcType=VARCHAR},
+        </if>
+        action = #{action, jdbcType=VARCHAR},
+        expired_on = #{expiredOn, jdbcType=TIMESTAMP},
+        update_time=sysdate()
+        where instance_id = #{instanceId, jdbcType=VARCHAR}
+    </update>
+
+    <!-- 商品升级 -->
+    <update id="upgradeInstance" parameterType="com.coolcollege.intelligent.model.spi.BizInstanceDataDO">
+        update biz_instance_data set
+        <if test="skuId != null and skuId != ''">
+            sku_id = #{skuId, jdbcType=VARCHAR},
+        </if>
+        action = #{action, jdbcType=VARCHAR},
+        update_time=sysdate()
+        where instance_id = #{instanceId, jdbcType=VARCHAR}
+    </update>
+</mapper>

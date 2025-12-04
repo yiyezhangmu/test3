@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.syslog.SysLogMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.syslog.SysLogDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="menus" jdbcType="VARCHAR" property="menus" />
+    <result column="module" jdbcType="VARCHAR" property="module" />
+    <result column="func" jdbcType="VARCHAR" property="func" />
+    <result column="sub_func" jdbcType="VARCHAR" property="subFunc" />
+    <result column="op_user_id" jdbcType="VARCHAR" property="opUserId" />
+    <result column="op_user_name" jdbcType="VARCHAR" property="opUserName" />
+    <result column="op_user_mobile" jdbcType="VARCHAR" property="opUserMobile" />
+    <result column="op_user_jobnumber" jdbcType="VARCHAR" property="opUserJobnumber" />
+    <result column="op_time" jdbcType="TIMESTAMP" property="opTime" />
+    <result column="op_type" jdbcType="VARCHAR" property="opType" />
+    <result column="op_content" jdbcType="VARCHAR" property="opContent" />
+    <result column="op_ip" jdbcType="VARCHAR" property="opIp" />
+    <result column="device_info" jdbcType="VARCHAR" property="deviceInfo" />
+    <result column="req_params" jdbcType="VARCHAR" property="reqParams" />
+    <result column="resp_params" jdbcType="VARCHAR" property="respParams" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="extend_info" jdbcType="VARCHAR" property="extendInfo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, menus, `module`, func, sub_func, op_user_id, op_user_name, op_user_mobile, op_user_jobnumber, op_time, op_type,
+    op_content, op_ip, device_info, req_params, resp_params, url, extend_info
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into sys_log_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.menus != null">
+        menus,
+      </if>
+      <if test="record.module != null">
+        `module`,
+      </if>
+      <if test="record.func != null">
+        func,
+      </if>
+      <if test="record.subFunc != null">
+        sub_func,
+      </if>
+      <if test="record.opUserId != null">
+        op_user_id,
+      </if>
+      <if test="record.opUserName != null">
+        op_user_name,
+      </if>
+      <if test="record.opUserMobile != null">
+        op_user_mobile,
+      </if>
+      <if test="record.opUserJobnumber != null">
+        op_user_jobnumber,
+      </if>
+      <if test="record.opTime != null">
+        op_time,
+      </if>
+      <if test="record.opType != null">
+        op_type,
+      </if>
+      <if test="record.opContent != null">
+        op_content,
+      </if>
+      <if test="record.opIp != null">
+        op_ip,
+      </if>
+      <if test="record.deviceInfo != null">
+        device_info,
+      </if>
+      <if test="record.reqParams != null">
+        req_params,
+      </if>
+      <if test="record.respParams != null">
+        resp_params,
+      </if>
+      <if test="record.url != null">
+        url,
+      </if>
+      <if test="record.extendInfo != null">
+        extend_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.menus != null">
+        #{record.menus},
+      </if>
+      <if test="record.module != null">
+        #{record.module},
+      </if>
+      <if test="record.func != null">
+        #{record.func},
+      </if>
+      <if test="record.subFunc != null">
+        #{record.subFunc},
+      </if>
+      <if test="record.opUserId != null">
+        #{record.opUserId},
+      </if>
+      <if test="record.opUserName != null">
+        #{record.opUserName},
+      </if>
+      <if test="record.opUserMobile != null">
+        #{record.opUserMobile},
+      </if>
+      <if test="record.opUserJobnumber != null">
+        #{record.opUserJobnumber},
+      </if>
+      <if test="record.opTime != null">
+        #{record.opTime},
+      </if>
+      <if test="record.opType != null">
+        #{record.opType},
+      </if>
+      <if test="record.opContent != null">
+        #{record.opContent},
+      </if>
+      <if test="record.opIp != null">
+        #{record.opIp},
+      </if>
+      <if test="record.deviceInfo != null">
+        #{record.deviceInfo},
+      </if>
+      <if test="record.reqParams != null">
+        #{record.reqParams},
+      </if>
+      <if test="record.respParams != null">
+        #{record.respParams},
+      </if>
+      <if test="record.url != null">
+        #{record.url},
+      </if>
+      <if test="record.extendInfo != null">
+        #{record.extendInfo},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update sys_log_${enterpriseId}
+    <set>
+      <if test="record.menus != null">
+        menus = #{record.menus},
+      </if>
+      <if test="record.module != null">
+        `module` = #{record.module},
+      </if>
+      <if test="record.func != null">
+        func = #{record.func},
+      </if>
+      <if test="record.subFunc != null">
+        sub_func = #{record.subFunc},
+      </if>
+      <if test="record.opUserId != null">
+        op_user_id = #{record.opUserId},
+      </if>
+      <if test="record.opUserName != null">
+        op_user_name = #{record.opUserName},
+      </if>
+      <if test="record.opUserMobile != null">
+        op_user_mobile = #{record.opUserMobile},
+      </if>
+      <if test="record.opUserJobnumber != null">
+        op_user_jobnumber = #{record.opUserJobnumber},
+      </if>
+      <if test="record.opTime != null">
+        op_time = #{record.opTime},
+      </if>
+      <if test="record.opType != null">
+        op_type = #{record.opType},
+      </if>
+      <if test="record.opContent != null">
+        op_content = #{record.opContent},
+      </if>
+      <if test="record.opIp != null">
+        op_ip = #{record.opIp},
+      </if>
+      <if test="record.deviceInfo != null">
+        device_info = #{record.deviceInfo},
+      </if>
+      <if test="record.reqParams != null">
+        req_params = #{record.reqParams},
+      </if>
+      <if test="record.respParams != null">
+        resp_params = #{record.respParams},
+      </if>
+      <if test="record.url != null">
+        url = #{record.url},
+      </if>
+      <if test="record.extendInfo != null">
+        extend_info = #{record.extendInfo},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+
+  <select id="selectById" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sys_log_${enterpriseId}
+    WHERE id = #{id}
+  </select>
+
+  <select id="selectByParams" resultMap="BaseResultMap">
+    SELECT
+    `module`, op_user_name, op_user_jobnumber, op_time, op_type, op_content, op_ip, device_info
+    FROM sys_log_${enterpriseId}
+    <where>
+      op_user_id != 'a100000001'
+      <if test="params.opContent != null and params.opContent != ''">
+        AND op_content LIKE CONCAT('%', #{params.opContent}, '%')
+      </if>
+      <if test="params.opUserId != null and params.opUserId != ''">
+        AND op_user_id = #{params.opUserId}
+      </if>
+      <if test="params.opUserName != null and params.opUserName != ''">
+        AND op_user_name LIKE CONCAT('%', #{params.opUserName}, '%')
+      </if>
+      <if test="params.opUserMobile != null and params.opUserMobile != ''">
+        AND op_user_mobile LIKE CONCAT('%', #{params.opUserMobile}, '%')
+      </if>
+      <if test="params.opUserJobnumber != null and params.opUserJobnumber != ''">
+        AND op_user_jobnumber LIKE CONCAT('%', #{params.opUserJobnumber}, '%')
+      </if>
+      <if test="params.modules != null and !params.module.isEmpty() != ''">
+        AND `module` IN
+        <foreach collection="params.modules" item="module" separator="," open="(" close=")">
+          #{module}
+        </foreach>
+      </if>
+      <if test="params.opTimeStart != null and params.opTimeEnd != null">
+        AND op_time BETWEEN #{params.opTimeStart} AND #{params.opTimeEnd}
+      </if>
+    </where>
+    ORDER BY op_time DESC, id DESC
+  </select>
+</mapper>

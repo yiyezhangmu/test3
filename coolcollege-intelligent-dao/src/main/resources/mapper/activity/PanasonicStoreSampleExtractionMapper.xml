@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.activity.StoreSampleExtractionMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.activity.entity.StoreSampleExtractionDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="actual_store_name" jdbcType="VARCHAR" property="actualStoreName" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="category_code" jdbcType="VARCHAR" property="categoryCode" />
+    <result column="goods_num" jdbcType="INTEGER" property="goodsNum" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
+    <result column="product_model" jdbcType="VARCHAR" property="productModel" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="sample_extraction_time" jdbcType="DATE" property="sampleExtractionTime" />
+    <result column="withdraw_sample_time" jdbcType="DATE" property="withdrawSampleTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="sample_user_id" jdbcType="VARCHAR" property="sampleUserId" />
+    <result column="sample_user_name" jdbcType="VARCHAR" property="sampleUserName" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, store_id, actual_store_name,
+    category_name, category_code, goods_num, picture, product_model, status, sample_extraction_time,
+    withdraw_sample_time, create_time, create_user_id, update_time, update_user_id, deleted,sample_extraction_amount,withdraw_sample_amount
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into panasonic_store_sample_extraction
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.storeId != null">
+        store_id,
+      </if>
+      <if test="record.actualStoreName != null">
+        actual_store_name,
+      </if>
+      <if test="record.categoryName != null">
+        category_name,
+      </if>
+      <if test="record.categoryCode != null">
+        category_code,
+      </if>
+      <if test="record.goodsNum != null">
+        goods_num,
+      </if>
+      <if test="record.picture != null">
+        picture,
+      </if>
+      <if test="record.productModel != null">
+        product_model,
+      </if>
+      <if test="record.status != null">
+        status,
+      </if>
+      <if test="record.sampleExtractionTime != null">
+        sample_extraction_time,
+      </if>
+      <if test="record.withdrawSampleTime != null">
+        withdraw_sample_time,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="record.sampleUserId != null">
+        sample_user_id,
+      </if>
+      <if test="record.sampleUserId != null">
+        sample_user_name,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+        <if test="record.sampleExtractionAmount != null">
+        sample_extraction_amount,
+      </if>
+        <if test="record.withdrawSampleAmount != null">
+        withdraw_sample_amount,
+      </if>
+        <if test="record.physicalStoreNum != null">
+        physical_store_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.storeId != null">
+        #{record.storeId},
+      </if>
+      <if test="record.actualStoreName != null">
+        #{record.actualStoreName},
+      </if>
+      <if test="record.categoryName != null">
+        #{record.categoryName},
+      </if>
+      <if test="record.categoryCode != null">
+        #{record.categoryCode},
+      </if>
+      <if test="record.goodsNum != null">
+        #{record.goodsNum},
+      </if>
+      <if test="record.picture != null">
+        #{record.picture},
+      </if>
+      <if test="record.productModel != null">
+        #{record.productModel},
+      </if>
+      <if test="record.status != null">
+        #{record.status},
+      </if>
+      <if test="record.sampleExtractionTime != null">
+        #{record.sampleExtractionTime},
+      </if>
+      <if test="record.withdrawSampleTime != null">
+        #{record.withdrawSampleTime},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        #{record.updateUserId},
+      </if>
+      <if test="record.sampleUserId != null">
+        #{record.sampleUserId},
+      </if>
+      <if test="record.sampleUserName != null">
+        #{record.sampleUserName},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted},
+      </if>
+      <if test="record.sampleExtractionAmount != null">
+        #{record.sampleExtractionAmount},
+      </if>
+      <if test="record.withdrawSampleAmount != null">
+        #{record.withdrawSampleAmount},
+      </if>
+      <if test="record.physicalStoreNum != null">
+        #{record.physicalStoreNum},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update panasonic_store_sample_extraction
+    <set>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId},
+      </if>
+      <if test="record.actualStoreName != null">
+        actual_store_name = #{record.actualStoreName},
+      </if>
+      <if test="record.categoryName != null">
+        category_name = #{record.categoryName},
+      </if>
+      <if test="record.categoryCode != null">
+        category_code = #{record.categoryCode},
+      </if>
+      <if test="record.goodsNum != null">
+        goods_num = #{record.goodsNum},
+      </if>
+      <if test="record.picture != null">
+        picture = #{record.picture},
+      </if>
+      <if test="record.productModel != null">
+        product_model = #{record.productModel},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status},
+      </if>
+      <if test="record.sampleExtractionTime != null">
+        sample_extraction_time = #{record.sampleExtractionTime},
+      </if>
+      <if test="record.withdrawSampleTime != null">
+        withdraw_sample_time = #{record.withdrawSampleTime},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted},
+      </if>
+      <if test="record.sampleExtractionAmount != null">
+        sample_extraction_amount = #{record.sampleExtractionAmount},
+      </if>
+      <if test="record.withdrawSampleAmount != null">
+        withdraw_sample_amount = #{record.withdrawSampleAmount},
+      </if>
+      <if test="record.sampleUserId != null">
+        sample_user_id = #{record.sampleUserId},
+      </if>
+      <if test="record.sampleUserName != null">
+        sample_user_name = #{record.sampleUserName},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+  <select id="selectByStoreIdAndModel"
+          resultMap="BaseResultMap">
+    select
+        <include refid="Base_Column_List"></include>
+    from panasonic_store_sample_extraction
+    where store_id = #{storeId}
+      and product_model = #{productModel}
+      and deleted = 0
+  </select>
+  <select id="selectByphysicalNumAndModel"
+          resultType="com.coolcollege.intelligent.model.activity.entity.StoreSampleExtractionDO">
+    select
+    <include refid="Base_Column_List"></include>
+    from panasonic_store_sample_extraction
+    where physical_store_num = #{physicalNum}
+    and product_model = #{productModel}
+    and deleted = 0
+  </select>
+</mapper>

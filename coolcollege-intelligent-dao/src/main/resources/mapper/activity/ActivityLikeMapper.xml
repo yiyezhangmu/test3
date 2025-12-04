@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.activity.ActivityLikeMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.activity.entity.ActivityLikeDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="target_id" jdbcType="BIGINT" property="targetId"/>
+        <result column="like_user_id" jdbcType="VARCHAR" property="likeUserId"/>
+        <result column="like_type" jdbcType="TINYINT" property="likeType"/>
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, target_id, like_user_id, like_type, create_user_id, update_user_id, create_time,
+        update_time
+    </sql>
+    <insert id="addOrCancelActivityLike" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into activity_like_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.targetId != null">
+                target_id,
+            </if>
+            <if test="record.likeUserId != null">
+                like_user_id,
+            </if>
+            <if test="record.likeType != null">
+                like_type,
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id,
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id,
+            </if>
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.targetId != null">
+                #{record.targetId},
+            </if>
+            <if test="record.likeUserId != null">
+                #{record.likeUserId},
+            </if>
+            <if test="record.likeType != null">
+                #{record.likeType},
+            </if>
+            <if test="record.createUserId != null">
+                #{record.createUserId},
+            </if>
+            <if test="record.updateUserId != null">
+                #{record.updateUserId},
+            </if>
+            <if test="record.createTime != null">
+                #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+                #{record.updateTime},
+            </if>
+        </trim>
+        ON DUPLICATE KEY UPDATE deleted = NOT deleted, update_time = now(), create_time = now()
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update activity_like_${enterpriseId}
+        <set>
+            <if test="record.targetId != null">
+                target_id = #{record.targetId},
+            </if>
+            <if test="record.likeUserId != null">
+                like_user_id = #{record.likeUserId},
+            </if>
+            <if test="record.likeType != null">
+                like_type = #{record.likeType},
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id = #{record.createUserId},
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id = #{record.updateUserId},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <select id="getLikePage" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            activity_like_${enterpriseId}
+        where
+            target_id = #{targetId} and like_type  = #{likeType} and deleted ='0'
+        order by create_time desc
+    </select>
+
+    <select id="getUserLikeTargetIds" resultType="long">
+        select
+            target_id
+        from
+            activity_like_${enterpriseId}
+        where
+            deleted = '0' and like_type = #{likeType} and like_user_id = #{userId} and target_id in <foreach collection="targetIds" item="targetId" open="(" close=")" separator=",">#{targetId}</foreach>
+    </select>
+
+    <select id="getLikeCount" resultType="integer">
+        select count(1) from activity_like_${enterpriseId} where deleted = '0' and target_id = #{targetId} and like_type = #{likeType}
+    </select>
+</mapper>

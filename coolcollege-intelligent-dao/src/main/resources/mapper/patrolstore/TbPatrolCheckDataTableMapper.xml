@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.patrolstore.TbPatrolCheckDataTableMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.patrolstore.PatrolCheckDataTableDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="task_id" jdbcType="BIGINT" property="taskId" />
+    <result column="sub_task_id" jdbcType="BIGINT" property="subTaskId" />
+    <result column="check_business_id" jdbcType="BIGINT" property="checkBusinessId" />
+    <result column="business_id" jdbcType="BIGINT" property="businessId" />
+    <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId" />
+    <result column="data_table_id" jdbcType="BIGINT" property="dataTableId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="table_name" jdbcType="VARCHAR" property="tableName" />
+    <result column="table_type" jdbcType="VARCHAR" property="tableType" />
+    <result column="submit_status" jdbcType="TINYINT" property="submitStatus" />
+    <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="total_score" jdbcType="DECIMAL" property="totalScore" />
+    <result column="check_score" jdbcType="DECIMAL" property="checkScore" />
+    <result column="task_cal_total_score" jdbcType="DECIMAL" property="taskCalTotalScore" />
+    <result column="table_property" jdbcType="TINYINT" property="tableProperty" />
+    <result column="total_result_award" jdbcType="DECIMAL" property="totalResultAward" />
+    <result column="no_applicable_rule" jdbcType="TINYINT" property="noApplicableRule" />
+    <result column="fail_num" jdbcType="INTEGER" property="failNum" />
+    <result column="pass_num" jdbcType="INTEGER" property="passNum" />
+    <result column="inapplicable_num" jdbcType="INTEGER" property="inapplicableNum" />
+    <result column="total_cal_column_num" jdbcType="INTEGER" property="totalCalColumnNum" />
+    <result column="collect_column_num" jdbcType="INTEGER" property="collectColumnNum" />
+    <result column="check_result_level" jdbcType="VARCHAR" property="checkResultLevel" />
+    <result column="patrol_type" jdbcType="VARCHAR" property="patrolType" />
+    <result column="check_type" jdbcType="INTEGER" property="checkType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, task_id, sub_task_id, check_business_id, business_id, meta_table_id, data_table_id,
+    create_time, update_time, table_name, table_type, submit_status, submit_time, deleted,
+    total_score, check_score, task_cal_total_score, table_property, total_result_award,
+    no_applicable_rule, fail_num, pass_num, inapplicable_num, total_cal_column_num, collect_column_num,
+    check_result_level, patrol_type, check_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_patrol_check_data_table_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_patrol_check_data_table_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.patrolstore.PatrolCheckDataTableDO"
+          keyProperty="record.id" useGeneratedKeys="true">
+    insert into tb_patrol_check_data_table_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.taskId != null">
+        task_id,
+      </if>
+      <if test="record.subTaskId != null">
+        sub_task_id,
+      </if>
+      <if test="record.checkBusinessId != null">
+        check_business_id,
+      </if>
+      <if test="record.businessId != null">
+        business_id,
+      </if>
+      <if test="record.metaTableId != null">
+        meta_table_id,
+      </if>
+      <if test="record.dataTableId != null">
+        data_table_id,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.tableName != null">
+        table_name,
+      </if>
+      <if test="record.tableType != null">
+        table_type,
+      </if>
+      <if test="record.submitStatus != null">
+        submit_status,
+      </if>
+      <if test="record.submitTime != null">
+        submit_time,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+      <if test="record.totalScore != null">
+        total_score,
+      </if>
+      <if test="record.checkScore != null">
+        check_score,
+      </if>
+      <if test="record.taskCalTotalScore != null">
+        task_cal_total_score,
+      </if>
+      <if test="record.tableProperty != null">
+        table_property,
+      </if>
+      <if test="record.totalResultAward != null">
+        total_result_award,
+      </if>
+      <if test="record.noApplicableRule != null">
+        no_applicable_rule,
+      </if>
+      <if test="record.failNum != null">
+        fail_num,
+      </if>
+      <if test="record.passNum != null">
+        pass_num,
+      </if>
+      <if test="record.inapplicableNum != null">
+        inapplicable_num,
+      </if>
+      <if test="record.totalCalColumnNum != null">
+        total_cal_column_num,
+      </if>
+      <if test="record.collectColumnNum != null">
+        collect_column_num,
+      </if>
+      <if test="record.checkResultLevel != null">
+        check_result_level,
+      </if>
+      <if test="record.patrolType != null">
+        patrol_type,
+      </if>
+      <if test="record.checkType != null">
+        check_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.taskId != null">
+        #{record.taskId,jdbcType=BIGINT},
+      </if>
+      <if test="record.subTaskId != null">
+        #{record.subTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="record.checkBusinessId != null">
+        #{record.checkBusinessId,jdbcType=BIGINT},
+      </if>
+      <if test="record.businessId != null">
+        #{record.businessId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaTableId != null">
+        #{record.metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.dataTableId != null">
+        #{record.dataTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.tableName != null">
+        #{record.tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tableType != null">
+        #{record.tableType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.submitStatus != null">
+        #{record.submitStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.submitTime != null">
+        #{record.submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted,jdbcType=TINYINT},
+      </if>
+      <if test="record.totalScore != null">
+        #{record.totalScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.checkScore != null">
+        #{record.checkScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.taskCalTotalScore != null">
+        #{record.taskCalTotalScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.tableProperty != null">
+        #{record.tableProperty,jdbcType=TINYINT},
+      </if>
+      <if test="record.totalResultAward != null">
+        #{record.totalResultAward,jdbcType=DECIMAL},
+      </if>
+      <if test="record.noApplicableRule != null">
+        #{record.noApplicableRule,jdbcType=TINYINT},
+      </if>
+      <if test="record.failNum != null">
+        #{record.failNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.passNum != null">
+        #{record.passNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.inapplicableNum != null">
+        #{record.inapplicableNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalCalColumnNum != null">
+        #{record.totalCalColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.collectColumnNum != null">
+        #{record.collectColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkResultLevel != null">
+        #{record.checkResultLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.patrolType != null">
+        #{record.patrolType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkType != null">
+        #{record.checkType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.patrolstore.PatrolCheckDataTableDO">
+    update tb_patrol_check_data_table_${enterpriseId}
+    <set>
+      <if test="record.taskId != null">
+        task_id = #{record.taskId,jdbcType=BIGINT},
+      </if>
+      <if test="record.subTaskId != null">
+        sub_task_id = #{record.subTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="record.checkBusinessId != null">
+        check_business_id = #{record.checkBusinessId,jdbcType=BIGINT},
+      </if>
+      <if test="record.businessId != null">
+        business_id = #{record.businessId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaTableId != null">
+        meta_table_id = #{record.metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.dataTableId != null">
+        data_table_id = #{record.dataTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.tableName != null">
+        table_name = #{record.tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tableType != null">
+        table_type = #{record.tableType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.submitStatus != null">
+        submit_status = #{record.submitStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.submitTime != null">
+        submit_time = #{record.submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=TINYINT},
+      </if>
+      <if test="record.totalScore != null">
+        total_score = #{record.totalScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.checkScore != null">
+        check_score = #{record.checkScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.taskCalTotalScore != null">
+        task_cal_total_score = #{record.taskCalTotalScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.tableProperty != null">
+        table_property = #{record.tableProperty,jdbcType=TINYINT},
+      </if>
+      <if test="record.totalResultAward != null">
+        total_result_award = #{record.totalResultAward,jdbcType=DECIMAL},
+      </if>
+      <if test="record.noApplicableRule != null">
+        no_applicable_rule = #{record.noApplicableRule,jdbcType=TINYINT},
+      </if>
+      <if test="record.failNum != null">
+        fail_num = #{record.failNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.passNum != null">
+        pass_num = #{record.passNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.inapplicableNum != null">
+        inapplicable_num = #{record.inapplicableNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalCalColumnNum != null">
+        total_cal_column_num = #{record.totalCalColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.collectColumnNum != null">
+        collect_column_num = #{record.collectColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkResultLevel != null">
+        check_result_level = #{record.checkResultLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.patrolType != null">
+        patrol_type = #{record.patrolType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkType != null">
+        check_type = #{record.checkType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != taskId">
+         and t.task_id = #{taskId,jdbcType=BIGINT}
+      </if>
+      <if test="null != subTaskId">
+         and t.sub_task_id = #{subTaskId,jdbcType=BIGINT}
+      </if>
+      <if test="null != checkBusinessId">
+         and t.check_business_id = #{checkBusinessId,jdbcType=BIGINT}
+      </if>
+      <if test="null != businessId">
+         and t.business_id = #{businessId,jdbcType=BIGINT}
+      </if>
+      <if test="null != metaTableId">
+         and t.meta_table_id = #{metaTableId,jdbcType=BIGINT}
+      </if>
+      <if test="null != dataTableId">
+         and t.data_table_id = #{dataTableId,jdbcType=BIGINT}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != updateTime">
+         and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != tableName">
+         and t.table_name = #{tableName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != tableType">
+         and t.table_type = #{tableType,jdbcType=VARCHAR}
+      </if>
+      <if test="null != submitStatus">
+         and t.submit_status = #{submitStatus,jdbcType=TINYINT}
+      </if>
+      <if test="null != submitTime">
+         and t.submit_time = #{submitTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != deleted">
+         and t.deleted = #{deleted,jdbcType=TINYINT}
+      </if>
+      <if test="null != totalScore">
+         and t.total_score = #{totalScore,jdbcType=DECIMAL}
+      </if>
+      <if test="null != checkScore">
+         and t.check_score = #{checkScore,jdbcType=DECIMAL}
+      </if>
+      <if test="null != taskCalTotalScore">
+         and t.task_cal_total_score = #{taskCalTotalScore,jdbcType=DECIMAL}
+      </if>
+      <if test="null != tableProperty">
+         and t.table_property = #{tableProperty,jdbcType=TINYINT}
+      </if>
+      <if test="null != totalResultAward">
+         and t.total_result_award = #{totalResultAward,jdbcType=DECIMAL}
+      </if>
+      <if test="null != noApplicableRule">
+         and t.no_applicable_rule = #{noApplicableRule,jdbcType=TINYINT}
+      </if>
+      <if test="null != failNum">
+         and t.fail_num = #{failNum,jdbcType=INTEGER}
+      </if>
+      <if test="null != passNum">
+         and t.pass_num = #{passNum,jdbcType=INTEGER}
+      </if>
+      <if test="null != inapplicableNum">
+         and t.inapplicable_num = #{inapplicableNum,jdbcType=INTEGER}
+      </if>
+      <if test="null != totalCalColumnNum">
+         and t.total_cal_column_num = #{totalCalColumnNum,jdbcType=INTEGER}
+      </if>
+      <if test="null != collectColumnNum">
+         and t.collect_column_num = #{collectColumnNum,jdbcType=INTEGER}
+      </if>
+      <if test="null != checkResultLevel">
+         and t.check_result_level = #{checkResultLevel,jdbcType=VARCHAR}
+      </if>
+      <if test="null != patrolType">
+         and t.patrol_type = #{patrolType,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkType">
+         and t.check_type = #{checkType,jdbcType=INTEGER}
+      </if>
+    </trim>
+  </sql>
+
+  <select id="getTableInfo" resultMap="BaseResultMap">
+    select * from tb_patrol_check_data_table_${enterpriseId}
+    where business_id = #{businessId}
+    and deleted = 0
+    and check_type = #{checkType}
+    </select>
+
+  <select id="getTableListByBusinessId" resultMap="BaseResultMap">
+    select * from tb_patrol_check_data_table_${enterpriseId}
+    where business_id in
+      <foreach collection="businessIds" item="businessId" open="(" separator="," close=")">
+              #{businessId}
+        </foreach>
+    and deleted = 0
+    and check_type = 1
+    </select>
+  <select id="getWarTableListByBusinessId" resultMap="BaseResultMap">
+    select * from tb_patrol_check_data_table_${enterpriseId}
+    where business_id in
+    <foreach collection="businessIds" item="businessId" open="(" separator="," close=")">
+      #{businessId}
+    </foreach>
+    and deleted = 0
+    and check_type = 2
+  </select>
+
+  <select id="selectByBusinessId" resultMap="BaseResultMap">
+    select * from tb_patrol_check_data_table_${enterpriseId}
+    where business_id = #{businessId}
+    and deleted = 0
+    and check_type = #{checkType}
+  </select>
+</mapper>

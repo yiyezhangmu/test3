@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.inspection.AiInspectionStorePictureMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.inspection.entity.AiInspectionStorePictureDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="inspection_id" jdbcType="BIGINT" property="inspectionId"/>
+        <result column="scene_id" jdbcType="BIGINT" property="sceneId"/>
+        <result column="scene_name" jdbcType="VARCHAR" property="sceneName"/>
+        <result column="store_id" jdbcType="VARCHAR" property="storeId"/>
+        <result column="store_name" jdbcType="VARCHAR" property="storeName"/>
+        <result column="region_id" jdbcType="BIGINT" property="regionId"/>
+        <result column="region_path" jdbcType="VARCHAR" property="regionPath"/>
+        <result column="capture_date" jdbcType="DATE" property="captureDate"/>
+        <result column="capture_time" jdbcType="TIMESTAMP" property="captureTime"/>
+        <result column="device_id" jdbcType="BIGINT" property="deviceId"/>
+        <result column="device_channel_id" jdbcType="BIGINT" property="deviceChannelId"/>
+        <result column="store_scene_id" jdbcType="BIGINT" property="storeSceneId"/>
+        <result column="picture" jdbcType="VARCHAR" property="picture"/>
+        <result column="ai_check_pics" jdbcType="VARCHAR" property="aiCheckPics"/>
+        <result column="ai_result" jdbcType="VARCHAR" property="aiResult"/>
+        <result column="ai_status" jdbcType="BIT" property="aiStatus"/>
+        <result column="ai_fail_reason" jdbcType="VARCHAR" property="aiFailReason"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="ai_period_result" jdbcType="VARCHAR" property="aiPeriodResult"/>
+        <result column="week_day" jdbcType="DATE" property="weekDay"/>
+        <result column="inspection_period_id" jdbcType="BIGINT" property="inspectionPeriodId"/>
+        <result column="capture_task_id" jdbcType="VARCHAR" property="captureTaskId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.coolcollege.intelligent.model.inspection.entity.AiInspectionStorePictureDO">
+        <result column="ai_content" jdbcType="LONGVARCHAR" property="aiContent"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, inspection_id, scene_id, scene_name, store_id, store_name, region_id, region_path,
+    capture_date, capture_time, device_id, device_channel_id, store_scene_id, picture, 
+    ai_check_pics, ai_result, ai_status, ai_fail_reason, remark, ai_period_result, week_day, 
+    inspection_period_id, create_time, create_user_id, update_time, update_user_id, deleted,capture_task_id
+    </sql>
+    <sql id="Blob_Column_List">
+        ai_content
+    </sql>
+    <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into ai_inspection_store_picture_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.inspectionId != null">
+                inspection_id,
+            </if>
+            <if test="record.sceneId != null">
+                scene_id,
+            </if>
+            <if test="record.sceneName != null">
+                scene_name,
+            </if>
+            <if test="record.storeId != null">
+                store_id,
+            </if>
+            <if test="record.storeName != null">
+                store_name,
+            </if>
+            <if test="record.regionId != null">
+                region_id,
+            </if>
+            <if test="record.regionPath != null">
+                region_path,
+            </if>
+            <if test="record.captureDate != null">
+                capture_date,
+            </if>
+            <if test="record.captureTime != null">
+                capture_time,
+            </if>
+            <if test="record.deviceId != null">
+                device_id,
+            </if>
+            <if test="record.deviceChannelId != null">
+                device_channel_id,
+            </if>
+            <if test="record.storeSceneId != null">
+                store_scene_id,
+            </if>
+            <if test="record.picture != null">
+                picture,
+            </if>
+            <if test="record.aiCheckPics != null">
+                ai_check_pics,
+            </if>
+            <if test="record.aiResult != null">
+                ai_result,
+            </if>
+            <if test="record.aiStatus != null">
+                ai_status,
+            </if>
+            <if test="record.aiFailReason != null">
+                ai_fail_reason,
+            </if>
+            <if test="record.remark != null">
+                remark,
+            </if>
+            <if test="record.aiPeriodResult != null">
+                ai_period_result,
+            </if>
+            <if test="record.weekDay != null">
+                week_day,
+            </if>
+            <if test="record.inspectionPeriodId != null">
+                inspection_period_id,
+            </if>
+            <if test="record.captureTaskId != null">
+                capture_task_id,
+            </if>
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id,
+            </if>
+            <if test="record.updateTime != null">
+                update_time,
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id,
+            </if>
+            <if test="record.deleted != null">
+                deleted,
+            </if>
+            <if test="record.aiContent != null">
+                ai_content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.inspectionId != null">
+                #{record.inspectionId},
+            </if>
+            <if test="record.sceneId != null">
+                #{record.sceneId},
+            </if>
+            <if test="record.sceneName != null">
+                #{record.sceneName},
+            </if>
+            <if test="record.storeId != null">
+                #{record.storeId},
+            </if>
+            <if test="record.storeName != null">
+                #{record.storeName},
+            </if>
+            <if test="record.regionId != null">
+                #{record.regionId},
+            </if>
+            <if test="record.regionPath != null">
+                #{record.regionPath},
+            </if>
+            <if test="record.captureDate != null">
+                #{record.captureDate},
+            </if>
+            <if test="record.captureTime != null">
+                #{record.captureTime},
+            </if>
+            <if test="record.deviceId != null">
+                #{record.deviceId},
+            </if>
+            <if test="record.deviceChannelId != null">
+                #{record.deviceChannelId},
+            </if>
+            <if test="record.storeSceneId != null">
+                #{record.storeSceneId},
+            </if>
+            <if test="record.picture != null">
+                #{record.picture},
+            </if>
+            <if test="record.aiCheckPics != null">
+                #{record.aiCheckPics},
+            </if>
+            <if test="record.aiResult != null">
+                #{record.aiResult},
+            </if>
+            <if test="record.aiStatus != null">
+                #{record.aiStatus},
+            </if>
+            <if test="record.aiFailReason != null">
+                #{record.aiFailReason},
+            </if>
+            <if test="record.remark != null">
+                #{record.remark},
+            </if>
+            <if test="record.aiPeriodResult != null">
+                #{record.aiPeriodResult},
+            </if>
+            <if test="record.weekDay != null">
+                #{record.weekDay},
+            </if>
+            <if test="record.inspectionPeriodId != null">
+                #{record.inspectionPeriodId},
+            </if>
+            <if test="record.captureTaskId != null">
+                #{record.captureTaskId},
+            </if>
+            <if test="record.createTime != null">
+                #{record.createTime},
+            </if>
+            <if test="record.createUserId != null">
+                #{record.createUserId},
+            </if>
+            <if test="record.updateTime != null">
+                #{record.updateTime},
+            </if>
+            <if test="record.updateUserId != null">
+                #{record.updateUserId},
+            </if>
+            <if test="record.deleted != null">
+                #{record.deleted},
+            </if>
+            <if test="record.aiContent != null">
+                #{record.aiContent},
+            </if>
+        </trim>
+    </insert>
+    <insert id="batchInsert" keyColumn="id" keyProperty="records.id" useGeneratedKeys="true">
+        INSERT INTO ai_inspection_store_picture_${enterpriseId}
+        (
+        inspection_id, scene_id, scene_name, store_id, store_name,
+        region_id, region_path, capture_date, capture_time,
+        device_id, device_channel_id, store_scene_id, picture,
+        ai_check_pics, ai_result, ai_status, ai_fail_reason,
+        remark, ai_period_result, week_day, inspection_period_id,capture_task_id,
+        create_time, create_user_id, update_time, update_user_id,
+        deleted, ai_content
+        )
+        VALUES
+        <foreach collection="records" item="record" separator=",">
+            (
+            #{record.inspectionId},
+            #{record.sceneId},
+            #{record.sceneName},
+            #{record.storeId},
+            #{record.storeName},
+            #{record.regionId},
+            #{record.regionPath},
+            #{record.captureDate},
+            #{record.captureTime},
+            #{record.deviceId},
+            #{record.deviceChannelId},
+            #{record.storeSceneId},
+            #{record.picture},
+            #{record.aiCheckPics},
+            #{record.aiResult},
+            #{record.aiStatus},
+            #{record.aiFailReason},
+            #{record.remark},
+            #{record.aiPeriodResult},
+            #{record.weekDay},
+            #{record.inspectionPeriodId},
+            #{record.captureTaskId},
+            #{record.createTime},
+            #{record.createUserId},
+            #{record.updateTime},
+            #{record.updateUserId},
+            #{record.deleted},
+            #{record.aiContent}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective">
+        update ai_inspection_store_picture_${enterpriseId}
+        <set>
+            <if test="record.inspectionId != null">
+                inspection_id = #{record.inspectionId},
+            </if>
+            <if test="record.sceneId != null">
+                scene_id = #{record.sceneId},
+            </if>
+            <if test="record.sceneName != null">
+                scene_name = #{record.sceneName},
+            </if>
+            <if test="record.storeId != null">
+                store_id = #{record.storeId},
+            </if>
+            <if test="record.storeName != null">
+                store_name = #{record.storeName},
+            </if>
+            <if test="record.regionId != null">
+                region_id = #{record.regionId},
+            </if>
+            <if test="record.regionPath != null">
+                region_path = #{record.regionPath},
+            </if>
+            <if test="record.captureDate != null">
+                capture_date = #{record.captureDate},
+            </if>
+            <if test="record.captureTime != null">
+                capture_time = #{record.captureTime},
+            </if>
+            <if test="record.deviceId != null">
+                device_id = #{record.deviceId},
+            </if>
+            <if test="record.deviceChannelId != null">
+                device_channel_id = #{record.deviceChannelId},
+            </if>
+            <if test="record.storeSceneId != null">
+                store_scene_id = #{record.storeSceneId},
+            </if>
+            <if test="record.picture != null">
+                picture = #{record.picture},
+            </if>
+            <if test="record.aiCheckPics != null">
+                ai_check_pics = #{record.aiCheckPics},
+            </if>
+            <if test="record.aiResult != null">
+                ai_result = #{record.aiResult},
+            </if>
+            <if test="record.aiStatus != null">
+                ai_status = #{record.aiStatus},
+            </if>
+            <if test="record.aiFailReason != null">
+                ai_fail_reason = #{record.aiFailReason},
+            </if>
+            <if test="record.remark != null">
+                remark = #{record.remark},
+            </if>
+            <if test="record.aiPeriodResult != null">
+                ai_period_result = #{record.aiPeriodResult},
+            </if>
+            <if test="record.weekDay != null">
+                week_day = #{record.weekDay},
+            </if>
+            <if test="record.inspectionPeriodId != null">
+                inspection_period_id = #{record.inspectionPeriodId},
+            </if>
+            <if test="record.captureTaskId != null">
+                capture_task_id = #{record.captureTaskId},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id = #{record.createUserId},
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id = #{record.updateUserId},
+            </if>
+            <if test="record.deleted != null">
+                deleted = #{record.deleted},
+            </if>
+            <if test="record.aiContent != null">
+                ai_content = #{record.aiContent},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <select id="failPicCountList"
+            resultType="com.coolcollege.intelligent.model.inspection.vo.AiInspectionStatisticsProblemPicVO">
+        SELECT
+        store_id as storeId,
+        store_name as storeName,
+        scene_id as sceneId,
+        scene_name as sceneName,
+        capture_date as captureDate,
+        capture_time as captureTime,
+        device_id as deviceId,
+        device_channel_id as deviceChannelId,
+        store_scene_id as storeSceneId,
+        picture as picture
+        FROM ai_inspection_store_picture_${enterpriseId}
+        WHERE deleted = 0
+        AND capture_date BETWEEN #{startDate} AND #{endDate}
+        <if test="sceneId != null">
+            and scene_id = #{sceneId}
+        </if>
+        <if test="storeId != null">
+            and store_id = #{storeId}
+        </if>
+        AND ai_result = 'FAIL'
+        ORDER BY  id DESC
+        limit 6
+    </select>
+
+    <select id="imageList" resultType="com.coolcollege.intelligent.model.inspection.vo.AiInspectionStatisticsPicDetailVO">
+        SELECT
+        capture_time as captureTime,
+        device_id as deviceId,
+        device_channel_id as deviceChannelId,
+        store_scene_id as storeSceneId,
+        picture,
+        ai_fail_reason aiFailReason,
+        ai_status aiStatus,
+        store_id as storeId,
+        scene_id as sceneId,
+        ai_check_pics as aiCheckPics,
+        ai_result as aiResult
+        FROM ai_inspection_store_picture_${enterpriseId}
+        WHERE deleted = 0
+        <if test="sceneIdList != null and sceneIdList.size > 0">
+            AND scene_id IN
+            <foreach item="item" collection="sceneIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        <if test="storeIdList != null and storeIdList.size > 0">
+            AND store_id IN
+            <foreach item="item" collection="storeIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        <if test="captureDateList != null and captureDateList.size > 0">
+            AND capture_date IN
+            <foreach item="item" collection="captureDateList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        <if test="inspectionResult != null">
+            AND ai_result = #{inspectionResult}
+        </if>
+    </select>
+
+    <select id="selectStatisticsImageByDateRange"
+            resultType="com.coolcollege.intelligent.model.inspection.vo.AiInspectionStatisticsPicListVO">
+        SELECT
+        store_id as storeId,
+        store_name as storeName,
+        capture_date as captureDate,
+        scene_id as sceneId,
+        scene_name as sceneName
+        FROM ai_inspection_store_picture_${enterpriseId}
+        WHERE deleted = 0
+        AND capture_date BETWEEN #{startDate} AND #{endDate}
+        <if test="storeIdList != null and storeIdList.size > 0">
+            AND store_id IN
+            <foreach item="item" collection="storeIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        <if test="regionPathList != null and regionPathList.size > 0">
+            <foreach collection="regionPathList" separator="or" close=")" open="and (" item="region">
+                region_path like concat(#{region}, '%')
+            </foreach>
+        </if>
+        <if test="sceneId != null">
+            and scene_id = #{sceneId}
+        </if>
+        <if test="inspectionResult != null">
+            and ai_result = #{inspectionResult}
+        </if>
+        GROUP BY store_id, capture_date, scene_id
+        ORDER BY capture_time desc
+    </select>
+
+    <select id="selectFailImageByDateRange"
+            resultType="com.coolcollege.intelligent.model.inspection.vo.AiInspectionPhotoVO">
+    SELECT
+        capture_date as captureDate,
+        store_id as storeId,
+        week_day as weekDay,
+        picture as picture
+        FROM ai_inspection_store_picture_${enterpriseId}
+    WHERE deleted = 0
+      AND  ai_result = 'FAIL'
+        <if test="sceneIdList != null and sceneIdList.size > 0">
+            AND scene_id IN
+            <foreach item="item" collection="sceneIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        <if test="storeIdList != null and storeIdList.size > 0">
+            AND store_id IN
+            <foreach item="item" collection="storeIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        <if test="captureDateList != null and captureDateList.size > 0">
+            AND capture_date IN
+            <foreach item="item" collection="captureDateList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+    <if test="reportType != null and reportType == 'DAY'">
+        GROUP BY store_id, capture_date
+        ORDER BY capture_date desc
+    </if>
+    <if test="reportType != null and reportType == 'WEEK'">
+        GROUP BY store_id, week_day
+        ORDER BY week_day desc
+    </if>
+    </select>
+    <select id="selectInspectionPeriodIdAiStatus" resultType="com.coolcollege.intelligent.model.inspection.entity.AiInspectionStorePictureDO">
+        SELECT
+        *
+        FROM ai_inspection_store_picture_${enterpriseId}
+        WHERE deleted = 0
+        <if test="inspectionPeriodId != null">
+            and inspection_period_id = #{inspectionPeriodId}
+        </if>
+        <if test="date != null">
+            and capture_date >= #{date}
+        </if>
+        and ai_status = 1
+    </select>
+    <select id="selectById"
+            resultType="com.coolcollege.intelligent.model.inspection.entity.AiInspectionStorePictureDO">
+        SELECT
+        *
+        FROM ai_inspection_store_picture_${enterpriseId}
+        WHERE deleted = 0
+        and id = #{id}
+    </select>
+    <select id="selectListByPeriodId" resultType="com.coolcollege.intelligent.model.inspection.entity.AiInspectionStorePictureDO">
+        SELECT
+        *
+        FROM ai_inspection_store_picture_${enterpriseId}
+        WHERE deleted = 0
+        and inspection_period_id = #{inspectionPeriodId}
+    </select>
+    <update id="updateResultByPeriodId">
+        UPDATE ai_inspection_store_picture_${enterpriseId} SET ai_period_result = #{aiPeriodResult}
+        WHERE deleted = 0
+        and inspection_period_id = #{inspectionPeriodId}
+    </update>
+    <update id="batchUpdate">
+        <foreach collection="records" item="record" separator=";">
+            UPDATE ai_inspection_store_picture_${enterpriseId}
+            <set>
+                <if test="record.inspectionId != null">
+                    inspection_id = #{record.inspectionId},
+                </if>
+                <if test="record.sceneId != null">
+                    scene_id = #{record.sceneId},
+                </if>
+                <if test="record.sceneName != null">
+                    scene_name = #{record.sceneName},
+                </if>
+                <if test="record.storeId != null">
+                    store_id = #{record.storeId},
+                </if>
+                <if test="record.storeName != null">
+                    store_name = #{record.storeName},
+                </if>
+                <if test="record.regionId != null">
+                    region_id = #{record.regionId},
+                </if>
+                <if test="record.regionPath != null">
+                    region_path = #{record.regionPath},
+                </if>
+                <if test="record.captureDate != null">
+                    capture_date = #{record.captureDate},
+                </if>
+                <if test="record.captureTime != null">
+                    capture_time = #{record.captureTime},
+                </if>
+                <if test="record.deviceId != null">
+                    device_id = #{record.deviceId},
+                </if>
+                <if test="record.deviceChannelId != null">
+                    device_channel_id = #{record.deviceChannelId},
+                </if>
+                <if test="record.storeSceneId != null">
+                    store_scene_id = #{record.storeSceneId},
+                </if>
+                <if test="record.picture != null">
+                    picture = #{record.picture},
+                </if>
+                <if test="record.aiCheckPics != null">
+                    ai_check_pics = #{record.aiCheckPics},
+                </if>
+                <if test="record.aiResult != null">
+                    ai_result = #{record.aiResult},
+                </if>
+                <if test="record.aiStatus != null">
+                    ai_status = #{record.aiStatus},
+                </if>
+                <if test="record.aiFailReason != null">
+                    ai_fail_reason = #{record.aiFailReason},
+                </if>
+                <if test="record.remark != null">
+                    remark = #{record.remark},
+                </if>
+                <if test="record.aiPeriodResult != null">
+                    ai_period_result = #{record.aiPeriodResult},
+                </if>
+                <if test="record.weekDay != null">
+                    week_day = #{record.weekDay},
+                </if>
+                <if test="record.inspectionPeriodId != null">
+                    inspection_period_id = #{record.inspectionPeriodId},
+                </if>
+                <if test="record.captureTaskId != null">
+                    capture_task_id = #{record.captureTaskId},
+                </if>
+                <if test="record.createTime != null">
+                    create_time = #{record.createTime},
+                </if>
+                <if test="record.createUserId != null">
+                    create_user_id = #{record.createUserId},
+                </if>
+                <if test="record.updateTime != null">
+                    update_time = #{record.updateTime},
+                </if>
+                <if test="record.updateUserId != null">
+                    update_user_id = #{record.updateUserId},
+                </if>
+                <if test="record.deleted != null">
+                    deleted = #{record.deleted},
+                </if>
+                <if test="record.aiContent != null">
+                    ai_content = #{record.aiContent},
+                </if>
+            </set>
+            WHERE id = #{record.id}
+        </foreach>
+    </update>
+
+</mapper>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.device.DeviceCaptureLibMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.device.DeviceCaptureLibDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="device_id" jdbcType="VARCHAR" property="deviceId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="snapshot_url" jdbcType="VARCHAR" property="snapshotUrl" />
+    <result column="file_url" jdbcType="VARCHAR" property="fileUrl" />
+    <result column="file_type" jdbcType="VARCHAR" property="fileType" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, store_id, device_id, name, snapshot_url, file_url, file_type, create_user_id, create_user_name,
+    create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from device_capture_lib_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from device_capture_lib_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByIds">
+    delete from device_capture_lib_${enterpriseId}
+    where id in
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insertSelective">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into device_capture_lib_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.storeId != null">
+        store_id,
+      </if>
+      <if test="record.deviceId != null">
+        device_id,
+      </if>
+      <if test="record.name != null">
+        name,
+      </if>
+      <if test="record.snapshotUrl != null">
+        snapshot_url,
+      </if>
+      <if test="record.fileUrl != null">
+        file_url,
+      </if>
+      <if test="record.fileType != null">
+        file_type,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.createUserName != null">
+        create_user_name,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.storeId != null">
+        #{record.storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deviceId != null">
+        #{record.deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.snapshotUrl != null">
+        #{record.snapshotUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileUrl != null">
+        #{record.fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileType != null">
+        #{record.fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUserName != null">
+        #{record.createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update device_capture_lib_${enterpriseId}
+    <set>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deviceId != null">
+        device_id = #{record.deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.snapshotUrl != null">
+        snapshot_url = #{record.snapshotUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileUrl != null">
+        file_url = #{record.fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileType != null">
+        file_type = #{record.fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUserName != null">
+        create_user_name = #{record.createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != storeId">
+         and t.store_id = #{storeId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != deviceId">
+         and t.device_id = #{deviceId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != name">
+         and t.name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="null != fileUrl">
+         and t.file_url = #{fileUrl,jdbcType=VARCHAR}
+      </if>
+      <if test="null != fileType">
+         and t.file_type = #{fileType,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createUserId">
+         and t.create_user_id = #{createUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createUserName">
+         and t.create_user_name = #{createUserName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+  </sql>
+
+  <select id="listByStoreId"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from device_capture_lib_${enterpriseId}
+    where store_id = #{storeId}
+    and  create_time between #{beginTime} and #{endTime}
+    order by id desc
+  </select>
+</mapper>

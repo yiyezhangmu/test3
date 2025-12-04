@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.fsGroup.FsGroupMapper">
+
+
+    <resultMap type="com.coolcollege.intelligent.model.fsGroup.FsGroupDO" id="FsGroupMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="chatId" column="chat_id" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="groupOwnerId" column="group_owner_id" jdbcType="VARCHAR"/>
+        <result property="groupOwnerName" column="group_owner_name" jdbcType="VARCHAR"/>
+        <result property="bindRegionIds" column="bind_region_ids" jdbcType="VARCHAR"/>
+        <result property="bindRegionWays" column="bind_region_ways" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+        <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+        <result property="updateUserId" column="update_user_id" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="baseSql">
+        id as id,chat_id as chatId,name as name,type as type,group_owner_id as groupOwnerId,group_owner_name as groupOwnerName,bind_region_ids as bindRegionIds,bind_region_ways as bindRegionWays,create_time as createTime,create_user_id as createUserId,create_user_name as createUserName,update_user_id as updateUserId,update_time as updateTime,deleted as deleted    </sql>
+
+    <!--查询单个-->
+    <select id="queryById" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupDO">
+        select
+          <include refid="baseSql"></include>
+        from fs_group_${eid}
+        where id = #{id}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from fs_group_${eid}
+        <where>
+            <if test="fsGroupDO.id != null">
+                and id = #{fsGroupDO.id}
+            </if>
+            <if test="fsGroupDO.chatId != null and fsGroupDO.chatId != ''">
+                and chat_id = #{fsGroupDO.chatId}
+            </if>
+            <if test="fsGroupDO.name != null and fsGroupDO.name != ''">
+                and name = #{fsGroupDO.name}
+            </if>
+            <if test="fsGroupDO.type != null and fsGroupDO.type != ''">
+                and type = #{fsGroupDO.type}
+            </if>
+            <if test="fsGroupDO.groupOwnerId != null and fsGroupDO.groupOwnerId != ''">
+                and group_owner_id = #{fsGroupDO.groupOwnerId}
+            </if>
+            <if test="fsGroupDO.groupOwnerName != null and fsGroupDO.groupOwnerName != ''">
+                and group_owner_name = #{fsGroupDO.groupOwnerName}
+            </if>
+            <if test="fsGroupDO.bindRegionIds != null and fsGroupDO.bindRegionIds != ''">
+                and bind_region_ids = #{fsGroupDO.bindRegionIds}
+            </if>
+            <if test="fsGroupDO.bindRegionWays != null and fsGroupDO.bindRegionWays != ''">
+                and bind_region_ways = #{fsGroupDO.bindRegionWays}
+            </if>
+            <if test="fsGroupDO.createTime != null">
+                and create_time = #{fsGroupDO.createTime}
+            </if>
+            <if test="fsGroupDO.createUserId != null and fsGroupDO.createUserId != ''">
+                and create_user_id = #{fsGroupDO.createUserId}
+            </if>
+            <if test="fsGroupDO.createUserName != null and fsGroupDO.createUserName != ''">
+                and create_user_name = #{fsGroupDO.createUserName}
+            </if>
+            <if test="fsGroupDO.updateUserId != null and fsGroupDO.updateUserId != ''">
+                and update_user_id = #{fsGroupDO.updateUserId}
+            </if>
+            <if test="fsGroupDO.updateTime != null">
+                and update_time = #{fsGroupDO.updateTime}
+            </if>
+            <if test="fsGroupDO.deleted != null">
+                and deleted = #{fsGroupDO.deleted}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByQuery" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupDO">
+        select
+            <include refid="baseSql"></include>
+        from fs_group_${eid}
+        where
+            deleted = 0
+            <if test="query.name != null and query.name != ''">
+                and name like concat('%',#{query.name},'%')
+            </if>
+            <if test="query.type != null and query.type != ''">
+                and type = #{query.type}
+            </if>
+            <if test="query.bindRegionIds != null and query.bindRegionIds.size()>0 ">
+                <foreach collection="query.bindRegionIds" item="regionId" separator="or" open="and">
+                    bind_region_ways like concat('%/',#{regionId},'/%')
+                </foreach>
+            </if>
+        order by create_time desc
+    </select>
+
+    <select id="selectByRegionId" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupDO">
+        select
+        <include refid="baseSql"></include>
+        from fs_group_${eid}
+        where
+            deleted = 0
+        and
+            bind_region_ids like concat('%',#{regionId},'%')
+    </select>
+    <select id="selectChatIdsByRegionId" resultType="java.lang.String">
+        select
+            chat_id
+        from fs_group_${eid}
+        where
+            deleted = 0
+        <if test="regionIds !=null and regionIds.size()>0">
+            <foreach collection="regionIds" item="regionId" separator="or" open="and">
+                bind_region_ids like concat('%',#{regionId},'%')
+            </foreach>
+        </if>
+    </select>
+    <select id="queryByIds" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupDO">
+        select <include refid="baseSql"></include>
+            from fs_group_${eid}
+        where
+            id in
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+    </select>
+    <select id="queryChatIdByIds" resultType="java.lang.String">
+        select
+            chat_id
+        from fs_group_${eid}
+        where
+        id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="fsGroupDO.id" useGeneratedKeys="true">
+        insert into fs_group_${eid}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fsGroupDO.chatId != null and fsGroupDO.chatId != ''">
+                chat_id,
+            </if>
+            <if test="fsGroupDO.name != null and fsGroupDO.name != ''">
+                name,
+            </if>
+            <if test="fsGroupDO.type != null and fsGroupDO.type != ''">
+                type,
+            </if>
+            <if test="fsGroupDO.groupOwnerId != null and fsGroupDO.groupOwnerId != ''">
+                group_owner_id,
+            </if>
+            <if test="fsGroupDO.groupOwnerName != null and fsGroupDO.groupOwnerName != ''">
+                group_owner_name,
+            </if>
+            <if test="fsGroupDO.bindRegionIds != null and fsGroupDO.bindRegionIds != ''">
+                bind_region_ids,
+            </if>
+            <if test="fsGroupDO.bindRegionWays != null and fsGroupDO.bindRegionWays != ''">
+                bind_region_ways,
+            </if>
+            <if test="fsGroupDO.createTime != null">
+                create_time,
+            </if>
+            <if test="fsGroupDO.createUserId != null and fsGroupDO.createUserId != ''">
+                create_user_id,
+            </if>
+            <if test="fsGroupDO.createUserName != null and fsGroupDO.createUserName != ''">
+                create_user_name,
+            </if>
+            <if test="fsGroupDO.updateUserId != null and fsGroupDO.updateUserId != ''">
+                update_user_id,
+            </if>
+            <if test="fsGroupDO.updateTime != null">
+                update_time,
+            </if>
+            <if test="fsGroupDO.deleted != null">
+                deleted,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fsGroupDO.chatId != null and fsGroupDO.chatId != ''">
+                #{fsGroupDO.chatId},
+            </if>
+            <if test="fsGroupDO.name != null and fsGroupDO.name != ''">
+                #{fsGroupDO.name},
+            </if>
+            <if test="fsGroupDO.type != null and fsGroupDO.type != ''">
+                #{fsGroupDO.type},
+            </if>
+            <if test="fsGroupDO.groupOwnerId != null and fsGroupDO.groupOwnerId != ''">
+                #{fsGroupDO.groupOwnerId},
+            </if>
+            <if test="fsGroupDO.groupOwnerName != null and fsGroupDO.groupOwnerName != ''">
+                #{fsGroupDO.groupOwnerName},
+            </if>
+            <if test="fsGroupDO.bindRegionIds != null and fsGroupDO.bindRegionIds != ''">
+                #{fsGroupDO.bindRegionIds},
+            </if>
+            <if test="fsGroupDO.bindRegionWays != null and fsGroupDO.bindRegionWays != ''">
+                #{fsGroupDO.bindRegionWays},
+            </if>
+            <if test="fsGroupDO.createTime != null">
+                #{fsGroupDO.createTime},
+            </if>
+            <if test="fsGroupDO.createUserId != null and fsGroupDO.createUserId != ''">
+                #{fsGroupDO.createUserId},
+            </if>
+            <if test="fsGroupDO.createUserName != null and fsGroupDO.createUserName != ''">
+                #{fsGroupDO.createUserName},
+            </if>
+            <if test="fsGroupDO.updateUserId != null and fsGroupDO.updateUserId != ''">
+                #{fsGroupDO.updateUserId},
+            </if>
+            <if test="fsGroupDO.updateTime != null">
+                #{fsGroupDO.updateTime},
+            </if>
+            <if test="fsGroupDO.deleted != null">
+                #{fsGroupDO.deleted},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" keyProperty="dos.id" useGeneratedKeys="true">
+        insert into fs_group_${eid}(chat_id, name, type, group_owner_id, group_owner_name, bind_region_ids, bind_region_ways, create_time, create_user_id, create_user_name, update_user_id, update_time, deleted)
+        values
+        <foreach collection="dos" item="do" separator=",">
+            (#{do.chatId}, #{do.name}, #{do.type}, #{do.groupOwnerId}, #{do.groupOwnerName}, #{do.bindRegionIds}, #{do.bindRegionWays}, #{do.createTime}, #{do.createUserId}, #{do.createUserName}, #{do.updateUserId}, #{do.updateTime}, #{do.deleted})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="dos.id" useGeneratedKeys="true">
+        insert into fs_group_${eid}(chat_id, name, type, group_owner_id, group_owner_name, bind_region_ids, bind_region_ways, create_time, create_user_id, create_user_name, update_user_id, update_time, deleted)
+        values
+        <foreach collection="dos" item="do" separator=",">
+            (#{do.chatId}, #{do.name}, #{do.type}, #{do.groupOwnerId}, #{do.groupOwnerName}, #{do.bindRegionIds}, #{do.bindRegionWays}, #{do.createTime}, #{do.createUserId}, #{do.createUserName}, #{do.updateUserId}, #{do.updateTime}, #{do.deleted})
+        </foreach>
+        on duplicate key update
+        chat_id = values(chat_id),
+        name = values(name),
+        type = values(type),
+        group_owner_id = values(group_owner_id),
+        group_owner_name = values(group_owner_name),
+        bind_region_ids = values(bind_region_ids),
+        bind_region_ways = values(bind_region_ways),
+        create_time = values(create_time),
+        create_user_id = values(create_user_id),
+        create_user_name = values(create_user_name),
+        update_user_id = values(update_user_id),
+        update_time = values(update_time),
+        deleted = values(deleted)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update fs_group_${eid}
+        <set>
+            <if test="fsGroupDO.chatId != null and fsGroupDO.chatId != ''">
+                chat_id = #{fsGroupDO.chatId},
+            </if>
+            <if test="fsGroupDO.name != null and fsGroupDO.name != ''">
+                name = #{fsGroupDO.name},
+            </if>
+            <if test="fsGroupDO.type != null and fsGroupDO.type != ''">
+                type = #{fsGroupDO.type},
+            </if>
+            <if test="fsGroupDO.groupOwnerId != null and fsGroupDO.groupOwnerId != ''">
+                group_owner_id = #{fsGroupDO.groupOwnerId},
+            </if>
+            <if test="fsGroupDO.groupOwnerName != null and fsGroupDO.groupOwnerName != ''">
+                group_owner_name = #{fsGroupDO.groupOwnerName},
+            </if>
+            <if test="fsGroupDO.bindRegionIds != null and fsGroupDO.bindRegionIds != ''">
+                bind_region_ids = #{fsGroupDO.bindRegionIds},
+            </if>
+            <if test="fsGroupDO.bindRegionWays != null and fsGroupDO.bindRegionWays != ''">
+                bind_region_ways = #{fsGroupDO.bindRegionWays},
+            </if>
+            <if test="fsGroupDO.createTime != null">
+                create_time = #{fsGroupDO.createTime},
+            </if>
+            <if test="fsGroupDO.createUserId != null and fsGroupDO.createUserId != ''">
+                create_user_id = #{fsGroupDO.createUserId},
+            </if>
+            <if test="fsGroupDO.createUserName != null and fsGroupDO.createUserName != ''">
+                create_user_name = #{fsGroupDO.createUserName},
+            </if>
+            <if test="fsGroupDO.updateUserId != null and fsGroupDO.updateUserId != ''">
+                update_user_id = #{fsGroupDO.updateUserId},
+            </if>
+            <if test="fsGroupDO.updateTime != null">
+                update_time = #{fsGroupDO.updateTime},
+            </if>
+            <if test="fsGroupDO.deleted != null">
+                deleted = #{fsGroupDO.deleted},
+            </if>
+        </set>
+        where id = #{fsGroupDO.id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from fs_group_${eid} where id = #{id}
+    </delete>
+    <update id="deleteByChatId">
+        update fs_group_${eid}
+        set deleted = 1
+        where chat_id = #{chatId}
+    </update>
+
+</mapper>
+

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.store.StoreGroupMapper">
+    <resultMap id="StoreLabel" type="com.coolcollege.intelligent.model.store.StoreGroupDO">
+        <id column="group_id" property="groupId" jdbcType="VARCHAR"/>
+        <result column="group_name" property="groupName" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="BIGINT"/>
+        <result column="create_user" property="createUser" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="BIGINT"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="common_edit_userids" property="commonEditUserids" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="insertStoreGroup">
+        insert into store_group_${enterpriseId}
+        (
+        group_id,
+        group_name,
+        create_time,
+        create_user
+        )
+        values
+        (
+           #{storeLabelDO.labelName,jdbcType=VARCHAR},
+           #{storeLabelDO.createTime,jdbcType=BIGINT},
+           #{storeLabelDO.createUser,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertGroup">
+        insert into store_group_${eId}
+        (
+        group_id,
+        group_name,
+        create_time,
+        create_user,
+        common_edit_userids
+        )values
+        (
+        #{entity.groupId},
+        #{entity.groupName},
+        #{entity.createTime},
+        #{entity.createUser},
+        #{entity.commonEditUserids}
+        )
+    </insert>
+    <insert id="batchInsertGroup">
+        insert into store_group_${enterpriseId}
+        (
+            group_id,
+            group_name,
+            create_time,
+            create_user,
+            `source`
+        )values
+         <foreach collection="groups" item="entity" separator=",">
+             (#{entity.groupId},
+             #{entity.groupName},
+             #{entity.createTime},
+             #{entity.createUser},
+             #{entity.source})
+         </foreach>
+    </insert>
+    <update id="updateStoreLabel">
+        update store_label_${enterpriseId} set
+        label_name =
+        <foreach collection="storeGroupDOS" item="storeLabelDO" index="index"
+                 separator="," open="case label_id" close="end">
+                 when #{storeLabelDO.labelId,jdbcType=BIGINT} then #{storeLabelDO.labelName,jdbcType=VARCHAR}
+        </foreach>
+                update_time = #{createTime,jdbcType=BIGINT},
+                update_user = #{updateUser,jdbcType=VARCHAR},
+        where id in
+        <foreach collection="storeGroupDOS" item="storeLabelDO" index="index"
+                 separator="," open="(" close=")">
+            #{storeLabelDO.labelId,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
+    <update id="updateStoreGroup">
+        update store_group_${eId}
+        <set>
+            <if test="entity.groupName != null and entity.groupName !=''">
+                group_name = #{entity.groupName},
+            </if>
+            <if test="entity.updateTime != null">
+                update_time = #{entity.updateTime},
+            </if>
+            <if test="entity.updateUser != null and entity.updateUser !=''">
+                update_user = #{entity.updateUser},
+            </if>
+            <if test="entity.commonEditUserids != null and entity.commonEditUserids !=''">
+                common_edit_userids = #{entity.commonEditUserids},
+            </if>
+        </set>
+        where group_id = #{entity.groupId}
+    </update>
+
+    <update id="batchUpdateGroup">
+        update store_group_${eId} set
+        group_name =
+        <foreach collection="groups" item="entity" open="case `id`" separator=" " close=" end,">
+          when #{entity.id} then #{entity.groupName}
+        </foreach>
+        update_time =
+        <foreach collection="groups" item="entity" open="case `id`" separator=" " close=" end,">
+            when #{entity.id} then #{entity.updateTime}
+        </foreach>
+        update_user =
+        <foreach collection="groups" item="entity" open="case `id`" separator=" " close=" end">
+            when #{entity.id} then #{entity.updateUser}
+        </foreach>
+        where `id` in
+        <foreach collection="groups" item="entity" open="(" separator="," close=")">
+          #{entity.id}
+        </foreach>
+    </update>
+    <delete id="deleteStoreGroup">
+        delete from store_group_${enterpriseId}
+        where group_id in (#{groupId})
+    </delete>
+    <delete id="batchDeleteStoreGroup">
+        delete from store_group_${eId}
+        where group_id in
+        <foreach collection="groupIdList" item="groupId" open="(" separator="," close=")">
+            #{groupId}
+        </foreach>
+    </delete>
+    <select id="getStoreGroupDOs" resultType="com.coolcollege.intelligent.model.store.StoreGroupDO">
+        select
+        a.group_id as groupId,
+        a.group_name as groupName,
+        a.create_time as createTime,
+        a.create_user as createUser,
+        a.update_time as updateTime,
+        a.update_user as updateUser
+        from store_group_${eId} a
+        inner join store_group_mapping_${eId} b
+        on a.group_id = b.group_id
+        where b.store_id = #{sId}
+    </select>
+    <select id="getStoreIdbyGroupIds" resultType="com.coolcollege.intelligent.model.store.queryDto.StoreGroupQueryDTO">
+        select a.store_id as storeId,
+        b.group_name as groupName,
+        b.group_id as group groupId
+        from  store_group_mapping_${eId} a
+        inner join store_group_${eId} b
+        where a.group_id in (#{gId})
+        group by a.store_id
+    </select>
+    <select id="getAllStoreGroupDOs" resultType="com.coolcollege.intelligent.model.store.StoreGroupDO">
+        select
+        group_id as groupId,
+        group_name as groupName,
+        create_time as createTime,
+        create_user as createUser,
+        update_time as updateTime,
+        update_user as updateUser
+        from store_group_${eId}
+        <if test="groupName != null and groupName !=''">
+            where group_name like concat('%',#{groupName},'%')
+        </if>
+    </select>
+    <select id="listStoreGroup"
+            resultType="com.coolcollege.intelligent.model.store.StoreGroupDO">
+       select
+       group_id as groupId,
+       group_name as groupName
+       from store_group_${eId}
+    </select>
+    <select id="getGroupByGroupId" resultType="com.coolcollege.intelligent.model.store.StoreGroupDO">
+        select
+        group_id as groupId,
+        group_name as groupName,
+        create_time as createTime,
+        create_user as createUser,
+        update_time as updateTime,
+        update_user as updateUser,
+        common_edit_userids as commonEditUserids
+        from store_group_${eId}
+        where group_id = #{groupId}
+    </select>
+    <select id="getGroupByGroupName" resultType="com.coolcollege.intelligent.model.store.StoreGroupDO">
+        select
+        group_id as groupId,
+        group_name as groupName,
+        create_time as createTime,
+        create_user as createUser,
+        update_time as updateTime,
+        update_user as updateUser
+        from store_group_${eId}
+        where group_name = #{groupName}
+    </select>
+    <select id="getAllStoreGroupCount" resultType="java.lang.Integer">
+        select
+        count(*)
+        from store_group_${eId}
+        <if test="groupName != null and groupName !=''">
+            where group_name like concat('%',#{groupName},'%')
+        </if>
+    </select>
+    <select id="getAllStoreGroupVOs" resultType="com.coolcollege.intelligent.model.store.vo.StoreGroupVO">
+        select
+        group_id as groupId,
+        group_name as groupName,
+        create_time as createTime,
+        create_user as createUser,
+        update_time as updateTime,
+        update_user as updateUser,
+        common_edit_userids as commonEditUserids
+        from store_group_${eId}
+        <if test="groupName != null and groupName !=''">
+            where group_name like concat('%',#{groupName},'%')
+        </if>
+        order by create_time desc
+    </select>
+    <select id="getListByIds" resultType="com.coolcollege.intelligent.model.store.StoreGroupDO">
+        select
+        group_id as groupId,
+        group_name as groupName,
+        create_time as createTime,
+        create_user as createUser,
+        update_time as updateTime,
+        update_user as updateUser
+        from store_group_${eId}
+        where group_id in (
+        <foreach collection="groupIdList" item="groupId" separator=",">
+            #{groupId}
+        </foreach>
+        )
+    </select>
+    <select id="selectGroupBySource" resultType="com.coolcollege.intelligent.model.store.StoreGroupDO">
+        select
+            group_id as groupId,
+            group_name as groupName,
+            create_time as createTime,
+            create_user as createUser
+        from store_group_${enterpriseId}
+        where `source` = #{source}
+    </select>
+</mapper>

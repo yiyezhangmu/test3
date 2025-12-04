@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.activity.ActivityReplyMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.activity.entity.ActivityReplyDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="activity_id" jdbcType="BIGINT" property="activityId"/>
+        <result column="reply_user_id" jdbcType="VARCHAR" property="replyUserId"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="comment_id" jdbcType="VARCHAR" property="commentId"/>
+        <result column="parent_reply_id" jdbcType="VARCHAR" property="parentReplyId"/>
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, activity_id, reply_user_id, content, comment_id, parent_reply_id, create_user_id,
+        update_user_id, create_time, update_time, deleted
+    </sql>
+    <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into activity_reply_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.activityId != null">
+                activity_id,
+            </if>
+            <if test="record.replyUserId != null">
+                reply_user_id,
+            </if>
+            <if test="record.content != null">
+                content,
+            </if>
+            <if test="record.commentId != null">
+                comment_id,
+            </if>
+            <if test="record.parentReplyId != null">
+                parent_reply_id,
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id,
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id,
+            </if>
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.updateTime != null">
+                update_time,
+            </if>
+            <if test="record.deleted != null">
+                deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.activityId != null">
+                #{record.activityId},
+            </if>
+            <if test="record.replyUserId != null">
+                #{record.replyUserId},
+            </if>
+            <if test="record.content != null">
+                #{record.content},
+            </if>
+            <if test="record.commentId != null">
+                #{record.commentId},
+            </if>
+            <if test="record.parentReplyId != null">
+                #{record.parentReplyId},
+            </if>
+            <if test="record.createUserId != null">
+                #{record.createUserId},
+            </if>
+            <if test="record.updateUserId != null">
+                #{record.updateUserId},
+            </if>
+            <if test="record.createTime != null">
+                #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+                #{record.updateTime},
+            </if>
+            <if test="record.deleted != null">
+                #{record.deleted},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update activity_reply_${enterpriseId}
+        <set>
+            <if test="record.activityId != null">
+                activity_id = #{record.activityId},
+            </if>
+            <if test="record.replyUserId != null">
+                reply_user_id = #{record.replyUserId},
+            </if>
+            <if test="record.content != null">
+                content = #{record.content},
+            </if>
+            <if test="record.commentId != null">
+                comment_id = #{record.commentId},
+            </if>
+            <if test="record.parentReplyId != null">
+                parent_reply_id = #{record.parentReplyId},
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id = #{record.createUserId},
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id = #{record.updateUserId},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime},
+            </if>
+            <if test="record.deleted != null">
+                deleted = #{record.deleted},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <select id="getMyReplyCommentIds" resultType="long">
+        select
+            comment_id
+        from
+            activity_reply_${enterpriseId}
+        where
+            reply_user_id = #{userId} and activity_id = #{activityId} and deleted = '0'
+    </select>
+
+    <select id="getActivityReplyList" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            activity_reply_${enterpriseId}
+        where
+            activity_id = #{activityId} and deleted = '0'
+            <if test="commentIds != null and commentIds.size()>0">
+                and comment_id in <foreach collection="commentIds" item="commentId" separator="," open="(" close=")">#{commentId}</foreach>
+            </if>
+            <if test="userId != null">
+                and reply_user_id = #{userId}
+            </if>
+    </select>
+
+    <select id="getActivityReplyPage" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            activity_reply_${enterpriseId}
+        where
+            activity_id = #{activityId} and deleted = '0' and comment_id = #{commentId}
+            <if test="userId != null">
+                and reply_user_id = #{userId}
+            </if>
+        ORDER BY id asc
+    </select>
+
+    <select id="getLastThreeReplyGroupComment" resultMap="BaseResultMap">
+        SELECT
+            a.*
+        FROM
+            activity_reply_${enterpriseId} a
+        where
+        <![CDATA[
+            (select count(*) from activity_reply_${enterpriseId} where a.activity_id = activity_id and a.comment_id= comment_id and a.id > id and deleted = 0)< 20
+        ]]>
+        and
+            a.activity_id = #{activityId}
+        and
+            a.deleted = '0'
+        and
+            a.comment_id in <foreach collection="commentIds" item="commentId" separator="," open="(" close=")">#{commentId}</foreach>
+            <if test="userId != null">
+                and a.reply_user_id = #{userId}
+            </if>
+        ORDER BY a.id asc
+    </select>
+
+    <select id="getReplyListByIds" resultMap="BaseResultMap">
+        select 
+            <include refid="Base_Column_List"/>
+        from
+            activity_reply_${enterpriseId}
+        where
+            id in <foreach collection="ids" item="id" open="(" close=")" separator=",">#{id}</foreach>
+    </select>
+
+    <select id="getCommentReplyCount" resultType="com.coolcollege.intelligent.model.activity.dto.CommentReplyCountDTO">
+        select
+            comment_id,
+            count(1) as replyCount
+        from
+            activity_reply_${enterpriseId}
+        where
+            activity_id = #{activityId} and deleted = '0' and comment_id in <foreach collection="commentIds" separator="," open="(" close=")" item="commentId">#{commentId}</foreach>
+        group by comment_id
+    </select>
+
+
+    <select id="getFistReply" resultMap="BaseResultMap">
+        SELECT *
+        FROM activity_reply_${enterpriseId} AS t1
+        WHERE id IN (
+        SELECT MIN(id)
+        FROM activity_reply_${enterpriseId} AS t2
+        WHERE t1.comment_id = t2.comment_id and deleted = 0
+        and comment_id in <foreach collection="commentIds" separator="," open="(" close=")" item="commentId">#{commentId}</foreach>
+        )
+        ORDER BY comment_id;
+    </select>
+</mapper>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.achievement.AchievementFormworkMappingMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.achievement.entity.AchievementFormworkMappingDO"
+               autoMapping="true">
+    </resultMap>
+
+    <insert id="batchSave" >
+
+        insert into achievement_formwork_mapping_${eid}
+        (
+        formwork_id,
+        type_id,
+        status
+        )
+        values
+        <foreach collection="list" item="entity" separator=",">
+            (
+            #{entity.formworkId},
+            #{entity.typeId},
+            #{entity.status}
+            )
+        </foreach>
+
+    </insert>
+    <update id="updateByFormworkIdAndTypeId">
+        update achievement_formwork_mapping_${eid}
+        set status = #{status}
+        where
+        formwork_id = #{formworkId}
+        and type_id = #{typeId}
+    </update>
+
+    <update id="updateByFormworkIdAndTypeIds">
+        update achievement_formwork_mapping_${eid}
+        set status = #{status}
+        where
+        formwork_id = #{formworkId}
+        <if test="typeIds !=null  and  typeIds.size()>0">
+            and type_id in
+            <foreach collection="typeIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </update>
+
+    <update id="updateByTypeId">
+        update achievement_formwork_mapping_${eid}
+        set status = #{status}
+        where
+        type_id = #{typeId}
+    </update>
+
+    <select id="getListByFormWorkId"
+            resultType="com.coolcollege.intelligent.model.achievement.dto.AchievementFormworkMappingDTO">
+        SELECT
+        m.formwork_id as formworkId,
+        m.type_id as typeId,
+        m.status as status,
+        t.name as typeName
+        from achievement_formwork_mapping_${eid} m
+        left join achievement_type_${eid} t on t.id=m.type_id
+        where m.formwork_id = #{id}
+        <if test="statusList !=null  and  statusList.size()>0">
+            and m.status in
+            <foreach collection="statusList" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+
+    </select>
+
+    <select id="getListByFormWorkIdAndTypeId"
+            resultType="com.coolcollege.intelligent.model.achievement.dto.AchievementFormworkMappingDTO">
+        SELECT
+        m.formwork_id as formworkId,
+        m.type_id as typeId,
+        m.status as status,
+        t.name as typeName
+        from achievement_formwork_mapping_${eid} m
+        left join achievement_type_${eid} t on t.id=m.type_id
+        where m.formwork_id = #{formworkId}
+        <if test="typeIdList !=null  and  typeIdList.size()>0">
+            <foreach collection="typeIdList" item="item" index="index" open="and m.type_id in(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+
+    </select>
+    <select id="countByFormwork" resultType="int">
+        SELECT count(1)
+        from achievement_formwork_mapping_${eid}
+        where formwork_id = #{formworkId}
+        and status != -1
+    </select>
+</mapper>

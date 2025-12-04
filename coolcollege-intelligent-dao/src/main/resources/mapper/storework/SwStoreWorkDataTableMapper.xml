@@ -1,0 +1,1522 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.storework.SwStoreWorkDataTableMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.storework.SwStoreWorkDataTableDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="tc_business_id" jdbcType="VARCHAR" property="tcBusinessId" />
+    <result column="store_work_id" jdbcType="BIGINT" property="storeWorkId" />
+    <result column="work_cycle" jdbcType="VARCHAR" property="workCycle" />
+    <result column="store_work_date" jdbcType="DATE" property="storeWorkDate" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="region_id" jdbcType="BIGINT" property="regionId" />
+    <result column="region_path" jdbcType="VARCHAR" property="regionPath" />
+    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId" />
+    <result column="table_name" jdbcType="VARCHAR" property="tableName" />
+    <result column="begin_handle_time" jdbcType="TIMESTAMP" property="beginHandleTime" />
+    <result column="end_handle_time" jdbcType="TIMESTAMP" property="endHandleTime" />
+    <result column="complete_status" jdbcType="BIT" property="completeStatus" />
+    <result column="comment_status" jdbcType="BIT" property="commentStatus" />
+    <result column="actual_handle_user_id" jdbcType="VARCHAR" property="actualHandleUserId" />
+    <result column="actual_comment_user_id" jdbcType="VARCHAR" property="actualCommentUserId" />
+    <result column="comment_time" jdbcType="TIMESTAMP" property="commentTime" />
+    <result column="score" jdbcType="DECIMAL" property="score" />
+    <result column="total_score" jdbcType="DECIMAL" property="totalScore" />
+    <result column="pass_column_num" jdbcType="INTEGER" property="passColumnNum" />
+    <result column="fail_column_num" jdbcType="INTEGER" property="failColumnNum" />
+    <result column="inapplicable_column_num" jdbcType="INTEGER" property="inapplicableColumnNum" />
+    <result column="finish_column_num" jdbcType="INTEGER" property="finishColumnNum" />
+    <result column="collect_column_num" jdbcType="INTEGER" property="collectColumnNum" />
+    <result column="total_column_num" jdbcType="INTEGER" property="totalColumnNum" />
+    <result column="handle_user_ids" jdbcType="VARCHAR" property="handleUserIds" />
+    <result column="comment_user_ids" jdbcType="VARCHAR" property="commentUserIds" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="group_num" jdbcType="INTEGER" property="groupNum" />
+    <result column="check_result_level" jdbcType="VARCHAR" property="checkResultLevel" />
+    <result column="table_property" jdbcType="TINYINT" property="tableProperty" />
+    <result column="question_num" jdbcType="INTEGER" property="questionNum" />
+    <result column="un_handle_question_num" jdbcType="INTEGER" property="unHandleQuestionNum" />
+    <result column="un_approve_question_num" jdbcType="INTEGER" property="unApproveQuestionNum" />
+    <result column="finish_question_num" jdbcType="INTEGER" property="finishQuestionNum" />
+    <result column="table_mapping_id" jdbcType="BIGINT" property="tableMappingId" />
+    <result column="overdue_continue" jdbcType="BIT" property="overdueContinue" />
+    <result column="total_cal_column_num" jdbcType="INTEGER" property="totalCalColumnNum" />
+    <result column="is_ai_check" jdbcType="TINYINT" property="isAiCheck" />
+    <result column="is_ai_process" jdbcType="TINYINT" property="isAiProcess" />
+    <result column="ai_status" jdbcType="TINYINT" property="aiStatus" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.coolcollege.intelligent.model.storework.SwStoreWorkRecordDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="tc_business_id" jdbcType="VARCHAR" property="tcBusinessId" />
+    <result column="store_work_id" jdbcType="BIGINT" property="storeWorkId" />
+    <result column="work_cycle" jdbcType="VARCHAR" property="workCycle" />
+    <result column="store_work_date" jdbcType="DATE" property="storeWorkDate" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="region_id" jdbcType="BIGINT" property="regionId" />
+    <result column="region_path" jdbcType="VARCHAR" property="regionPath" />
+    <result column="begin_handle_time" jdbcType="TIMESTAMP" property="beginHandleTime" />
+    <result column="end_handle_time" jdbcType="TIMESTAMP" property="endHandleTime" />
+    <result column="complete_status" jdbcType="BIT" property="completeStatus" />
+    <result column="comment_status" jdbcType="BIT" property="commentStatus" />
+    <result column="actual_handle_user_id" jdbcType="VARCHAR" property="actualHandleUserId" />
+    <result column="pass_column_num" jdbcType="INTEGER" property="passColumnNum" />
+    <result column="fail_column_num" jdbcType="INTEGER" property="failColumnNum" />
+    <result column="inapplicable_column_num" jdbcType="INTEGER" property="inapplicableColumnNum" />
+    <result column="finish_column_num" jdbcType="INTEGER" property="finishColumnNum" />
+    <result column="collect_column_num" jdbcType="INTEGER" property="collectColumnNum" />
+    <result column="total_column_num" jdbcType="INTEGER" property="totalColumnNum" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="question_num" jdbcType="INTEGER" property="questionNum" />
+    <result column="un_handle_question_num" jdbcType="INTEGER" property="unHandleQuestionNum" />
+    <result column="un_approve_question_num" jdbcType="INTEGER" property="unApproveQuestionNum" />
+    <result column="finish_question_num" jdbcType="INTEGER" property="finishQuestionNum" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, tc_business_id, store_work_id, work_cycle, store_work_date, store_id, store_name, 
+    region_id, region_path, begin_time, end_time, meta_table_id, table_name, begin_handle_time, 
+    end_handle_time, complete_status, comment_status, actual_handle_user_id, actual_comment_user_id, 
+    comment_time, score, total_score, pass_column_num, fail_column_num, inapplicable_column_num, 
+    finish_column_num, collect_column_num, total_column_num, handle_user_ids, comment_user_ids, 
+    create_time, create_user_id, update_time, update_user_id, deleted, group_num, check_result_level, table_property,
+    question_num, un_handle_question_num, un_approve_question_num, finish_question_num, table_mapping_id, overdue_continue, total_cal_column_num,
+    is_ai_check, is_ai_process, ai_status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sw_store_work_data_table_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.storework.SwStoreWorkDataTableDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sw_store_work_data_table_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.tcBusinessId != null">
+        tc_business_id,
+      </if>
+      <if test="record.storeWorkId != null">
+        store_work_id,
+      </if>
+      <if test="record.workCycle != null">
+        work_cycle,
+      </if>
+      <if test="record.storeWorkDate != null">
+        store_work_date,
+      </if>
+      <if test="record.storeId != null">
+        store_id,
+      </if>
+      <if test="record.storeName != null">
+        store_name,
+      </if>
+      <if test="record.regionId != null">
+        region_id,
+      </if>
+      <if test="record.regionPath != null">
+        region_path,
+      </if>
+      <if test="record.beginTime != null">
+        begin_time,
+      </if>
+      <if test="record.endTime != null">
+        end_time,
+      </if>
+      <if test="record.metaTableId != null">
+        meta_table_id,
+      </if>
+      <if test="record.tableName != null">
+        table_name,
+      </if>
+      <if test="record.beginHandleTime != null">
+        begin_handle_time,
+      </if>
+      <if test="record.endHandleTime != null">
+        end_handle_time,
+      </if>
+      <if test="record.completeStatus != null">
+        complete_status,
+      </if>
+      <if test="record.commentStatus != null">
+        comment_status,
+      </if>
+      <if test="record.actualHandleUserId != null">
+        actual_handle_user_id,
+      </if>
+      <if test="record.actualCommentUserId != null">
+        actual_comment_user_id,
+      </if>
+      <if test="record.commentTime != null">
+        comment_time,
+      </if>
+      <if test="record.score != null">
+        score,
+      </if>
+      <if test="record.totalScore != null">
+        total_score,
+      </if>
+      <if test="record.passColumnNum != null">
+        pass_column_num,
+      </if>
+      <if test="record.failColumnNum != null">
+        fail_column_num,
+      </if>
+      <if test="record.inapplicableColumnNum != null">
+        inapplicable_column_num,
+      </if>
+      <if test="record.finishColumnNum != null">
+        finish_column_num,
+      </if>
+      <if test="record.collectColumnNum != null">
+        collect_column_num,
+      </if>
+      <if test="record.totalColumnNum != null">
+        total_column_num,
+      </if>
+      <if test="record.handleUserIds != null">
+        handle_user_ids,
+      </if>
+      <if test="record.commentUserIds != null">
+        comment_user_ids,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+      <if test="record.groupNum != null">
+        group_num,
+      </if>
+      <if test="record.checkResultLevel != null">
+        check_result_level,
+      </if>
+      <if test="record.tableProperty != null">
+        table_property,
+      </if>
+      <if test="record.tableMappingId != null">
+        table_mapping_id,
+      </if>
+      <if test="record.overdueContinue != null">
+        overdue_continue,
+      </if>
+      <if test="record.isAiCheck != null">
+        is_ai_check,
+      </if>
+      <if test="record.isAiProcess != null">
+        is_ai_process,
+      </if>
+      <if test="record.aiStatus != null">
+        ai_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.tcBusinessId != null">
+        #{record.tcBusinessId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeWorkId != null">
+        #{record.storeWorkId,jdbcType=BIGINT},
+      </if>
+      <if test="record.workCycle != null">
+        #{record.workCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeWorkDate != null">
+        #{record.storeWorkDate,jdbcType=DATE},
+      </if>
+      <if test="record.storeId != null">
+        #{record.storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeName != null">
+        #{record.storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regionId != null">
+        #{record.regionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.regionPath != null">
+        #{record.regionPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginTime != null">
+        #{record.beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null">
+        #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.metaTableId != null">
+        #{record.metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.tableName != null">
+        #{record.tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginHandleTime != null">
+        #{record.beginHandleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endHandleTime != null">
+        #{record.endHandleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.completeStatus != null">
+        #{record.completeStatus,jdbcType=BIT},
+      </if>
+      <if test="record.commentStatus != null">
+        #{record.commentStatus,jdbcType=BIT},
+      </if>
+      <if test="record.actualHandleUserId != null">
+        #{record.actualHandleUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actualCommentUserId != null">
+        #{record.actualCommentUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentTime != null">
+        #{record.commentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.score != null">
+        #{record.score,jdbcType=DECIMAL},
+      </if>
+      <if test="record.totalScore != null">
+        #{record.totalScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.passColumnNum != null">
+        #{record.passColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.failColumnNum != null">
+        #{record.failColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.inapplicableColumnNum != null">
+        #{record.inapplicableColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.finishColumnNum != null">
+        #{record.finishColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.collectColumnNum != null">
+        #{record.collectColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalColumnNum != null">
+        #{record.totalColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.handleUserIds != null">
+        #{record.handleUserIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentUserIds != null">
+        #{record.commentUserIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUserId != null">
+        #{record.updateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.groupNum != null">
+        #{record.groupNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkResultLevel != null">
+        #{record.checkResultLevel},
+      </if>
+      <if test="record.tableProperty != null">
+        #{record.tableProperty},
+      </if>
+      <if test="record.tableMappingId != null">
+        #{record.tableMappingId},
+      </if>
+      <if test="record.overdueContinue != null">
+        #{record.overdueContinue},
+      </if>
+      <if test="record.isAiCheck != null">
+        #{record.isAiCheck},
+      </if>
+      <if test="record.isAiProcess != null">
+        #{record.isAiProcess},
+      </if>
+      <if test="record.aiStatus != null">
+        #{record.aiStatus},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.storework.SwStoreWorkDataTableDO">
+    update sw_store_work_data_table_${enterpriseId}
+    <set>
+      <if test="record.tcBusinessId != null">
+        tc_business_id = #{record.tcBusinessId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeWorkId != null">
+        store_work_id = #{record.storeWorkId,jdbcType=BIGINT},
+      </if>
+      <if test="record.workCycle != null">
+        work_cycle = #{record.workCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeWorkDate != null">
+        store_work_date = #{record.storeWorkDate,jdbcType=DATE},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeName != null">
+        store_name = #{record.storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regionId != null">
+        region_id = #{record.regionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.regionPath != null">
+        region_path = #{record.regionPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginTime != null">
+        begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null">
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.metaTableId != null">
+        meta_table_id = #{record.metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.tableName != null">
+        table_name = #{record.tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginHandleTime != null">
+        begin_handle_time = #{record.beginHandleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endHandleTime != null">
+        end_handle_time = #{record.endHandleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.completeStatus != null">
+        complete_status = #{record.completeStatus,jdbcType=BIT},
+      </if>
+      <if test="record.commentStatus != null">
+        comment_status = #{record.commentStatus,jdbcType=BIT},
+      </if>
+      <if test="record.actualHandleUserId != null">
+        actual_handle_user_id = #{record.actualHandleUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actualCommentUserId != null">
+        actual_comment_user_id = #{record.actualCommentUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentTime != null">
+        comment_time = #{record.commentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.score != null">
+        score = #{record.score,jdbcType=DECIMAL},
+      </if>
+      <if test="record.totalScore != null">
+        total_score = #{record.totalScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.passColumnNum != null">
+        pass_column_num = #{record.passColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.failColumnNum != null">
+        fail_column_num = #{record.failColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.inapplicableColumnNum != null">
+        inapplicable_column_num = #{record.inapplicableColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.finishColumnNum != null">
+        finish_column_num = #{record.finishColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.collectColumnNum != null">
+        collect_column_num = #{record.collectColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalColumnNum != null">
+        total_column_num = #{record.totalColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.handleUserIds != null">
+        handle_user_ids = #{record.handleUserIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentUserIds != null">
+        comment_user_ids = #{record.commentUserIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = #{record.updateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.questionNum != null">
+        question_num = #{record.questionNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.unHandleQuestionNum != null">
+        un_handle_question_num = #{record.unHandleQuestionNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.unApproveQuestionNum != null">
+        un_approve_question_num = #{record.unApproveQuestionNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.finishQuestionNum != null">
+        finish_question_num = #{record.finishQuestionNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkResultLevel != null">
+        check_result_level = #{record.checkResultLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalCalColumnNum != null">
+        total_cal_column_num = #{record.totalCalColumnNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.isAiCheck != null">
+        is_ai_check = #{record.isAiCheck,jdbcType=TINYINT},
+      </if>
+      <if test="record.isAiProcess != null">
+        is_ai_process = #{record.isAiProcess,jdbcType=TINYINT},
+      </if>
+      <if test="record.aiStatus != null">
+        ai_status = #{record.aiStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != tcBusinessId">
+         and t.tc_business_id = #{tcBusinessId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != storeWorkId">
+         and t.store_work_id = #{storeWorkId,jdbcType=BIGINT}
+      </if>
+      <if test="null != workCycle">
+         and t.work_cycle = #{workCycle,jdbcType=VARCHAR}
+      </if>
+      <if test="null != storeWorkDate">
+         and t.store_work_date = #{storeWorkDate,jdbcType=DATE}
+      </if>
+      <if test="null != storeId">
+         and t.store_id = #{storeId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != storeName">
+         and t.store_name = #{storeName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != regionId">
+         and t.region_id = #{regionId,jdbcType=BIGINT}
+      </if>
+      <if test="null != regionPath">
+         and t.region_path = #{regionPath,jdbcType=VARCHAR}
+      </if>
+      <if test="null != beginTime">
+         and t.begin_time = #{beginTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != endTime">
+         and t.end_time = #{endTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != metaTableId">
+         and t.meta_table_id = #{metaTableId,jdbcType=BIGINT}
+      </if>
+      <if test="null != tableName">
+         and t.table_name = #{tableName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != beginHandleTime">
+         and t.begin_handle_time = #{beginHandleTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != endHandleTime">
+         and t.end_handle_time = #{endHandleTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != completeStatus">
+         and t.complete_status = #{completeStatus,jdbcType=BIT}
+      </if>
+      <if test="null != commentStatus">
+         and t.comment_status = #{commentStatus,jdbcType=BIT}
+      </if>
+      <if test="null != actualHandleUserId">
+         and t.actual_handle_user_id = #{actualHandleUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != actualCommentUserId">
+         and t.actual_comment_user_id = #{actualCommentUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != commentTime">
+         and t.comment_time = #{commentTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != score">
+         and t.score = #{score,jdbcType=DECIMAL}
+      </if>
+      <if test="null != totalScore">
+         and t.total_score = #{totalScore,jdbcType=DECIMAL}
+      </if>
+      <if test="null != passColumnNum">
+         and t.pass_column_num = #{passColumnNum,jdbcType=INTEGER}
+      </if>
+      <if test="null != failColumnNum">
+         and t.fail_column_num = #{failColumnNum,jdbcType=INTEGER}
+      </if>
+      <if test="null != inapplicableColumnNum">
+         and t.inapplicable_column_num = #{inapplicableColumnNum,jdbcType=INTEGER}
+      </if>
+      <if test="null != finishColumnNum">
+         and t.finish_column_num = #{finishColumnNum,jdbcType=INTEGER}
+      </if>
+      <if test="null != collectColumnNum">
+         and t.collect_column_num = #{collectColumnNum,jdbcType=INTEGER}
+      </if>
+      <if test="null != totalColumnNum">
+         and t.total_column_num = #{totalColumnNum,jdbcType=INTEGER}
+      </if>
+      <if test="null != handleUserIds">
+         and t.handle_user_ids = #{handleUserIds,jdbcType=VARCHAR}
+      </if>
+      <if test="null != commentUserIds">
+         and t.comment_user_ids = #{commentUserIds,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != createUserId">
+         and t.create_user_id = #{createUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != updateTime">
+         and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != updateUserId">
+         and t.update_user_id = #{updateUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != deleted">
+         and t.deleted = #{deleted,jdbcType=BIT}
+      </if>
+    </trim>
+  </sql>
+
+  <insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.ArrayList" keyProperty="entityList.id">
+    insert into sw_store_work_data_table_${enterpriseId}
+    (
+    tc_business_id,
+    store_work_id,
+    work_cycle,
+    store_work_date,
+    store_id,
+    store_name,
+    region_id,
+    region_path,
+    begin_time,
+    end_time,
+    meta_table_id,
+    table_name,
+    total_score,
+    collect_column_num,
+    total_column_num,
+    handle_user_ids,
+    comment_user_ids,
+    create_time,
+    create_user_id,
+    update_time,
+    update_user_id,
+    table_mapping_id,
+    group_num,
+    overdue_continue,
+    table_property,
+    is_ai_check,
+    is_ai_process
+    )values
+    <foreach collection="entityList" separator="," item="entity">
+      (
+      #{entity.tcBusinessId},
+      #{entity.storeWorkId},
+      #{entity.workCycle},
+      #{entity.storeWorkDate},
+      #{entity.storeId},
+      #{entity.storeName},
+      #{entity.regionId},
+      #{entity.regionPath},
+      #{entity.beginTime},
+      #{entity.endTime},
+      #{entity.metaTableId},
+      #{entity.tableName},
+      #{entity.totalScore},
+      #{entity.collectColumnNum},
+      #{entity.totalColumnNum},
+      #{entity.handleUserIds},
+      #{entity.commentUserIds},
+      #{entity.createTime},
+      #{entity.createUserId},
+      #{entity.updateTime},
+      #{entity.updateUserId},
+      #{entity.tableMappingId},
+      #{entity.groupNum},
+      #{entity.overdueContinue},
+      #{entity.tableProperty},
+      #{entity.isAiCheck},
+      #{entity.isAiProcess}
+      )
+    </foreach>
+  </insert>
+
+  <select id="selectSwStoreWorkDataTable"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0
+    and store_work_date = #{queryDate}
+    and store_id = #{storeId}
+    and work_cycle = #{workCycle}
+    <if test="userId != null and userId !=''">
+      and handle_user_ids like  concat('%,', #{userId}, ',%')
+    </if>
+    order by group_num , begin_time
+  </select>
+
+  <select id="selectDataTableByStoreWorkId"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0
+    and store_work_date = #{storeWorkDate}
+    and store_work_id = #{storeWorkId}
+    <if test="userId != null and userId !=''">
+      and handle_user_ids like  concat('%,', #{userId}, ',%')
+    </if>
+    limit 1
+  </select>
+
+  <select id="selectSwStoreWorkDataTableByBusinessId"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0
+    and tc_business_id = #{businessId}
+    <if test="storeId!=null and storeId !=''">
+      and store_id = #{storeId}
+    </if>
+    order by group_num , begin_time
+  </select>
+
+
+  <select id="selectSwStoreWorkDataTableByBusinessIds"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0
+    <if test="businessIds!=null and businessIds.size>0">
+      <foreach collection="businessIds" item="businessId" open=" and tc_business_id in (" close=")" separator=",">
+        #{businessId}
+      </foreach>
+    </if>
+  </select>
+
+  <select id="selectSwStoreWorkDataTableNoCommentByBusinessIds"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0
+    and comment_status = 0
+    <if test="tableMappingId != null">
+      and table_mapping_id  = #{tableMappingId}
+    </if>
+    <if test="businessIds!=null and businessIds.size>0">
+      <foreach collection="businessIds" item="businessId" open=" and tc_business_id in (" close=")" separator=",">
+        #{businessId}
+      </foreach>
+    </if>
+  </select>
+
+  <select id="getLastTimeDataTableDO"  resultMap="BaseResultMap">
+    SELECT id
+    FROM
+    `sw_store_work_data_table_${enterpriseId}`
+    WHERE store_id = #{storeId}
+    and deleted = 0
+    AND meta_table_id = #{metaTableId}
+    and comment_status = 1
+    order by comment_time desc
+    limit 1
+  </select>
+
+  <select id="noCommentStoreWorkCount"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0
+    and store_work_date = #{queryDate}
+    and store_id = #{storeId}
+    and work_cycle = #{workCycle}
+    <if test="userId != null and userId !=''">
+      and handle_user_ids like  concat('%', #{userId}, '%')
+    </if>
+  </select>
+
+
+  <select id="getSwStoreWorkDataTableList"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0
+    and store_work_date = #{queryDate}
+    and store_id = #{storeId}
+    and work_cycle = #{workCycle}
+    <if test="userId != null and userId !=''">
+      and handle_user_ids like  concat('%', #{userId}, '%')
+    </if>
+  </select>
+
+  <select id="getSwStoreWorkDataTableListByBusinessId"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0
+    and tc_business_id = #{businessId}
+    <if test="userId != null and userId !=''">
+      and handle_user_ids like  concat('%', #{userId}, '%')
+    </if>
+  </select>
+
+  <select id="getStoreWorkOverViewData"  resultType="com.coolcollege.intelligent.model.storework.dto.StoreWorkOverViewDataDTO">
+    select
+    sum(total_column_num) as totalColumnNum ,
+    sum(case when comment_status=1 then finish_column_num else 0 end) as commentTotalColumnNum ,
+    sum(collect_column_num) as collectColumnNum,
+    sum(pass_column_num) as passColumnNum,
+    sum(fail_column_num) as failColumnNum,
+    sum(inapplicable_column_num) as inapplicableColumnNum,
+    sum(total_score) as totalScore,
+    sum(score) as score
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0
+    <if test="queryDate!=null and queryDate!='' ">
+      and store_work_date = #{queryDate}
+    </if>
+    <if test="storeId != null and storeId !=''">
+      and store_id = #{storeId}
+    </if>
+    <if test="workCycle != null and workCycle !=''">
+      and work_cycle = #{workCycle}
+    </if>
+    <if test="userId != null and userId !=''">
+      and handle_user_ids like  concat('%', #{userId}, '%')
+    </if>
+    <if test="excludeDefTable==true">
+      and table_property !=6
+    </if>
+    <if test="businessId != null and businessId !=''">
+      and tc_business_id  = #{businessId}
+    </if>
+  </select>
+
+  <select id="selectSpecialTimeNoCompleteStoreWork"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_${enterpriseId}
+    where store_id = #{storeId}
+    and deleted = 0
+    and work_cycle = #{workCycle}
+    <if test="queryTimes!=null and queryTimes.size>0">
+      and store_work_date in
+      <foreach collection="queryTimes" item="queryTime" open="(" close=")" separator=",">
+        #{queryTime}
+      </foreach>
+    </if>
+    <if test="userId!=null and userId!=''">
+      and handle_user_ids like concat('%',#{userId},'%')
+    </if>
+  </select>
+
+  <select id="storeWorkStoreStatisticsOverview" resultType="com.coolcollege.intelligent.model.storework.vo.StoreWorkStatisticsOverviewVO">
+    SELECT
+    ROUND(ifnull(COALESCE(sum(case when complete_status=1 then 1 else 0 end),0)/count(*),0), 4) as finishPercent,
+    ifnull(count(*), 0) as totalStoreNum,
+    COALESCE(sum(case when complete_status=0 then 1 else 0 end),0) as unFinishStoreNum,
+    COALESCE(sum(case when complete_status=1 then 1 else 0 end),0) as finishStoreNum,
+    ROUND(ifnull(sum(pass_column_num/total_cal_column_num)/COALESCE(sum(case when comment_status=1 then 1 else 0 end),0),0), 4) as avgPassRate,
+    ROUND(ifnull(sum(score)/COALESCE(sum(case when comment_status=1 then 1 else 0 end),0),0), 2) as avgScore,
+    ROUND(ifnull(sum(score/total_score)/COALESCE(sum(case when comment_status=1 then 1 else 0 end),0),0), 4) as avgScoreRate,
+    ROUND(ifnull(COALESCE(sum(case when comment_status=1 then 1 else 0 end),0)/count(*),0), 4) as avgCommentRate,
+    sum(question_num) as questionNum,
+    sum(fail_column_num) as failColumnNum,
+    sum(pass_column_num) as passColumnNum
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0
+    <if test="params.workCycle != null and params.workCycle !=''">
+      and work_cycle = #{params.workCycle}
+    </if>
+    <if test="params.storeWorkId != null">
+      and store_work_id = #{params.storeWorkId}
+    </if>
+    <if test="params.storeWorkDate != null">
+      and store_work_date = #{params.storeWorkDate}
+    </if>
+    <if test="params.tableMappingId != null">
+      and table_mapping_id = #{params.tableMappingId}
+    </if>
+    <if test="params.regionPathList !=null and params.regionPathList.size() > 0">
+      and
+      <foreach collection="params.regionPathList" separator="or" close=")" open=" (" item="region">
+        region_path like concat(#{region}, '%')
+      </foreach>
+    </if>
+    <if test="params.completeStatus != null">
+      and complete_status = #{params.completeStatus}
+    </if>
+    <if test="params.commentStatus != null">
+      and comment_status = #{params.commentStatus}
+    </if>
+    <if test="params.beginStoreWorkDate != null and params.endStoreWorkDate != null and params.beginStoreWorkDate != '' and params.endStoreWorkDate != ''">
+      and store_work_date between #{params.beginStoreWorkDate} and #{params.endStoreWorkDate}
+    </if>
+    <if test="params.storeIds !=null and params.storeIds.size() > 0">
+      and store_id in
+        <foreach collection="params.storeIds" separator="," open=" (" close=") "  item="storeId">
+          #{storeId}
+        </foreach>
+    </if>
+  </select>
+
+  <select id="countStoreWorkStoreStatistics" resultType="java.lang.Long">
+    SELECT
+    count(*)
+    FROM
+    sw_store_work_data_table_${enterpriseId}
+    <include refid="storeWorkStoreStatisticsListQuery"/>
+  </select>
+
+
+  <select id="storeWorkStoreStatisticsListCount" resultType="java.lang.Integer">
+    SELECT COUNT(*) AS totalCount
+    FROM (
+    SELECT 1 AS dummy
+    FROM sw_store_work_data_table_${enterpriseId}
+    <include refid="storeWorkStoreStatisticsListQuery"/>
+    GROUP BY store_id
+    <if test="params.summary != null and params.summary == true">
+      , store_work_date
+    </if>
+    ) AS grouped_data
+  </select>
+
+  <select id="storeWorkStoreStatisticsList" resultType="com.coolcollege.intelligent.model.storework.vo.StoreWorkDataDetailVO">
+    SELECT
+    id as dataTableId,
+    tc_business_id as tcBusinessId,
+    store_work_id as storeWorkId,
+    work_cycle as workCycle,
+    store_work_date as storeWorkDate,
+    store_id as storeId,
+    store_name as storeName,
+    ROUND(sum(finish_column_num)/sum(total_column_num), 4) as finishPercent,
+    sum(total_column_num) as totalColumnNum,
+    sum(total_column_num - finish_column_num) as unFinishColumnNum,
+    sum(finish_column_num) as finishColumnNum,
+    ROUND(ifnull(sum(pass_column_num/total_cal_column_num)/COALESCE(sum(case when comment_status=1 then 1 else 0 end),0),0), 4) as avgPassRate,
+    ROUND(ifnull(sum(score)/COALESCE(sum(case when comment_status=1 then 1 else 0 end),0),0), 2) as avgScore,
+    ROUND(ifnull(sum(score/total_score)/COALESCE(sum(case when comment_status=1 then 1 else 0 end),0),0), 4) as avgScoreRate,
+    sum(question_num) as questionNum,
+    sum(fail_column_num) as failColumnNum,
+    sum(pass_column_num) as passColumnNum,
+    comment_status as commentStatus,
+    end_handle_time as endHandleTime
+    from sw_store_work_data_table_${enterpriseId}
+    <include refid="storeWorkStoreStatisticsListQuery"/>
+    group by store_id
+    <if test="params.summary != null and params.summary == true">
+      , store_work_date
+    </if>
+    <if test="params.sortField != null and params.sortType != null">
+      order by ${params.sortField} ${params.sortType},
+      tc_business_id DESC
+    </if>
+    <if test="pageNum != null and pageSize != null">
+      limit #{pageNum},#{pageSize}
+    </if>
+
+  </select>
+
+  <select id="getStoreWorkStoreIdList" resultType="java.lang.String">
+    SELECT
+    DISTINCT store_id
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0
+    <if test="params.tableMappingId != null">
+      and store_work_id = #{params.storeWorkId}
+    </if>
+    <if test="params.storeWorkDate != null">
+      and store_work_date = #{params.storeWorkDate}
+    </if>
+    <if test="params.tableMappingId != null">
+      and table_mapping_id = #{params.tableMappingId}
+    </if>
+    <if test="params.regionIdList != null and params.regionIdList.size >0 ">
+      <foreach collection="params.regionIdList" item="regionId" separator=" or " open="and (" close=" )">
+        region_path like concat('%/', #{regionId}, '/%')
+      </foreach>
+    </if>
+    <if test="params.completeStatus != null">
+      and complete_status = #{params.completeStatus}
+    </if>
+    <if test="params.commentStatus != null">
+      and comment_status = #{params.commentStatus}
+    </if>
+    <if test="params.beginStoreWorkDate != null and params.endStoreWorkDate != null and params.beginStoreWorkDate != '' and params.endStoreWorkDate != ''">
+      and store_work_date between #{params.beginStoreWorkDate} and #{params.endStoreWorkDate}
+    </if>
+  </select>
+  <select id="selectByIds"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0
+    and id in
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </select>
+
+
+  <update id="batchUpdate">
+    update sw_store_work_data_table_${enterpriseId}
+    set
+    update_time = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.updateTime},update_time)
+    </foreach>
+    END,
+    update_user_id = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.updateUserId},update_user_id)
+    </foreach>
+    END,
+    comment_user_ids = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.commentUserIds},comment_user_ids)
+    </foreach>
+    END,
+    handle_user_ids = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.handleUserIds},handle_user_ids)
+    </foreach>
+    END,
+    ai_status = CASE id
+    <foreach collection="list" item="record">
+      WHEN #{record.id} THEN IFNULL(#{record.aiStatus},ai_status)
+    </foreach>
+    END
+    where
+    id in
+    <foreach collection="list" item="record" open="(" separator="," close=")">
+      #{record.id}
+    </foreach>
+  </update>
+
+  <update id="updateCommentUserIds">
+    update sw_store_work_data_table_${enterpriseId}
+    set
+    update_time = #{record.updateTime},
+    update_user_id = #{record.updateUserId},
+    comment_user_ids = #{record.commentUserIds}
+    where id = #{record.id}
+  </update>
+
+  <select id="storeWorkTableStatisticsList" resultType="com.coolcollege.intelligent.model.storework.vo.StoreWorkDataTableStatisticsVO">
+    SELECT
+    table_mapping_id as tableMappingId,
+    meta_table_id as metaTableId,
+    table_name as tableName,
+    sum(case when complete_status = 1 then 1 else 0 end)/count(*) as finishPercent,
+    begin_time as beginTime,
+    end_time as endTime,
+    count(*) as totalStoreNum,
+    sum(case when complete_status = 0 then 1 else 0 end) unFinishStoreNum,
+    sum(case when complete_status = 1 then 1 else 0 end) finishStoreNum
+    from sw_store_work_data_table_${enterpriseId}
+    where store_work_id = #{params.storeWorkId}
+    and deleted = 0
+    and store_work_date = #{params.storeWorkDate}
+    <if test="params.regionPathList !=null and params.regionPathList.size() > 0">
+      and
+      <foreach collection="params.regionPathList" separator="or" close=")" open=" (" item="region">
+        region_path like concat(#{region}, '%')
+      </foreach>
+    </if>
+    <if test="params.tableMappingId != null">
+      and table_mapping_id = #{params.tableMappingId}
+    </if>
+    <if test="params.storeIds !=null and params.storeIds.size() > 0">
+      and store_id in
+      <foreach collection="params.storeIds" separator="," open=" (" close=") "  item="storeId">
+        #{storeId}
+      </foreach>
+    </if>
+    GROUP BY table_mapping_id,meta_table_id,table_name
+    <if test="params.completeStatus != null and params.completeStatus == 1 ">
+      HAVING finishPercent >= 1
+    </if>
+    <if test="params.completeStatus != null and params.completeStatus == 0 ">
+      HAVING finishPercent <![CDATA[ < ]]> 1
+    </if>
+    <if test="params.sortField != null and params.sortType != null">
+      order by ${params.sortField} ${params.sortType}
+    </if>
+  </select>
+
+  <select id="countStoreWorkDayStatistics" resultType="java.lang.Long">
+    SELECT
+    count(*)
+    FROM
+    sw_store_work_data_table_${enterpriseId}
+    <include refid="storeWorkDayStatisticsListQuery"/>
+  </select>
+
+  <select id="storeWorkDayStatisticsList" resultType="com.coolcollege.intelligent.model.storework.vo.StoreWorkDayStatisticsVO">
+    SELECT
+    store_work_date as storeWorkDate,
+    ROUND(sum(case when complete_status = 1 then 1 else 0 end)/count(*),4) as finishPercent,
+    count(*) as totalStoreNum,
+    sum(case when complete_status = 0 then 1 else 0 end) unFinishStoreNum,
+    sum(case when complete_status = 1 then 1 else 0 end) finishStoreNum,
+    ROUND(ifnull(sum(pass_column_num/total_cal_column_num)/COALESCE(sum(case when comment_status=1 then 1 else 0 end),0),0),4) as avgPassRate,
+    ROUND(ifnull(sum(score)/COALESCE(sum(case when comment_status=1 then 1 else 0 end),0),0),2) as avgScore,
+    ROUND(ifnull(sum(score/total_score)/COALESCE(sum(case when comment_status=1 then 1 else 0 end),0),0),4) as avgScoreRate,
+    sum(question_num) as questionNum,
+    sum(fail_column_num) as failColumnNum,
+    sum(pass_column_num) as passColumnNum
+    from sw_store_work_data_table_${enterpriseId}
+    <include refid="storeWorkDayStatisticsListQuery"/>
+    GROUP BY store_work_date
+    <if test="params.sortField != null and params.sortType != null">
+      order by ${params.sortField} ${params.sortType}
+    </if>
+  </select>
+  <select id="regionExecutiveSummaryList" resultType="com.coolcollege.intelligent.model.storework.vo.StoreWorkStatisticsOverviewVO">
+    SELECT
+    ifnull(ROUND(sum(CASE WHEN complete_status = 1 THEN 1 ELSE 0 END)/count(id),4),0)  as finishPercent,
+    ifnull(count(*), 0) as totalStoreNum,
+    ROUND(ifnull( COALESCE(sum(case when complete_status=0 then 1 else 0 end),0),0), 4) as unFinishStoreNum,
+    ifnull(COALESCE(sum(case when complete_status=1 then 1 else 0 end),0),0) as finishStoreNum,
+    ROUND(ifnull(sum(pass_column_num/total_cal_column_num)/COALESCE(sum(case when comment_status=1 then 1 else 0 end),0),0), 4) as avgPassRate,
+    ROUND(ifnull(sum(score)/COALESCE(sum(case when comment_status=1 then 1 else 0 end),0),0), 2) as avgScore,
+    ROUND(ifnull(sum(score/total_score)/COALESCE(sum(case when comment_status=1 then 1 else 0 end),0),0), 4) as avgScoreRate,
+    ROUND(ifnull(COALESCE(sum(case when comment_status=1 then 1 else 0 end),0)/count(*),0), 4) as avgCommentRate,
+    ifnull(sum(question_num),0) as questionNum,
+    ifnull(sum(fail_column_num),0) as failColumnNum,
+    ifnull(sum(pass_column_num),0) as passColumnNum,
+    store_work_date as storeWorkDate
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0
+    and work_cycle = #{params.workCycle}
+    and store_work_date between #{params.beginStoreWorkDate} and #{params.endStoreWorkDate}
+    and  region_path like concat( #{params.regionPath}, '%')
+    <if test="params.storeWorkId != null">
+      and store_work_id = #{params.storeWorkId}
+    </if>
+    <if test="params.tableMappingId != null">
+      and table_mapping_id = #{params.tableMappingId}
+    </if>
+    <if test="params.completeStatus != null">
+      and complete_status = #{params.completeStatus}
+    </if>
+    group by store_work_date
+    order by store_work_date
+  </select>
+  <select id="statisticsWhenSubmit" resultType="com.coolcollege.intelligent.model.storework.dto.SwStoreWorkRecordStatisticsDTO">
+    select
+        tc_business_id as tcBusinessId,
+        sum(finish_column_num) as finishColumnNum,
+        sum(collect_column_num) as collectColumnNum,
+        sum(total_column_num) as totalColumnNum,
+        count(1) as tableNum,
+        sum(question_num) as questionNum,
+        sum(un_handle_question_num) as unHandleQuestionNum,
+        sum(un_approve_question_num) as unApproveQuestionNum,
+        sum(finish_question_num) as finishQuestionNum,
+        min(begin_handle_time) as beginHandleTime,
+        ROUND(sum(finish_column_num)/sum(total_column_num), 4) as finishRate,
+        GROUP_CONCAT(DISTINCT actual_handle_user_id) as actualHandleUserId
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0 and tc_business_id = #{tcBusinessId}
+  </select>
+
+  <select id="statisticsWhenComment" resultType="com.coolcollege.intelligent.model.storework.dto.SwStoreWorkRecordStatisticsDTO">
+    select
+        tc_business_id as tcBusinessId,
+        sum(score) as totalGetScore,
+        sum(total_score) as totalFullScore,
+        count(1) as needCommentTableNum,
+        sum(case when comment_status = 1 then 1 else 0 end) as commentTableNum,
+        ROUND(ifnull(sum(pass_column_num/total_cal_column_num)/COALESCE(sum(case when comment_status=1 then 1 else 0 end),0),0), 4) as avgPassRate,
+        ROUND(ifnull(sum(score/total_score)/COALESCE(sum(case when comment_status=1 then 1 else 0 end),0),0), 4) as avgScoreRate,
+        sum(pass_column_num) as passColumnNum,
+        sum(fail_column_num) as failColumnNum,
+        sum(inapplicable_column_num) as inapplicableColumnNum,
+        sum(question_num) as questionNum,
+        sum(un_handle_question_num) as unHandleQuestionNum,
+        sum(un_approve_question_num) as unApproveQuestionNum,
+        sum(finish_question_num) as finishQuestionNum
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0 and tc_business_id = #{tcBusinessId} and table_property != 6
+  </select>
+
+
+  <select id="storeWorkRecordList" resultType="com.coolcollege.intelligent.model.storework.vo.StoreWorkRecordVO">
+    SELECT
+    id as dataTableId,
+    tc_business_id as tcBusinessId,
+    store_work_id as storeWorkId,
+    work_cycle as workCycle,
+    store_work_date as storeWorkDate,
+    store_id as storeId,
+    store_name as storeName,
+    complete_status as completeStatus,
+    begin_handle_time as beginHandleTime,
+    end_handle_time as endHandleTime,
+    comment_status as commentStatus,
+    pass_column_num as passColumnNum,
+    fail_column_num as failColumnNum,
+    score as totalGetScore,
+    ROUND(pass_column_num/total_cal_column_num, 4) as avgPassRate,
+    score as averageScore,
+    ROUND(score/total_score, 4) as avgScoreRate,
+    actual_handle_user_id as actualHandleUserId
+    from sw_store_work_data_table_${enterpriseId}
+    where store_work_id = #{params.storeWorkId}
+    and deleted = 0
+    and table_mapping_id = #{params.tableMappingId}
+    and store_work_date between #{params.beginStoreWorkDate} and #{params.endStoreWorkDate}
+    <if test="params.regionPathList !=null and params.regionPathList.size() > 0">
+      and
+      <foreach collection="params.regionPathList" separator="or" close=")" open=" (" item="region">
+        region_path like concat(#{region}, '%')
+      </foreach>
+    </if>
+    <if test="params.completeStatus != null">
+      and complete_status = #{params.completeStatus}
+    </if>
+    <if test="params.commentStatus != null">
+      and comment_status = #{params.commentStatus}
+    </if>
+    <if test="params.workCycle != null">
+      and work_cycle = #{params.workCycle}
+    </if>
+    order by create_time desc ,id desc
+  </select>
+
+  <select id="countStoreWorkRecord" resultType="java.lang.Long">
+    SELECT
+    count(*)
+    FROM
+    sw_store_work_data_table_${enterpriseId}
+    where store_work_id = #{params.storeWorkId}
+    and deleted = 0
+    and table_mapping_id = #{params.tableMappingId}
+    <if test="params.regionPathList !=null and params.regionPathList.size() > 0">
+      and
+      <foreach collection="params.regionPathList" separator="or" close=")" open=" (" item="region">
+        region_path like concat(#{region}, '%')
+      </foreach>
+    </if>
+    <if test="params.completeStatus != null">
+      and complete_status = #{params.completeStatus}
+    </if>
+    <if test="params.commentStatus != null">
+      and comment_status = #{params.commentStatus}
+    </if>
+    <if test="params.beginStoreWorkDate != null and params.endStoreWorkDate != null and params.beginStoreWorkDate != '' and params.endStoreWorkDate != ''">
+      and store_work_date between #{params.beginStoreWorkDate} and #{params.endStoreWorkDate}
+    </if>
+  </select>
+
+  <sql id="storeWorkStoreStatisticsListQuery">
+    where deleted = 0
+    <if test="params.storeWorkId != null">
+      and store_work_id = #{params.storeWorkId}
+    </if>
+    <if test="params.storeWorkDate != null">
+      and store_work_date = #{params.storeWorkDate}
+    </if>
+    <if test="params.tableMappingId != null">
+      and table_mapping_id = #{params.tableMappingId}
+    </if>
+    <if test="params.regionPathList !=null and params.regionPathList.size() > 0">
+      and
+      <foreach collection="params.regionPathList" separator="or" close=")" open=" (" item="region">
+        region_path like concat(#{region}, '%')
+      </foreach>
+    </if>
+    <if test="params.completeStatus != null">
+      and complete_status = #{params.completeStatus}
+    </if>
+    <if test="params.commentStatus != null">
+      and comment_status = #{params.commentStatus}
+    </if>
+    <if test="params.beginStoreWorkDate != null and params.endStoreWorkDate != null and params.beginStoreWorkDate != '' and params.endStoreWorkDate != ''">
+      and store_work_date between #{params.beginStoreWorkDate} and #{params.endStoreWorkDate}
+    </if>
+    <if test="params.storeId != null and params.storeId != ''">
+      and store_id = #{params.storeId, jdbcType=VARCHAR}
+    </if>
+    <if test="params.workCycle != null and params.workCycle !=''">
+      and work_cycle = #{params.workCycle}
+    </if>
+    <if test="params.storeIds !=null and params.storeIds.size() > 0">
+      and store_id in
+      <foreach collection="params.storeIds" separator="," open=" (" close=") "  item="storeId">
+        #{storeId}
+      </foreach>
+    </if>
+  </sql>
+
+  <sql id="storeWorkDayStatisticsListQuery">
+    where store_work_id = #{params.storeWorkId} and deleted = 0 and store_work_date = #{params.storeWorkDate}
+    and table_mapping_id = #{params.tableMappingId}
+    <if test="params.regionPathList !=null and params.regionPathList.size() > 0">
+      and
+      <foreach collection="params.regionPathList" separator="or" close=")" open=" (" item="region">
+        region_path like concat(#{region}, '%')
+      </foreach>
+    </if>
+    <if test="params.completeStatus != null">
+      and complete_status = #{params.completeStatus}
+    </if>
+    <if test="params.commentStatus != null">
+      and comment_status = #{params.commentStatus}
+    </if>
+    <if test="params.beginStoreWorkDate != null and params.endStoreWorkDate != null and params.beginStoreWorkDate != '' and params.endStoreWorkDate != ''">
+      and store_work_date between #{params.beginStoreWorkDate} and #{params.endStoreWorkDate}
+    </if>
+    <if test="params.storeIds !=null and params.storeIds.size() > 0">
+      and store_id in
+      <foreach collection="params.storeIds" separator="," open=" (" close=") "  item="storeId">
+        #{storeId}
+      </foreach>
+    </if>
+  </sql>
+
+  <select id="selectStoreWorkDataTableList"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_${enterpriseId}
+    <where>
+      <if test="fullRegionPathList !=null and fullRegionPathList.size() > 0">
+        <foreach collection="fullRegionPathList" separator="or" close=")" open="and (" item="region">
+          region_path like concat(#{region}, '%')
+        </foreach>
+      </if>
+      <if test="businessId!=null and businessId!=''">
+        and tc_business_id = #{businessId}
+      </if>
+      <if test="workCycle!=null and workCycle!=''">
+        and work_cycle = #{workCycle}
+      </if>
+      <if test="beginStoreWorkDate != null and endStoreWorkDate != null and beginStoreWorkDate != '' and endStoreWorkDate != ''">
+        and store_work_date between #{beginStoreWorkDate} and #{endStoreWorkDate}
+      </if>
+      <if test="storeWorkId!=null">
+        and store_work_id = #{storeWorkId}
+      </if>
+      <if test="tableMappingId!=null">
+        and table_mapping_id  = #{tableMappingId}
+      </if>
+      <if test="completeStatus != null">
+        and complete_status = #{completeStatus}
+      </if>
+      <if test="commentStatus != null">
+        and comment_status = #{commentStatus}
+      </if>
+      <if test="storeId!=null and storeId!=''">
+        and store_id = #{storeId}
+      </if>
+      <if test="completeStatus!=null">
+        and complete_status  = #{completeStatus}
+      </if>
+      and deleted = 0
+    </where>
+
+  </select>
+
+  <select id="countStoreWorkDataTableList"  resultType="java.lang.Long">
+    select
+    count(1)
+    from sw_store_work_data_table_${enterpriseId}
+    <where>
+      <if test="fullRegionPathList !=null and fullRegionPathList.size() > 0">
+        <foreach collection="fullRegionPathList" separator="or" close=")" open="and (" item="region">
+          region_path like concat(#{region}, '%')
+        </foreach>
+      </if>
+      <if test="businessId!=null and businessId!=''">
+        and tc_business_id = #{businessId}
+      </if>
+      <if test="workCycle!=null and workCycle!=''">
+        and work_cycle = #{workCycle}
+      </if>
+      <if test="beginStoreWorkDate != null and endStoreWorkDate != null and beginStoreWorkDate != '' and endStoreWorkDate != ''">
+        and store_work_date between #{beginStoreWorkDate} and #{endStoreWorkDate}
+      </if>
+      <if test="storeWorkId!=null">
+        and store_work_id = #{storeWorkId}
+      </if>
+      <if test="tableMappingId!=null">
+        and table_mapping_id  = #{tableMappingId}
+      </if>
+      <if test="completeStatus != null">
+        and complete_status = #{completeStatus}
+      </if>
+      <if test="commentStatus != null">
+        and comment_status = #{commentStatus}
+      </if>
+      <if test="storeId!=null and storeId!=''">
+        and store_id = #{storeId}
+      </if>
+      <if test="completeStatus!=null">
+        and complete_status  = #{completeStatus}
+      </if>
+      and deleted = 0
+    </where>
+
+  </select>
+
+
+  <select id="listNeedRemindDataTable" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_${enterpriseId}
+    <include refid="storeWorkStoreStatisticsListQuery"/>
+    <![CDATA[ and ((begin_time < now() and end_time >= now()) || (end_time < now() and overdue_continue = 1)) ]]>
+  </select>
+
+  <select id="recordQuestionDate" resultType="com.coolcollege.intelligent.model.storework.dto.StoreWorkQuestionDataDTO">
+    select
+    ifnull(sum(un_handle_question_num), 0)  as handleCount,
+    ifnull(sum(un_approve_question_num), 0) as recheckCount,
+    ifnull(sum(finish_question_num), 0) as finishCount
+    from sw_store_work_data_table_${enterpriseId}
+    where  tc_business_id  = #{tcBusinessId}
+  </select>
+
+  <select id="listNotCompleteDataTableByStoreWorkId"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_${enterpriseId}
+    where store_work_id = #{storeWorkId} and deleted = 0 and complete_status = 0
+  </select>
+
+  <select id="listDataTableHasDelByStoreWorkId"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_${enterpriseId}
+    where store_work_id = #{storeWorkId}
+  </select>
+
+  <update id="updateDelByStoreWorkId">
+    delete from sw_store_work_data_table_${enterpriseId}
+    where store_work_id = #{storeWorkId}
+  </update>
+
+  <select id="listDataTable"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_data_table_${enterpriseId}
+    where complete_status = 1 and table_property !=6
+    and work_cycle = #{workCycle} and deleted = 0
+    and date(create_time) between #{beginTime} and #{endTime}
+    <if test="storeWorkId!=null">
+      and store_work_id = #{storeWorkId}
+    </if>
+    <if test="metaTableId!=null">
+      and meta_table_id = #{metaTableId}
+    </if>
+    <if test="storeWorkId!=null">
+      and store_work_id = #{storeWorkId}
+    </if>
+    <if test="tableMappingId!=null">
+      and table_mapping_id = #{tableMappingId}
+    </if>
+    <if test="fullRegionPathList != null and fullRegionPathList.size >0 ">
+      <foreach collection="fullRegionPathList" item="fullRegionPath" separator=" or " open="and (" close=" )">
+        region_path like concat( #{fullRegionPath}, '%')
+      </foreach>
+    </if>
+
+  </select>
+
+  <select id="selectSwStoreWorkDataTableByUserId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0
+    and handle_user_ids like concat('%,', #{userId}, ',%')
+    and complete_status = 0
+  </select>
+
+  <select id="selectCommentSwStoreWorkDataTableByUserId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sw_store_work_data_table_${enterpriseId}
+    where deleted = 0
+    and comment_user_ids like concat('%,', #{userId}, ',%')
+    and comment_status = 0
+  </select>
+    <select id="getResultByTcBusinessId" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from sw_store_work_data_table_${enterpriseId}
+      where deleted = 0
+      and tc_business_id = #{tcBusinessId}
+    </select>
+    <select id="selectSwStoreWorkDataTableById" resultMap="BaseResultMap2">
+      select
+      <include refid="Base_Column_List" />
+      from sw_store_work_data_table_${enterpriseId}
+      where deleted = 0
+      and  work_cycle = #{workCycle}
+      and  store_work_date = #{queryDate}
+      and meta_table_id = #{metaTableId}
+      <if test="completeStatue!=null">
+        and  complete_status = #{completeStatue}
+      </if>
+      <if test="commentStatus!=null">
+        and  comment_status = #{commentStatus}
+      </if>
+      <if test="list!=null and list.size>0">
+        AND
+        <foreach collection="list" separator="or" close=")" open=" (" item="region">
+          region_path like concat(#{region}, '%')
+        </foreach>
+      </if>
+      <if test="eligibleStatus != null">
+       and check_result_level = #{eligibleStatus}
+      </if>
+      order by complete_status
+    </select>
+
+    <!--$var enterpriseId=e17cd2dc350541df8a8b0af9bd27f77d -->
+    <delete id="delByStoreWorkIdAndStoreIdAndDate">
+        delete
+        from sw_store_work_data_table_${enterpriseId}
+        where store_work_id = #{storeWorkId}
+          and store_work_date = #{storeWorkDate}
+          and store_id in
+        <foreach collection="storeIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

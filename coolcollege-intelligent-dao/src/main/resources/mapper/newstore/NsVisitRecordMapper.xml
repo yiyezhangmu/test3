@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.newstore.NsVisitRecordMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.newstore.NsVisitRecordDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_date" jdbcType="DATE" property="createDate"/>
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId"/>
+        <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName"/>
+        <result column="new_store_create_date" jdbcType="DATE" property="newStoreCreateDate"/>
+        <result column="region_path" jdbcType="VARCHAR" property="regionPath"/>
+        <result column="region_id" jdbcType="BIGINT" property="regionId"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="data_table_status" jdbcType="TINYINT" property="dataTableStatus"/>
+        <result column="new_store_id" jdbcType="BIGINT" property="newStoreId"/>
+        <result column="new_store_type" jdbcType="VARCHAR" property="newStoreType"/>
+        <result column="new_store_status" jdbcType="VARCHAR" property="newStoreStatus"/>
+        <result column="new_store_name" jdbcType="VARCHAR" property="newStoreName"/>
+        <result column="new_store_location_address" jdbcType="VARCHAR" property="newStoreLocationAddress"/>
+        <result column="new_store_longitude_latitude" jdbcType="VARCHAR" property="newStoreLongitudeLatitude"/>
+        <result column="sign_in_time" jdbcType="TIMESTAMP" property="signInTime"/>
+        <result column="sign_in_status" jdbcType="INTEGER" property="signInStatus"/>
+        <result column="sign_in_address" jdbcType="VARCHAR" property="signInAddress"/>
+        <result column="sign_in_longitude_latitude" jdbcType="VARCHAR" property="signInLongitudeLatitude"/>
+        <result column="completed_time" jdbcType="TIMESTAMP" property="completedTime"/>
+        <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId"/>
+        <result column="progress" jdbcType="DECIMAL" property="progress"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , deleted, create_time, create_date, create_user_id, create_user_name, update_time, update_user_id,
+    update_user_name, new_store_create_date, region_path, status, data_table_status, 
+    new_store_id, new_store_type, new_store_status, new_store_name, new_store_longitude_latitude, 
+    sign_in_time, sign_in_status, sign_in_address, sign_in_longitude_latitude, completed_time, 
+    meta_table_id, progress, region_id, new_store_location_address
+    </sql>
+    <sql id="commonQuery">
+        <trim prefixOverrides="AND | OR">
+            <if test="createDate != null">
+                and create_date = #{createDate, jdbcType=DATE}
+            </if>
+            <if test="regionId != null">
+                and region_id = #{regionId}
+            </if>
+            <if test="completedBeginTime != null">
+                and completed_time &gt;= #{completedBeginTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="completedEndTime != null">
+                and completed_time &lt;= #{completedEndTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="newStoreId != null">
+                and new_store_id = #{newStoreId}
+            </if>
+            <if test="status != null and status != ''">
+                and `status` = #{status}
+            </if>
+            <if test="createUserId != null">
+                and create_user_id = #{createUserId}
+            </if>
+            <if test="newStoreName != null and newStoreName != ''">
+                and new_store_name like concat(#{newStoreName}, '%')
+            </if>
+            <if test="newStoreTypes != null and newStoreTypes.size > 0">
+                and new_store_type in
+                <foreach collection="newStoreTypes" item="newStoreType" open="(" separator="," close=")">
+                    #{newStoreType}
+                </foreach>
+            </if>
+            <if test="metaTableIds != null and metaTableIds.size > 0">
+                and meta_table_id in
+                <foreach collection="metaTableIds" item="metaTableId" open="(" separator="," close=")">
+                    #{metaTableId}
+                </foreach>
+            </if>
+        </trim>
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ns_visit_record_${enterpriseId}
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAllByQuery" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ns_visit_record_${enterpriseId}
+        <where>
+            <include refid="commonQuery"/>
+        </where>
+        order by `status` desc, completed_time desc
+    </select>
+    <select id="selectCountByStoreTypeAndStatus"
+            resultType="com.coolcollege.intelligent.model.newstore.dto.NsCommonNumDTO">
+        select `new_store_type`                                                as newStoreType,
+               sum(case `new_store_status` when 'ongoing' then 1 else 0 end)   as ongoingNum,
+               sum(case `new_store_status` when 'completed' then 1 else 0 end) as completedNum,
+               sum(case `new_store_status` when 'failed' then 1 else 0 end)    as failedNum
+        from ns_visit_record_${enterpriseId}
+        where region_id = #{regionId}
+          and new_store_create_date &gt;= #{beginDate,jdbcType=DATE}
+          and new_store_create_date &lt;= #{endDate,jdbcType=DATE}
+          and `status` = 'completed'
+        group by `new_store_type`
+        order by `new_store_type`
+    </select>
+    <select id="selectNumByStoreIds" resultType="com.coolcollege.intelligent.model.newstore.dto.NsVisitNumDTO">
+        select
+        new_store_id as newStoreId,
+        count(new_store_id) as visitNum
+        from ns_visit_record_${enterpriseId}
+        where `status` = 'completed'
+        and new_store_id in
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        group by new_store_id
+    </select>
+    <select id="selectVisitRecordCount" resultType="java.lang.Long">
+        select
+        count(*)
+        from ns_visit_record_${enterpriseId}
+        <where>
+            <include refid="commonQuery"/>
+        </where>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from ns_visit_record_${enterpriseId}
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="record.id" keyColumn="id"
+            parameterType="com.coolcollege.intelligent.model.newstore.NsVisitRecordDO">
+        insert into ns_visit_record_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.deleted != null">
+                deleted,
+            </if>
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.createDate != null">
+                create_date,
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id,
+            </if>
+            <if test="record.createUserName != null">
+                create_user_name,
+            </if>
+            <if test="record.updateTime != null">
+                update_time,
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id,
+            </if>
+            <if test="record.updateUserName != null">
+                update_user_name,
+            </if>
+            <if test="record.newStoreCreateDate != null">
+                new_store_create_date,
+            </if>
+            <if test="record.regionPath != null">
+                region_path,
+            </if>
+            <if test="record.regionId != null">
+                region_id,
+            </if>
+            <if test="record.status != null">
+                status,
+            </if>
+            <if test="record.dataTableStatus != null">
+                data_table_status,
+            </if>
+            <if test="record.newStoreId != null">
+                new_store_id,
+            </if>
+            <if test="record.newStoreType != null">
+                new_store_type,
+            </if>
+            <if test="record.newStoreStatus != null">
+                new_store_status,
+            </if>
+            <if test="record.newStoreName != null">
+                new_store_name,
+            </if>
+            <if test="record.newStoreLongitudeLatitude != null">
+                new_store_longitude_latitude,
+            </if>
+            <if test="record.signInTime != null">
+                sign_in_time,
+            </if>
+            <if test="record.signInStatus != null">
+                sign_in_status,
+            </if>
+            <if test="record.signInAddress != null">
+                sign_in_address,
+            </if>
+            <if test="record.signInLongitudeLatitude != null">
+                sign_in_longitude_latitude,
+            </if>
+            <if test="record.completedTime != null">
+                completed_time,
+            </if>
+            <if test="record.metaTableId != null">
+                meta_table_id,
+            </if>
+            <if test="record.progress != null">
+                progress,
+            </if>
+            <if test="record.newStoreLocationAddress != null">
+                new_store_location_address,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.deleted != null">
+                #{record.deleted,jdbcType=BIT},
+            </if>
+            <if test="record.createTime != null">
+                #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createDate != null">
+                #{record.createDate,jdbcType=DATE},
+            </if>
+            <if test="record.createUserId != null">
+                #{record.createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createUserName != null">
+                #{record.createUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateUserId != null">
+                #{record.updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateUserName != null">
+                #{record.updateUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.newStoreCreateDate != null">
+                #{record.newStoreCreateDate,jdbcType=DATE},
+            </if>
+            <if test="record.regionPath != null">
+                #{record.regionPath,jdbcType=VARCHAR},
+            </if>
+            <if test="record.regionId != null">
+                #{record.regionId,jdbcType=BIGINT},
+            </if>
+            <if test="record.status != null">
+                #{record.status,jdbcType=VARCHAR},
+            </if>
+            <if test="record.dataTableStatus != null">
+                #{record.dataTableStatus,jdbcType=TINYINT},
+            </if>
+            <if test="record.newStoreId != null">
+                #{record.newStoreId,jdbcType=BIGINT},
+            </if>
+            <if test="record.newStoreType != null">
+                #{record.newStoreType,jdbcType=VARCHAR},
+            </if>
+            <if test="record.newStoreStatus != null">
+                #{record.newStoreStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="record.newStoreName != null">
+                #{record.newStoreName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.newStoreLongitudeLatitude != null">
+                #{record.newStoreLongitudeLatitude,jdbcType=VARCHAR},
+            </if>
+            <if test="record.signInTime != null">
+                #{record.signInTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.signInStatus != null">
+                #{record.signInStatus,jdbcType=INTEGER},
+            </if>
+            <if test="record.signInAddress != null">
+                #{record.signInAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.signInLongitudeLatitude != null">
+                #{record.signInLongitudeLatitude,jdbcType=VARCHAR},
+            </if>
+            <if test="record.completedTime != null">
+                #{record.completedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.metaTableId != null">
+                #{record.metaTableId,jdbcType=BIGINT},
+            </if>
+            <if test="record.progress != null">
+                #{record.progress,jdbcType=DECIMAL},
+            </if>
+            <if test="record.newStoreLocationAddress != null">
+                #{record.newStoreLocationAddress,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.newstore.NsVisitRecordDO">
+        update ns_visit_record_${enterpriseId}
+        <set>
+            <if test="record.deleted != null">
+                deleted = #{record.deleted,jdbcType=BIT},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createDate != null">
+                create_date = #{record.createDate,jdbcType=DATE},
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id = #{record.createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createUserName != null">
+                create_user_name = #{record.createUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id = #{record.updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateUserName != null">
+                update_user_name = #{record.updateUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.newStoreCreateDate != null">
+                new_store_create_date = #{record.newStoreCreateDate,jdbcType=DATE},
+            </if>
+            <if test="record.regionPath != null">
+                region_path = #{record.regionPath,jdbcType=VARCHAR},
+            </if>
+            <if test="record.regionId != null">
+                region_id = #{record.regionId,jdbcType=BIGINT},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=VARCHAR},
+            </if>
+            <if test="record.dataTableStatus != null">
+                data_table_status = #{record.dataTableStatus,jdbcType=TINYINT},
+            </if>
+            <if test="record.newStoreId != null">
+                new_store_id = #{record.newStoreId,jdbcType=BIGINT},
+            </if>
+            <if test="record.newStoreType != null">
+                new_store_type = #{record.newStoreType,jdbcType=VARCHAR},
+            </if>
+            <if test="record.newStoreStatus != null">
+                new_store_status = #{record.newStoreStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="record.newStoreName != null">
+                new_store_name = #{record.newStoreName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.newStoreLongitudeLatitude != null">
+                new_store_longitude_latitude = #{record.newStoreLongitudeLatitude,jdbcType=VARCHAR},
+            </if>
+            <if test="record.signInTime != null">
+                sign_in_time = #{record.signInTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.signInStatus != null">
+                sign_in_status = #{record.signInStatus,jdbcType=INTEGER},
+            </if>
+            <if test="record.signInAddress != null">
+                sign_in_address = #{record.signInAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.signInLongitudeLatitude != null">
+                sign_in_longitude_latitude = #{record.signInLongitudeLatitude,jdbcType=VARCHAR},
+            </if>
+            <if test="record.completedTime != null">
+                completed_time = #{record.completedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.metaTableId != null">
+                meta_table_id = #{record.metaTableId,jdbcType=BIGINT},
+            </if>
+            <if test="record.progress != null">
+                progress = #{record.progress,jdbcType=DECIMAL},
+            </if>
+            <if test="record.newStoreLocationAddress != null">
+                new_store_location_address = #{record.newStoreLocationAddress,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{record.id,jdbcType=BIGINT}
+    </update>
+    <update id="updateNewStoreInfoByNewStoreId">
+        update ns_visit_record_${enterpriseId}
+        <set>
+            <if test="record.regionId != null">
+                region_id = #{record.regionId,jdbcType=BIGINT},
+            </if>
+            <if test="record.regionPath != null">
+                region_path = #{record.regionPath,jdbcType=VARCHAR},
+            </if>
+            <if test="record.newStoreType != null and record.newStoretype != ''">
+                new_store_type = #{record.newStoreType,jdbcType=VARCHAR},
+            </if>
+            <if test="record.newStoreStatus != null and record.newStoreStatus != ''">
+                new_store_status = #{record.newStoreStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="record.newStoreName != null and record.newStoreName != ''">
+                new_store_name = #{record.newStoreName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where new_store_id = #{record.newStoreId,jdbcType=BIGINT}
+    </update>
+    <update id="correctRegionPath">
+        UPDATE ns_visit_record_${enterpriseId} a
+            INNER JOIN region_${enterpriseId} b
+        ON a.region_id = b.id
+            SET a.region_path = b.region_path
+        WHERE a.region_path != b.region_path;
+    </update>
+    <sql id="dynamicQuery">
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="null != id">
+                and t.id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="null != deleted">
+                and t.deleted = #{deleted,jdbcType=BIT}
+            </if>
+            <if test="null != createTime">
+                and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="null != createDate">
+                and t.create_date = #{createDate,jdbcType=DATE}
+            </if>
+            <if test="null != createUserId">
+                and t.create_user_id = #{createUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="null != createUserName">
+                and t.create_user_name = #{createUserName,jdbcType=VARCHAR}
+            </if>
+            <if test="null != updateTime">
+                and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="null != updateUserId">
+                and t.update_user_id = #{updateUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="null != updateUserName">
+                and t.update_user_name = #{updateUserName,jdbcType=VARCHAR}
+            </if>
+            <if test="null != newStoreCreateDate">
+                and t.new_store_create_date = #{newStoreCreateDate,jdbcType=DATE}
+            </if>
+            <if test="null != regionPath">
+                and t.region_path = #{regionPath,jdbcType=VARCHAR}
+            </if>
+            <if test="null != regionId">
+                and t.region_id = #{regionId,jdbcType=BIGINT}
+            </if>
+            <if test="null != status">
+                and t.status = #{status,jdbcType=VARCHAR}
+            </if>
+            <if test="null != dataTableStatus">
+                and t.data_table_status = #{dataTableStatus,jdbcType=TINYINT}
+            </if>
+            <if test="null != newStoreId">
+                and t.new_store_id = #{newStoreId,jdbcType=BIGINT}
+            </if>
+            <if test="null != newStoreType">
+                and t.new_store_type = #{newStoreType,jdbcType=VARCHAR}
+            </if>
+            <if test="null != newStoreStatus">
+                and t.new_store_status = #{newStoreStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="null != newStoreName">
+                and t.new_store_name = #{newStoreName,jdbcType=VARCHAR}
+            </if>
+            <if test="null != newStoreLongitudeLatitude">
+                and t.new_store_longitude_latitude = #{newStoreLongitudeLatitude,jdbcType=VARCHAR}
+            </if>
+            <if test="null != signInTime">
+                and t.sign_in_time = #{signInTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="null != signInStatus">
+                and t.sign_in_status = #{signInStatus,jdbcType=INTEGER}
+            </if>
+            <if test="null != signInAddress">
+                and t.sign_in_address = #{signInAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="null != signInLongitudeLatitude">
+                and t.sign_in_longitude_latitude = #{signInLongitudeLatitude,jdbcType=VARCHAR}
+            </if>
+            <if test="null != completedTime">
+                and t.completed_time = #{completedTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="null != metaTableId">
+                and t.meta_table_id = #{metaTableId,jdbcType=BIGINT}
+            </if>
+            <if test="null != progress">
+                and t.progress = #{progress,jdbcType=DECIMAL}
+            </if>
+        </trim>
+    </sql>
+</mapper>

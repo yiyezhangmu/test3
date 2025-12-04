@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.coolcollege.intelligent.dao.unifytask.UnifyTaskParentCcUserMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.coolcollege.intelligent.model.unifytask.UnifyTaskParentCcUserDO" id="unifyTaskParentCcUserMap">
+        <result property="id" column="id"/>
+        <result property="unifyTaskId" column="unify_task_id"/>
+        <result property="taskName" column="task_name"/>
+        <result property="taskType" column="task_type"/>
+        <result property="ccUserId" column="cc_user_id"/>
+        <result property="parentStatus" column="parent_status"/>
+        <result property="beginTime" column="begin_time"/>
+        <result property="endTime" column="end_time"/>
+    </resultMap>
+
+	<sql id="Base_Column_List">
+		id,
+		unify_task_id, 
+		task_name, 
+		task_type, 
+		cc_user_id,
+		parent_status,
+		begin_time,
+		end_time
+	</sql>
+
+	<update id="updateTaskParentStatus">
+		update unify_task_parent_cc_user_${eid}
+		set parent_status=#{parentStatus}
+		where unify_task_id = #{taskId}
+	</update>
+
+	<select id="selectById" resultMap="unifyTaskParentCcUserMap">
+		select
+		<include refid="Base_Column_List"/>
+		from unify_task_parent_cc_user_${eid} where id = #{id}
+	</select>
+
+	
+ 	<select id="count" resultType="int">
+		select count(*) from unify_task_parent_cc_user_${eid} 
+	</select>
+
+	<select id="selectByCcUserId" resultMap="unifyTaskParentCcUserMap">
+		select
+		<include refid="Base_Column_List"/>
+		from unify_task_parent_cc_user_${eid}
+		where cc_user_id = #{userId}
+		<if test="query.queryType != null and query.queryType != ''">
+			<choose>
+				<when test="query.queryType=='nostart'">
+					AND begin_time &gt;= UNIX_TIMESTAMP(now())*1000
+				</when>
+				<when test="query.queryType=='ongoing'">
+					and parent_status = 'ongoing'
+					AND begin_time &lt; UNIX_TIMESTAMP(now())*1000
+				</when>
+				<when test="query.queryType=='complete'">
+					and parent_status = 'complete'
+					AND begin_time &lt; UNIX_TIMESTAMP(now())*1000
+				</when>
+				<otherwise>
+					and parent_status is not null
+				</otherwise>
+			</choose>
+		</if>
+		<if test="query.taskName != null and query.taskName != ''">
+			and task_name like concat('%',trim(#{query.taskName,jdbcType=VARCHAR}),'%')
+		</if>
+		<if test="query.taskType != null and query.taskType != ''">
+			AND task_type = #{query.taskType}
+		</if>
+		order by id desc
+	</select>
+
+	<select id="selectDisplayParentStatistics" resultType="java.lang.Integer">
+		select count(a.id)
+		from unify_task_parent_cc_user_${eid} a
+		where a.cc_user_id = #{userId}
+		and a.task_type = #{taskType}
+		<if test="status != null and status != ''">
+			<choose>
+				<when test="status=='nostart'">
+					AND a.begin_time &gt;= UNIX_TIMESTAMP(now())*1000
+				</when>
+				<otherwise>
+					and a.parent_status = #{status}
+					AND a.begin_time &lt; UNIX_TIMESTAMP(now())*1000
+				</otherwise>
+			</choose>
+		</if>
+	</select>
+    <select id="selectByUnifyTaskIds" resultMap="unifyTaskParentCcUserMap">
+		select
+		<include refid="Base_Column_List"/>
+		from unify_task_parent_cc_user_${enterpriseId}
+		where unify_task_id in
+		<foreach collection="unifyTaskIds" item="unifyTaskId" open="(" separator="," close=")">
+			#{unifyTaskId}
+		</foreach>
+	</select>
+
+    <insert id="save" parameterType="com.coolcollege.intelligent.model.unifytask.UnifyTaskParentCcUserDO" useGeneratedKeys="true" keyProperty="id">
+		insert into unify_task_parent_cc_user_${eid}
+		(
+			`unify_task_id`, 
+			`task_name`, 
+			`task_type`, 
+			`cc_user_id`, 
+			`parent_status`,
+			`begin_time`,
+			`end_time`
+		)
+		values
+		(
+			#{entity.unifyTaskId}, 
+			#{entity.taskName}, 
+			#{entity.taskType}, 
+			#{entity.ccUserId}, 
+			#{entity.parentStatus},
+			#{entity.beginTime},
+			#{entity.endTime}
+		)
+	</insert>
+
+	<insert id="batchInsertOrUpdate">
+		insert into unify_task_parent_cc_user_${eid}
+		(
+		`unify_task_id`,
+		`task_name`,
+		`task_type`,
+		`cc_user_id`,
+		`parent_status`,
+		`begin_time`,
+		`end_time`
+		)
+		values
+		<foreach collection="list" item="entity" separator=",">
+			(
+			#{entity.unifyTaskId},
+			#{entity.taskName},
+			#{entity.taskType},
+			#{entity.ccUserId},
+			#{entity.parentStatus},
+			#{entity.beginTime},
+			#{entity.endTime}
+			)
+		</foreach>
+		ON DUPLICATE KEY UPDATE
+		    task_name=values(task_name)
+	</insert>
+	 
+	<delete id="deleteById">
+		delete from unify_task_parent_cc_user_${eid} where id = #{id}
+	</delete>
+
+	<delete id="deleteByUnifyTaskId">
+		delete from unify_task_parent_cc_user_${eid}
+		where unify_task_id = #{unifyTaskId}
+	</delete>
+
+</mapper>

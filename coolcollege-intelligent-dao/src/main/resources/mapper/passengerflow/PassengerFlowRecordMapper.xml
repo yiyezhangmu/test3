@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.passengerflow.PassengerFlowRecodeMapper">
+
+
+    <resultMap type="com.coolcollege.intelligent.model.passengerflow.PassengerFlowRecordDO" id="baseMap">
+        <result property="id" column="id"/>
+        <result property="storeId" column="store_id"/>
+        <result property="regionPath" column="region_path"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="channelNo" column="channel_no"/>
+        <result property="hasChildDevice" column="has_child_device"/>
+        <result property="sceneId" column="scene_id"/>
+        <result property="sceneType" column="scene_type"/>
+        <result property="flowType" column="flow_type"/>
+        <result property="flowIn" column="flow_in"/>
+        <result property="flowOut" column="flow_out"/>
+        <result property="flowInOut" column="flow_in_out"/>
+        <result property="flowYear" column="flow_year"/>
+        <result property="flowDay" column="flow_day"/>
+        <result property="flowMonth" column="flow_month"/>
+        <result property="flowHour" column="flow_hour"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="attributeCount" column="attribute_count"/>
+        <result property="flowPass" column="flow_pass"/>
+    </resultMap>
+
+    <insert id="batchInsertPassengerFlowRecordDO"
+            keyColumn="id" keyProperty="list.id" useGeneratedKeys="true">
+        insert into passenger_flow_record_${eid}
+        (
+        `store_id`,
+        `region_path`,
+        `device_id`,
+        `channel_no`,
+        `has_child_device`,
+        `scene_id`,
+        `scene_type`,
+        `flow_type`,
+        `flow_in`,
+        `flow_out`,
+        `flow_in_out`,
+        `flow_year`,
+        `flow_day`,
+        `flow_month`,
+        `flow_hour`,
+        attribute_count,
+        flow_pass
+        )
+        values
+        <foreach collection="list" item="record" separator=",">
+            (
+            #{record.storeId},
+            #{record.regionPath},
+            #{record.deviceId},
+            #{record.channelNo},
+            #{record.hasChildDevice},
+            #{record.sceneId},
+            #{record.sceneType},
+            #{record.flowType},
+            #{record.flowIn},
+            #{record.flowOut},
+            #{record.flowInOut},
+            #{record.flowYear},
+            #{record.flowDay},
+            #{record.flowMonth},
+            #{record.flowHour},
+            #{record.attributeCount},
+            #{record.flowPass}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        flow_in=values(flow_in),
+        flow_out=values(flow_out),
+        flow_in_out=values(flow_in_out),
+        attribute_count=values(attribute_count),
+        flow_pass=values(flow_pass)
+    </insert>
+
+    <update id="updateFlowInOutById">
+        update  passenger_flow_record_${eid}
+        set
+        flow_in =#{flowIn},
+        flow_out=#{flowOut} ,
+        flow_in_out=#{flowInOut}
+        where id=#{id}
+    </update>
+
+    <select id="hourDay" resultType="com.coolcollege.intelligent.model.passengerflow.PassengerFlowRecordDO">
+        SELECT
+        flow_day as flowDay,
+        flow_hour as flowHour,
+        sum(flow_in)as flowIn,
+        sum(flow_out) as flowOut,
+        sum(flow_in_out) as flowInOut
+        from passenger_flow_record_${eid}
+        WHERE flow_type='hour'
+        <if test="deviceId!=null">
+            and device_id=#{deviceId}
+        </if>
+        <if test="storeIdList!=null and storeIdList.size>0">
+            <foreach collection="storeIdList" item="storeId" separator="," open=" and store_id in(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="regionPath!=null and regionPath!=''">
+            and region_path like concat(#{regionPath},'%')
+        </if>
+        <if test="sceneId!=null">
+            and scene_id=#{sceneId}
+        </if>
+        and flow_day>=#{startTime} and flow_day &lt;= #{endTime}
+        GROUP BY flow_day,flow_hour;
+    </select>
+
+    <select id="storeDay" resultType="com.coolcollege.intelligent.model.passengerflow.PassengerFlowRecordDO">
+        SELECT
+        store_id as storeId,
+        flow_day as flowDay,
+        flow_hour as flowHour,
+        sum(flow_in)as flowIn,
+        sum(flow_out) as flowOut,
+        sum(flow_in_out) as flowInOut
+        from passenger_flow_record_${eid}
+        WHERE flow_type='day'
+        <if test="storeIdList!=null and storeIdList.size>0">
+            <foreach collection="storeIdList" item="storeId" separator="," open=" and store_id in(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        and flow_day>=#{startTime} and flow_day &lt;= #{endTime}
+        GROUP BY store_id,flow_day,flow_hour;
+    </select>
+
+    <select id="pageStore" resultType="com.coolcollege.intelligent.model.passengerflow.vo.PassengerStoreDayVO">
+        SELECT
+        store_id as storeId
+        from passenger_flow_record_${eid}
+        <where>
+            flow_type='day'
+            <if test="storeIdList!=null and storeIdList.size>0">
+                <foreach collection="storeIdList" item="storeId" separator="," open=" and store_id in(" close=")">
+                    #{storeId}
+                </foreach>
+            </if>
+            <if test="regionPath!=null and regionPath!=''">
+                and region_path like concat(#{regionPath},'%')
+            </if>
+            and flow_day>=#{startTime} and flow_day &lt;= #{endTime}
+        </where>
+        GROUP BY store_id
+    </select>
+
+    <select id="storeRankByIn" resultType="com.coolcollege.intelligent.model.passengerflow.vo.PassengerStoreRankVO">
+        SELECT
+        t.storeId,
+        t.flowIn as personCount,
+        @curRank := @curRank + 1 AS ’rank‘
+        FROM
+        (select store_id as storeId,
+        sum(flow_in)as flowIn
+        from passenger_flow_record_${eid} tt
+        WHERE flow_type='day'
+        <if test="storeIdList!=null and storeIdList.size>0">
+            <foreach collection="storeIdList" item="storeId" separator="," open=" and store_id in(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="regionPath!=null and regionPath!=''">
+            and region_path like concat(#{regionPath},'%')
+        </if>
+        <if test="sceneId!=null">
+            and scene_id=#{sceneId}
+        </if>
+        and flow_day>=#{startTime} and flow_day &lt;= #{endTime}
+        GROUP BY store_id
+        )t,
+        (
+        SELECT @curRank := 0
+        ) q
+        ORDER BY t.flowIn desc
+    </select>
+    <select id="storeRankByInOut" resultType="com.coolcollege.intelligent.model.passengerflow.vo.PassengerStoreRankVO">
+        SELECT
+        t.storeId,
+        t.flowInOut as personCount,
+        @curRank := @curRank + 1 AS ’rank‘
+        FROM
+        (select store_id as storeId,
+        sum(flow_in_out)as flowInOut
+        from passenger_flow_record_${eid} tt
+        WHERE flow_type='day'
+
+        <if test="storeIdList!=null and storeIdList.size>0">
+            <foreach collection="storeIdList" item="storeId" separator="," open=" and store_id in(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="regionPath!=null and regionPath!=''">
+            and region_path like concat(#{regionPath},'%')
+        </if>
+        <if test="sceneId!=null">
+            and scene_id=#{sceneId}
+        </if>
+        and flow_day>=#{startTime} and flow_day &lt;= #{endTime}
+        GROUP BY store_id
+        )t,
+        (
+        SELECT @curRank := 0
+        ) q
+        ORDER BY t.flowInOut desc
+    </select>
+
+    <select id="flowInPercent" resultType="com.coolcollege.intelligent.model.passengerflow.vo.PassengerAchievementVO">
+        SELECT
+        flow_day as flowDay,
+        SUM(if(scene_type='store_in',flow_in,0)) as flowInCount,
+        SUM(if(scene_type='store_in_out',flow_in_out,0)) as flowInOutCount,
+        sum(flow_pass) as flowPassCount
+        from passenger_flow_record_${eid}
+        WHERE flow_type='day'
+        <if test="storeIdList!=null and storeIdList.size>0">
+            <foreach collection="storeIdList" item="storeId" separator="," open=" and store_id in(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="regionPath!=null and regionPath!=''">
+            and region_path like concat(#{regionPath},'%')
+        </if>
+        and flow_day>=#{startTime} and flow_day &lt;= #{endTime}
+        GROUP BY flow_day
+    </select>
+
+    <select id="passengerFlowList" resultType="com.coolcollege.intelligent.model.passengerflow.vo.PassengerStoreRankVO">
+        SELECT
+        store_id as storeId,
+        sum(flow_in)as flowIn,
+        sum(flow_out) as flowOut,
+        sum(flow_pass) as flowInOut,
+        ROUND(ifnull(sum(flow_in)/sum(flow_pass),0),2) as flowInPercent
+        from passenger_flow_record_${eid}
+        <where>
+            flow_type='day'
+            <if test="storeIdList!=null and storeIdList.size>0">
+                <foreach collection="storeIdList" item="storeId" separator="," open=" and store_id in(" close=")">
+                    #{storeId}
+                </foreach>
+            </if>
+            <if test="regionPath!=null and regionPath!=''">
+                and region_path like concat(#{regionPath},'%')
+            </if>
+            and flow_day>=#{startTime} and flow_day &lt;= #{endTime}
+        </where>
+        GROUP BY store_id
+    </select>
+
+    <select id="storeRankNew" resultType="com.coolcollege.intelligent.model.passengerflow.vo.PassengerStoreRankVO">
+        SELECT
+        store_id as storeId,
+        sum(flow_in)as flowIn,
+        sum(flow_out) as flowOut,
+        sum(flow_pass) as flowInOut,
+        ROUND(ifnull(sum(flow_in)/sum(flow_pass),0),2) as flowInPercent
+        from passenger_flow_record_${eid}
+        <where>
+            flow_type='day'
+            <if test="storeIdList!=null and storeIdList.size>0">
+                <foreach collection="storeIdList" item="storeId" separator="," open=" and store_id in(" close=")">
+                    #{storeId}
+                </foreach>
+            </if>
+            <if test="regionPath!=null and regionPath!=''">
+                and region_path like concat(#{regionPath},'%')
+            </if>
+            and flow_day>=#{startTime} and flow_day &lt;= #{endTime}
+        </where>
+        GROUP BY store_id
+        <if test="sortField != null and sortField != '' and sortType != null and sortType != ''">
+            order by ${sortField} ${sortType}
+        </if>
+        limit 5
+    </select>
+
+    <select id="trend" resultType="com.coolcollege.intelligent.model.passengerflow.vo.PassengerTrendVO">
+        SELECT
+        flow_day as flowDay,
+        sum(flow_in)as flowIn,
+        sum(flow_pass) as flowInOut,
+        ROUND(ifnull(sum(flow_in)/sum(flow_pass),0),2) as flowInPercent
+        from passenger_flow_record_${eid}
+        <where>
+            flow_type='day'
+            <if test="storeIdList!=null and storeIdList.size>0">
+                <foreach collection="storeIdList" item="storeId" separator="," open=" and store_id in(" close=")">
+                    #{storeId}
+                </foreach>
+            </if>
+            <if test="regionPath!=null and regionPath!=''">
+                and region_path like concat(#{regionPath},'%')
+            </if>
+            and flow_day>=#{startTime} and flow_day &lt;= #{endTime}
+        </where>
+        GROUP BY flow_day
+    </select>
+
+    <select id="getPassengerFlowOverview" resultType="com.coolcollege.intelligent.model.passengerflow.vo.PassengerDeviceHourDayVO">
+        SELECT
+        sum(flow_in)as flowIn,
+        sum(flow_out)as flowOut,
+        sum(flow_pass) as flowInOut,
+        ROUND(ifnull(sum(flow_in)/sum(flow_pass),0),2) as flowInPercent
+        from passenger_flow_record_${eid}
+        <where>
+            flow_type='day'
+            <if test="storeIdList!=null and storeIdList.size>0">
+                <foreach collection="storeIdList" item="storeId" separator="," open=" and store_id in(" close=")">
+                    #{storeId}
+                </foreach>
+            </if>
+            <if test="regionPath!=null and regionPath!=''">
+                and region_path like concat(#{regionPath},'%')
+            </if>
+            and flow_day>=#{startTime} and flow_day &lt;= #{endTime}
+        </where>
+    </select>
+
+    <resultMap id="passengerGroupResultMap" type="com.coolcollege.intelligent.model.passengerflow.vo.PassengerGroupVO">
+        <result property="personCount" column="person_count"/>
+        <association property="gender" javaType="com.coolcollege.intelligent.model.passengerflow.vo.PassengerGroupVO$Gender">
+            <result property="male" column="male_count"/>
+            <result property="female" column="female_count"/>
+            <result property="unknownGender" column="unknown_gender_count"/>
+        </association>
+        <association property="age" javaType="com.coolcollege.intelligent.model.passengerflow.vo.PassengerGroupVO$Age">
+            <result property="prime" column="prime_age_count"/>
+            <result property="middle" column="middle_age_count"/>
+            <result property="young" column="young_age_count"/>
+            <result property="old" column="old_age_count"/>
+            <result property="unknownAge" column="unknown_age_count"/>
+            <result property="child" column="child_age_count"/>
+            <result property="teenager" column="teenager_age_count"/>
+            <result property="middleAged" column="middle_aged_count"/>
+        </association>
+    </resultMap>
+
+    <select id="passengerGroupDistribution" resultMap="passengerGroupResultMap">
+        SELECT
+        sum(JSON_EXTRACT(attribute_count, '$.enter')) AS person_count,
+        sum(JSON_EXTRACT(attribute_count, '$.gender.female')) AS female_count,
+        sum(JSON_EXTRACT(attribute_count, '$.gender.male')) AS male_count,
+        sum(JSON_EXTRACT(attribute_count, '$.gender.unknownGender')) AS unknown_gender_count,
+        sum(JSON_EXTRACT(attribute_count, '$.age.prime')) AS prime_age_count,
+        sum(JSON_EXTRACT(attribute_count, '$.age.middle')) AS middle_age_count,
+        sum(JSON_EXTRACT(attribute_count, '$.age.young')) AS young_age_count,
+        sum(JSON_EXTRACT(attribute_count, '$.age.old')) AS old_age_count,
+        sum(JSON_EXTRACT(attribute_count, '$.age.unknownAge')) AS unknown_age_count,
+        sum(JSON_EXTRACT(attribute_count, '$.age.child')) AS child_age_count,
+        sum(JSON_EXTRACT(attribute_count, '$.age.teenager')) AS teenager_age_count,
+        sum(JSON_EXTRACT(attribute_count, '$.age.middleAged')) AS middle_aged_count
+        from passenger_flow_record_${eid}
+        <where>
+            flow_type='day'
+            <if test="storeIdList!=null and storeIdList.size>0">
+                <foreach collection="storeIdList" item="storeId" separator="," open=" and store_id in(" close=")">
+                    #{storeId}
+                </foreach>
+            </if>
+            <if test="regionPath!=null and regionPath!=''">
+                and region_path like concat(#{regionPath},'%')
+            </if>
+            and flow_day>=#{startTime} and flow_day &lt;= #{endTime}
+        </where>
+    </select>
+
+</mapper>

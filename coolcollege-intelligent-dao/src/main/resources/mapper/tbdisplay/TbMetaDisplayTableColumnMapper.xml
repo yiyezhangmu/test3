@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.tbdisplay.TbMetaDisplayTableColumnMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.tbdisplay.TbMetaDisplayTableColumnDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
+    <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId" />
+    <result column="column_name" jdbcType="VARCHAR" property="columnName" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
+    <result column="standard_pic" jdbcType="VARCHAR" property="standardPic" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="edit_user_id" jdbcType="VARCHAR" property="editUserId" />
+    <result column="edit_user_name" jdbcType="VARCHAR" property="editUserName" />
+    <result column="quick_column_id" jdbcType="BIGINT" property="quickColumnId" />
+    <result column="score" javaType="DECIMAL" property="score" />
+    <result column="check_type" property="checkType" />
+    <result column="is_ai_check" jdbcType="INTEGER" property="isAiCheck" />
+    <result column="ai_check_std_desc" jdbcType="VARCHAR" property="aiCheckStdDesc" />
+    <result column="must_pic" jdbcType="INTEGER" property="mustPic" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_time, edit_time, meta_table_id, column_name, create_user_id, order_num, 
+    standard_pic, description, deleted, create_user_name, edit_user_id, edit_user_name,quick_column_id,score,check_type, is_ai_check, ai_check_std_desc,
+    must_pic
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_meta_display_table_column_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <insert id="insert" parameterType="com.coolcollege.intelligent.model.tbdisplay.TbMetaDisplayTableColumnDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_meta_display_table_column_${enterpriseId} (create_time, edit_time, meta_table_id,
+      column_name, create_user_id, order_num, 
+      standard_pic, description, deleted, 
+      create_user_name, edit_user_id, edit_user_name,quick_column_id
+      )
+    values (now(), now(), #{metaTableId,jdbcType=BIGINT},
+      #{record.columnName,jdbcType=VARCHAR}, #{record.createUserId,jdbcType=VARCHAR}, #{record.orderNum,jdbcType=INTEGER},
+      #{record.standardPic,jdbcType=VARCHAR}, #{record.description,jdbcType=VARCHAR}, #{record.deleted,jdbcType=TINYINT},
+      #{record.createUserName,jdbcType=VARCHAR}, #{record.editUserId,jdbcType=VARCHAR}, #{record.editUserName,jdbcType=VARCHAR},
+       #{record.quickColumnId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.tbdisplay.TbMetaDisplayTableColumnDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_meta_display_table_column_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.editTime != null">
+        edit_time,
+      </if>
+      <if test="record.metaTableId != null">
+        meta_table_id,
+      </if>
+      <if test="record.columnName != null">
+        column_name,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.orderNum != null">
+        order_num,
+      </if>
+      <if test="record.standardPic != null">
+        standard_pic,
+      </if>
+      <if test="record.description != null">
+        description,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+      <if test="record.createUserName != null">
+        create_user_name,
+      </if>
+      <if test="record.editUserId != null">
+        edit_user_id,
+      </if>
+      <if test="record.editUserName != null">
+        edit_user_name,
+      </if>
+      <if test="record.quickColumnId != null">
+        quick_column_id,
+      </if>
+      <if test="record.score != null">
+        score,
+      </if>
+      <if test="record.checkType != null">
+        check_type,
+      </if>
+      <if test="record.isAiCheck != null">
+        is_ai_check,
+      </if>
+      <if test="record.aiCheckStdDesc != null">
+        ai_check_std_desc,
+      </if>
+      <if test="record.mustPic != null">
+        must_pic,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.createTime != null">
+        now(),
+      </if>
+      <if test="record.editTime != null">
+        now(),
+      </if>
+      <if test="record.metaTableId != null">
+        #{record.metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.columnName != null">
+        #{record.columnName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderNum != null">
+        #{record.orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.standardPic != null">
+        #{record.standardPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted,jdbcType=TINYINT},
+      </if>
+      <if test="record.createUserName != null">
+        #{record.createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.editUserId != null">
+        #{record.editUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.editUserName != null">
+        #{record.editUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.quickColumnId != null">
+        #{record.quickColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.score != null">
+        #{record.score},
+      </if>
+      <if test="record.checkType != null">
+        #{record.checkType},
+      </if>
+      <if test="record.isAiCheck != null">
+        #{record.isAiCheck},
+      </if>
+      <if test="record.aiCheckStdDesc != null">
+        #{record.aiCheckStdDesc},
+      </if>
+      <if test="record.mustPic != null">
+        #{record.mustPic},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.tbdisplay.TbMetaDisplayTableColumnDO">
+    update tb_meta_display_table_column_${enterpriseId}
+    <set>
+      <if test="record.editTime != null">
+        edit_time = #{record.editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.metaTableId != null">
+        meta_table_id = #{record.metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.columnName != null">
+        column_name = #{record.columnName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderNum != null">
+        order_num = #{record.orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.standardPic != null">
+        standard_pic = #{record.standardPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=TINYINT},
+      </if>
+      <if test="record.createUserName != null">
+        create_user_name = #{record.createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.editUserId != null">
+        edit_user_id = #{record.editUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.editUserName != null">
+        edit_user_name = #{record.editUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.quickColumnId != null">
+        quick_column_id = #{record.quickColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderNum != null">
+        order_num = #{record.orderNum},
+      </if>
+      <if test="record.score != null">
+        score = #{record.score},
+      </if>
+      <if test="record.checkType != null">
+        check_type = #{record.checkType},
+      </if>
+      <if test="record.isAiCheck != null">
+        is_ai_check = #{record.isAiCheck},
+      </if>
+      <if test="record.aiCheckStdDesc != null">
+        ai_check_std_desc = #{record.aiCheckStdDesc},
+      </if>
+      <if test="record.mustPic != null">
+        must_pic = #{record.mustPic},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectColumnListByTableIdList"
+          resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_meta_display_table_column_${enterpriseId}
+    where deleted = 0
+    <if test="tableIdList != null">
+      <foreach collection="tableIdList" separator="," open="and meta_table_id in(" close=")" item="tableId">
+        #{tableId}
+      </foreach>
+    </if>
+
+    order by order_num, create_time desc
+  </select>
+
+  <select id="selectAllColumnListByTableIdList"
+          resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_meta_display_table_column_${enterpriseId}
+    where 1 = 1
+    <if test="tableIdList != null">
+      <foreach collection="tableIdList" separator="," open="and meta_table_id in(" close=")" item="tableId">
+        #{tableId}
+      </foreach>
+    </if>
+
+    order by order_num, create_time desc
+  </select>
+
+  <select id="listByIdList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_meta_display_table_column_${enterpriseId}
+        where id in
+        <foreach item="item" index="index" collection="idList"
+                 open="(" separator="," close=")">
+            #{item,jdbcType=BIGINT}
+        </foreach>
+    </select>
+
+  <select id="listByTableIdList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_meta_display_table_column_${enterpriseId}
+    where meta_table_id in
+    <foreach item="item" index="index" collection="tableIdList"
+             open="(" separator="," close=")">
+      #{item,jdbcType=BIGINT}
+    </foreach>
+    and deleted = 0
+  </select>
+
+  <update id="deleteColumnByMetaTableId">
+    update tb_meta_display_table_column_${enterpriseId}
+    set deleted = 1
+    where meta_table_id in
+    <foreach collection="tableIdList" item="tableId" separator="," close=")" open="(">
+      #{tableId}
+    </foreach>
+  </update>
+  <delete id="deleteAbsoluteByTableIdList">
+    delete
+    from tb_meta_display_table_column_${enterpriseId}
+    where meta_table_id in(
+    <foreach collection="tableIdList" separator="," item="tableId">
+      #{tableId}
+    </foreach>
+    )
+  </delete>
+
+  <select id="listByMetaTableId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_meta_display_table_column_${enterpriseId}
+    where meta_table_id=#{metaTableId,jdbcType=BIGINT}
+  </select>
+
+  <select id="getById" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_meta_display_table_column_${enterpriseId}
+    where id=#{id,jdbcType=BIGINT}
+  </select>
+    <select id="selectColumnCountByTableId" resultType="java.lang.Integer">
+      select count(id)
+      from tb_meta_display_table_column_${enterpriseId}
+      where meta_table_id = #{tableId}
+      and deleted = 0
+    </select>
+
+  <select id="countColumnNumByTableIdList" resultType="com.coolcollege.intelligent.model.metatable.dto.TbMetaDisplayTableColumnCount">
+    select count(id) as columnNum, meta_table_id as metaTableId
+    from tb_meta_display_table_column_${enterpriseId}
+    where meta_table_id in
+    <foreach collection="tableIdList" item="tableId" separator="," close=")" open="(">
+      #{tableId}
+    </foreach>
+    group by meta_table_id
+  </select>
+
+
+</mapper>

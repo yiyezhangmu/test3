@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.activity.ActivityInfoMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.activity.entity.ActivityInfoDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="activity_title" jdbcType="VARCHAR" property="activityTitle"/>
+        <result column="activity_instruction" jdbcType="VARCHAR" property="activityInstruction"/>
+        <result column="cover_image" jdbcType="VARCHAR" property="coverImage"/>
+        <result column="activity_content" jdbcType="VARCHAR" property="activityContent"/>
+        <result column="join_rate" jdbcType="DECIMAL" property="joinRate"/>
+        <result column="like_count" jdbcType="INTEGER" property="likeCount"/>
+        <result column="comments_count" jdbcType="INTEGER" property="commentsCount"/>
+        <result column="comments_user_count" jdbcType="INTEGER" property="commentsUserCount"/>
+        <result column="view_count" jdbcType="INTEGER" property="viewCount"/>
+        <result column="need_join_user_count" jdbcType="INTEGER" property="needJoinUserCount"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="view_range_type" jdbcType="VARCHAR" property="viewRangeType"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, activity_title, activity_instruction, cover_image, activity_content, join_rate,
+        like_count, comments_count, comments_user_count, view_count, need_join_user_count,
+        start_time, end_time, view_range_type, status, create_user_id, update_user_id, create_time,
+        update_time, deleted
+    </sql>
+    <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into activity_info_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.activityTitle != null">
+                activity_title,
+            </if>
+            <if test="record.activityInstruction != null">
+                activity_instruction,
+            </if>
+            <if test="record.coverImage != null">
+                cover_image,
+            </if>
+            <if test="record.activityContent != null">
+                activity_content,
+            </if>
+            <if test="record.joinRate != null">
+                join_rate,
+            </if>
+            <if test="record.likeCount != null">
+                like_count,
+            </if>
+            <if test="record.commentsCount != null">
+                comments_count,
+            </if>
+            <if test="record.commentsUserCount != null">
+                comments_user_count,
+            </if>
+            <if test="record.viewCount != null">
+                view_count,
+            </if>
+            <if test="record.needJoinUserCount != null">
+                need_join_user_count,
+            </if>
+            <if test="record.startTime != null">
+                start_time,
+            </if>
+            <if test="record.endTime != null">
+                end_time,
+            </if>
+            <if test="record.viewRangeType != null">
+                view_range_type,
+            </if>
+            <if test="record.status != null">
+                status,
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id,
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id,
+            </if>
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.updateTime != null">
+                update_time,
+            </if>
+            <if test="record.deleted != null">
+                deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.activityTitle != null">
+                #{record.activityTitle},
+            </if>
+            <if test="record.activityInstruction != null">
+                #{record.activityInstruction},
+            </if>
+            <if test="record.coverImage != null">
+                #{record.coverImage},
+            </if>
+            <if test="record.activityContent != null">
+                #{record.activityContent},
+            </if>
+            <if test="record.joinRate != null">
+                #{record.joinRate},
+            </if>
+            <if test="record.likeCount != null">
+                #{record.likeCount},
+            </if>
+            <if test="record.commentsCount != null">
+                #{record.commentsCount},
+            </if>
+            <if test="record.commentsUserCount != null">
+                #{record.commentsUserCount},
+            </if>
+            <if test="record.viewCount != null">
+                #{record.viewCount},
+            </if>
+            <if test="record.needJoinUserCount != null">
+                #{record.needJoinUserCount},
+            </if>
+            <if test="record.startTime != null">
+                #{record.startTime},
+            </if>
+            <if test="record.endTime != null">
+                #{record.endTime},
+            </if>
+            <if test="record.viewRangeType != null">
+                #{record.viewRangeType},
+            </if>
+            <if test="record.status != null">
+                #{record.status},
+            </if>
+            <if test="record.createUserId != null">
+                #{record.createUserId},
+            </if>
+            <if test="record.updateUserId != null">
+                #{record.updateUserId},
+            </if>
+            <if test="record.createTime != null">
+                #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+                #{record.updateTime},
+            </if>
+            <if test="record.deleted != null">
+                #{record.deleted},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update activity_info_${enterpriseId}
+        <set>
+            <if test="record.activityTitle != null">
+                activity_title = #{record.activityTitle},
+            </if>
+            <if test="record.activityInstruction != null">
+                activity_instruction = #{record.activityInstruction},
+            </if>
+            <if test="record.coverImage != null">
+                cover_image = #{record.coverImage},
+            </if>
+            <if test="record.activityContent != null">
+                activity_content = #{record.activityContent},
+            </if>
+            <if test="record.joinRate != null">
+                join_rate = #{record.joinRate},
+            </if>
+            <if test="record.likeCount != null">
+                like_count = #{record.likeCount},
+            </if>
+            <if test="record.commentsCount != null">
+                comments_count = #{record.commentsCount},
+            </if>
+            <if test="record.commentsUserCount != null">
+                comments_user_count = #{record.commentsUserCount},
+            </if>
+            <if test="record.viewCount != null">
+                view_count = #{record.viewCount},
+            </if>
+            <if test="record.needJoinUserCount != null">
+                need_join_user_count = #{record.needJoinUserCount},
+            </if>
+            <if test="record.startTime != null">
+                start_time = #{record.startTime},
+            </if>
+            <if test="record.endTime != null">
+                end_time = #{record.endTime},
+            </if>
+            <if test="record.viewRangeType != null">
+                view_range_type = #{record.viewRangeType},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status},
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id = #{record.createUserId},
+            </if>
+            <if test="record.updateUserId != null">
+                update_user_id = #{record.updateUserId},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime},
+            </if>
+            <if test="record.deleted != null">
+                deleted = #{record.deleted},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <select id="getActivityDetail" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            activity_info_${enterpriseId}
+        where
+            id = #{activityId} and deleted = '0'
+    </select>
+
+    <select id="getH5ActivityPage" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            activity_info_${enterpriseId}
+        where
+            deleted = '0' and status in ('0','1','2')
+            <if test="activityIds != null and activityIds.size()>0">
+                and (view_range_type = 'all' or id in <foreach collection="activityIds" item="activityId" open="(" close=")" separator=",">#{activityId}</foreach>)
+            </if>
+            <if test="activityIds == null or activityIds.size() == 0">
+                and (view_range_type = 'all')
+            </if>
+        order by id desc
+    </select>
+
+    <select id="getPCActivityPage" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            activity_info_${enterpriseId}
+        where
+            deleted = '0'
+            <if test="activityTitle != null">
+                and activity_title like concat('%', #{activityTitle}, '%')
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="startTime !=null">
+                and create_time > #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[and create_time <= #{endTime}]]>
+            </if>
+            order by id desc
+    </select>
+    
+    <update id="addViewCount">
+        update activity_info_${enterpriseId} set view_count = view_count + 1 where id = #{activityId}
+    </update>
+</mapper>

@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.menu.SysMenuMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.menu.SysMenuDO"
+               id="SysMenuDOResult">
+        <result property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+        <result property="alias" column="alias"/>
+        <result property="path" column="path"/>
+        <result property="perms" column="perms"/>
+        <result property="source" column="source"/>
+        <result property="sort" column="sort"/>
+        <result property="category" column="category"/>
+        <result property="action" column="action"/>
+        <result property="platform" column="platform"/>
+        <result property="remark" column="remark"/>
+        <result property="type" column="type"/>
+        <result property="target" column="target"/>
+        <result property="component" column="component"/>
+        <result property="icon" column="icon"/>
+        <result property="menuType" column="menu_type"/>
+        <result property="env" column="env"/>
+        <result property="commonFunctionsIcon" column="common_functions_icon"/>
+        <result property="label" column="label"/>
+
+    </resultMap>
+
+    <select id="selectMenuAll" resultMap="SysMenuDOResult">
+        select
+        id ,
+        name ,
+        parent_id ,
+        code ,
+        alias ,
+        path ,
+        perms ,
+        source ,
+        sort ,
+        category ,
+        action ,
+        remark ,
+        platform,
+        type,
+        target,
+        component,
+        icon,
+        menu_type,
+        env,
+        common_functions_icon,
+        label
+        from sys_menu_v2
+        <where>
+            platform=#{platformType}
+            <if test="list!=null and list.size>0">
+                and parent_id in
+                <foreach collection="list" item="parentId" open="(" close=")" separator=",">
+                    #{parentId}
+                </foreach>
+            </if>
+            <if test="env != null and env != ''">
+                and (env = #{env} or env is null or env = '')
+            </if>
+        </where>
+
+
+    </select>
+
+    <select id="selectMenuAllOld" resultMap="SysMenuDOResult">
+        select
+        id ,
+        name ,
+        parent_id ,
+        code ,
+        alias ,
+        path ,
+        perms ,
+        source ,
+        sort ,
+        category ,
+        action ,
+        remark ,
+        platform,
+        type,
+        target,
+        component,
+        icon,
+        menu_type,
+        env
+        from sys_menu
+        <where>
+            platform=#{platformType}
+            <if test="list!=null and list.size>0">
+                and parent_id in
+                <foreach collection="list" item="parentId" open="(" close=")" separator=",">
+                    #{parentId}
+                </foreach>
+            </if>
+            <if test="env != null and env != ''">
+                and (env = #{env} or env is null or env = '')
+            </if>
+        </where>
+        order by sort
+
+
+    </select>
+
+
+
+
+    <insert id="insertMenu">
+    insert into sys_menu_v2(
+    parent_id,
+    code,
+    name,
+    alias,
+    path,
+    perms,
+    source,
+    sort,
+    category,
+    action,
+    remark,
+    platform,
+    type,
+    target,
+    component,
+    icon,
+    menu_type,
+    label,
+    env)
+    values (
+      #{menuDO.parentId},
+      #{menuDO.code},
+      #{menuDO.name},
+      #{menuDO.alias},
+      #{menuDO.path},
+      #{menuDO.perms},
+      #{menuDO.source},
+      #{menuDO.sort},
+      #{menuDO.category},
+      #{menuDO.action},
+      #{menuDO.remark},
+      #{menuDO.platform},
+      #{menuDO.type},
+      #{menuDO.target},
+      #{menuDO.component},
+      #{menuDO.icon},
+      #{menuDO.menuType},
+      #{menuDO.label},
+      #{menuDO.env}
+    )
+    </insert>
+
+    <update id="updateMenu" parameterType="com.coolcollege.intelligent.model.menu.SysMenuDO">
+        update sys_menu_v2 set
+        name=#{menuDO.name},
+        path=#{menuDO.path},
+        type=#{menuDO.type},
+        target=#{menuDO.target},
+        component=#{menuDO.component},
+        <if test="menuDO.icon!=null">
+            icon=#{menuDO.icon},
+        </if>
+        <if test="menuDO.commonFunctionsIcon!=null">
+            common_functions_icon=#{menuDO.commonFunctionsIcon},
+        </if>
+        <if test="menuDO.label!=null">
+            label=#{menuDO.label},
+        </if>
+        env=#{menuDO.env}
+        where id=#{menuDO.id}
+    </update>
+    <update id="updateMenuMove" parameterType="com.coolcollege.intelligent.model.menu.SysMenuDO">
+        update sys_menu_v2 set
+
+        parent_id=#{parentId}
+        where id=#{id}
+    </update>
+
+    <delete id="batchDeleteMenu">
+        delete from sys_menu_v2
+        where
+        <if test="list!=null and list.size>0">
+            <foreach collection="list" open="id in (" item="item" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+    </delete>
+
+    <update id="updateMenuSort">
+        update sys_menu_v2
+        set sort =
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case id" close="end">
+            when #{item.id} then ifnull(#{item.sort},sort)
+        </foreach>
+        where id in
+        <foreach collection="list" index="index" item="item"
+                 separator="," open="(" close=")">
+            #{item.id,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <select id="selectMenu" resultMap="SysMenuDOResult">
+        select *
+        from sys_menu_v2
+        where id = #{id}
+
+    </select>
+    <select id="selectMaxSort" resultType="java.lang.Integer">
+        select sort
+        from sys_menu_v2
+      order by sort desc
+     limit 0,1
+    </select>
+
+    <select id="selectMenuByMenuType" resultType="com.coolcollege.intelligent.model.menu.SysMenuDO">
+        select
+        id ,
+        parent_id ,
+        menu_type
+        from sys_menu_v2
+        <where>
+            platform= #{platformType}
+            and menu_type = #{menuType}
+            <if test="env != null and env != ''">
+                and (env = #{env} or env is null or env = '')
+            </if>
+        </where>
+        order by sort
+    </select>
+
+    <select id="selectMenuByIds" resultType="com.coolcollege.intelligent.model.menu.SysMenuDO">
+        select
+        id ,
+        name ,
+        parent_id ,
+        code ,
+        alias ,
+        path ,
+        perms ,
+        source ,
+        sort ,
+        category ,
+        action ,
+        remark ,
+        platform,
+        type,
+        target,
+        component,
+        icon,
+        menu_type,
+        common_functions_icon
+        from sys_menu_v2
+        <where>
+            platform=#{platformType}
+            <if test="ids != null and ids.size>0">
+                and id in
+                <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="env != null and env != ''">
+                and (env = #{env} or env is null or env = '')
+            </if>
+        </where>
+        order by sort
+    </select>
+
+    <select id="selectParentIdByIds" resultType="java.lang.Long">
+        select
+        parent_id
+        from sys_menu_v2
+        <where>
+            platform=#{platformType}
+            <if test="ids != null and ids.size>0">
+                and id in
+                <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="env != null and env != ''">
+                and (env = #{env} or env is null or env = '')
+            </if>
+        </where>
+        order by sort
+    </select>
+
+    <select id="selectByIdByParentId" resultType="java.lang.Long">
+        select
+        id
+        from sys_menu_v2
+        <where>
+            platform=#{platformType}
+            <if test="parentIds != null and parentIds.size>0">
+                and parent_id in
+                <foreach collection="parentIds" item="parentId" open="(" close=")" separator=",">
+                    #{parentId}
+                </foreach>
+            </if>
+            <if test="env != null and env != ''">
+                and (env = #{env} or env is null or env = '')
+            </if>
+        </where>
+        order by sort
+    </select>
+
+    <select id="selectMenuByMenuTypeOld" resultType="com.coolcollege.intelligent.model.menu.SysMenuDO">
+        select
+        id ,
+        parent_id ,
+        menu_type
+        from sys_menu
+        <where>
+            platform= #{platformType}
+            and menu_type = #{menuType}
+            <if test="env != null and env != ''">
+                and (env = #{env} or env is null or env = '')
+            </if>
+        </where>
+        order by sort
+    </select>
+
+    <select id="selectMenuByIdsOld" resultType="com.coolcollege.intelligent.model.menu.SysMenuDO">
+        select
+        id ,
+        name ,
+        parent_id ,
+        code ,
+        alias ,
+        path ,
+        perms ,
+        source ,
+        sort ,
+        category ,
+        action ,
+        remark ,
+        platform,
+        type,
+        target,
+        component,
+        icon,
+        menu_type
+        from sys_menu
+        <where>
+            platform=#{platformType}
+            <if test="ids != null and ids.size>0">
+                and id in
+                <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="env != null and env != ''">
+                and (env = #{env} or env is null or env = '')
+            </if>
+        </where>
+        order by sort
+    </select>
+
+    <select id="selectParentIdByIdsOld" resultType="java.lang.Long">
+        select
+        parent_id
+        from sys_menu
+        <where>
+            platform=#{platformType}
+            <if test="ids != null and ids.size>0">
+                and id in
+                <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="env != null and env != ''">
+                and (env = #{env} or env is null or env = '')
+            </if>
+        </where>
+        order by sort
+    </select>
+
+    <select id="selectByIdByParentIdOld" resultType="java.lang.Long">
+        select
+        id
+        from sys_menu
+        <where>
+            platform=#{platformType}
+            <if test="parentIds != null and parentIds.size>0">
+                and parent_id in
+                <foreach collection="parentIds" item="parentId" open="(" close=")" separator=",">
+                    #{parentId}
+                </foreach>
+            </if>
+            <if test="env != null and env != ''">
+                and (env = #{env} or env is null or env = '')
+            </if>
+        </where>
+        order by sort
+    </select>
+
+
+</mapper>

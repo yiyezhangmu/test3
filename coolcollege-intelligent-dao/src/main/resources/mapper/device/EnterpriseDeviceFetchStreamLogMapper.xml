@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.device.EnterpriseDeviceFetchStreamLogMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.device.EnterpriseDeviceFetchStreamLogDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="enterprise_id" jdbcType="VARCHAR" property="enterpriseId" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="third_store_id" jdbcType="VARCHAR" property="thirdStoreId" />
+    <result column="device_id" jdbcType="VARCHAR" property="deviceId" />
+    <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
+    <result column="channel_no" jdbcType="VARCHAR" property="channelNo" />
+    <result column="app_id" jdbcType="VARCHAR" property="appId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, enterprise_id, store_id, third_store_id, device_id, device_name, channel_no, 
+    app_id, create_time
+  </sql>
+
+  <insert id="insertLog" parameterType="com.coolcollege.intelligent.model.device.EnterpriseDeviceFetchStreamLogDO">
+    insert into enterprise_device_fetch_stream_log (enterprise_id, store_id, third_store_id, device_id, device_name, channel_no,
+    app_id, create_time)
+    values (#{record.enterpriseId}, #{record.storeId}, #{record.thirdStoreId}, #{record.deviceId}, #{record.deviceName}, #{record.channelNo}, #{record.appId}, now())
+  </insert>
+
+</mapper>

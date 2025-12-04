@@ -1,0 +1,55 @@
+package com.coolcollege.intelligent.model.fsGroup;
+
+import java.util.Date;
+import java.io.Serializable;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * 群顶部菜单映射表(FsGroupMenuMapping)实体类
+ *
+ * @author CFJ
+ * @since 2024-05-08 18:58:36
+ */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class FsGroupMenuMappingDO implements Serializable {
+    private static final long serialVersionUID = -70273081475478507L;
+    /**
+     * 主键
+     */    
+    @ApiModelProperty("主键")
+    private Long id;
+    /**
+     * 顶部菜单id
+     */    
+    @ApiModelProperty("顶部菜单id")
+    private Long menuId;
+    /**
+     * 群id
+     */    
+    @ApiModelProperty("群id")
+    private String chatId;
+    /**
+     * 飞书菜单id，用做删除修改
+     */    
+    @ApiModelProperty("飞书菜单id，用做删除修改")
+    private String levelId;
+    /**
+     * 创建人
+     */    
+    @ApiModelProperty("创建人")
+    private String createUser;
+    /**
+     * 创建时间
+     */    
+    @ApiModelProperty("创建时间")
+    private Date createTime;
+
+}
+

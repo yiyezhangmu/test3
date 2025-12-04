@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseUserAppMenuMapper" >
+    <insert id="batchInsertEnterpriseUserAppMenu">
+        insert into enterprise_user_app_menu_${eid}
+        (
+        user_id,
+        menu_id,
+        sort
+        )
+        values
+        <foreach collection="userAppMenuDOList" separator="," item="appMenuDO">
+            (
+            #{appMenuDO.userId},
+            #{appMenuDO.menuId},
+            #{appMenuDO.sort}
+            )
+        </foreach>
+    </insert>
+    <select id="selectEnterpriseUserAppMenuByUser" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserAppMenuDO">
+        select
+        id,
+        user_id as userId,
+        menu_id as menuId,
+        sort
+        from enterprise_user_app_menu_${eid}
+        where user_id=#{userId} and menu_level = #{menuLevel}
+        order by sort asc
+    </select>
+    <delete id="deleteEnterpriseUserAppMenuByUser">
+        delete from enterprise_user_app_menu_${eid}
+        where user_id=#{userId} and menu_level = #{menuLevel}
+    </delete>
+
+    <select id="selectEnterpriseUserAppMenuByEid" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseUserAppMenuDO">
+        select
+        id,
+        user_id as userId,
+        menu_id as menuId,
+        sort
+        from enterprise_user_app_menu_${eid}
+        <if test="maxId != null">
+            <![CDATA[where id <= #{maxId}]]>
+        </if>
+        order by id desc
+    </select>
+
+    <insert id="batchInsert">
+        insert into enterprise_user_app_menu_${eid}
+        (
+        user_id,
+        menu_id,
+        sort,
+        menu_level
+        )
+        values
+        <foreach collection="userAppMenuDOList" separator="," item="appMenuDO">
+            (
+            #{appMenuDO.userId},
+            #{appMenuDO.menuId},
+            #{appMenuDO.sort},
+            #{appMenuDO.menuLevel}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

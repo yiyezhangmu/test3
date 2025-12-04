@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseAuditInfoMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.coolcollege.intelligent.model.enterprise.EnterpriseAuditInfoDO" id="enterpriseAuditInfoMap">
+        <result property="id" column="id"/>
+        <result property="enterpriseId" column="enterprise_id"/>
+        <result property="enterpriseName" column="enterprise_name"/>
+        <result property="auditStatus" column="audit_status"/>
+        <result property="auditUserId" column="audit_user_id"/>
+        <result property="applyUserName" column="apply_user_name"/>
+        <result property="password" column="password"/>
+        <result property="mobile" column="mobile"/>
+        <result property="email" column="email"/>
+        <result property="remark" column="remark"/>
+        <result property="auditTime" column="audit_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+		<result property="appType" column="app_type"/>
+    </resultMap>
+
+	<sql id="Base_Column">
+		`id`,
+		`enterprise_id`,
+		`enterprise_name`,
+		`audit_status`,
+		`audit_user_id`,
+		`apply_user_name`,
+		`password`,
+		`mobile`,
+		`email`,
+		`remark`,
+		`audit_time`,
+		`create_time`,
+		`update_time`,
+		`app_type`
+	</sql>
+
+	<select id="selectById" resultMap="enterpriseAuditInfoMap">
+		select
+		<include refid="Base_Column"/>
+		from enterprise_audit_info where id = #{id}
+	</select>
+
+	
+ 	<select id="count" resultType="int">
+		select count(id) from enterprise_audit_info
+	</select>
+	<select id="enterpriseAuditList"
+			resultType="com.coolcollege.intelligent.model.enterprise.vo.EnterpriseAuditVO">
+		select
+		`id`,
+		enterprise_id,
+		`enterprise_name`,
+		`audit_status`,
+		`apply_user_name`,
+		`mobile`,
+		`email`,
+		`remark`,
+		`create_time`
+		from enterprise_audit_info where 1 = 1
+		<if test="enterpriseName !=null and enterpriseName !=''">
+			and enterprise_name like concat('%', #{enterpriseName}, '%')
+		</if>
+		<if test="auditStatus !=null">
+			and audit_status = #{auditStatus}
+		</if>
+		ORDER BY create_time DESC
+	</select>
+
+
+	<insert id="save" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseAuditInfoDO" useGeneratedKeys="true" keyProperty="entity.id">
+		insert into enterprise_audit_info
+		(
+			`enterprise_id`,
+			`enterprise_name`, 
+			`audit_status`, 
+			`audit_user_id`,
+			`apply_user_name`,
+			`password`,
+			`mobile`,
+			`email`,
+			`remark`, 
+			`create_time`,
+		 	`app_type`
+		)
+		values
+		(
+			#{entity.enterpriseId},
+			#{entity.enterpriseName},
+			#{entity.auditStatus},
+			#{entity.auditUserId},
+			#{entity.applyUserName},
+			#{entity.password},
+			#{entity.mobile},
+			#{entity.email},
+			#{entity.remark},
+			now(),
+		 	#{entity.appType}
+		)
+	</insert>
+	 
+	<update id="updateById" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseAuditInfoDO">
+		update enterprise_audit_info 
+		<set>
+			<if test="entity.enterpriseId != null and entity.enterpriseId !=''" >`enterprise_id` = #{entity.enterpriseId}, </if>
+			<if test="entity.enterpriseName != null and entity.enterpriseName !=''" >`enterprise_name` = #{entity.enterpriseName}, </if>
+			<if test="entity.auditStatus != null" >`audit_status` = #{entity.auditStatus}, </if>
+			<if test="entity.auditUserId != null and entity.auditUserId !=''" >`audit_user_id` = #{entity.auditUserId}, </if>
+			<if test="entity.applyUserName != null and entity.applyUserName !=''" >`apply_user_name` = #{entity.applyUserName}, </if>
+			<if test="entity.password != null and entity.password !=''" >`password` = #{entity.password}, </if>
+			<if test="entity.mobile != null and entity.mobile !=''" >`mobile` = #{entity.mobile}, </if>
+			<if test="entity.email != null and entity.email !=''" >`email` = #{entity.email}, </if>
+			<if test="entity.remark != null and entity.remark !=''" >`remark` = #{entity.remark}, </if>
+			<if test="entity.auditTime != null" >`audit_time` = #{entity.auditTime}, </if>
+			`update_time` = now()
+		</set>
+		where id = #{entity.id}
+	</update>
+
+	<update id="auditEnterprise">
+		update enterprise_audit_info
+		<set>
+		    `audit_status` = #{entity.auditStatus},
+			<if test="entity.auditUserId != null and entity.auditUserId !=''" >`audit_user_id` = #{entity.auditUserId}, </if>
+			`remark` = #{entity.remark},
+			`audit_time` = now(),
+			`update_time` = now()
+		</set>
+		where id = #{entity.id}
+	</update>
+
+	<delete id="deleteById">
+		delete from enterprise_audit_info where id = #{id}
+	</delete>
+	
+	<delete id="deleteBatchByIds">
+		delete from enterprise_audit_info where id in 
+		<foreach item="id" collection="ids" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

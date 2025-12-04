@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.log.LogMapper">
+
+    <insert id="insertLogOperate">
+    insert into log_operate_${enterpriseId}
+    (operate_module, operate_type, operate_desc, operate_method, request_param,
+     response_param, user_id, user_name, ip, url,create_time)
+    values
+    (#{log.operateModule}, #{log.operateType},
+     #{log.operateDesc}, #{log.operateMethod}, #{log.requestParam},
+     #{log.responseParam}, #{log.userId},#{log.userName},
+     #{log.ip}, #{log.url},#{log.createTime})
+    </insert>
+
+    <insert id="insertExceptionOperate">
+    insert into log_exception_${enterpriseId}
+    (request_param, operate_method, exception_name, exception_message, user_id, user_name, ip, url,create_time)
+    values
+    (#{exceptionLog.requestParam}, #{exceptionLog.operateMethod},
+     #{exceptionLog.exceptionName}, #{exceptionLog.exceptionMessage},
+     #{exceptionLog.userId},#{exceptionLog.userName},
+     #{exceptionLog.ip}, #{exceptionLog.url},#{exceptionLog.createTime})
+    </insert>
+</mapper>

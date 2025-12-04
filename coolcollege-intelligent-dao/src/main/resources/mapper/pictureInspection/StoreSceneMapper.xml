@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.pictureInspection.StoreSceneMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.pictureInspection.StoreSceneDo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+        <result column="scene_type" property="sceneType"/>
+
+    </resultMap>
+
+
+
+    <insert id="insert" >
+        INSERT INTO store_scene_${enterpriseId} ( NAME, create_time, update_time,scene_type)
+        VALUES
+        (#{storeSceneDo.name}, now( ), now( ),#{storeSceneDo.sceneType})
+    </insert>
+
+    <update id="updateSceneById">
+        update store_scene_${enterpriseId}
+        set name = #{storeSceneName}, update_time = now(),scene_type=#{sceneType}
+        where id = #{storeSceneId}
+    </update>
+
+    <delete id="deleteById">
+        update store_scene_${enterpriseId}
+        set deleted = 1 , update_time = now()
+        where id = #{storeSceneId}
+    </delete>
+
+    <select id="getStoreSceneList" resultMap="BaseResultMap">
+        select
+        id,
+        name,
+        create_time,
+        update_time,
+        remark,
+        deleted,
+        scene_type
+        from store_scene_${enterpriseId}
+        where deleted = 0
+        order by id
+    </select>
+
+    <select id="getStoreSceneByName" resultMap="BaseResultMap">
+        select
+        id,
+        name,
+        create_time,
+        update_time,
+        remark,
+        deleted
+        from store_scene_${enterpriseId} where deleted = 0 and name  = #{name}
+    </select>
+
+    <select id="getStoreSceneById" resultMap="BaseResultMap">
+        select
+        id,
+        name,
+        create_time,
+        update_time,
+        remark,
+        deleted,
+        scene_type
+        from store_scene_${enterpriseId} where deleted = 0 and id = #{id}
+    </select>
+    <select id="getStoreSceneListForName" resultMap="BaseResultMap">
+        select
+            id,
+            name
+        from store_scene_${enterpriseId}
+        <where>
+            <if test="idList != null and idList.size()>0">
+                and id in (
+                <foreach collection="idList" item="id" separator=",">
+                    #{id}
+                </foreach>
+                )
+            </if>
+        </where>
+    </select>
+    <delete id="realDeleteById">
+        delete  from store_scene_${enterpriseId}
+        where id in (
+        <foreach collection="idList" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+</mapper>

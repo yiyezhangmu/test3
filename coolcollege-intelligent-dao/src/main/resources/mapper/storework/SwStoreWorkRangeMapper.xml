@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.storework.SwStoreWorkRangeMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.storework.SwStoreWorkRangeDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="store_work_id" jdbcType="BIGINT" property="storeWorkId" />
+    <result column="mapping_id" jdbcType="VARCHAR" property="mappingId" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, store_work_id, mapping_id, type, deleted
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sw_store_work_range_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sw_store_work_range_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.storework.SwStoreWorkRangeDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sw_store_work_range_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.storeWorkId != null">
+        store_work_id,
+      </if>
+      <if test="record.mappingId != null">
+        mapping_id,
+      </if>
+      <if test="record.type != null">
+        type,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.storeWorkId != null">
+        #{record.storeWorkId,jdbcType=BIGINT},
+      </if>
+      <if test="record.mappingId != null">
+        #{record.mappingId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.storework.SwStoreWorkRangeDO">
+    update sw_store_work_range_${enterpriseId}
+    <set>
+      <if test="record.storeWorkId != null">
+        store_work_id = #{record.storeWorkId,jdbcType=BIGINT},
+      </if>
+      <if test="record.mappingId != null">
+        mapping_id = #{record.mappingId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != storeWorkId">
+         and t.store_work_id = #{storeWorkId,jdbcType=BIGINT}
+      </if>
+      <if test="null != mappingId">
+         and t.mapping_id = #{mappingId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != type">
+         and t.type = #{type,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="selectListByStoreWorkIds"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_store_work_range_${enterpriseId}
+    where store_work_id in
+    <foreach collection="storeWorkIds" index="index" item="storeWorkId"
+             separator="," open="(" close=")">
+      #{storeWorkId}
+    </foreach>
+  </select>
+
+  <insert id="batchInsertStoreWorkRange">
+    insert into sw_store_work_range_${enterpriseId}
+    (store_work_id, mapping_id,type,deleted)values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.storeWorkId},#{item.mappingId},#{item.type},#{item.deleted})
+    </foreach>
+  </insert>
+
+  <select id="listBystoreWorkIds" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    sw_store_work_range_${enterpriseId}
+    where store_work_id in
+    <foreach collection="storeWorkIdList" item="storeWorkId" separator="," open="(" close=")">
+      #{storeWorkId}
+    </foreach>
+  </select>
+
+  <delete id="delStoreRangeByStoreWorkId">
+        delete from sw_store_work_range_${enterpriseId}
+        where store_work_id= #{storeWorkId}
+  </delete>
+
+</mapper>

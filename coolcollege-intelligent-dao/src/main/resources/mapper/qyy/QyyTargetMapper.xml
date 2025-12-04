@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.qyy.QyyTargetMapper">
+
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.qyy.josiny.QyyTargetDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName"/>
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId"/>
+        <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="third_dept_id" jdbcType="VARCHAR" property="thirdDeptId"/>
+        <result column="store_id" jdbcType="VARCHAR" property="storeId"/>
+        <result column="store_name" jdbcType="VARCHAR" property="storeName"/>
+        <result column="region_id" jdbcType="VARCHAR" property="regionId"/>
+        <result column="region_path" jdbcType="VARCHAR" property="regionPath"/>
+        <result column="time_type" jdbcType="VARCHAR" property="timeType"/>
+        <result column="time_value" jdbcType="VARCHAR" property="timeValue"/>
+        <result column="goal_amt" jdbcType="DECIMAL" property="goalAmt"/>
+        <result column="unit_yield_target" jdbcType="DECIMAL" property="unitYieldTarget"/>
+        <result column="sales_target" jdbcType="DECIMAL" property="salesTarget"/>
+        <result column="push_type" jdbcType="VARCHAR" property="pushType"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        id,
+        create_user_id,
+        create_user_name,
+        update_user_id,
+        update_user_name,
+        create_time,
+        update_time,
+        third_dept_id,
+        store_id,
+        store_name,
+        region_id,
+        region_path,
+        time_type,
+        time_value,
+        goal_amt,
+        unit_yield_target,
+        sales_target,
+        push_type
+    </sql>
+
+    <insert id="insert">
+        <foreach collection="updateOrInsertList" separator=";" item="record">
+            insert into qyy_target_${enterpriseId}
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="record.thirdDeptId != null">
+                    third_dept_id,
+                </if>
+                <if test="record.storeId != null">
+                    store_id,
+                </if>
+                <if test="record.storeName != null">
+                    store_name,
+                </if>
+                <if test="record.regionId != null">
+                    region_id,
+                </if>
+                <if test="record.regionPath != null">
+                    region_path,
+                </if>
+                <if test="record.timeType != null">
+                    time_type,
+                </if>
+                <if test="record.timeValue != null">
+                    time_value,
+                </if>
+                <if test="record.goalAmt != null">
+                    goal_amt,
+                </if>
+                <if test="record.unitYieldTarget != null">
+                    unit_yield_target,
+                </if>
+                <if test="record.salesTarget != null">
+                    sales_target,
+                </if>
+                <if test="record.pushType != null">
+                    push_type,
+                </if>
+                <if test="record.createUserId != null">
+                    create_user_id,
+                </if>
+                <if test="record.createUserName != null">
+                    create_user_name,
+                </if>
+                <if test="record.updateUserId != null">
+                    update_user_id,
+                </if>
+                <if test="record.updateUserName != null">
+                    update_user_name,
+                </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="record.thirdDeptId != null">
+                    #{record.thirdDeptId},
+                </if>
+                <if test="record.storeId != null">
+                    #{record.storeId},
+                </if>
+                <if test="record.storeName != null">
+                    #{record.storeName},
+                </if>
+                <if test="record.regionId != null">
+                    #{record.regionId},
+                </if>
+                <if test="record.regionPath != null">
+                    #{record.regionPath},
+                </if>
+                <if test="record.timeType != null">
+                    #{record.timeType},
+                </if>
+                <if test="record.timeValue != null">
+                    #{record.timeValue},
+                </if>
+                <if test="record.goalAmt != null">
+                    #{record.goalAmt},
+                </if>
+                <if test="record.unitYieldTarget != null">
+                    #{record.unitYieldTarget},
+                </if>
+                <if test="record.salesTarget != null">
+                    #{record.salesTarget},
+                </if>
+                <if test="record.pushType != null">
+                    #{record.pushType},
+                </if>
+                <if test="record.createUserId != null">
+                    #{record.createUserId},
+                </if>
+                <if test="record.createUserName != null">
+                    #{record.createUserName},
+                </if>
+                <if test="record.updateUserId != null">
+                    #{record.updateUserId},
+                </if>
+                <if test="record.updateUserName != null">
+                    #{record.updateUserName},
+                </if>
+            </trim>
+            ON DUPLICATE KEY UPDATE
+            goal_amt = values(goal_amt),
+            unit_yield_target = values(unit_yield_target),
+            sales_target = values(sales_target),
+            update_user_id = values(update_user_id),
+            update_user_name = values(update_user_name)
+        </foreach>
+    </insert>
+    <select id="selectBySynDingDeptId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        qyy_target_${enterpriseId}
+        WHERE third_dept_id = #{req.synDingDeptId}
+        AND time_type = #{req.timeType}
+        AND time_value = #{req.timeValue}
+    </select>
+    <select id="selectListByThirdDeptIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        qyy_target_${enterpriseId}
+        <where>
+
+            <foreach collection="subThirdDeptIds" item="thirdDeptId" open="third_dept_id in (" separator="," close=")">
+                #{thirdDeptId}
+            </foreach>
+
+            AND
+            time_type = #{req.timeType}
+            AND
+            time_value = #{req.timeValue}
+        </where>
+    </select>
+    <select id="selectBySynDingDeptIdAndWeek" resultType="com.coolcollege.intelligent.model.qyy.josiny.QyyTargetDO">
+        SELECT
+        SUM(goal_amt) as goalAmt,
+        SUM(unit_yield_target) as unitYieldTarget,
+        SUM(sales_target) as salesTarget
+        FROM qyy_target_${enterpriseId}
+        WHERE
+        time_type = #{req.timeType}
+        AND
+        third_dept_id = #{req.synDingDeptId}
+        AND
+        time_value between #{monday} and #{sunday}
+    </select>
+    <select id="selectListByThirdDeptIdsByWeek" resultType="com.coolcollege.intelligent.model.qyy.josiny.QyyTargetDO">
+        SELECT
+        store_name,
+        SUM(goal_amt) as goalAmt,
+        SUM(unit_yield_target) as unitYieldTarget,
+        SUM(sales_target) as salesTarget
+        FROM
+        qyy_target_${enterpriseId}
+        <where>
+            <foreach collection="subThirdDeptIds" item="thirdDeptId" open="third_dept_id in (" separator="," close=")">
+                #{thirdDeptId}
+            </foreach>
+            AND
+            time_type = #{req.timeType}
+            AND
+            time_value between #{monday} and #{sunday}
+        </where>
+        GROUP BY third_dept_id,store_name
+    </select>
+
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.video.VideoPollingMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.video.VideoPollingDO"
+               id="baseMap">
+        <result property="id" column="id"/>
+        <result property="videoPollingName" column="video_polling_name"/>
+        <result property="splitScreenNum" column="split_screen_num"/>
+        <result property="playInterval" column="play_interval"/>
+        <result property="deviceIdListStr" column="device_id_list_str"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="updateId" column="update_id"/>
+    </resultMap>
+    <insert id="insertVideoPolling">
+
+       INSERT INTO video_polling_${enterpriseId}
+            (
+            video_polling_name,
+            split_screen_num,
+            play_interval,
+            device_id_list_str,
+            create_time,
+            create_id
+            )VALUES (
+            #{videoPollingDO.videoPollingName},
+            #{videoPollingDO.splitScreenNum},
+            #{videoPollingDO.playInterval},
+            #{videoPollingDO.deviceIdListStr},
+            #{videoPollingDO.createTime},
+            #{videoPollingDO.createId}
+
+            )
+
+    </insert>
+
+    <update id="updateVideoPolling">
+      UPDATE  video_polling_${enterpriseId}
+            SET
+           video_polling_name = #{videoPollingDO.videoPollingName},
+           split_screen_num = #{videoPollingDO.splitScreenNum},
+           play_interval = #{videoPollingDO.playInterval},
+           device_id_list_str =#{videoPollingDO.deviceIdListStr},
+           update_time=#{videoPollingDO.updateTime},
+           update_id=#{videoPollingDO.updateId}
+
+        where id=#{videoPollingDO.id}
+    </update>
+
+    <delete id="deleteVideoPolling">
+        DELETE FROM video_polling_${enterpriseId}
+        WHERE id=#{id}
+    </delete>
+
+    <select id="listVideoPolling" resultMap="baseMap">
+        select *
+        from video_polling_${enterpriseId}
+    </select>
+    <select id="getVideoPollingById" resultMap="baseMap">
+        select *
+        from video_polling_${enterpriseId}
+        where
+        id=#{id}
+    </select>
+</mapper>

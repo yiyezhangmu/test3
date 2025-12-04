@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.login.LoginRecordMapper">
+
+    <insert id="insertLoginRecording">
+    insert into login_record_${enterpriseId}
+    (
+    user_id,
+    create_time
+    )
+    values (
+    #{userId},
+    #{createTime}
+    )
+</insert>
+
+    <select id="countLoginRecord" resultType="com.coolcollege.intelligent.model.login.UserLoginCountDTO">
+        SELECT user_id  as userId, count(1) as LoginCount
+        FROM login_record_${enterpriseId}
+        <where>
+            <if test="userIdList !=null and userIdList.size>0">
+                <foreach collection="userIdList" item="userId" open="user_id in (" separator="," close=")">
+                    #{userId}
+                </foreach>
+            </if>
+        </where>
+        group by user_id
+    </select>
+    <select id="countEnterpriseLogin" resultType="com.coolcollege.intelligent.model.login.EnterpriseLoginCountDTO">
+        select a.loginCount,a.lastLoginTime,b.userLoginCount, c.allUserCount from (SELECT count(1) as loginCount,max(create_time) lastLoginTime
+        FROM login_record_${enterpriseId}) a
+				,
+				(select COUNT(distinct(user_id)) as userLoginCount from login_record_${enterpriseId}) b
+				,
+				(select COUNT(1) as allUserCount from enterprise_user_${enterpriseId} where active = true) c
+    </select>
+</mapper>

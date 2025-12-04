@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.aliyun.PersonNotifyRecordMapper">
+
+    <insert id="insertPersonNotifyRecord">
+        insert into person_notify_record_${eid} (
+        customer_id,
+        device_id,
+        source_pic_url,
+        score,
+        shot_time,
+        create_time,
+        target_pic_url,
+        store_id,
+        person_group_name
+        )values (
+        #{personNotifyRecordDO.customerId},
+        #{personNotifyRecordDO.deviceId},
+        #{personNotifyRecordDO.sourcePicUrl},
+        #{personNotifyRecordDO.score},
+        #{personNotifyRecordDO.shotTime},
+        #{personNotifyRecordDO.createTime},
+        #{personNotifyRecordDO.targetPicUrl},
+        #{personNotifyRecordDO.storeId},
+        #{personNotifyRecordDO.personGroupName}
+        )
+    </insert>
+    <select id="listPersonHistory" resultType="com.coolcollege.intelligent.model.aliyun.vo.AliyunVdsPersonHistoryVO">
+        select
+         customer_id as customerId,
+         max(shot_time) as lastShotTime,
+         count(customer_id) as historyCount
+         from person_notify_record_${eid}
+        <where>
+            <if test="storeId!=null and storeId!=''">
+                and store_id = #{storeId}
+            </if>
+            <if test="startTime!=null">
+                and shot_time &gt;= #{startTime}
+            </if>
+            <if test="endTime!=null">
+                and shot_time &lt;= #{endTime}
+            </if>
+        </where>
+        group by customer_id
+        order by id desc
+    </select>
+
+
+    <select id="countPersonHistory" resultType="java.lang.Integer">
+        select
+        count(id)
+        from person_notify_record_${eid}
+        <where>
+            <if test="storeId!=null and storeId!=''">
+                and store_id = #{storeId}
+            </if>
+            <if test="startTime!=null">
+                and shot_time &gt;= #{startTime}
+            </if>
+            <if test="endTime!=null">
+                and shot_time &lt;= #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="listPersonTrace" resultType="com.coolcollege.intelligent.model.aliyun.vo.AliyunPersonTraceVO">
+        select
+        shot_time as shotTime ,
+        store_id as storeId
+        from person_notify_record_${eid}
+        <where>
+            customer_id =#{customerId}
+        </where>
+        order by shot_time desc,id desc
+    </select>
+</mapper>

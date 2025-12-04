@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.tbdisplay.TbDisplayTableDataContentMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.tbdisplay.TbDisplayTableDataContentDO">
+
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="record_id" jdbcType="BIGINT" property="recordId" />
+    <result column="unify_task_id" jdbcType="BIGINT" property="unifyTaskId" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="loop_count" jdbcType="INTEGER" property="loopCount" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="region_id" jdbcType="BIGINT" property="regionId" />
+    <result column="region_path" jdbcType="VARCHAR" property="regionPath" />
+    <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId" />
+    <result column="meta_content_id" jdbcType="BIGINT" property="metaContentId" />
+    <result column="score" jdbcType="DECIMAL" property="score" />
+    <result column="photo_array" jdbcType="VARCHAR" property="photoArray" />
+    <result column="data_table_id" jdbcType="BIGINT" property="dataTableId" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="check_video" jdbcType="VARCHAR" property="checkVideo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+
+    id, create_time, update_time, deleted, record_id, unify_task_id, store_id, loop_count, 
+    store_name, region_id, region_path, meta_table_id, meta_content_id, score, photo_array, data_table_id,remark,
+    check_video
+  </sql>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.tbdisplay.TbDisplayTableDataContentDO">
+
+    update tb_display_table_data_content_${enterpriseId}
+    <set>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=TINYINT},
+      </if>
+      <if test="record.recordId != null">
+        record_id = #{record.recordId,jdbcType=BIGINT},
+      </if>
+      <if test="record.unifyTaskId != null">
+        unify_task_id = #{record.unifyTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loopCount != null">
+        loop_count = #{record.loopCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.storeName != null">
+        store_name = #{record.storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regionId != null">
+        region_id = #{record.regionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.regionPath != null">
+        region_path = #{record.regionPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.metaTableId != null">
+        meta_table_id = #{record.metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaContentId != null">
+        meta_content_id = #{record.metaContentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.score != null">
+        score = #{record.score},
+      </if>
+      <if test="record.photoArray != null">
+        photo_array = #{record.photoArray,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataTableId != null">
+        data_table_id = #{record.dataTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkVideo != null">
+        check_video = #{record.checkVideo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+
+  <insert id="batchInsert" keyColumn="id" keyProperty="list.id" useGeneratedKeys="true">
+    INSERT INTO tb_display_table_data_content_${enterpriseId}(
+    create_time,
+    record_id,
+    unify_task_id,
+    store_id,
+    loop_count,
+    store_name,
+    region_id,
+    region_path,
+    meta_table_id,
+    meta_content_id,
+    score,
+    data_table_id
+    )VALUES
+    <foreach collection="list" item="element" index="index" separator=",">
+      (
+      now(),
+      #{element.recordId,jdbcType=BIGINT},
+      #{element.unifyTaskId,jdbcType=BIGINT},
+      #{element.storeId,jdbcType=VARCHAR},
+      #{element.loopCount,jdbcType=INTEGER},
+      #{element.storeName,jdbcType=VARCHAR},
+      #{element.regionId,jdbcType=BIGINT},
+      #{element.regionPath,jdbcType=VARCHAR},
+      #{element.metaTableId,jdbcType=BIGINT},
+      #{element.metaContentId,jdbcType=BIGINT},
+      #{element.score},
+      #{element.dataTableId,jdbcType=BIGINT}
+      )
+    </foreach>
+  </insert>
+
+  <select id="listByRecordId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_display_table_data_content_${enterpriseId}
+    where record_id=#{recordId,jdbcType=BIGINT}
+  </select>
+
+  <select id="listByRecordIdList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_display_table_data_content_${enterpriseId}
+        where record_id in
+        <foreach item="item" index="index" collection="recordIdList"
+                 open="(" separator="," close=")">
+            #{item,jdbcType=BIGINT}
+        </foreach>
+        <if test="metaColumnIdList != null and metaColumnIdList.size > 0">
+          AND meta_content_id in
+          <foreach item="metaColumnId" collection="metaColumnIdList" open="(" separator="," close=")">
+            #{metaColumnId,jdbcType=BIGINT}
+          </foreach>
+        </if>
+    </select>
+
+  <select id="listByIdList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_display_table_data_content_${enterpriseId}
+    where id in
+    <foreach item="item" index="index" collection="idList"
+             open="(" separator="," close=")">
+      #{item,jdbcType=BIGINT}
+    </foreach>
+  </select>
+
+  <update id="batchUpdate">
+    <foreach collection="records" item="record" separator=";">
+      update tb_display_table_data_content_${enterpriseId}
+      <set>
+        <if test="record.photoArray != null">
+          photo_array = #{record.photoArray,jdbcType=VARCHAR},
+        </if>
+        <if test="record.remark != null">
+          remark = #{record.remark,jdbcType=VARCHAR},
+        </if>
+        <if test="record.checkVideo != null">
+          check_video = #{record.checkVideo,jdbcType=VARCHAR},
+        </if>
+      </set>
+      <where>
+        id = #{record.id,jdbcType=BIGINT}
+      </where>
+    </foreach>
+  </update>
+  <select id="listByUnifyTaskIdAndLoopCount" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_display_table_data_content_${enterpriseId}
+    where unify_task_id = #{unifyTaskId}
+    <if test="loopCount != null">
+      and loop_count = #{loopCount}
+    </if>
+  </select>
+  <update id="deleteByRecordId">
+    update  tb_display_table_data_content_${enterpriseId} set deleted = 1
+    where record_id=#{recordId,jdbcType=BIGINT}
+  </update>
+
+  <update id="deleteByRecordIds">
+    update  tb_display_table_data_content_${enterpriseId} set deleted = 1
+    where record_id in <foreach collection="recordIds" item="recordId" separator="," open="(" close=")">#{recordId}</foreach>
+  </update>
+
+  <select id="selectById" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_display_table_data_content_${enterpriseId}
+    where id = #{id}
+  </select>
+
+</mapper>

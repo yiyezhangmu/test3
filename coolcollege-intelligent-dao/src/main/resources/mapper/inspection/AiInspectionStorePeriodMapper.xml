@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.inspection.AiInspectionStorePeriodMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.inspection.entity.AiInspectionStorePeriodDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="inspection_id" jdbcType="BIGINT" property="inspectionId" />
+    <result column="scene_id" jdbcType="BIGINT" property="sceneId" />
+    <result column="scene_name" jdbcType="VARCHAR" property="sceneName" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="region_id" jdbcType="BIGINT" property="regionId" />
+    <result column="region_path" jdbcType="VARCHAR" property="regionPath" />
+    <result column="capture_date" jdbcType="DATE" property="captureDate" />
+    <result column="capture_time" jdbcType="TIMESTAMP" property="captureTime" />
+    <result column="ai_period_result" jdbcType="VARCHAR" property="aiPeriodResult" />
+    <result column="week_day" jdbcType="DATE" property="weekDay" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, inspection_id, scene_id, scene_name, store_id, store_name, region_id, region_path, 
+    capture_date, capture_time, ai_period_result, week_day, remark, create_time, create_user_id, 
+    update_time, update_user_id, deleted
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into ai_inspection_store_period_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.inspectionId != null">
+        inspection_id,
+      </if>
+      <if test="record.sceneId != null">
+        scene_id,
+      </if>
+      <if test="record.sceneName != null">
+        scene_name,
+      </if>
+      <if test="record.storeId != null">
+        store_id,
+      </if>
+      <if test="record.storeName != null">
+        store_name,
+      </if>
+      <if test="record.regionId != null">
+        region_id,
+      </if>
+      <if test="record.regionPath != null">
+        region_path,
+      </if>
+      <if test="record.captureDate != null">
+        capture_date,
+      </if>
+      <if test="record.captureTime != null">
+        capture_time,
+      </if>
+      <if test="record.aiPeriodResult != null">
+        ai_period_result,
+      </if>
+      <if test="record.weekDay != null">
+        week_day,
+      </if>
+      <if test="record.remark != null">
+        remark,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.inspectionId != null">
+        #{record.inspectionId},
+      </if>
+      <if test="record.sceneId != null">
+        #{record.sceneId},
+      </if>
+      <if test="record.sceneName != null">
+        #{record.sceneName},
+      </if>
+      <if test="record.storeId != null">
+        #{record.storeId},
+      </if>
+      <if test="record.storeName != null">
+        #{record.storeName},
+      </if>
+      <if test="record.regionId != null">
+        #{record.regionId},
+      </if>
+      <if test="record.regionPath != null">
+        #{record.regionPath},
+      </if>
+      <if test="record.captureDate != null">
+        #{record.captureDate},
+      </if>
+      <if test="record.captureTime != null">
+        #{record.captureTime},
+      </if>
+      <if test="record.aiPeriodResult != null">
+        #{record.aiPeriodResult},
+      </if>
+      <if test="record.weekDay != null">
+        #{record.weekDay},
+      </if>
+      <if test="record.remark != null">
+        #{record.remark},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update ai_inspection_store_period_${enterpriseId}
+    <set>
+      <if test="record.inspectionId != null">
+        inspection_id = #{record.inspectionId},
+      </if>
+      <if test="record.sceneId != null">
+        scene_id = #{record.sceneId},
+      </if>
+      <if test="record.sceneName != null">
+        scene_name = #{record.sceneName},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId},
+      </if>
+      <if test="record.storeName != null">
+        store_name = #{record.storeName},
+      </if>
+      <if test="record.regionId != null">
+        region_id = #{record.regionId},
+      </if>
+      <if test="record.regionPath != null">
+        region_path = #{record.regionPath},
+      </if>
+      <if test="record.captureDate != null">
+        capture_date = #{record.captureDate},
+      </if>
+      <if test="record.captureTime != null">
+        capture_time = #{record.captureTime},
+      </if>
+      <if test="record.aiPeriodResult != null">
+        ai_period_result = #{record.aiPeriodResult},
+      </if>
+      <if test="record.weekDay != null">
+        week_day = #{record.weekDay},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId},
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+
+  <select id="selectStatisticsByDateRange"
+          resultType="com.coolcollege.intelligent.model.inspection.vo.AiInspectionStatisticsVO">
+    SELECT
+    store_id as storeId,
+    store_name as storeName,
+    week_day as weekDay,
+    capture_date as captureDate,
+    COUNT(id) as patrolTotalNum,
+    COUNT(DISTINCT scene_id) as patrolSceneNum,
+    COUNT(CASE WHEN ai_period_result = 'FAIL' THEN id END) as failNum,
+    COUNT(CASE WHEN ai_period_result = 'PASS' THEN id END) as passNum,
+    ROUND(
+    COUNT(CASE WHEN ai_period_result = 'FAIL' THEN id END) * 100.0 /
+    NULLIF(COUNT(id), 0),
+    1
+    ) as failRate
+    FROM ai_inspection_store_period_${enterpriseId}
+    WHERE deleted = 0
+    AND capture_date BETWEEN #{startDate} AND #{endDate}
+    <if test="storeIdList != null and storeIdList.size > 0">
+      AND store_id IN
+      <foreach item="item" collection="storeIdList" separator="," open="(" close=")" index="">
+        #{item}
+      </foreach>
+    </if>
+    <if test="regionPathList != null and regionPathList.size > 0">
+      <foreach collection="regionPathList" separator="or" close=")" open="and (" item="region">
+        region_path like concat(#{region}, '%')
+      </foreach>
+    </if>
+    <if test="sceneId != null">
+      and scene_id = #{sceneId}
+    </if>
+    <if test="inspectionResult != null">
+      and ai_period_result = #{inspectionResult}
+    </if>
+    <if test="reportType != null and reportType == 'DAY'">
+      GROUP BY store_id, capture_date
+      ORDER BY capture_date desc
+    </if>
+    <if test="reportType != null and reportType == 'WEEK'">
+      GROUP BY store_id, week_day
+      ORDER BY week_day desc
+    </if>
+
+  </select>
+  <select id="dailyReportCount"
+          resultType="com.coolcollege.intelligent.model.inspection.vo.AiInspectionStatisticsTotalVO">
+    SELECT
+    COUNT( id) as patrolTotalNum,
+    COUNT( CASE WHEN ai_period_result = 'FAIL' THEN id END) as failNum,
+    COUNT( CASE WHEN ai_period_result = 'PASS' THEN id END) as passNum
+    FROM ai_inspection_store_period_${enterpriseId}
+    WHERE deleted = 0
+    AND capture_date BETWEEN #{startDate} AND #{endDate}
+    <if test="storeIdList != null and storeIdList.size > 0">
+      AND store_id IN
+      <foreach item="item" collection="storeIdList" separator="," open="(" close=")" index="">
+        #{item}
+      </foreach>
+    </if>
+    <if test="regionPathList != null and regionPathList.size > 0">
+      <foreach collection="regionPathList" separator="or" close=")" open="and (" item="region">
+        region_path like concat(#{region}, '%')
+      </foreach>
+    </if>
+    <if test="sceneId != null">
+      and scene_id = #{sceneId}
+    </if>
+    <if test="inspectionResult != null">
+      and ai_period_result = #{inspectionResult}
+    </if>
+  </select>
+  <select id="problemTop"
+          resultType="com.coolcollege.intelligent.model.inspection.vo.AiInspectionStatisticsTotalVO">
+    SELECT
+    scene_name as problemTop,
+    COUNT(*) as problemTotalNum
+    FROM ai_inspection_store_period_${enterpriseId}
+    WHERE deleted = 0
+    AND capture_date BETWEEN #{startDate} AND #{endDate}
+    <if test="storeIdList != null and storeIdList.size > 0">
+      AND store_id IN
+      <foreach item="item" collection="storeIdList" separator="," open="(" close=")" index="">
+        #{item}
+      </foreach>
+    </if>
+      <if test="regionPathList != null and regionPathList.size > 0">
+          <foreach collection="regionPathList" separator="or" close=")" open="and (" item="region">
+              region_path like concat(#{region}, '%')
+          </foreach>
+      </if>
+    <if test="sceneId != null">
+      and scene_id = #{sceneId}
+    </if>
+    <if test="inspectionResult != null and inspectionResult != ''">
+      and ai_period_result = #{inspectionResult}
+    </if>
+    AND ai_period_result = 'FAIL'
+    GROUP BY scene_id
+    ORDER BY COUNT(*) DESC
+    LIMIT 1
+  </select>
+  <select id="sceneCountList"
+          resultType="com.coolcollege.intelligent.model.inspection.vo.AiInspectionStatisticsSceneVO">
+    SELECT
+    scene_id as sceneId,
+    scene_name as sceneName,
+    COUNT( id) as patrolTotalNum,
+    COUNT( CASE WHEN ai_period_result = 'FAIL' THEN id END) as failNum,
+    COUNT( CASE WHEN ai_period_result = 'PASS' THEN id END) as passNum
+    FROM ai_inspection_store_period_${enterpriseId}
+    WHERE deleted = 0
+    AND capture_date BETWEEN #{startDate} AND #{endDate}
+    AND store_id = #{storeId}
+    <if test="sceneId != null">
+      and scene_id = #{sceneId}
+    </if>
+      <if test="storeId != null">
+          and store_id = #{storeId}
+      </if>
+    <if test="inspectionResult != null">
+      and ai_period_result = #{inspectionResult}
+    </if>
+    GROUP BY scene_id
+    ORDER BY patrolTotalNum DESC
+    limit 50
+  </select>
+
+  <select id="selectStatisticsImageByDateRange"
+          resultType="com.coolcollege.intelligent.model.inspection.vo.AiInspectionStatisticsPicListVO">
+    SELECT
+    store_id as storeId,
+    store_name as storeName,
+    capture_date as captureDate,
+           scene_id as sceneId,
+           scene_name as sceneName
+
+    FROM ai_inspection_store_period_${enterpriseId}
+    WHERE deleted = 0
+    AND capture_date BETWEEN #{startDate} AND #{endDate}
+    <if test="storeIdList != null and storeIdList.size > 0">
+      AND store_id IN
+      <foreach item="item" collection="storeIdList" separator="," open="(" close=")" index="">
+        #{item}
+      </foreach>
+    </if>
+      <if test="regionPathList != null and regionPathList.size > 0">
+          <foreach collection="regionPathList" separator="or" close=")" open="and (" item="region">
+              region_path like concat(#{region}, '%')
+          </foreach>
+      </if>
+    <if test="sceneId != null">
+      and scene_id = #{sceneId}
+    </if>
+    <if test="inspectionResult != null">
+      and ai_period_result = #{inspectionResult}
+    </if>
+      GROUP BY store_id, capture_date, scene_id
+    ORDER BY capture_time desc
+  </select>
+    <select id="selectByPrimaryKey"
+            resultType="com.coolcollege.intelligent.model.inspection.entity.AiInspectionStorePeriodDO">
+        SELECT
+        id,
+        inspection_id as inspectionId,
+        scene_id as sceneId,
+        scene_name as sceneName,
+        store_id as storeId,
+        store_name as storeName,
+        region_id as regionId,
+        region_path as regionPath,
+        capture_date as captureDate,
+        capture_time as captureTime,
+        ai_period_result as aiPeriodResult,
+        week_day as weekDay,
+        remark,
+        create_time as createTime,
+        create_user_id as createUserId,
+        update_time as updateTime,
+        update_user_id as updateUserId,
+        deleted
+        FROM ai_inspection_store_period_${enterpriseId}
+        WHERE id = #{id}
+    </select>
+    <select id="inspectionOverview"
+            resultType="com.coolcollege.intelligent.model.inspection.vo.AiInspectionReportVO">
+        SELECT
+        COUNT( id) as patrolTotalNum,
+        COUNT( CASE WHEN ai_period_result = 'FAIL' THEN id END) as failNum,
+        ROUND(
+        COUNT(CASE WHEN ai_period_result = 'FAIL' THEN id END) * 100.0 /
+        NULLIF(COUNT(id), 0),
+        1
+        ) as failRate
+        FROM ai_inspection_store_period_${enterpriseId}
+        WHERE deleted = 0
+        AND capture_date BETWEEN #{startDate} AND #{endDate}
+        <if test="storeIdList != null and storeIdList.size > 0">
+            AND store_id IN
+            <foreach item="item" collection="storeIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        <if test="regionPathList != null and regionPathList.size > 0">
+            <foreach collection="regionPathList" separator="or" close=")" open="and (" item="region">
+                region_path like concat(#{region}, '%')
+            </foreach>
+        </if>
+        <if test="sceneIdList != null and sceneIdList.size > 0">
+            AND scene_id IN
+            <foreach item="item" collection="sceneIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    <select id="inspectionTrend"
+            resultType="com.coolcollege.intelligent.model.inspection.vo.AiInspectionTendReportVO">
+        SELECT
+        capture_date as inspectionTime,
+        COUNT( id) as patrolTotalNum,
+        COUNT( CASE WHEN ai_period_result = 'FAIL' THEN id END) as failNum,
+        ROUND(
+        COUNT(CASE WHEN ai_period_result = 'FAIL' THEN id END) * 100.0 /
+        NULLIF(COUNT(id), 0),
+        1
+        ) as failRate
+        FROM ai_inspection_store_period_${enterpriseId}
+        WHERE deleted = 0
+        AND capture_date BETWEEN #{startDate} AND #{endDate}
+        <if test="storeIdList != null and storeIdList.size > 0">
+            AND store_id IN
+            <foreach item="item" collection="storeIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        <if test="regionPathList != null and regionPathList.size > 0">
+            <foreach collection="regionPathList" separator="or" close=")" open="and (" item="region">
+                region_path like concat(#{region}, '%')
+            </foreach>
+        </if>
+        <if test="sceneIdList != null and sceneIdList.size > 0">
+            AND scene_id IN
+            <foreach item="item" collection="sceneIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        group by capture_date
+    </select>
+    <select id="sceneProblemRate"
+            resultType="com.coolcollege.intelligent.model.inspection.vo.AiInspectionProblemReportVO">
+        SELECT
+        scene_id as sceneId,
+        scene_name as sceneName,
+        COUNT( id) as failNum,
+        ROUND(
+        COUNT(CASE WHEN ai_period_result = 'FAIL' THEN id END) * 100.0 /
+        NULLIF(#{totalFailNum}, 0),
+        1
+        ) as failRate
+        FROM ai_inspection_store_period_${enterpriseId}
+        WHERE deleted = 0
+        AND capture_date BETWEEN #{startDate} AND #{endDate}
+        AND ai_period_result = 'FAIL'
+        <if test="storeIdList != null and storeIdList.size > 0">
+            AND store_id IN
+            <foreach item="item" collection="storeIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        <if test="regionPathList != null and regionPathList.size > 0">
+            <foreach collection="regionPathList" separator="or" close=")" open="and (" item="region">
+                region_path like concat(#{region}, '%')
+            </foreach>
+        </if>
+        <if test="sceneIdList != null and sceneIdList.size > 0">
+            AND scene_id IN
+            <foreach item="item" collection="sceneIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        group by scene_id
+        <if test="reportType == 'failRate'">
+            order by failRate desc
+        </if>
+        <if test="reportType == 'failNum'">
+            order by failNum desc
+        </if>
+        limit 10
+    </select>
+    <select id="sceneTotalProblemNum"  resultType="java.lang.Long">
+        SELECT
+        COUNT( id) as patrolTotalNum
+        FROM ai_inspection_store_period_${enterpriseId}
+        WHERE deleted = 0
+        AND capture_date BETWEEN #{startDate} AND #{endDate}
+        AND ai_period_result = 'FAIL'
+        <if test="storeIdList != null and storeIdList.size > 0">
+            AND store_id IN
+            <foreach item="item" collection="storeIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        <if test="regionPathList != null and regionPathList.size > 0">
+            <foreach collection="regionPathList" separator="or" close=")" open="and (" item="region">
+                region_path like concat(#{region}, '%')
+            </foreach>
+        </if>
+        <if test="sceneIdList != null and sceneIdList.size > 0">
+            AND scene_id IN
+            <foreach item="item" collection="sceneIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    <select id="problemStoreTop"
+            resultType="com.coolcollege.intelligent.model.inspection.vo.AiInspectionProblemStoreReportVO">
+        SELECT
+        store_id as storeId,
+        store_name as storeName,
+        COUNT( id) as patrolTotalNum,
+        COUNT( CASE WHEN ai_period_result = 'FAIL' THEN id END) as failNum,
+        ROUND(
+        COUNT(CASE WHEN ai_period_result = 'FAIL' THEN id END) * 100.0 /
+        NULLIF(COUNT(id), 0),
+        1
+        ) as failRate
+        FROM ai_inspection_store_period_${enterpriseId}
+        WHERE deleted = 0
+        AND capture_date BETWEEN #{startDate} AND #{endDate}
+        <if test="storeIdList != null and storeIdList.size > 0">
+            AND store_id IN
+            <foreach item="item" collection="storeIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        <if test="regionPathList != null and regionPathList.size > 0">
+            <foreach collection="regionPathList" separator="or" close=")" open="and (" item="region">
+                region_path like concat(#{region}, '%')
+            </foreach>
+        </if>
+        <if test="sceneIdList != null and sceneIdList.size > 0">
+            AND scene_id IN
+            <foreach item="item" collection="sceneIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        group by store_id
+        <if test="reportType == 'failRate'">
+            order by failRate desc
+        </if>
+        <if test="reportType == 'failNum'">
+            order by failNum desc
+        </if>
+        limit 5
+    </select>
+    <select id="sceneProblemTimeList"
+            resultType="com.coolcollege.intelligent.model.inspection.vo.AiInspectionProblemTimeReportVO">
+        SELECT
+        scene_id as sceneId,
+        scene_name as sceneName,
+        DATE_FORMAT(capture_time, '%H') as hourTime,
+        COUNT( CASE WHEN ai_period_result = 'FAIL' THEN id END) as failNum
+        FROM ai_inspection_store_period_${enterpriseId}
+        WHERE deleted = 0
+        AND capture_date BETWEEN #{startDate} AND #{endDate}
+        <if test="storeIdList != null and storeIdList.size > 0">
+            AND store_id IN
+            <foreach item="item" collection="storeIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        <if test="regionPathList != null and regionPathList.size > 0">
+            <foreach collection="regionPathList" separator="or" close=")" open="and (" item="region">
+                region_path like concat(#{region}, '%')
+            </foreach>
+        </if>
+        <if test="sceneIdList != null and sceneIdList.size > 0">
+            AND scene_id IN
+            <foreach item="item" collection="sceneIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        group by DATE_FORMAT(capture_time, '%H')
+        <if test="sceneIdList != null and sceneIdList.size > 0">
+            ,scene_id
+        </if>
+    </select>
+    <select id="countInspectionStorePictureByTime" resultType="java.lang.Integer">
+        SELECT
+        COUNT(id)
+        FROM ai_inspection_store_period_${enterpriseId}
+        WHERE deleted = 0
+        AND capture_time BETWEEN #{startTime} AND #{endTime}
+        and store_id = #{storeId}
+        and inspection_id = #{inspectionId}
+        and ai_period_result = 'FAIL'
+    </select>
+    <select id="countInspectionStorePictureByDay" resultType="java.lang.Integer">
+        SELECT
+        COUNT(id)
+        FROM ai_inspection_store_period_${enterpriseId}
+        WHERE deleted = 0
+        AND capture_date = #{captureDate}
+        and store_id = #{storeId}
+        and inspection_id = #{inspectionId}
+        and ai_period_result = 'FAIL'
+    </select>
+</mapper>

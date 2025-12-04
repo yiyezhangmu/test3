@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.question.TbQuestionParentUserMappingMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.question.TbQuestionParentUserMappingDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="unify_task_id" jdbcType="BIGINT" property="unifyTaskId" />
+    <result column="handle_user_id" jdbcType="VARCHAR" property="handleUserId" />
+    <result column="question_parent_id" jdbcType="BIGINT" property="questionParentId" />
+    <result column="question_parent_name" jdbcType="VARCHAR" property="questionParentName" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="is_handle_user" jdbcType="TINYINT" property="isHandleUser" />
+    <result column="is_cc_user" jdbcType="TINYINT" property="isCcUser" />
+    <result column="create_id" jdbcType="VARCHAR" property="createId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_id" jdbcType="VARCHAR" property="updateId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_approve_user" jdbcType="TINYINT" property="isApproveUser" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, unify_task_id, handle_user_id, question_parent_id, question_parent_name, status,
+    is_handle_user, is_cc_user, create_id, create_time, update_id, update_time,is_approve_user, end_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_question_parent_user_mapping_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+    <select id="list" resultType="com.coolcollege.intelligent.model.question.TbQuestionParentUserMappingDO">
+      select
+      <include refid="Base_Column_List" />
+      from tb_question_parent_user_mapping_${enterpriseId}
+      where handle_user_id = #{handleUserId}
+      <if test="questionParentName != null and questionParentName !=''">
+        and question_parent_name like concat('%',#{questionParentName},'%')
+      </if>
+      <if test="isHandleUser != null">
+        <choose>
+          <when test="questionExpireHandle != null and questionExpireHandle == false and questionExpireApprove != null and questionExpireApprove == false">
+            and (is_handle_user = #{isHandleUser} or is_approve_user  = #{isHandleUser}) and end_time > now()
+          </when>
+          <when test="questionExpireHandle != null and questionExpireHandle == true and questionExpireApprove != null and questionExpireApprove == false">
+            and ((is_approve_user =  #{isHandleUser} and end_time > now()) or is_handle_user  = #{isHandleUser})
+          </when>
+          <when test="questionExpireHandle != null and questionExpireHandle == false and questionExpireApprove != null and questionExpireApprove == true">
+            and ((is_handle_user =  #{isHandleUser} and end_time > now()) or is_approve_user  = #{isHandleUser})
+          </when>
+          <otherwise>
+            and (is_handle_user = #{isHandleUser} or is_approve_user  = #{isHandleUser})
+          </otherwise>
+        </choose>
+      </if>
+      <if test="isCcUser != null">
+        and is_cc_user = #{isCcUser}
+      </if>
+      <if test="status != null">
+        and status = #{status}
+      </if>
+      order by update_time desc
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_question_parent_user_mapping_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByUnifyTaskId" parameterType="java.lang.Long">
+    delete from tb_question_parent_user_mapping_${enterpriseId}
+    where unify_task_id = #{unifyTaskId}
+  </delete>
+  <insert id="insert">
+    insert into tb_question_parent_user_mapping_${enterpriseId} (unify_task_id, handle_user_id, question_parent_id, question_parent_name, status,
+    is_handle_user, is_cc_user, update_time, create_id, create_time, end_time, is_approve_user)
+    value
+      (#{record.unifyTaskId},
+      #{record.handleUserId},
+      #{record.questionParentId},
+      #{record.questionParentName},
+      #{record.status},
+      #{record.isHandleUser},
+      #{record.isCcUser},
+      #{record.updateTime},
+      #{record.createId},
+      #{record.createTime},
+      #{record.endTime},
+      #{record.isApproveUser})
+  </insert>
+  <update id="update">
+    update tb_question_parent_user_mapping_${enterpriseId}
+    <set>
+      <if test="record.isHandleUser != null">
+        is_handle_user = #{record.isHandleUser},
+      </if>
+      <if test="record.isApproveUser != null">
+        is_approve_user = #{record.isApproveUser},
+      </if>
+      <if test="record.isCcUser != null">
+        is_cc_user = #{record.isCcUser},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status},
+      </if>
+      <if test="record.endTime != null">
+        end_time = #{record.endTime},
+      </if>
+    </set>
+     where id = #{record.id}
+  </update>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.question.TbQuestionParentUserMappingDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_question_parent_user_mapping_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="unifyTaskId != null">
+        unify_task_id,
+      </if>
+      <if test="handleUserId != null">
+        handle_user_id,
+      </if>
+      <if test="questionParentId != null">
+        question_parent_id,
+      </if>
+      <if test="questionParentName != null">
+        question_parent_name,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="isHandleUser != null">
+        is_handle_user,
+      </if>
+      <if test="isCcUser != null">
+        is_cc_user,
+      </if>
+      <if test="createId != null">
+        create_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateId != null">
+        update_id,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="unifyTaskId != null">
+        #{unifyTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="handleUserId != null">
+        #{handleUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="questionParentId != null">
+        #{questionParentId,jdbcType=VARCHAR},
+      </if>
+      <if test="questionParentName != null">
+        #{questionParentName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isHandleUser != null">
+        #{isHandleUser,jdbcType=TINYINT},
+      </if>
+      <if test="isCcUser != null">
+        #{isCcUser,jdbcType=TINYINT},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null">
+        #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.question.TbQuestionParentUserMappingDO">
+    update tb_question_parent_user_mapping_${enterpriseId}
+    <set>
+      <if test="unifyTaskId != null">
+        unify_task_id = #{unifyTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="handleUserId != null">
+        handle_user_id = #{handleUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="questionParentId != null">
+        question_parent_id = #{questionParentId,jdbcType=BIGINT},
+      </if>
+      <if test="questionParentName != null">
+        question_parent_name = #{questionParentName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isHandleUser != null">
+        is_handle_user = #{isHandleUser,jdbcType=TINYINT},
+      </if>
+      <if test="isCcUser != null">
+        is_cc_user = #{isCcUser,jdbcType=TINYINT},
+      </if>
+      <if test="createId != null">
+        create_id = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null">
+        update_id = #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != unifyTaskId">
+         and t.unify_task_id = #{unifyTaskId,jdbcType=BIGINT}
+      </if>
+      <if test="null != handleUserId">
+         and t.handle_user_id = #{handleUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != questionParentId">
+         and t.question_parent_id = #{questionParentId,jdbcType=BIGINT}
+      </if>
+      <if test="null != questionParentName">
+         and t.question_parent_name = #{questionParentName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != status">
+         and t.status = #{status,jdbcType=TINYINT}
+      </if>
+      <if test="null != isHandleUser">
+         and t.is_handle_user = #{isHandleUser,jdbcType=TINYINT}
+      </if>
+      <if test="null != isCcUser">
+         and t.is_cc_user = #{isCcUser,jdbcType=TINYINT}
+      </if>
+      <if test="null != createId">
+         and t.create_id = #{createId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != updateId">
+         and t.update_id = #{updateId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != updateTime">
+         and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+  </sql>
+  <select id="selectByUnifyTaskIdAndUerId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_question_parent_user_mapping_${enterpriseId}
+    where unify_task_id = #{unifyTaskId} and handle_user_id = #{handleUserId}
+  </select>
+  <select id="selectByQuestionParentIdAndUerId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_question_parent_user_mapping_${enterpriseId}
+    where question_parent_id = #{questionParentId} and handle_user_id = #{handleUserId}
+  </select>
+  
+  <select id="selectByQuestionParentByUnifyTaskId" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List" />
+    from
+      tb_question_parent_user_mapping_${enterpriseId}
+    where
+      unify_task_id = #{unifyTaskId}
+  </select>
+</mapper>

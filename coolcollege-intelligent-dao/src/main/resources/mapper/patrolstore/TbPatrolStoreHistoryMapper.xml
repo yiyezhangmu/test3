@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.patrolstore.TbPatrolStoreHistoryMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.patrolstore.TbPatrolStoreHistoryDo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+        <result column="business_id" jdbcType="BIGINT" property="businessId"/>
+        <result column="operate_type" jdbcType="VARCHAR" property="operateType"/>
+        <result column="operate_user_id" jdbcType="VARCHAR" property="operateUserId"/>
+        <result column="operate_user_name" jdbcType="VARCHAR" property="operateUserName"/>
+        <result column="action_key" jdbcType="VARCHAR" property="actionKey"/>
+        <result column="sub_task_id" jdbcType="BIGINT" property="subTaskId"/>
+        <result column="node_no" jdbcType="VARCHAR" property="nodeNo"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="photo" jdbcType="VARCHAR" property="photo"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, create_time, update_time, deleted, business_id, operate_type, operate_user_id, operate_user_name, action_key, sub_task_id, node_no,
+        remark, photo
+    </sql>
+    <insert id="batchInsert" >
+        insert into tb_patrolstore_history_${enterpriseId}
+        (create_time,
+        update_time,
+        deleted,
+        business_id,
+        operate_type,
+        operate_user_id,
+        operate_user_name,
+        action_key,
+        sub_task_id,
+        node_no,
+        remark,
+        photo )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.createTime},
+            #{item.updateTime},
+            #{item.deleted},
+            #{item.businessId},
+            #{item.operateType},
+            #{item.operateUserId},
+            #{item.operateUserName},
+            #{item.actionKey},
+            #{item.subTaskId},
+            #{item.nodeNo},
+            #{item.remark},
+            #{item.photo})
+        </foreach>
+    </insert>
+
+    <insert id="insertPatrolStoreHistory" >
+        insert into tb_patrolstore_history_${enterpriseId}
+        (create_time,
+        update_time,
+        deleted,
+        business_id,
+        operate_type,
+        operate_user_id,
+        operate_user_name,
+        action_key,
+        sub_task_id,
+        node_no,
+        remark,
+        photo )
+        values
+        (
+        #{tbPatrolStoreHistoryDo.createTime},
+        #{tbPatrolStoreHistoryDo.updateTime},
+        #{tbPatrolStoreHistoryDo.deleted},
+        #{tbPatrolStoreHistoryDo.businessId},
+        #{tbPatrolStoreHistoryDo.operateType},
+        #{tbPatrolStoreHistoryDo.operateUserId},
+        #{tbPatrolStoreHistoryDo.operateUserName},
+        #{tbPatrolStoreHistoryDo.actionKey},
+        #{tbPatrolStoreHistoryDo.subTaskId},
+        #{tbPatrolStoreHistoryDo.nodeNo},
+        #{tbPatrolStoreHistoryDo.remark},
+        #{tbPatrolStoreHistoryDo.photo})
+    </insert>
+
+
+    <select id="selectPatrolStoreHistoryList" resultType="com.coolcollege.intelligent.model.patrolstore.TbPatrolStoreHistoryDo">
+        SELECT
+        a.id as id,
+        a.create_time as createTime,
+        a.update_time as updateTime ,
+        a.deleted as  deleted,
+        a.business_id as businessId,
+        a.operate_type as operateType,
+        a.operate_user_id as operateUserId,
+        a.operate_user_name as operateUserName,
+        a.action_key as actionKey,
+        a.sub_task_id as subTaskId,
+        a.node_no as nodeNo,
+        a.remark as remark,
+        a.photo as photo,
+        b.avatar as avatar
+        FROM
+        tb_patrolstore_history_${enterpriseId} a
+        LEFT JOIN enterprise_user_${enterpriseId} b ON a.operate_user_id = b.user_id
+        WHERE
+        business_id = #{businessId}
+    </select>
+
+
+    <select id="selectPatrolStoreHistoryByBusinessIds" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            tb_patrolstore_history_${enterpriseId}
+        WHERE
+            business_id in <foreach collection="businessIds" item="businessId" open="(" close=")" separator=",">#{businessId}</foreach> order by id desc
+    </select>
+
+    <delete id="deleteByIds">
+        delete from tb_patrolstore_history_${enterpriseId}
+        where id in <foreach collection="ids" item="id" open="(" close=")" separator=",">#{id}</foreach>
+    </delete>
+
+    <insert id="copyHistory" >
+        insert into tb_patrolstore_history_${enterpriseId}
+        (id,create_time,
+        update_time,
+        deleted,
+        business_id,
+        operate_type,
+        operate_user_id,
+        operate_user_name,
+        action_key,
+        sub_task_id,
+        node_no,
+        remark,
+        photo )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.createTime},
+            #{item.updateTime},
+            #{item.deleted},
+            #{item.businessId},
+            #{item.operateType},
+            #{item.operateUserId},
+            #{item.operateUserName},
+            #{item.actionKey},
+            #{item.subTaskId},
+            #{item.nodeNo},
+            #{item.remark},
+            #{item.photo})
+        </foreach>
+    </insert>
+</mapper>

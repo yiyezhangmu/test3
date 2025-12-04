@@ -1,0 +1,878 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.device.DeviceMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.device.DeviceDO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="device_id" property="deviceId" jdbcType="VARCHAR"/>
+        <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="BIGINT"/>
+        <result column="create_name" property="createName" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="BIGINT"/>
+        <result column="bind_status" property="bindStatus" jdbcType="BOOLEAN"/>
+        <result column="device_status" property="deviceStatus" jdbcType="VARCHAR"/>
+        <result column="device_scene" property="deviceScene" jdbcType="VARCHAR"/>
+        <result column="has_child_device" property="hasChildDevice" jdbcType="BOOLEAN"/>
+        <result column="has_ptz" property="hasPtz" jdbcType="BOOLEAN"/>
+        <result column="bind_store_id" property="bindStoreId" jdbcType="VARCHAR"/>
+        <result column="bind_store_ids" property="bindStoreIds" jdbcType="VARCHAR"/>
+        <result column="data_source_id" property="dataSourceId" jdbcType="VARCHAR"/>
+        <result column="region_path" property="regionPath" jdbcType="VARCHAR"/>
+        <result column="bind_time" property="bindTime" jdbcType="BIGINT"/>
+        <result column="store_scene_id" property="storeSceneId" jdbcType="BIGINT"/>
+        <result column="support_capture" property="supportCapture" jdbcType="INTEGER"/>
+        <result column="support_passenger" property="supportPassenger"/>
+        <result column="enable_passenger" property="enablePassenger"/>
+        <result column="account_type" property="accountType"/>
+        <result column="model" property="model"/>
+        <result column="extend_info" property="extendInfo"/>
+        <result column="resource" property="resource"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,device_id,device_name,type,create_time,create_name,remark,update_time,bind_status,
+          device_status,device_scene,has_child_device,has_ptz,bind_store_id,bind_store_ids,
+          data_source_id,region_path,bind_time,store_scene_id,support_capture,support_passenger,
+          enable_passenger,account_type,model,extend_info,resource
+    </sql>
+
+    <select id="getDeviceByDeviceId" resultMap="BaseResultMap">
+       select *
+       from device_${enterpriseId}
+       where device_id=#{deviceId}
+
+    </select>
+    <select id="getDeviceById" resultMap="BaseResultMap">
+        select *
+        from device_${enterpriseId}
+        where id =#{id}
+    </select>
+    <select id="getDeviceId" resultType="java.lang.String">
+       select device_id  from device_${enterpriseId} order by id desc
+    </select>
+    <select id="getDeviceByDeviceIdList" resultMap="BaseResultMap">
+        select *
+        from device_${enterpriseId}
+        <where>
+            <if test="deviceIdList != null and deviceIdList.size > 0">
+                <foreach collection="deviceIdList" item="deviceId" separator="," open="device_id in(" close=")">
+                    #{deviceId, jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </where>
+
+    </select>
+    <select id="getDeviceByIdList" resultMap="BaseResultMap">
+        select *
+        from device_${enterpriseId}
+        <where>
+            <if test="idList != null and idList.size > 0">
+                <foreach collection="idList" item="deviceId" separator="," open="id in(" close=")">
+                    #{deviceId}
+                </foreach>
+            </if>
+        </where>
+
+    </select>
+
+    <select id="getDeviceByStoreIdList" resultMap="BaseResultMap">
+        select *
+        from device_${enterpriseId}
+        <where>
+            <if test="storeIdList != null and storeIdList.size > 0">
+                <foreach collection="storeIdList" item="storeId" open="and (" close=")" separator="or">
+                    <choose>
+                        <when test="enterpriseId == '28c8c7dd86b146e1b164c1eacb2bd87e'">
+                            bind_store_ids like concat( '%', #{storeId}, '%')
+                        </when>
+                        <otherwise>
+                            bind_store_id = #{storeId}
+                        </otherwise>
+                    </choose>
+                </foreach>
+            </if>
+            <if test="deviceType !=null and deviceType!=''">
+                and type=#{deviceType}
+            </if>
+            <if test="resourceList != null and resourceList.size > 0">
+                <foreach collection="resourceList" item="resource" separator="," open="and resource in(" close=")">
+                    #{resource, jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="supportCapture !=null">
+                and support_capture = #{supportCapture}
+            </if>
+        </where>
+
+    </select>
+    <select id="getDeviceDTOByDeviceIdList" resultType="com.coolcollege.intelligent.model.device.dto.DeviceDTO">
+        select
+        d.device_id AS deviceId,
+        d.device_name AS deviceName,
+        d.remark AS remark,
+        d.type AS type,
+        d.create_time AS createTime,
+        d.create_name AS createUserId,
+        d.store_id AS storeId,
+        d.bind_time AS bindTime,
+        s.store_name AS storeName
+        from device_${enterpriseId} d
+        LEFT JOIN store_${enterpriseId} s ON s.store_id = d.bind_store_id
+        <where>
+            <if test="deviceIdList != null and deviceIdList.size > 0">
+                <foreach collection="deviceIdList" item="deviceId" separator="," open="device_id in(" close=")">
+                    #{deviceId, jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </where>
+
+    </select>
+
+    <insert id="batchInsertOrUpdateDevices">
+        <foreach collection="list" item="it" separator=";">
+            insert into device_${enterpriseId} (
+            device_id,
+            device_name,
+            device_status,
+            create_time,
+            create_name,
+            type,
+            remark,
+            resource,
+            data_source_id,
+            has_child_device,
+            device_scene,
+            has_ptz,
+            bind_store_id,
+            store_scene_id,
+            support_capture,
+            support_passenger,
+            account_type,
+            bind_store_ids,
+            bind_status,
+            model,
+            extend_info
+            ) values
+                (
+                #{it.deviceId, jdbcType=VARCHAR},
+                #{it.deviceName, jdbcType=VARCHAR},
+                #{it.deviceStatus},
+                #{it.createTime, jdbcType=BIGINT},
+                #{it.createName, jdbcType=VARCHAR},
+                #{deviceType},
+                #{it.remark, jdbcType=VARCHAR},
+                #{it.resource},
+                #{it.dataSourceId, jdbcType=VARCHAR},
+                #{it.hasChildDevice},
+                #{it.deviceScene},
+                #{it.hasPtz},
+                #{it.bindStoreId},
+                #{it.storeSceneId},
+                #{it.supportCapture},
+                #{it.supportPassenger},
+                #{it.accountType},
+                #{it.bindStoreIds},
+                #{it.bindStatus},
+                #{it.model},
+                #{it.extendInfo}
+                )
+            ON DUPLICATE KEY UPDATE device_status=values(device_status), has_child_device = values(has_child_device), support_capture = values(support_capture), data_source_id = values(data_source_id)
+            <if test="it.bindStoreIds != null">
+                , bind_store_ids = values(bind_store_ids)
+            </if>
+            <if test="it.bindStoreId != null">
+                , bind_store_id = values(bind_store_id)
+            </if>
+            <if test="it.bindStatus != null and it.bindStoreId !=null">
+                , bind_status = values(bind_status)
+            </if>
+            <if test="it.model != null and it.model !=null">
+                , model = values(model)
+            </if>
+            <if test="it.extendInfo != null and it.extendInfo != null">
+                , extend_info = values(extend_info)
+            </if>
+        </foreach>
+    </insert>
+    
+    <update id="batchUpdateDevices">
+        <foreach collection="deviceList" item="device" separator=";">
+            update device_${enterpriseId} 
+            set
+            <if test="device.deviceName">
+                device_name = #{device.deviceName},
+            </if>
+            <if test="device.bindStatus">
+                bind_status = #{device.bindStatus},
+            </if>
+            <if test="device.deviceStatus">
+                device_status = #{device.deviceStatus},
+            </if>
+            <if test="device.deviceScene">
+                device_scene = #{device.deviceScene},
+            </if>
+            <if test="device.dataSourceId">
+                data_source_id = #{device.dataSourceId},
+            </if>
+            <if test="device.hasChildDevice">
+                has_child_device = #{device.hasChildDevice},
+            </if>
+            <if test="device.hasPtz">
+                has_ptz = #{device.hasPtz},
+            </if>
+            <if test="device.bindStoreId">
+                bind_store_id = #{device.bindStoreId},
+            </if>
+            <if test="device.regionPath">
+                region_path = #{device.regionPath},
+            </if>
+            <if test="device.bindTime">
+                bind_time = #{device.bindTime},
+            </if>
+            <if test="device.storeSceneId">
+                store_scene_id = #{device.storeSceneId},
+            </if>
+            <if test="device.supportCapture">
+                support_capture = #{device.supportCapture},
+            </if>
+            <if test="device.supportPassenger">
+                support_passenger = #{device.supportPassenger},
+            </if>
+            <if test="device.enablePassenger">
+                enable_passenger = #{device.enablePassenger},
+            </if>
+            <if test="device.accountType">
+                account_type = #{device.accountType},
+            </if>
+            <if test="device.bindStoreIds">
+                bind_store_ids = #{device.bindStoreIds},
+            </if>
+            <if test="device.model">
+                model = #{device.model},
+            </if>
+            <if test="device.extendInfo">
+                extend_info = #{device.extendInfo},
+            </if>
+            update_time = UNIX_TIMESTAMP() * 1000
+            where
+                device_id = #{device.deviceId}
+        </foreach>
+    </update>
+
+    <delete id="batchDeleteDevices">
+        delete from device_${enterpriseId} where device_id in
+        <foreach collection="list" item="deviceId" separator="," open="(" close=")">
+            #{deviceId, jdbcType=VARCHAR}
+        </foreach>
+        and type = #{deviceType}
+    </delete>
+
+    <select id="getDevicesByDeviceIds" resultType="com.coolcollege.intelligent.model.device.dto.DeviceDTO">
+        select
+        d.device_id as deviceId,
+        d.device_name as deviceName,
+        d.bind_store_id as storeId
+        from device_${enterpriseId} d
+        where d.device_id in
+        <foreach collection="deviceIds" item="deviceId" separator="," open="(" close=")">
+            #{deviceId, jdbcType=VARCHAR}
+        </foreach>
+        and d.type = #{deviceType}
+    </select>
+
+
+
+
+    <select id="getDeviceListForStore" resultType="com.coolcollege.intelligent.model.device.dto.DeviceMappingDTO">
+        SELECT
+        d.device_id AS deviceId,
+        d.device_name AS deviceName,
+        d.remark AS remark,
+        d.type AS deviceType,
+        d.create_time AS createTime,
+        d.bind_store_id as storeId,
+        s.store_name AS storeName,
+        s.store_status AS storeStatus,
+        d.bind_status as bindStatus,
+        d.device_status as deviceStatus,
+        d.device_scene as scene,
+        d.has_child_device as hasChildDevice,
+        d.resource as deviceSource,
+        d.has_ptz as hasPtz,
+        d.device_scene as scene,
+        d.store_scene_id  as storeSceneId,
+        d.support_passenger as supportPassenger,
+        d.enable_passenger as enablePassenger
+        FROM
+        device_${enterpriseId} d
+        LEFT JOIN store_${enterpriseId} s ON
+        <choose>
+            <when test="enterpriseId == '28c8c7dd86b146e1b164c1eacb2bd87e'">
+                d.bind_store_ids like concat('%',s.store_id,'%')
+            </when>
+            <otherwise>
+                d.bind_store_ids = s.store_id
+            </otherwise>
+        </choose>
+        <where>
+            s.is_delete='effective'
+            <if test="keywords != null and keywords !=''">
+                AND (d.device_name LIKE concat('%',#{keywords},'%') or d.device_id LIKE concat('%',#{keywords},'%'))
+            </if>
+            <if test='deviceType != null and deviceType == "1"'>
+                AND d.has_child_device = '0'
+            </if>
+            <if test='deviceType != null and deviceType == "2"'>
+                AND d.has_child_device = '1'
+            </if>
+            <if test='deviceType != null and deviceType == "3"'>
+                AND d.support_passenger = '1'
+            </if>
+            <if test='deviceType != null and deviceType == "b1"'>
+                AND d.type = 'b1'
+            </if>
+            <if test='deviceType != null and deviceType == "video"'>
+                AND d.type = 'video'
+            </if>
+            <if test="bindStatus != null ">
+                and d.bind_status=#{bindStatus}
+
+            </if>
+            <if test="deviceStatus != null and deviceStatus !=''">
+                and d.device_status=#{deviceStatus}
+            </if>
+            <if test="storeIdList != null and storeIdList.size > 0">
+                <foreach collection="storeIdList" item="storeId" separator="," open="AND s.store_id  in (" close=")">
+                    #{storeId}
+                </foreach>
+            </if>
+        </where>
+
+        ORDER BY d.create_time ,d.device_id DESC
+    </select>
+
+
+    <select id="getDeviceListForNotStore" resultType="com.coolcollege.intelligent.model.device.dto.DeviceMappingDTO">
+        SELECT
+        d.device_id AS deviceId,
+        d.device_name AS deviceName,
+        d.remark AS remark,
+        d.type AS deviceType,
+        d.create_time AS createTime,
+        d.bind_store_id as storeId,
+        d.bind_store_ids as storeIds,
+        d.bind_status as bindStatus,
+        d.device_status as deviceStatus,
+        d.device_scene as scene,
+        d.has_child_device as hasChildDevice,
+        d.has_ptz as hasPtz,
+        d.resource as deviceSource,
+        d.store_scene_id  as storeSceneId,
+        d.support_passenger as supportPassenger,
+        d.enable_passenger as enablePassenger
+        FROM
+        device_${enterpriseId} d
+        <where>
+            <choose>
+                <when test="isAdmin!=null and isAdmin" />
+                <otherwise>
+                    (<if test="authStoreIdList!=null and authStoreIdList.size>0">
+                    <foreach collection="authStoreIdList" item="storeId" open="and (" close=")" separator="or">
+                        bind_store_ids like concat( '%', #{storeId}, '%')
+                    </foreach>
+                </if>
+                    <if test="authFullRegionPathList!=null and authFullRegionPathList.size>0">
+                        <if test="authStoreIdList!=null and authStoreIdList.size>0">
+                            or
+                        </if>
+                        <foreach collection="authFullRegionPathList" item="regionPath"  separator="or">
+                            region_path like concat( #{regionPath}, '%')
+                        </foreach>
+                    </if>
+                    or bind_store_id is null)
+                </otherwise>
+            </choose>
+            <if test="device != null and device != ''">
+                AND (d.device_name LIKE concat('%',#{device},'%') or d.device_id LIKE concat('%',#{device},'%'))
+            </if>
+            <if test='deviceType != null and deviceType == "1"'>
+                AND d.has_child_device = '0'
+            </if>
+            <if test='deviceType != null and deviceType == "2"'>
+                AND d.has_child_device = '1'
+            </if>
+            <if test='deviceType != null and deviceType == "3"'>
+                AND d.support_passenger = '1'
+            </if>
+            <if test='deviceType != null and deviceType == "b1"'>
+                AND d.type = 'b1'
+            </if>
+            <if test='deviceType != null and deviceType == "video"'>
+                AND d.type = 'video'
+            </if>
+            <if test="bindStatus != null ">
+                and bind_status=#{bindStatus}
+            </if>
+            <if test="deviceStatus != null ">
+                and device_status=#{deviceStatus}
+            </if>
+        </where>
+        ORDER BY createTime DESC, deviceId DESC
+    </select>
+
+
+    <select id="getDeviceListForNotBind" resultType="com.coolcollege.intelligent.model.device.dto.DeviceMappingDTO">
+        SELECT
+        d.device_id AS deviceId,
+        d.device_name AS deviceName,
+        d.remark AS remark,
+        d.type AS deviceType,
+        d.create_time AS createTime,
+        d.bind_store_id as storeId,
+        d.bind_store_ids as storeIds,
+        d.bind_status as bindStatus,
+        d.device_status as deviceStatus,
+        d.device_scene as scene,
+        d.has_child_device as hasChildDevice,
+        d.has_ptz as hasPtz,
+        d.resource as deviceSource,
+        d.store_scene_id  as storeSceneId,
+        d.support_passenger as supportPassenger,
+        d.enable_passenger as enablePassenger
+        FROM
+        device_${enterpriseId} d
+        <where>
+            <if test="device != null and device != ''">
+                AND (d.device_name LIKE concat('%',#{device},'%') or d.device_id LIKE concat('%',#{device},'%'))
+            </if>
+            <if test='deviceType != null and deviceType == "1"'>
+                AND d.has_child_device = '0'
+            </if>
+            <if test='deviceType != null and deviceType == "2"'>
+                AND d.has_child_device = '1'
+            </if>
+            <if test='deviceType != null and deviceType == "3"'>
+                AND d.support_passenger = '1'
+            </if>
+            <if test='deviceType != null and deviceType == "b1"'>
+                AND d.type = 'b1'
+            </if>
+            <if test='deviceType != null and deviceType == "video"'>
+                AND d.type = 'video'
+            </if>
+            <if test="bindStatus != null ">
+                and bind_status=#{bindStatus}
+
+            </if>
+            <if test="deviceStatus != null ">
+                and device_status=#{deviceStatus}
+
+            </if>
+            and d.bind_store_id is null
+        </where>
+
+        ORDER BY d.create_time DESC, d.device_id DESC
+    </select>
+
+    <select id="getDeviceListForDevice" resultType="com.coolcollege.intelligent.model.device.dto.DeviceDTO">
+        SELECT
+        d.device_id AS deviceId,
+        d.device_name AS deviceName,
+        d.remark AS remark,
+        d.type AS type,
+        d.create_time AS createTime,
+        d.create_name AS createUserId,
+        d.bind_store_id AS storeId,
+        s.store_name AS storeName
+        FROM
+        device_${enterpriseId} d
+        LEFT JOIN store_${enterpriseId} s ON s.store_id = d.bind_store_id
+        WHERE d.type = #{deviceType}
+        <if test="deviceName != null and deviceName !=''">
+            AND d.device_name LIKE concat('%',#{deviceName},'%')
+        </if>
+        <if test="null != deviceIdList and deviceIdList.size > 0">
+            AND d.device_id IN
+            <foreach collection="deviceIdList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="beginTime != null">
+            AND d.create_time &gt;= #{beginTime}
+        </if>
+        <if test="endTime != null ">
+            AND d.create_time &lt;= #{endTime}
+        </if>
+        ORDER BY d.create_time DESC
+    </select>
+
+
+    <update id="updateDeviceNameById">
+        update device_${enterpriseId} set device_name=#{deviceName, jdbcType=VARCHAR},
+        update_time = now(),update_name = #{userName, jdbcType=VARCHAR}
+        where device_id=#{deviceId, jdbcType=VARCHAR}
+        and type='b1'
+    </update>
+
+    <update id="updateDevice">
+        update device_${enterpriseId} set
+        device_name=#{deviceDO.deviceName, jdbcType=VARCHAR},
+        update_time = #{deviceDO.updateTime},
+        update_name = #{deviceDO.updateName},
+        device_scene=#{deviceDO.deviceScene},
+        remark=#{deviceDO.remark}
+        <if test="deviceDO.hasPtz!=null">
+            ,has_ptz=#{deviceDO.hasPtz}
+        </if>
+        <if test="deviceDO.storeSceneId!=null">
+            ,store_scene_id=#{deviceDO.storeSceneId}
+        </if>
+        <if test="deviceDO.storeSceneId!=null">
+            ,store_scene_id=#{deviceDO.storeSceneId}
+        </if>
+        <if test="deviceDO.deviceStatus!=null">
+            ,device_status=#{deviceDO.deviceStatus}
+        </if>
+        where device_id=#{deviceDO.deviceId, jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateDeviceBindStatus">
+        update device_${enterpriseId}
+        set bind_status=#{bindStatus}
+        <where>
+            <if test="deviceIdList !=null and deviceIdList.size > 0 ">
+                <foreach collection="deviceIdList" item="deviceId" open=" device_id in (" separator="," close=")">
+                    #{deviceId}
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <update id="updateDeviceBindStoreId">
+        update device_${enterpriseId}
+        set bind_store_id=#{storeDTO.storeId},
+        bind_store_ids=#{storeDTO.storeId},
+        region_path=#{storeDTO.regionPath}
+        where device_id = #{deviceId}
+    </update>
+
+    <update id="bathUpdateDeviceBindStoreId">
+        update device_${enterpriseId}
+        set bind_store_id=#{storeDTO.storeId},
+        bind_store_ids=#{storeDTO.storeId},
+        region_path=#{storeDTO.regionPath},
+        bind_time=#{bindTime},
+        bind_status=#{bindStatus}
+        <where>
+            <if test="deviceIdList !=null and deviceIdList.size > 0 ">
+                <foreach collection="deviceIdList" item="deviceId" open=" device_id in (" separator="," close=")">
+                    #{deviceId}
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <update id="bathUpdateDeviceBindStoreIdByStoreIds">
+        update device_${enterpriseId}
+        set bind_store_id=#{storeDTO.storeId},
+        bind_store_ids=#{storeDTO.storeId},
+        region_path=#{storeDTO.regionPath},
+        bind_time=#{bindTime},
+        bind_status=#{bindStatus}
+        <where>
+            <if test="storeIdList !=null and storeIdList.size > 0 ">
+                <foreach collection="storeIdList" item="storeId" open=" bind_store_id in (" separator="," close=")">
+                    #{storeId}
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+
+    <update id="bathUpdateDeviceBindStoreIds">
+        update device_${enterpriseId}
+        set bind_store_id=#{storeDTO.storeId},
+        bind_store_ids=#{bindStoreIds},
+        region_path=#{storeDTO.regionPath},
+        bind_time=#{bindTime},
+        bind_status=#{bindStatus}
+        <where>
+            <if test="deviceIdList !=null and deviceIdList.size > 0 ">
+                <foreach collection="deviceIdList" item="deviceId" open=" device_id in (" separator="," close=")">
+                    #{deviceId}
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <select id="countDevice" resultType="java.lang.Integer">
+        SELECT count(1) from device_${eid} d LEFT JOIN device_channel_${eid} dc on d.device_id=dc.parent_device_id
+        <where>
+            <if test="type!=null and type!=''">
+                d.type=#{type}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAllDevice" resultType="com.coolcollege.intelligent.model.device.DeviceDO">
+        SELECT
+        d.device_id AS deviceId,
+        d.device_name AS deviceName,
+        d.remark AS remark,
+        d.type AS deviceType,
+        d.bind_time AS createTime,
+        d.bind_store_id as storeId,
+        d.bind_status as bindStatus,
+        d.device_status as deviceStatus,
+        d.device_scene as scene,
+        d.has_child_device as hasChildDevice,
+        d.resource as resource,
+        d.has_ptz as hasPtz,
+        d.device_scene as scene,
+        d.store_scene_id  as storeSceneId
+        FROM
+        device_${eid} d
+        where d.type = #{type}
+    </select>
+
+    <update id="updateDeviceByDeviceId">
+        update device_${eid}
+        set support_capture = 1
+        <where>
+            <if test="deviceDoList !=null and deviceDoList.size > 0 ">
+                <foreach collection="deviceDoList" item="deviceDo" open=" device_id in (" separator="," close=")">
+                    #{deviceDo.deviceId}
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <select id="selectBindDevice" resultMap="BaseResultMap">
+        SELECT
+        *
+        FROM
+        device_${eid}
+        where bind_status=1
+        and type = #{type}
+        and resource=#{resource}
+
+    </select>
+
+    <update id="updateEnablePassengerByDeviceId">
+        update device_${eid}
+        set enable_passenger = #{enable}
+        <where>
+            <if test="deviceIdList !=null and deviceIdList.size > 0 ">
+                <foreach collection="deviceIdList" item="deviceId" open=" device_id in (" separator="," close=")">
+                    #{deviceId}
+                </foreach>
+            </if>
+        </where>
+    </update>
+    <select id="countDeviceByStoreId" resultType="java.lang.Integer">
+        SELECT count(*)
+        from device_${eid}
+        where type = #{type}
+        and bind_store_id = #{storeId}
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(*)
+        from device_${eid}
+    </select>
+    <update id="updateDeviceStatus">
+        update device_${eid}
+        set device_status = #{deviceDO.deviceStatus}
+        where device_id = #{deviceDO.deviceId}
+    </update>
+
+    <select id="getDeviceSummaryData" resultType="com.coolcollege.intelligent.model.device.dto.DeviceSummaryDataDTO">
+        SELECT
+        ifnull(count(*), 0) as ipcTotal,
+        ifnull(sum(case when device_status='online' then 1 else 0 end),0) as ipcDeviceOnlineNum,
+        ifnull(sum(case when device_status='offline' then 1 else 0 end),0) as ipcDeviceOfflineNum
+        FROM device_${eid} a left join store_${eid} b on a.bind_store_id = b.store_id
+        <where>
+            <if test="authFullRegionPathList!=null and authFullRegionPathList.size>0">
+                <foreach collection="authFullRegionPathList" item="regionPath"  separator="or" open="(" close=")">
+                    b.region_path like concat( #{regionPath}, '%')
+                </foreach>
+            </if>
+            <if test="request.keyword != null and request.keyword !=''">
+                and (b.store_name like  concat('%', #{request.keyword}, '%') or b.store_num = #{request.keyword})
+            </if>
+            <if test="request.storeStatus != null and request.storeStatus.size()>0">
+                and (b.store_status in <foreach collection="request.storeStatus" item="status" open="(" close=")" separator=",">#{status}</foreach>)
+            </if>
+            <if test="filter==true">
+                and a.has_child_device = 1
+            </if>
+            <if test="filter==false">
+                and (a.has_child_device != 1 or a.has_child_device is null)
+            </if>
+        </where>
+        <if test="request.offlineCount != null">
+            having ipcDeviceOnlineNum >= #{request.offlineCount}
+        </if>
+    </select>
+
+    <select id="getDeviceSummaryGroupStoreId" resultType="com.coolcollege.intelligent.model.device.dto.DeviceSummaryListDTO">
+        SELECT
+        a.bind_store_id as storeId,
+        b.store_name as storeName,
+        ifnull(count(1), 0) as ipcTotal,
+        ifnull(sum(case when device_status='online' then 1 else 0 end),0) as ipcDeviceOnlineNum,
+        ifnull(sum(case when device_status='offline' then 1 else 0 end),0) as ipcDeviceOfflineNum,
+        ROUND(ifnull(COALESCE(sum(case when device_status='online' then 1 else 0 end),0)/count(1),0), 2) as ipcDeviceOnlineRate
+        FROM device_${eid} a inner join store_${eid} b on a.bind_store_id = b.store_id
+        <where>
+            <if test="authFullRegionPathList!=null and authFullRegionPathList.size>0">
+                <foreach collection="authFullRegionPathList" item="regionPath"  separator="or" open="(" close=")">
+                    b.region_path like concat( #{regionPath}, '%')
+                </foreach>
+            </if>
+            <if test="request.keyword != null and request.keyword !=''">
+                and (b.store_name like  concat('%', #{request.keyword}, '%') or b.store_num = #{request.keyword})
+            </if>
+            <if test="request.storeStatus != null and request.storeStatus.size()>0">
+                and (b.store_status in <foreach collection="request.storeStatus" separator="," open="(" close=")" item="status">#{status}</foreach> )
+            </if>
+            and a.bind_store_id !=''
+        </where>
+        group by a.bind_store_id
+        <if test="request.offlineCount != null">
+            having ipcDeviceOfflineNum >= #{request.offlineCount}
+        </if>
+    </select>
+
+    <select id="getDeviceStoreIds" resultType="com.coolcollege.intelligent.model.device.dto.DeviceSummaryListDTO">
+        SELECT
+            bind_store_id as storeId,
+            ifnull(sum(case when device_status='offline' then 1 else 0 end),0) as ipcDeviceOfflineNum
+        FROM device_${eid} a inner join store_${eid} b on a.bind_store_id = b.store_id
+        <where>
+            <if test="authFullRegionPathList!=null and authFullRegionPathList.size>0">
+                <foreach collection="authFullRegionPathList" item="regionPath"  separator="or" open="(" close=")">
+                    b.region_path like concat( #{regionPath}, '%')
+                </foreach>
+            </if>
+            <if test="request.keyword != null and request.keyword !=''">
+                and (b.store_name like  concat('%', #{request.keyword}, '%') or b.store_num = #{request.keyword})
+            </if>
+            <if test="request.storeStatus != null and request.storeStatus.size()>0">
+                and (b.store_status in <foreach collection="request.storeStatus" separator="," open="(" close=")" item="status">#{status}</foreach> )
+            </if>
+            and  a.bind_store_id !=''
+        </where>
+        group by a.bind_store_id
+        <if test="request.offlineCount != null">
+            having ipcDeviceOfflineNum >= #{request.offlineCount}
+        </if>
+    </select>
+
+
+    <select id="getDeviceIdByStoreIds" resultType="string">
+        SELECT
+            device_id
+        FROM device_${eid}
+        where bind_store_id in
+        <foreach collection="storeIds" item="storeId"  separator="," open="(" close=")">
+            #{storeId}
+        </foreach>
+    </select>
+
+    <select id="deviceSummaryGroupStoreIdNum" resultType="java.lang.Integer">
+        select count(0)  from (
+        SELECT
+            bind_store_id as storeId,
+            ifnull(sum(case when device_status='offline' then 1 else 0 end),0) as ipcDeviceOfflineNum
+        FROM device_${eid} a inner join store_${eid} b on a.bind_store_id = b.store_id
+        <where>
+            <if test="authFullRegionPathList!=null and authFullRegionPathList.size>0">
+                <foreach collection="authFullRegionPathList" item="regionPath"  separator="or" open="(" close=")">
+                    b.region_path like concat( #{regionPath}, '%')
+                </foreach>
+            </if>
+            <if test="request.keyword != null and request.keyword !=''">
+                and (b.store_name like  concat('%', #{request.keyword}, '%') or b.store_num = #{request.keyword})
+            </if>
+            <if test="request.storeStatus != null and request.storeStatus.size()>0">
+                and (b.store_status in <foreach collection="request.storeStatus" separator="," open="(" close=")" item="status">#{status}</foreach> )
+            </if>
+            and  a.bind_store_id !=''
+        </where>
+        group by a.bind_store_id
+        <if test="request.offlineCount != null">
+            having ipcDeviceOfflineNum >= #{request.offlineCount}
+        </if>
+        ) as temp
+    </select>
+
+    <select id="getDeviceByStoreIds" resultMap="BaseResultMap">
+        SELECT
+            bind_store_id as storeId
+        from
+            device_${eid}
+        where
+            bind_store_id in <foreach collection="bindStoreIds" open="(" close=")" item="storeId" separator=",">#{storeId}</foreach>
+    </select>
+    <select id="selectDeviceIdByLikeName" resultType="java.lang.String">
+        select device_id as deviceId
+        from  device_${eid}
+        where
+            device_name like concat(#{deviceName},'%')
+    </select>
+    <select id="selectListByBndStatus" resultMap="BaseResultMap">
+        select *
+        from device_${eid}
+        where bind_status = 0
+    </select>
+    <select id="selectShanDongList" resultType="com.coolcollege.intelligent.model.device.DeviceDO">
+        select b.*
+        from store_${eid} a
+        right JOIN device_${eid} b
+        on a.store_id = b.bind_store_id
+        where
+        a.region_path like '/1/67145/%'
+        and a.is_delete = 'effective'
+    </select>
+
+    <select id="getDeviceIdByStoreId" resultMap="BaseResultMap">
+        select
+            id, device_id
+        from
+            device_${enterpriseId}
+        where
+            bind_store_ids like concat('%', #{storeId},'%')
+    </select>
+
+    <select id="getByStoreId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM device_${enterpriseId}
+        WHERE FIND_IN_SET(#{storeId}, bind_store_ids)
+    </select>
+
+    <select id="getByStoreIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM device_${enterpriseId}
+        <where>
+            <foreach collection="storeIds" item="storeId" separator=" OR ">
+                FIND_IN_SET(#{storeId}, bind_store_ids)
+            </foreach>
+            <if test="storeSceneIds != null and !storeSceneIds.isEmpty()">
+                AND store_scene_id IN
+                <foreach collection="storeSceneIds" item="storeSceneId" separator="," open="(" close=")">
+                    #{storeSceneId}
+                </foreach>
+            </if>
+            <if test="resourceList != null and !resourceList.isEmpty()">
+                AND resource IN
+                <foreach collection="resourceList" item="resource" separator="," open="(" close=")">
+                    #{resource}
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.aliyun.AliyunPersonGroupMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.aliyun.AliyunPersonGroupDO" id="BaseMap">
+        <result property="id" column="id"/>
+        <result property="personGroupId" column="person_group_id"/>
+        <result property="personGroupName" column="person_group_name"/>
+
+        <result property="createTime" column="create_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateId" column="update_id"/>
+        <result property="remark" column="remark"/>
+        <result property="isInternal" column="is_internal"/>
+        <result property="personGroupType" column="person_group_type"/>
+
+    </resultMap>
+
+    <insert id="insertAliyunPersonGroup">
+        insert into aliyun_person_group_${eid}
+        (
+        person_group_id,
+        person_group_name,
+        create_id,
+        create_time,
+        remark,
+        is_internal,
+        person_group_type
+        )
+        values
+        (
+        #{aliyunPersonGroupDO.personGroupId},
+        #{aliyunPersonGroupDO.personGroupName},
+        #{aliyunPersonGroupDO.createId},
+        #{aliyunPersonGroupDO.createTime},
+        #{aliyunPersonGroupDO.remark},
+        #{aliyunPersonGroupDO.isInternal},
+        #{aliyunPersonGroupDO.personGroupType}
+        )
+    </insert>
+
+    <update id="updateAliyunPersonGroup">
+        update  aliyun_person_group_${eid}  set
+        person_group_name= #{aliyunPersonGroupDO.personGroupName},
+        update_id=#{aliyunPersonGroupDO.updateId},
+        update_time=#{aliyunPersonGroupDO.updateTime},
+        remark=#{aliyunPersonGroupDO.remark}
+        where person_group_id=#{aliyunPersonGroupDO.personGroupId}
+    </update>
+    <delete id="deleteAliyunPersonGroup">
+        delete from aliyun_person_group_${eid}
+        where  person_group_id =#{groupId}
+    </delete>
+    <select id="getAliyunPersonGroupById" resultMap="BaseMap">
+        select *  from aliyun_person_group_${eid}
+         where
+        person_group_id=#{personGroupId}
+    </select>
+
+    <select id="listAliyunPersonGroupById" resultMap="BaseMap">
+        select *  from aliyun_person_group_${eid}
+         <where>
+         <if test="personGroupIdList !=null and personGroupIdList.size>0">
+             <foreach collection="personGroupIdList" separator="," open="person_group_id in (" item="personGroupId" close=")">
+                 #{personGroupId}
+             </foreach>
+         </if>
+         </where>
+    </select>
+    <select id="getAliyunPersonGroupByName" resultMap="BaseMap">
+        select  * from  aliyun_person_group_${eid}
+        where person_group_name=#{groupName}
+    </select>
+
+    <select id="listAliyunPersonGroup" resultMap="BaseMap">
+        select * from aliyun_person_group_${eid}
+    </select>
+
+</mapper>

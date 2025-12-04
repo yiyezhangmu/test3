@@ -1,0 +1,1362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.metatable.TbMetaTableMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.metatable.TbMetaTableDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="edit_time" jdbcType="TIMESTAMP" property="editTime"/>
+        <result column="table_name" jdbcType="VARCHAR" property="tableName"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName"/>
+        <result column="support_score" jdbcType="TINYINT" property="supportScore"/>
+        <result column="locked" jdbcType="TINYINT" property="locked"/>
+        <result column="active" jdbcType="TINYINT" property="active"/>
+        <result column="table_type" jdbcType="VARCHAR" property="tableType"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+        <result column="edit_user_id" jdbcType="VARCHAR" property="editUserId"/>
+        <result column="edit_user_name" jdbcType="VARCHAR" property="editUserName"/>
+        <result column="level_rule" jdbcType="VARCHAR" property="levelRule"/>
+        <result column="level_info" jdbcType="VARCHAR" property="levelInfo"/>
+        <result column="default_result_column" jdbcType="TINYINT" property="defaultResultColumn"/>
+        <result column="no_applicable_rule" jdbcType="TINYINT" property="noApplicableRule"/>
+        <result column="category_name_list" jdbcType="VARCHAR" property="categoryNameList"/>
+        <result column="order_num" jdbcType="INTEGER" property="orderNum"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="top_time" jdbcType="TIMESTAMP" property="topTime"/>
+        <result column="total_score" jdbcType="DECIMAL" property="totalScore"/>
+        <result column="table_property" jdbcType="TINYINT" property="tableProperty"/>
+        <result column="share_group" jdbcType="LONGVARCHAR" property="shareGroup"/>
+        <result column="share_group_name" jdbcType="LONGVARCHAR" property="shareGroupName"/>
+        <result column="result_share_group" jdbcType="LONGVARCHAR" property="resultShareGroup"/>
+        <result column="result_share_group_name" jdbcType="LONGVARCHAR" property="resultShareGroupName"/>
+        <result column="use_person_info" jdbcType="VARCHAR" property="usePersonInfo"/>
+        <result column="use_range" jdbcType="VARCHAR" property="useRange"/>
+        <result column="result_view_person_info" jdbcType="VARCHAR" property="resultViewPersonInfo"/>
+        <result column="result_view_range" jdbcType="VARCHAR" property="resultViewRange"/>
+        <result column="copy_modify" jdbcType="TINYINT" property="copyModify"/>
+        <result column="is_support_negative_score" jdbcType="TINYINT" property="isSupportNegativeScore"/>
+        <result column="sop_path" jdbcType="VARCHAR" property="sopPath"/>
+        <result column="sop_type" jdbcType="VARCHAR" property="sopType"/>
+        <result column="common_edit_person_info" jdbcType="VARCHAR" property="commonEditPersonInfo"/>
+        <result column="ai_result_method" jdbcType="TINYINT" property="aiResultMethod"/>
+        <result column="is_ai_check" jdbcType="TINYINT" property="isAiCheck"/>
+        <result column="extend_info" jdbcType="VARCHAR" property="extendInfo"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, create_time, edit_time, table_name, description, create_user_id, create_user_name,
+    support_score, locked, active, table_type, deleted, edit_user_id, edit_user_name,
+    level_rule, level_info, default_result_column, no_applicable_rule,
+    category_name_list, order_num, status, top_time, total_score, table_property,
+    share_group, share_group_name, result_share_group, result_share_group_name,
+    use_person_info, use_range, result_view_person_info, result_view_range,
+    copy_modify,is_support_negative_score,sop_type,sop_path,common_edit_person_info,ai_result_method,is_ai_check
+    </sql>
+
+    <sql id="staColumn">
+        `id` , `create_time` , `edit_time` , `table_name` , `description` , `create_user_id` , `create_user_name` , `support_score` , `locked` ,
+        `active` , `table_type` , `deleted` , `edit_user_id` , `edit_user_name` , `level_rule` , `level_info` , `open_high_check` , `default_result_column` ,
+        `no_applicable_rule` , `category_name_list` , `order_num` , `status` , `top_time` , `total_score` , `table_property` ,  `use_range` ,  `result_view_range`,
+        `copy_modify` , `is_support_negative_score`, `sop_type`, `sop_path`
+    </sql>
+
+    <sql id="textColumn">
+        `share_group`,`share_group_name`,  `result_share_group`,  `result_share_group_name`,	`use_person_info`,  `result_view_person_info`, `common_edit_person_info`
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_meta_table_${enterpriseId}
+        where id = #{id,jdbcType=BIGINT}
+        and deleted = 0
+    </select>
+    <delete id="deleteByIdList">
+        delete from tb_meta_table_${enterpriseId}
+        where id in (
+        <foreach collection="idList" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+    <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into tb_meta_table_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.editTime != null">
+                edit_time,
+            </if>
+            <if test="record.tableName != null">
+                table_name,
+            </if>
+            <if test="record.description != null">
+                description,
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id,
+            </if>
+            <if test="record.createUserName != null">
+                create_user_name,
+            </if>
+            <if test="record.supportScore != null">
+                support_score,
+            </if>
+            <if test="record.locked != null">
+                locked,
+            </if>
+            <if test="record.active != null">
+                active,
+            </if>
+            <if test="record.tableType != null">
+                table_type,
+            </if>
+            <if test="record.deleted != null">
+                deleted,
+            </if>
+            <if test="record.editUserId != null">
+                edit_user_id,
+            </if>
+            <if test="record.editUserName != null">
+                edit_user_name,
+            </if>
+            <if test="record.levelRule != null">
+                level_rule,
+            </if>
+            <if test="record.levelInfo != null">
+                level_info,
+            </if>
+            <if test="record.defaultResultColumn != null">
+                default_result_column,
+            </if>
+            <if test="record.noApplicableRule != null">
+                no_applicable_rule,
+            </if>
+            <if test="record.categoryNameList != null">
+                category_name_list,
+            </if>
+            order_num,
+            <if test="record.status != null">
+                status,
+            </if>
+            <if test="record.topTime != null">
+                top_time,
+            </if>
+            <if test="record.totalScore != null">
+                total_score,
+            </if>
+            <if test="record.tableProperty != null">
+                table_property,
+            </if>
+            <if test="record.shareGroup != null">
+                share_group,
+            </if>
+            <if test="record.shareGroupName != null">
+                share_group_name,
+            </if>
+            <if test="record.resultShareGroup != null">
+                result_share_group,
+            </if>
+            <if test="record.resultShareGroupName != null">
+                result_share_group_name,
+            </if>
+            <if test="record.usePersonInfo != null">
+                use_person_info,
+            </if>
+            <if test="record.useRange != null">
+                use_range,
+            </if>
+            <if test="record.resultViewPersonInfo != null">
+                result_view_person_info,
+            </if>
+            <if test="record.resultViewRange != null">
+                result_view_range,
+            </if>
+            <if test="record.copyModify != null">
+                copy_modify,
+            </if>
+            <if test="record.isSupportNegativeScore != null">
+                is_support_negative_score,
+            </if>
+            <if test="record.sopType != null">
+                sop_type,
+            </if>
+            <if test="record.sopPath != null">
+                sop_path,
+            </if>
+            <if test="record.commonEditPersonInfo != null">
+                common_edit_person_info,
+            </if>
+            <if test="record.aiResultMethod != null">
+                ai_result_method,
+            </if>
+            <if test="record.isAiCheck != null">
+                is_ai_check,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.createTime != null">
+                #{record.createTime},
+            </if>
+            <if test="record.editTime != null">
+                #{record.editTime},
+            </if>
+            <if test="record.tableName != null">
+                #{record.tableName},
+            </if>
+            <if test="record.description != null">
+                #{record.description},
+            </if>
+            <if test="record.createUserId != null">
+                #{record.createUserId},
+            </if>
+            <if test="record.createUserName != null">
+                #{record.createUserName},
+            </if>
+            <if test="record.supportScore != null">
+                #{record.supportScore},
+            </if>
+            <if test="record.locked != null">
+                #{record.locked},
+            </if>
+            <if test="record.active != null">
+                #{record.active},
+            </if>
+            <if test="record.tableType != null">
+                #{record.tableType},
+            </if>
+            <if test="record.deleted != null">
+                #{record.deleted},
+            </if>
+            <if test="record.editUserId != null">
+                #{record.editUserId},
+            </if>
+            <if test="record.editUserName != null">
+                #{record.editUserName},
+            </if>
+            <if test="record.levelRule != null">
+                #{record.levelRule},
+            </if>
+            <if test="record.levelInfo != null">
+                #{record.levelInfo},
+            </if>
+            <if test="record.defaultResultColumn != null">
+                #{record.defaultResultColumn},
+            </if>
+            <if test="record.noApplicableRule != null">
+                #{record.noApplicableRule},
+            </if>
+            <if test="record.categoryNameList != null">
+                #{record.categoryNameList},
+            </if>
+            (select ifnull(max(order_num)+1,1) from tb_meta_table_${enterpriseId} as t1),
+            <if test="record.status != null">
+                #{record.status},
+            </if>
+            <if test="record.topTime != null">
+                #{record.topTime},
+            </if>
+            <if test="record.totalScore != null">
+                #{record.totalScore},
+            </if>
+            <if test="record.tableProperty != null">
+                #{record.tableProperty},
+            </if>
+            <if test="record.shareGroup != null">
+                #{record.shareGroup},
+            </if>
+            <if test="record.shareGroupName != null">
+                #{record.shareGroupName},
+            </if>
+            <if test="record.resultShareGroup != null">
+                #{record.resultShareGroup},
+            </if>
+            <if test="record.resultShareGroupName != null">
+                #{record.resultShareGroupName},
+            </if>
+            <if test="record.usePersonInfo != null">
+                #{record.usePersonInfo},
+            </if>
+            <if test="record.useRange != null">
+                #{record.useRange},
+            </if>
+            <if test="record.resultViewPersonInfo != null">
+                #{record.resultViewPersonInfo},
+            </if>
+            <if test="record.resultViewRange != null">
+                #{record.resultViewRange},
+            </if>
+            <if test="record.copyModify != null">
+                #{record.copyModify},
+            </if>
+            <if test="record.isSupportNegativeScore != null">
+                #{record.isSupportNegativeScore},
+            </if>
+            <if test="record.sopType != null">
+                #{record.sopType},
+            </if>
+            <if test="record.sopPath != null">
+                #{record.sopPath},
+            </if>
+            <if test="record.commonEditPersonInfo != null">
+                #{record.commonEditPersonInfo},
+            </if>
+            <if test="record.aiResultMethod != null">
+                #{record.aiResultMethod},
+            </if>
+            <if test="record.isAiCheck != null">
+                #{record.isAiCheck}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectList" parameterType="map" resultMap="BaseResultMap">
+        select * from tb_meta_table_${enterpriseId}
+        where 1 = 1
+        <if test="(isAll == null or isAll == false) and statusFilterCondition != null and statusFilterCondition != 'deleted'">
+            and deleted=0
+        </if>
+        <if test="tableTypeList != null and tableTypeList.size > 0 ">
+            <foreach collection="tableTypeList" open="and table_type in(" close=")" item="tableType" separator=",">
+                #{tableType}
+            </foreach>
+        </if>
+        <if test="name != null and name!='' ">
+            and table_name like concat('%',#{name, jdbcType=VARCHAR},'%')
+        </if>
+        <if test="tablePropertyList != null">
+            <foreach collection="tablePropertyList" open="and table_property in(" close=")" item="tableProperty"
+                     separator=",">
+                #{tableProperty}
+            </foreach>
+        </if>
+        <if test="tableIdList != null">
+            <foreach collection="tableIdList" open="and id in(" close=")" item="tableId" separator=",">
+                #{tableId}
+            </foreach>
+        </if>
+        <if test="statusFilterCondition != null and statusFilterCondition == 'deleted'">
+            and deleted = 1 and status = 1
+        </if>
+        <if test="statusFilterCondition != null and statusFilterCondition == 'pigeonhole'">
+            and deleted = 0 and status = 1
+        </if>
+        <if test="statusFilterCondition != null and statusFilterCondition == 'using'">
+            and deleted = 0 and status = 0
+        </if>
+        order by top_time desc,order_num desc
+    </select>
+
+
+    <select id="selectListV2" resultMap="BaseResultMap">
+        select * from tb_meta_table_${enterpriseId}
+        where 1 = 1
+        <if test="param.tableTypeList != null and param.tableTypeList.size() > 0 ">
+            and table_type in
+            <foreach collection="param.tableTypeList" open="(" close=")" item="tableType" separator=","> #{tableType}</foreach>
+        </if>
+        <if test="param.name != null and param.name!='' ">
+            and table_name like concat('%',#{param.name},'%')
+        </if>
+        <if test="param.tablePropertyList != null and param.tablePropertyList.size()>0 ">
+            and table_property in
+            <foreach collection="param.tablePropertyList" open="(" close=")" item="tableProperty" separator=",">#{tableProperty}</foreach>
+        </if>
+        <if test="param.tableIdList != null and param.tableIdList.size()>0">
+            and id in
+            <foreach collection="param.tableIdList" open="(" close=")" item="tableId" separator=","> #{tableId}</foreach>
+        </if>
+        <if test="param.authTableIds != null">
+            and id in
+            <foreach collection="param.authTableIds" open="(" close=")" item="tableId" separator=","> #{tableId}</foreach>
+        </if>
+        <if test="param.groupId != null">
+            and sop_path like concat('%/',#{param.groupId},'/%')
+        </if>
+        <choose>
+            <when test="param.statusFilterCondition != null and param.statusFilterCondition == 'deleted'">
+                and deleted = 1 and status = 1
+            </when>
+            <when test="param.statusFilterCondition != null and param.statusFilterCondition == 'pigeonhole'">
+                and deleted = 0 and status = 1
+            </when>
+            <otherwise>
+                and deleted = 0 and status = 0
+            </otherwise>
+        </choose>
+        order by top_time desc,order_num desc
+    </select>
+
+    <update id="updateByPrimaryKeySelective">
+        update tb_meta_table_${enterpriseId}
+        <set>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.editTime != null">
+                edit_time = #{record.editTime},
+            </if>
+            <if test="record.tableName != null">
+                table_name = #{record.tableName},
+            </if>
+            <if test="record.description != null">
+                description = #{record.description},
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id = #{record.createUserId},
+            </if>
+            <if test="record.createUserName != null">
+                create_user_name = #{record.createUserName},
+            </if>
+            <if test="record.supportScore != null">
+                support_score = #{record.supportScore},
+            </if>
+            <if test="record.locked != null">
+                locked = #{record.locked},
+            </if>
+            <if test="record.active != null">
+                active = #{record.active},
+            </if>
+            <if test="record.tableType != null">
+                table_type = #{record.tableType},
+            </if>
+            <if test="record.deleted != null">
+                deleted = #{record.deleted},
+            </if>
+            <if test="record.editUserId != null">
+                edit_user_id = #{record.editUserId},
+            </if>
+            <if test="record.editUserName != null">
+                edit_user_name = #{record.editUserName},
+            </if>
+            <if test="record.levelRule != null">
+                level_rule = #{record.levelRule},
+            </if>
+            <if test="record.levelInfo != null">
+                level_info = #{record.levelInfo},
+            </if>
+            <if test="record.defaultResultColumn != null">
+                default_result_column = #{record.defaultResultColumn},
+            </if>
+            <if test="record.noApplicableRule != null">
+                no_applicable_rule = #{record.noApplicableRule},
+            </if>
+            <if test="record.categoryNameList != null">
+                category_name_list = #{record.categoryNameList},
+            </if>
+            <if test="record.orderNum != null">
+                order_num = #{record.orderNum},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status},
+            </if>
+            <if test="record.topTime != null">
+                top_time = #{record.topTime},
+            </if>
+            <if test="record.totalScore != null">
+                total_score = #{record.totalScore},
+            </if>
+            <if test="record.tableProperty != null">
+                table_property = #{record.tableProperty},
+            </if>
+            <if test="record.shareGroup != null">
+                share_group = #{record.shareGroup},
+            </if>
+            <if test="record.shareGroup == null">
+                share_group = null,
+            </if>
+            <if test="record.shareGroupName != null">
+                share_group_name = #{record.shareGroupName},
+            </if>
+            <if test="record.shareGroupName == null">
+                share_group_name = null,
+            </if>
+            <if test="record.resultShareGroup != null">
+                result_share_group = #{record.resultShareGroup},
+            </if>
+            <if test="record.resultShareGroup == null">
+                result_share_group = null,
+            </if>
+            <if test="record.resultShareGroupName != null">
+                result_share_group_name = #{record.resultShareGroupName},
+            </if>
+            <if test="record.resultShareGroupName == null">
+                result_share_group_name =null,
+            </if>
+            <if test="record.usePersonInfo != null">
+                use_person_info = #{record.usePersonInfo},
+            </if>
+            <if test="record.useRange != null">
+                use_range = #{record.useRange},
+            </if>
+            <if test="record.resultViewPersonInfo != null">
+                result_view_person_info = #{record.resultViewPersonInfo},
+            </if>
+            <if test="record.resultViewRange != null">
+                result_view_range = #{record.resultViewRange},
+            </if>
+            <if test="record.copyModify != null">
+                copy_modify = #{record.copyModify},
+            </if>
+            <if test="record.isSupportNegativeScore != null">
+                is_support_negative_score = #{record.isSupportNegativeScore},
+            </if>
+            <if test="record.sopPath != null">
+                sop_path = #{record.sopPath},
+            </if>
+            <if test="record.commonEditPersonInfo != null and record.commonEditPersonInfo != ''">
+                common_edit_person_info = #{record.commonEditPersonInfo},
+            </if>
+            <if test="record.aiResultMethod != null">
+                ai_result_method = #{record.aiResultMethod},
+            </if>
+            <if test="record.isAiCheck != null">
+                is_ai_check = #{record.isAiCheck},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <update id="updateLockedByIds">
+        update tb_meta_table_${enterpriseId}
+        set locked = 1
+        where id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        ) and deleted = 0
+    </update>
+    <update id="updateDelByIds">
+        update tb_meta_table_${enterpriseId}
+        set deleted = 1
+        where id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </update>
+    <select id="selectByIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_meta_table_${enterpriseId}
+        where id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+    <select id="isStaTable" resultType="java.lang.Integer">
+    select count(0)
+    from tb_meta_table_${enterpriseId}
+    where table_type = 'STANDARD'
+    and deleted = 0
+    and table_property != 6
+    and id = #{metaTableId}
+  </select>
+
+    <select id="isCreator" resultType="java.lang.Integer">
+        select count(0)
+        from tb_meta_table_${enterpriseId}
+        where deleted = 0
+        <foreach collection="idList" item="id" open="and id in (" close=")" separator=",">
+            #{id}
+        </foreach>
+        and create_user_id = #{userId}
+    </select>
+
+
+    <insert id="insertTable" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into tb_meta_table_${enterpriseId}
+        (`table_name`,
+        <if test="record.deleted != null">
+            deleted,
+        </if>
+        description,
+        create_user_id,
+        create_user_name,
+        edit_user_id,
+        edit_user_name,
+        support_score,
+        table_type,
+        share_group,
+        share_group_name,
+        result_share_group,
+        result_share_group_name,
+        level_rule,
+        level_info,
+        use_person_info,
+        use_range,
+        result_view_person_info,
+        common_edit_person_info,
+        result_view_range,
+        <if test="record.tableProperty != null">
+            table_property,
+        </if>
+        <if test="record.isSupportNegativeScore != null">
+            is_support_negative_score,
+        </if>
+        order_num,
+        sop_type,
+        sop_path
+        )
+        values (
+        #{record.tableName,jdbcType=VARCHAR},
+        <if test="record.deleted != null">
+            #{record.deleted,jdbcType=TINYINT},
+        </if>
+        #{record.description,jdbcType=VARCHAR},
+        #{record.createUserId,jdbcType=VARCHAR},
+        #{record.createUserName,jdbcType=VARCHAR},
+        #{record.editUserId,jdbcType=VARCHAR},
+        #{record.editUserName,jdbcType=VARCHAR},
+        #{record.supportScore,jdbcType=TINYINT},
+        #{record.tableType,jdbcType=VARCHAR},
+        #{record.shareGroup,jdbcType=VARCHAR},
+        #{record.shareGroupName,jdbcType=VARCHAR},
+        #{record.resultShareGroup,jdbcType=VARCHAR},
+        #{record.resultShareGroupName,jdbcType=VARCHAR},
+        #{record.levelRule,jdbcType=VARCHAR},
+        #{record.levelInfo,jdbcType=VARCHAR},
+        #{record.usePersonInfo,jdbcType=VARCHAR},
+        #{record.useRange,jdbcType=VARCHAR},
+        #{record.resultViewPersonInfo,jdbcType=VARCHAR},
+        #{record.commonEditPersonInfo,jdbcType=VARCHAR},
+        #{record.resultViewRange,jdbcType=VARCHAR},
+        <if test="record.tableProperty != null">
+            #{record.tableProperty},
+        </if>
+        <if test="record.isSupportNegativeScore != null">
+            #{record.isSupportNegativeScore},
+        </if>
+        (
+        select ifnull(max(order_num)+1,1) from tb_meta_table_${enterpriseId} as t1),
+        #{record.sopType},
+        #{record.sopPath}
+        )
+
+    </insert>
+
+    <update id="update">
+        update tb_meta_table_${enterpriseId}
+        <set>
+            <if test="record.tableName != null">
+                `table_name` = #{record.tableName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.description != null">
+                description = #{record.description,jdbcType=VARCHAR},
+            </if>
+            <if test="record.supportScore != null">
+                support_score = #{record.supportScore,jdbcType=TINYINT},
+            </if>
+            <if test="record.locked != null">
+                locked = #{record.locked,jdbcType=TINYINT},
+            </if>
+            <if test="record.active != null">
+                active = #{record.active,jdbcType=TINYINT},
+            </if>
+            <if test="record.shareGroup != null">
+                share_group = #{record.shareGroup,jdbcType=VARCHAR},
+            </if>
+            <if test="record.shareGroupName != null">
+                share_group_name = #{record.shareGroupName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.deleted != null">
+                deleted = #{record.deleted,jdbcType=TINYINT},
+            </if>
+            <if test="record.editUserId != null">
+                edit_user_id = #{record.editUserId},
+            </if>
+            <if test="record.editTime != null">
+                edit_time = #{record.editTime},
+            </if>
+            <if test="record.editUserName != null">
+                edit_user_name = #{record.editUserName},
+            </if>
+            <if test="record.resultShareGroup != null">
+                result_share_group = #{record.resultShareGroup},
+            </if>
+            <if test="record.resultShareGroupName != null">
+                result_share_group_name = #{record.resultShareGroupName},
+            </if>
+            <if test="record.levelRule != null">
+                level_rule = #{record.levelRule},
+            </if>
+            <if test="record.levelInfo != null">
+                level_info = #{record.levelInfo},
+            </if>
+            <if test="record.usePersonInfo != null">
+                use_person_info = #{record.usePersonInfo},
+            </if>
+            <if test="record.useRange != null">
+                use_range = #{record.useRange},
+            </if>
+            <if test="record.resultViewRange != null">
+                result_view_range = #{record.resultViewRange},
+            </if>
+            <if test="record.resultViewPersonInfo != null">
+                result_view_person_info = #{record.resultViewPersonInfo},
+            </if>
+            <if test="record.isSupportNegativeScore != null">
+                is_support_negative_score=#{record.isSupportNegativeScore},
+            </if>
+            <if test="record.commonEditPersonInfo != null">
+                common_edit_person_info=#{record.commonEditPersonInfo},
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id= #{record.createUserId},
+            </if>
+            <if test="record.createUserName != null">
+                create_user_name= #{record.createUserName},
+            </if>
+        </set>
+        where id = #{record.id}
+    </update>
+    <update id="raiseStaTable">
+    update tb_meta_table_${enterpriseId}
+    set table_property = 1
+    where id = #{id}
+  </update>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_meta_table_${enterpriseId}
+        where id = #{id}
+    </select>
+
+    <select id="selectByIdsAndType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_meta_table_${enterpriseId}
+        where 1=1
+        <if test="tableIdList != null">
+            <foreach collection="tableIdList" item="tableId" separator="," open="and id in (" close=")">
+                #{tableId}
+            </foreach>
+        </if>
+        <if test="tableType!=null and tableType !=''">
+            and table_type = #{tableType}
+        </if>
+    </select>
+    <select id="getTableByCreateUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_meta_table_${enterpriseId}
+        where 1=1
+        <if test="userIdList != null">
+            <foreach collection="userIdList" open="and create_user_id in (" close=")" separator="," item="userId">
+                #{userId}
+            </foreach>
+        </if>
+        <if test="beginDate!=null and endDate != null">
+            and create_time between #{beginDate} and #{endDate}
+        </if>
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from tb_meta_table_${enterpriseId}
+        <where>
+            <if test="tableType != null">
+                and table_type = #{tableType}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            and deleted = 0
+        </where>
+    </select>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        select id,`table_name`, table_type
+        from tb_meta_table_${enterpriseId}
+        where deleted = 0
+        <if test="tableType != null">
+            and table_type = #{tableType}
+        </if>
+        <if test="metaTableIds != null and metaTableIds.size()>0">
+            and id in (
+            <foreach collection="metaTableIds" item="metaTableId" separator=",">
+                #{metaTableId}
+            </foreach>
+            )
+        </if>
+    </select>
+    <select id="getInitTable" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_meta_table_${enterpriseId}
+        where deleted = 0
+        and create_user_id = 'system'
+        <if test="tableType != null">
+            and table_type = #{tableType}
+        </if>
+        order by id asc
+        limit 1
+    </select>
+    <select id="getDefaultMetaTable" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_meta_table_${enterpriseId}
+        where deleted = 0
+        and table_type = 'STANDARD'
+        order by id desc
+        limit #{limit}
+    </select>
+    <select id="countExport" resultType="java.lang.Long">
+        select
+        count(0)
+        from tb_meta_table_${enterpriseId}
+        where table_type =#{type}
+        <if test="tableIds != null and tableIds.size()>0">
+            and id in (
+            <foreach collection="tableIds" item="tableId">
+                #{tableId}
+            </foreach>
+            )
+        </if>
+    </select>
+    <select id="selectByMetaTableIdListAll" resultMap="BaseResultMap">
+        select id,`table_name`
+        from tb_meta_table_${enterpriseId}
+        where 1 = 1
+        <if test="tableType != null">
+            and table_type = #{tableType}
+        </if>
+        <if test="metaTableIds != null and metaTableIds.size()>0">
+            and id in (
+            <foreach collection="metaTableIds" item="metaTableId" separator=",">
+                #{metaTableId}
+            </foreach>
+            )
+        </if>
+    </select>
+
+    <update id="pigeonholeMany">
+        update tb_meta_table_${enterpriseId}
+        set status = 1
+        <where>
+            id in (
+            <foreach collection="id" item="metaTableId" separator=",">
+                #{metaTableId}
+            </foreach>
+            )
+        </where>
+    </update>
+
+    <update id="updateTopOrPigeonhole">
+        update tb_meta_table_${enterpriseId}
+        <set>
+            <if test="topStatus != null">
+                top_time = #{topTime},
+            </if>
+            <if test="pigeonholeStatus != null">
+                status = #{pigeonholeStatus},
+            </if>
+            <if test="pigeonholeStatus != null and pigeonholeStatus==false">
+                top_time = null,
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="batchUpdate">
+        update tb_meta_table_${enterpriseId}
+        set
+        order_num = CASE id
+        <foreach collection="recordList" item="entity">
+            WHEN #{entity.id} THEN #{entity.orderNum}
+        </foreach>
+        END
+        where
+        id in
+        <foreach collection="recordList" item="entity" open="(" separator="," close=")">
+            #{entity.id}
+        </foreach>
+    </update>
+    <update id="batchUpdatePath">
+        update tb_meta_table_${enterpriseId}
+        set sop_path = #{path}
+        where
+        id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+    <update id="batchUserIdByUpdatePath">
+        update tb_meta_table_${enterpriseId}
+        set use_person_info         = #{usePersonInfo},
+            use_range               = #{useRange},
+            result_view_person_info = #{resultViewPersonInfo},
+            result_view_range       = #{resultViewRange},
+            common_edit_person_info = #{commonEditPersonInfo}
+        where sop_path = #{path} and sop_type = 'child'
+          and deleted = 0
+    </update>
+    <update id="moveDefaultGroup" parameterType="map">
+        UPDATE tb_meta_table_${enterpriseId} AS main
+        JOIN tb_meta_table_${enterpriseId} AS child
+        ON child.table_name = '默认分组'
+        AND child.sop_path = '/-1/'
+        SET main.sop_path = CONCAT('/-1/', child.id, '/')
+        WHERE main.sop_path = #{childPath}
+        AND main.sop_type = #{child};
+
+    </update>
+
+
+    <select id="countTop" resultType="integer">
+    select count(1) from tb_meta_table_${enterpriseId}
+    where deleted = 0 and status = 0
+    and top_time is not null
+  </select>
+
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        tb_meta_table_${enterpriseId}
+        where
+        <![CDATA[total_score <= 0 ]]>
+        order by id asc
+    </select>
+
+    <select id="countCheckTableByName" resultType="integer">
+    select
+    count(1)
+    from
+    tb_meta_table_${enterpriseId}
+    where table_name = #{tableName} and deleted = 0
+  </select>
+
+
+  <select id="getAllMetaTable" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from
+      tb_meta_table_${enterpriseId}
+      where deleted = 0
+          <if test="tableIds != null and tableIds.size()>0">
+              and id in <foreach collection="tableIds" item="id" open="(" close=")" separator=",">#{id}</foreach>
+          </if>
+    order by id asc
+  </select>
+
+
+    <select id="getEditCommonUserInfo" resultType="com.coolcollege.intelligent.model.metatable.TbMetaTableDO">
+        select
+         id, common_edit_userids as commonEditUserIds, common_edit_person_info as commonEditPersonInfo
+        from
+        tb_meta_table_${enterpriseId}
+        where deleted = 0
+        <if test="tableIds != null and tableIds.size()>0">
+            and id in <foreach collection="tableIds" item="id" open="(" close=")" separator=",">#{id}</foreach>
+        </if>
+        order by id asc
+    </select>
+
+  <select id="judgeName" resultType="java.lang.String">
+    SELECT table_name
+    FROM tb_meta_table_${enterpriseId}
+    WHERE table_name = #{nodeName}
+    AND sop_type = 'leaf'
+    AND deleted = 0
+    <if test="id != null">
+        AND id != #{id}
+    </if>
+  </select>
+    <select id="selectBySopType" resultType="com.coolcollege.intelligent.model.metatable.dto.SopDTO">
+        select
+        parent.id,
+        parent.table_name as nodeName,
+        parent.sop_path as nodePath,
+        parent.sop_type as sopType,
+        COUNT(DISTINCT child.id) AS countNum
+        from
+        tb_meta_table_${enterpriseId} parent
+        LEFT JOIN tb_meta_table_${enterpriseId} child
+        ON child.sop_path LIKE CONCAT(parent.sop_path, parent.id, '/%')
+        AND child.sop_type = 'child'
+        and child.deleted = 0
+        and child.status = 0
+        and child.table_property in (0,1,2,4,5,6)
+        and child.table_type = 'STANDARD'
+        <if test="tableIds != null and tableIds.size()> 0">
+            and child.id in <foreach collection="tableIds" item="id" open="(" close=")" separator=",">#{id}</foreach>
+        </if>
+        where parent.sop_type = #{leaf}
+        and parent.sop_path = #{path}
+        and parent.deleted = 0
+        GROUP BY
+        parent.id, parent.table_name, parent.sop_path, parent.sop_type;
+    </select>
+    <select id="selectByNodePathList" resultType="com.coolcollege.intelligent.model.metatable.dto.SopDTO">
+        select
+        parent.id,
+        parent.table_name as nodeName,
+        parent.sop_path as nodePath,
+        parent.sop_type as sopType,
+        COUNT(DISTINCT child.id) AS countNum
+        from
+        tb_meta_table_${enterpriseId} parent
+        LEFT JOIN tb_meta_table_${enterpriseId} child
+        ON child.sop_path LIKE CONCAT(parent.sop_path, parent.id, '/%')
+        AND child.sop_type = 'child'
+        and child.deleted = 0
+        and child.status = 0
+        and child.table_type = 'STANDARD'
+        and child.table_property in (0,1,2,4,5,6)
+        <if test="tableIds != null and tableIds.size()> 0">
+            and child.id in <foreach collection="tableIds" item="id" open="(" close=")" separator=",">#{id}</foreach>
+        </if>
+        <where>
+            parent.deleted = 0
+            and parent.sop_type = 'leaf'
+            <if test="nodePathList != null and nodePathList.size()>0">
+                and (
+                <foreach collection="nodePathList" item="keyword" separator="OR" open="(" close=")">
+                    parent.sop_path like concat('%',#{keyword},'%')
+                </foreach>
+                )
+            </if>
+            GROUP BY parent.id, parent.table_name, parent.sop_path, parent.sop_type
+        </where>
+
+    </select>
+    <select id="selectByName" resultType="com.coolcollege.intelligent.model.metatable.dto.SopDTO">
+     select
+       parent.id,
+        parent.table_name as nodeName,
+        parent.sop_path as nodePath,
+        parent.sop_type as sopType,
+        COUNT(DISTINCT child.id) AS countNum
+      from
+      tb_meta_table_${enterpriseId} parent
+      LEFT JOIN tb_meta_table_${enterpriseId} child
+       ON child.sop_path LIKE CONCAT(parent.sop_path, parent.id, '/%')
+        AND child.sop_type = 'child'
+        and child.deleted = 0
+        and child.status = 0
+        and child.table_type = 'STANDARD'
+        and child.table_property in (0,1,2,4,5,6)
+      where parent.sop_type = #{leaf}
+      and parent.table_name like concat('%',#{name},'%')
+      and parent.deleted = 0
+      GROUP BY parent.id, parent.table_name, parent.sop_path, parent.sop_type
+  </select>
+
+
+    <insert id="copyMetaTable" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into tb_meta_table_${enterpriseId}
+    (id,`table_name`,
+    deleted,
+    description,
+    create_user_id,
+    create_user_name,
+    edit_user_id,
+    edit_user_name,
+    support_score,
+    table_type,
+    share_group,
+    share_group_name,
+    result_share_group,
+    result_share_group_name,
+    level_rule,
+    level_info,
+    table_property,
+    order_num,
+    create_time,
+    edit_time,
+    default_result_column,
+    no_applicable_rule,
+    category_name_list,
+    status,
+    top_time,
+    total_score
+    )
+    values (#{record.id},#{record.tableName,jdbcType=VARCHAR},
+    #{record.deleted,jdbcType=TINYINT},
+    #{record.description,jdbcType=VARCHAR},
+    #{record.createUserId,jdbcType=VARCHAR},
+    #{record.createUserName,jdbcType=VARCHAR},
+    #{record.editUserId,jdbcType=VARCHAR},
+    #{record.editUserName,jdbcType=VARCHAR},
+    #{record.supportScore,jdbcType=TINYINT},
+    #{record.tableType,jdbcType=VARCHAR},
+    #{record.shareGroup,jdbcType=VARCHAR},
+    #{record.shareGroupName,jdbcType=VARCHAR},
+    #{record.resultShareGroup,jdbcType=VARCHAR},
+    #{record.resultShareGroupName,jdbcType=VARCHAR},
+    #{record.levelRule,jdbcType=VARCHAR},
+    #{record.levelInfo,jdbcType=VARCHAR},
+    #{record.tableProperty},
+    #{record.orderNum},
+    #{record.createTime},
+    #{record.editTime},
+    #{record.defaultResultColumn},
+    #{record.noApplicableRule},
+    #{record.categoryNameList},
+    #{record.status},
+    #{record.topTime},
+    #{record.totalScore}
+    )
+  </insert>
+    <insert id="addSopNode" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into tb_meta_table_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.editTime != null">
+                edit_time,
+            </if>
+            <if test="record.tableName != null">
+                table_name,
+            </if>
+            <if test="record.description != null">
+                description,
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id,
+            </if>
+            <if test="record.createUserName != null">
+                create_user_name,
+            </if>
+            <if test="record.supportScore != null">
+                support_score,
+            </if>
+            <if test="record.locked != null">
+                locked,
+            </if>
+            <if test="record.active != null">
+                active,
+            </if>
+            <if test="record.tableType != null">
+                table_type,
+            </if>
+            <if test="record.deleted != null">
+                deleted,
+            </if>
+            <if test="record.editUserId != null">
+                edit_user_id,
+            </if>
+            <if test="record.editUserName != null">
+                edit_user_name,
+            </if>
+            <if test="record.levelRule != null">
+                level_rule,
+            </if>
+            <if test="record.levelInfo != null">
+                level_info,
+            </if>
+            <if test="record.defaultResultColumn != null">
+                default_result_column,
+            </if>
+            <if test="record.noApplicableRule != null">
+                no_applicable_rule,
+            </if>
+            <if test="record.categoryNameList != null">
+                category_name_list,
+            </if>
+            order_num,
+            <if test="record.status != null">
+                status,
+            </if>
+            <if test="record.topTime != null">
+                top_time,
+            </if>
+            <if test="record.totalScore != null">
+                total_score,
+            </if>
+            <if test="record.tableProperty != null">
+                table_property,
+            </if>
+            <if test="record.shareGroup != null">
+                share_group,
+            </if>
+            <if test="record.shareGroupName != null">
+                share_group_name,
+            </if>
+            <if test="record.resultShareGroup != null">
+                result_share_group,
+            </if>
+            <if test="record.resultShareGroupName != null">
+                result_share_group_name,
+            </if>
+            <if test="record.usePersonInfo != null">
+                use_person_info,
+            </if>
+            <if test="record.useRange != null">
+                use_range,
+            </if>
+            <if test="record.resultViewPersonInfo != null">
+                result_view_person_info,
+            </if>
+            <if test="record.resultViewRange != null">
+                result_view_range,
+            </if>
+            <if test="record.copyModify != null">
+                copy_modify,
+            </if>
+            <if test="record.isSupportNegativeScore != null">
+                is_support_negative_score,
+            </if>
+            <if test="record.sopType != null">
+                sop_type,
+            </if>
+            <if test="record.sopPath != null">
+                sop_path,
+            </if>
+            <if test="record.commonEditPersonInfo != null">
+                common_edit_person_info,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.createTime != null">
+                #{record.createTime},
+            </if>
+            <if test="record.editTime != null">
+                #{record.editTime},
+            </if>
+            <if test="record.tableName != null">
+                #{record.tableName},
+            </if>
+            <if test="record.description != null">
+                #{record.description},
+            </if>
+            <if test="record.createUserId != null">
+                #{record.createUserId},
+            </if>
+            <if test="record.createUserName != null">
+                #{record.createUserName},
+            </if>
+            <if test="record.supportScore != null">
+                #{record.supportScore},
+            </if>
+            <if test="record.locked != null">
+                #{record.locked},
+            </if>
+            <if test="record.active != null">
+                #{record.active},
+            </if>
+            <if test="record.tableType != null">
+                #{record.tableType},
+            </if>
+            <if test="record.deleted != null">
+                #{record.deleted},
+            </if>
+            <if test="record.editUserId != null">
+                #{record.editUserId},
+            </if>
+            <if test="record.editUserName != null">
+                #{record.editUserName},
+            </if>
+            <if test="record.levelRule != null">
+                #{record.levelRule},
+            </if>
+            <if test="record.levelInfo != null">
+                #{record.levelInfo},
+            </if>
+            <if test="record.defaultResultColumn != null">
+                #{record.defaultResultColumn},
+            </if>
+            <if test="record.noApplicableRule != null">
+                #{record.noApplicableRule},
+            </if>
+            <if test="record.categoryNameList != null">
+                #{record.categoryNameList},
+            </if>
+            (select ifnull(max(order_num)+1,1) from tb_meta_table_${enterpriseId} as t1),
+            <if test="record.status != null">
+                #{record.status},
+            </if>
+            <if test="record.topTime != null">
+                #{record.topTime},
+            </if>
+            <if test="record.totalScore != null">
+                #{record.totalScore},
+            </if>
+            <if test="record.tableProperty != null">
+                #{record.tableProperty},
+            </if>
+            <if test="record.shareGroup != null">
+                #{record.shareGroup},
+            </if>
+            <if test="record.shareGroupName != null">
+                #{record.shareGroupName},
+            </if>
+            <if test="record.resultShareGroup != null">
+                #{record.resultShareGroup},
+            </if>
+            <if test="record.resultShareGroupName != null">
+                #{record.resultShareGroupName},
+            </if>
+            <if test="record.usePersonInfo != null">
+                #{record.usePersonInfo},
+            </if>
+            <if test="record.useRange != null">
+                #{record.useRange},
+            </if>
+            <if test="record.resultViewPersonInfo != null">
+                #{record.resultViewPersonInfo},
+            </if>
+            <if test="record.resultViewRange != null">
+                #{record.resultViewRange},
+            </if>
+            <if test="record.copyModify != null">
+                #{record.copyModify},
+            </if>
+            <if test="record.isSupportNegativeScore != null">
+                #{record.isSupportNegativeScore},
+            </if>
+            <if test="record.sopType != null">
+                #{record.sopType},
+            </if>
+            <if test="record.sopPath != null">
+                #{record.sopPath},
+            </if>
+            <if test="record.commonEditPersonInfo != null">
+                #{record.commonEditPersonInfo},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteAllTable">
+    delete from tb_meta_table_${enterpriseId}
+  </delete>
+
+    <select id="selectListByTableId" resultMap="BaseResultMap">
+        select id, table_name
+        from tb_meta_table_${enterpriseId} where id = #{id}
+    </select>
+    <select id="selectByDefault" resultType="com.coolcollege.intelligent.model.metatable.TbMetaTableDO">
+        SELECT *
+        FROM tb_meta_table_${enterpriseId}
+        WHERE table_name = '默认分组'
+        AND sop_type = 'leaf'
+    </select>
+
+    <select id="selectDisplayTableAndUsedUserContainUserId" parameterType="map" resultMap="BaseResultMap">
+        select * from tb_meta_table_${enterpriseId}
+        where deleted = 0
+        AND table_type = 'TB_DISPLAY'
+        <if test="metaTableIds != null and metaTableIds.size()>0">
+            and id in
+            <foreach collection="metaTableIds" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="startTime != null and startTime != ''">
+            AND create_time >= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND create_time &lt; #{endTime}
+        </if>
+        <if test="name != null and name != '' ">
+            and table_name like concat('%',#{name},'%')
+        </if>
+        order by top_time desc, order_num desc
+    </select>
+</mapper>

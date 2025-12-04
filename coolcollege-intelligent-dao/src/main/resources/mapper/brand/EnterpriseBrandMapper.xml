@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.brand.EnterpriseBrandMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.brand.EnterpriseBrandDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="extend_info" jdbcType="VARCHAR" property="extendInfo" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="init_status" jdbcType="TINYINT" property="initStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, code, name, extend_info, create_user_id, create_user_name, create_time, update_user_id,
+    update_user_name, update_time, status, init_status
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into enterprise_brand_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.code != null">
+        code,
+      </if>
+      <if test="record.name != null">
+        name,
+      </if>
+      <if test="record.extendInfo != null">
+        extend_info,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.createUserName != null">
+        create_user_name,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="record.updateUserName != null">
+        update_user_name,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.initStatus != null">
+        init_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.code != null">
+        #{record.code},
+      </if>
+      <if test="record.name != null">
+        #{record.name},
+      </if>
+      <if test="record.extendInfo != null">
+        #{record.extendInfo},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId},
+      </if>
+      <if test="record.createUserName != null">
+        #{record.createUserName},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+      <if test="record.updateUserId != null">
+        #{record.updateUserId},
+      </if>
+      <if test="record.updateUserName != null">
+        #{record.updateUserName},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime},
+      </if>
+      <if test="record.initStatus != null">
+        #{record.initStatus},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update enterprise_brand_${enterpriseId}
+    <set>
+      <if test="record.name != null">
+        name = #{record.name},
+      </if>
+      <if test="record.extendInfo != null">
+        extend_info = #{record.extendInfo},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId},
+      </if>
+      <if test="record.createUserName != null">
+        create_user_name = #{record.createUserName},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime},
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = #{record.updateUserId},
+      </if>
+      <if test="record.updateUserName != null">
+        update_user_name = #{record.updateUserName},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime},
+      </if>
+      <if test="record.initStatus != null">
+        init_status = #{record.initStatus}
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+
+  <select id="existsNameExcludeId" resultType="java.lang.Boolean">
+    SELECT COUNT(*) > 0
+    FROM enterprise_brand_${enterpriseId}
+    <where>
+        name LIKE CONCAT('%', #{name}, '%')
+        <if test="id != null">
+          AND id != #{id}
+        </if>
+    </where>
+  </select>
+
+  <delete id="deleteBatch">
+    DELETE FROM enterprise_brand_${enterpriseId}
+    WHERE id in
+    <foreach collection="ids" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+    AND (status IS NULL OR status != 2)
+  </delete>
+
+  <select id="selectById" resultType="com.coolcollege.intelligent.model.brand.EnterpriseBrandDO">
+    SELECT <include refid="Base_Column_List" />
+    FROM enterprise_brand_${enterpriseId}
+    WHERE id = #{id}
+  </select>
+
+  <select id="selectByIds" resultType="com.coolcollege.intelligent.model.brand.EnterpriseBrandDO">
+    SELECT <include refid="Base_Column_List" />
+    FROM enterprise_brand_${enterpriseId}
+    WHERE id IN
+    <foreach collection="ids" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+  </select>
+
+  <select id="getList" resultType="com.coolcollege.intelligent.model.brand.EnterpriseBrandDO">
+    SELECT <include refid="Base_Column_List" />
+    FROM enterprise_brand_${enterpriseId}
+    <where>
+      <if test="request.name != null and request.name != ''">
+        AND name LIKE CONCAT('%', #{request.name}, '%')
+      </if>
+    </where>
+  </select>
+
+  <select id="getNameByIds" resultType="com.coolcollege.intelligent.model.brand.EnterpriseBrandDO">
+    SELECT id, name
+    FROM enterprise_brand_${enterpriseId}
+    WHERE id in
+    <foreach collection="ids" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+  </select>
+
+  <select id="existsByCode" resultType="java.lang.Boolean">
+    SELECT COUNT(*) > 0
+    FROM enterprise_brand_${enterpriseId}
+    WHERE code = #{code}
+  </select>
+</mapper>

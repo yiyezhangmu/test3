@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.patrolstore.TbPatrolPlanMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.patrolstore.entity.TbPatrolPlanDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="plan_month" jdbcType="VARCHAR" property="planMonth" />
+    <result column="plan_name" jdbcType="VARCHAR" property="planName" />
+    <result column="supervisor_id" jdbcType="VARCHAR" property="supervisorId" />
+    <result column="audit_user_id" jdbcType="VARCHAR" property="auditUserId" />
+    <result column="patrol_total_store_num" jdbcType="INTEGER" property="patrolTotalStoreNum" />
+    <result column="patrol_finish_store_num" jdbcType="INTEGER" property="patrolFinishStoreNum" />
+    <result column="audit_status" jdbcType="TINYINT" property="auditStatus" />
+    <result column="meta_table_ids" jdbcType="VARCHAR" property="metaTableIds" />
+    <result column="is_open_summary" jdbcType="BIT" property="isOpenSummary" />
+    <result column="is_open_autograph" jdbcType="BIT" property="isOpenAutograph" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, plan_month, plan_name, supervisor_id, audit_user_id, patrol_total_store_num, 
+    patrol_finish_store_num, audit_status, meta_table_ids, is_open_summary, is_open_autograph, 
+    remark, create_time, create_user_id, update_time, update_user_id, deleted
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into tb_patrol_plan_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.planMonth != null">
+        plan_month,
+      </if>
+      <if test="record.planName != null">
+        plan_name,
+      </if>
+      <if test="record.supervisorId != null">
+        supervisor_id,
+      </if>
+      <if test="record.auditUserId != null">
+        audit_user_id,
+      </if>
+      <if test="record.patrolTotalStoreNum != null">
+        patrol_total_store_num,
+      </if>
+      <if test="record.patrolFinishStoreNum != null">
+        patrol_finish_store_num,
+      </if>
+      <if test="record.auditStatus != null">
+        audit_status,
+      </if>
+      <if test="record.metaTableIds != null">
+        meta_table_ids,
+      </if>
+      <if test="record.isOpenSummary != null">
+        is_open_summary,
+      </if>
+      <if test="record.isOpenAutograph != null">
+        is_open_autograph,
+      </if>
+      <if test="record.remark != null">
+        remark,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.planMonth != null">
+        #{record.planMonth},
+      </if>
+      <if test="record.planName != null">
+        #{record.planName},
+      </if>
+      <if test="record.supervisorId != null">
+        #{record.supervisorId},
+      </if>
+      <if test="record.auditUserId != null">
+        #{record.auditUserId},
+      </if>
+      <if test="record.patrolTotalStoreNum != null">
+        #{record.patrolTotalStoreNum},
+      </if>
+      <if test="record.patrolFinishStoreNum != null">
+        #{record.patrolFinishStoreNum},
+      </if>
+      <if test="record.auditStatus != null">
+        #{record.auditStatus},
+      </if>
+      <if test="record.metaTableIds != null">
+        #{record.metaTableIds},
+      </if>
+      <if test="record.isOpenSummary != null">
+        #{record.isOpenSummary},
+      </if>
+      <if test="record.isOpenAutograph != null">
+        #{record.isOpenAutograph},
+      </if>
+      <if test="record.remark != null">
+        #{record.remark},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update tb_patrol_plan_${enterpriseId}
+    <set>
+      <if test="record.planMonth != null">
+        plan_month = #{record.planMonth},
+      </if>
+      <if test="record.planName != null">
+        plan_name = #{record.planName},
+      </if>
+      <if test="record.supervisorId != null">
+        supervisor_id = #{record.supervisorId},
+      </if>
+      <if test="record.auditUserId != null">
+        audit_user_id = #{record.auditUserId},
+      </if>
+      <if test="record.patrolTotalStoreNum != null">
+        patrol_total_store_num = #{record.patrolTotalStoreNum},
+      </if>
+      <if test="record.patrolFinishStoreNum != null">
+        patrol_finish_store_num = #{record.patrolFinishStoreNum},
+      </if>
+      <if test="record.auditStatus != null">
+        audit_status = #{record.auditStatus},
+      </if>
+      <if test="record.metaTableIds != null">
+        meta_table_ids = #{record.metaTableIds},
+      </if>
+      <if test="record.isOpenSummary != null">
+        is_open_summary = #{record.isOpenSummary},
+      </if>
+      <if test="record.isOpenAutograph != null">
+        is_open_autograph = #{record.isOpenAutograph},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+
+  <select id="getPatrolPlanList" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from tb_patrol_plan_${enterpriseId}
+    <where>
+      and deleted = 0
+      <if test="record.supervisorId != null and record.supervisorId != ''">
+        and supervisor_id = #{record.supervisorId}
+      </if>
+      <if test="record.planMonth != null and record.planMonth != ''">
+        and plan_month = #{record.planMonth}
+      </if>
+      <if test="record.auditStatus != null">
+        and audit_status = #{record.auditStatus}
+      </if>
+      <if test="record.supervisorIds != null and record.supervisorIds.size() != 0">
+        and supervisor_id in
+          <foreach collection="record.supervisorIds" item="item" open="(" separator="," close=")">
+            #{item}
+          </foreach>
+      </if>
+    </where>
+    order by id desc
+  </select>
+
+  <select id="selectById" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_patrol_plan_${enterpriseId}
+    where
+      deleted = 0
+      and id = #{id}
+  </select>
+
+  <select id="getPatrolPlanToDo" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from
+      tb_patrol_plan_${enterpriseId}
+    where
+      deleted = 0
+      and audit_user_id = #{auditUserId}
+      and audit_status = 0
+  </select>
+
+  <select id="getMyPatrolPlanMonthDetail" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from
+      tb_patrol_plan_${enterpriseId}
+    where
+      deleted = 0 and plan_month = #{planMonth} and supervisor_id = #{supervisorId}
+    limit 1
+  </select>
+
+  <select id="getPatrolPlanCount" resultType="long">
+    select
+      count(1)
+    from
+      tb_patrol_plan_${enterpriseId}
+    where
+      deleted = 0
+      and audit_user_id = #{userId}
+      and audit_status = 0
+  </select>
+
+  <select id="selectByIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_patrol_plan_${enterpriseId}
+    where
+      deleted = 0
+      and id in
+      <foreach collection="planIds" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+  </select>
+</mapper>

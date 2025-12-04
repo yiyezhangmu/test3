@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseOperateLogMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.enterprise.EnterpriseOperateLogDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="enterprise_id" jdbcType="VARCHAR" property="enterpriseId" />
+    <result column="operate_type" jdbcType="VARCHAR" property="operateType" />
+    <result column="operate_desc" jdbcType="VARCHAR" property="operateDesc" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="operate_start_time" jdbcType="TIMESTAMP" property="operateStartTime" />
+    <result column="operate_end_time" jdbcType="TIMESTAMP" property="operateEndTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, enterprise_id, operate_type, operate_desc, status, operate_start_time, operate_end_time, 
+    create_time, update_time, user_id, user_name, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from enterprise_operate_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <insert id="insert" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseOperateLogDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into enterprise_operate_log (enterprise_id, operate_type, operate_desc, 
+      status, operate_start_time, operate_end_time, 
+      create_time, update_time, user_id, user_name, remark)
+    values (#{enterpriseId,jdbcType=VARCHAR}, #{operateType,jdbcType=VARCHAR}, #{operateDesc,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{operateStartTime,jdbcType=TIMESTAMP}, #{operateEndTime,jdbcType=TIMESTAMP},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateStatusById">
+    update enterprise_operate_log
+    set `status`=#{updatedStatus,jdbcType=INTEGER}
+    where id=#{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateStatusAndOperateEndTimeById">
+    update enterprise_operate_log
+    <set>
+      <if test="updatedStatus!=null and updatedStatus!=''">
+        `status`=#{updatedStatus,jdbcType=INTEGER},
+      </if>
+      <if test="updatedOperateEndTime!=null">
+        operate_end_time=#{updatedOperateEndTime},
+      </if>
+      <if test="remark!=null and remark!=''">
+        remark=#{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id=#{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getLatestLogByEnterpriseIdAndOptType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from enterprise_operate_log
+    where enterprise_id=#{enterpriseId,jdbcType=VARCHAR} and operate_type=#{operateType,jdbcType=VARCHAR}
+    order by create_time desc
+    limit 1
+  </select>
+
+  <select id="getLatestSuccessLog" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from enterprise_operate_log
+    where enterprise_id=#{enterpriseId,jdbcType=VARCHAR} and operate_type=#{operateType,jdbcType=VARCHAR} and
+    `status`=#{status,jdbcType=INTEGER}
+    order by create_time desc
+    limit 1
+  </select>
+
+  <update id="updateStageStatusById">
+    update enterprise_operate_log
+    <set>
+      <if test="updatedStatus!=null and updatedStatus!=''">
+        `status`=#{updatedStatus,jdbcType=INTEGER},
+      </if>
+      <if test="updatedOperateEndTime!=null">
+        operate_end_time=#{updatedOperateEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="syncFailStage!=null and syncFailStage!=''">
+        sync_fail_stage=#{syncFailStage},
+      </if>
+      <if test="remark!=null and remark!=''">
+        remark=#{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id=#{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

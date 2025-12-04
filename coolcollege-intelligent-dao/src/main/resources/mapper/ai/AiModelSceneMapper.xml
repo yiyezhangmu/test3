@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.ai.AiModelSceneMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.ai.entity.AiModelSceneDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="scene_name" jdbcType="VARCHAR" property="sceneName" />
+    <result column="scene_pic" jdbcType="VARCHAR" property="scenePic" />
+    <result column="model_name" jdbcType="VARCHAR" property="modelName" />
+    <result column="model_code" jdbcType="VARCHAR" property="modelCode" />
+    <result column="group_id" jdbcType="BIGINT" property="groupId" />
+    <result column="group_name" jdbcType="VARCHAR" property="groupName" />
+    <result column="standard_pic" jdbcType="VARCHAR" property="standardPic" />
+    <result column="standard_desc" jdbcType="VARCHAR" property="standardDesc" />
+    <result column="system_prompt" jdbcType="VARCHAR" property="systemPrompt" />
+    <result column="user_prompt" jdbcType="VARCHAR" property="userPrompt" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, scene_name, model_name, model_code, group_id, group_name, standard_pic, standard_desc, 
+    system_prompt, user_prompt, create_time, update_time,scene_pic
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+    insert into ai_model_scene
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sceneName != null">
+        scene_name,
+      </if>
+      <if test="modelName != null">
+        model_name,
+      </if>
+      <if test="modelCode != null">
+        model_code,
+      </if>
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="groupName != null">
+        group_name,
+      </if>
+      <if test="standardPic != null">
+        standard_pic,
+      </if>
+      <if test="standardDesc != null">
+        standard_desc,
+      </if>
+      <if test="systemPrompt != null">
+        system_prompt,
+      </if>
+      <if test="userPrompt != null">
+        user_prompt,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="scenePic != null">
+        scene_pic,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sceneName != null">
+        #{sceneName},
+      </if>
+      <if test="modelName != null">
+        #{modelName},
+      </if>
+      <if test="modelCode != null">
+        #{modelCode},
+      </if>
+      <if test="groupId != null">
+        #{groupId},
+      </if>
+      <if test="groupName != null">
+        #{groupName},
+      </if>
+      <if test="standardPic != null">
+        #{standardPic},
+      </if>
+      <if test="standardDesc != null">
+        #{standardDesc},
+      </if>
+      <if test="systemPrompt != null">
+        #{systemPrompt},
+      </if>
+      <if test="userPrompt != null">
+        #{userPrompt},
+      </if>
+      <if test="createTime != null">
+        #{createTime},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime},
+      </if>
+      <if test="scenePic != null">
+        #{scenePic},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update ai_model_scene
+    <set>
+      <if test="sceneName != null">
+        scene_name = #{sceneName},
+      </if>
+      <if test="modelName != null">
+        model_name = #{modelName},
+      </if>
+      <if test="modelCode != null">
+        model_code = #{modelCode},
+      </if>
+      <if test="groupId != null">
+        group_id = #{groupId},
+      </if>
+      <if test="groupName != null">
+        group_name = #{groupName},
+      </if>
+      <if test="standardPic != null">
+        standard_pic = #{standardPic},
+      </if>
+      <if test="standardDesc != null">
+        standard_desc = #{standardDesc},
+      </if>
+      <if test="systemPrompt != null">
+        system_prompt = #{systemPrompt},
+      </if>
+      <if test="userPrompt != null">
+        user_prompt = #{userPrompt},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+      <if test="scenePic != null">
+        scene_pic = #{scenePic},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="list" resultType="com.coolcollege.intelligent.model.ai.entity.AiModelSceneDO">
+    SELECT <include refid="Base_Column_List"/>
+    from ai_model_scene
+    <where>
+        <if test="groupId != null">
+          group_id = #{groupId}
+        </if>
+        <if test="idList != null and idList.size() > 0">
+          and id in
+          <foreach item="item" collection="idList" separator="," open="(" close=")" index="">
+            #{item}
+          </foreach>
+        </if>
+    </where>
+  </select>
+  <select id="selectById" resultType="com.coolcollege.intelligent.model.ai.entity.AiModelSceneDO">
+    SELECT <include refid="Base_Column_List"/>
+    from ai_model_scene
+    where id = #{id}
+  </select>
+  <select id="selectCorrectByModelCode" resultType="com.coolcollege.intelligent.model.ai.entity.AiModelSceneDO">
+    SELECT <include refid="Base_Column_List"/>
+    from ai_model_scene
+    where model_code = #{modelCode}
+    and id >= 100
+    limit 1
+  </select>
+</mapper>

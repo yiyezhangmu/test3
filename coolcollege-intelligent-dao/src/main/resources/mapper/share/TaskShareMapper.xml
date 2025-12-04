@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.share.TaskShareMapper">
+
+    <resultMap id="baseResult" type="com.coolcollege.intelligent.model.share.TaskShareDO">
+        <id column="share_id" property="shareId" javaType="java.lang.String"/>
+        <result column="share_type" property="shareType" javaType="java.lang.String"/>
+        <result column="share_topic" property="shareTopic" javaType="java.lang.String"/>
+        <result column="share_content" property="shareContent" javaType="java.lang.String"/>
+        <result column="share_picture" property="sharePicture" javaType="java.lang.String"/>
+        <result column="task_score" property="taskScore" javaType="DECIMAL"/>
+        <result column="share_store_label" property="shareStoreLabel" javaType="java.lang.String"/>
+        <result column="store_id" property="storeId" javaType="java.lang.String"/>
+        <result column="task_sub_id" property="taskSubId" javaType="java.lang.Long"/>
+        <result column="task_id" property="taskId" javaType="java.lang.Long"/>
+        <result column="create_time" property="createTime" javaType="java.lang.Long"/>
+        <result column="create_user" property="createUser" javaType="java.lang.String"/>
+        <result column="create_user" property="createUser" javaType="java.lang.String"/>
+        <result column="update_time" property="updateTime" javaType="java.lang.Long"/>
+        <result column="update_user" property="updateUser" javaType="java.lang.String"/>
+        <result column="business_id" property="businessId" javaType="java.lang.Long"/>
+        <result column="visible_range" property="visibleRange" javaType="java.lang.String"/>
+    </resultMap>
+    <resultMap id="taskShareDTO" type="com.coolcollege.intelligent.model.share.dto.TaskShareDTO">
+        <id column="share_id" property="shareId" javaType="java.lang.String" />
+        <result column="name" property="shareUserName" javaType="java.lang.String"/>
+        <result column="cid" property="cId" javaType="java.lang.String"/>
+        <result column="avatar" property="avatar" javaType="java.lang.String"/>
+        <result column="store_name" property="storeName" javaType="java.lang.String"/>
+        <result column="biz_code" property="bizCode" javaType="java.lang.String"/>
+        <association property="taskShare" resultMap="baseResult"></association>
+    </resultMap>
+
+
+    <sql id="baseSql">
+        share_id,
+        share_type,
+        share_topic,
+        share_content,
+        share_picture,
+        task_score,
+        share_store_label,
+        store_id,
+        task_sub_id,
+        task_id,
+        detail,
+        create_time,
+        create_user,
+        update_time,
+        update_user,
+        visible_range,
+        business_id,
+        loop_count
+    </sql>
+    <insert id="batchInsertTaskShareDO">
+        insert into task_share_${eId}
+        (
+        <include refid="baseSql"/>
+        )values
+        <foreach collection="entityList" separator="," item="entity">
+            (
+            #{entity.shareId},
+            #{entity.shareType},
+            #{entity.shareTopic},
+            #{entity.shareContent},
+            #{entity.sharePicture},
+            #{entity.taskScore},
+            #{entity.shareStoreLabel},
+            #{entity.storeId},
+            #{entity.taskSubId},
+            #{entity.taskId},
+            #{entity.detail},
+            #{entity.createTime},
+            #{entity.createUser},
+            #{entity.updateTime},
+            #{entity.updateUser},
+            #{entity.visibleRange},
+            #{entity.businessId},
+            #{entity.loopCount}
+            )
+        </foreach>
+    </insert>
+    <update id="updateTaskShareList">
+        <foreach collection="entityList" item="entity" separator=";">
+            update task_share_${eId}
+            <set>
+                <if test="entity.shareType != null and entity.shareType != ''">
+                    shareType = #{entity.shareType},
+                </if>
+                <if test="entity.shareTopic != null and entity.shareTopic != ''">
+                    share_topic = #{entity.shareTopic},
+                </if>
+                <if test="entity.shareContent != null and entity.shareContent != ''">
+                    share_content = #{entity.shareContent},
+                </if>
+                <if test="entity.sharePicture != null and entity.sharePicture != ''">
+                    share_picture = #{entity.sharePicture},
+                </if>
+                <if test="entity.taskScore != null and entity.taskScore != ''">
+                    task_score = #{entity.taskScore},
+                </if>
+                <if test="entity.shareStoreLabel != null and entity.shareStoreLabel != ''">
+                    share_store_label = #{entity.shareStoreLabel},
+                </if>
+                <if test="entity.storeId != null and entity.storeId != ''">
+                    store_id = #{entity.storeId},
+                </if>
+                <if test="entity.updateTime != null and entity.updateTime != ''">
+                    update_time = #{entity.updateTime},
+                </if>
+                <if test="entity.updateUser != null and entity.updateUser != ''">
+                    update_user = #{entity.updateUser},
+                </if>
+                <if test="entity.businessId != null and entity.businessId != ''">
+                    business_id = #{entity.businessId},
+                </if>
+                <if test="entity.visibleRange != null and entity.visibleRange != ''">
+                    visible_range = #{entity.visibleRange},
+                </if>
+            </set>
+        </foreach>
+    </update>
+    <delete id="deleteByShareIdList">
+        delete from task_share_${eId}
+        where share_id in
+        <foreach collection="shareIdList" item="shareId" separator="," open="(" close=")">
+            #{shareId}
+        </foreach>
+    </delete>
+    <select id="selectByShareIdList" resultMap="taskShareDTO">
+        select
+        a.share_id,
+        a.share_type,
+        a.share_topic,
+        a.share_content,
+        a.share_picture,
+        a.task_score,
+        a.share_store_label,
+        a.store_id,
+        a.task_sub_id,
+        a.task_id,
+        a.create_time,
+        a.create_user,
+        a.update_time,
+        a.update_user,
+        a.business_id,
+        a.loop_count,
+        c.name,
+        b.store_name,
+        c.avatar,
+        d.cid,
+        d.biz_code
+        from (
+            select
+            a.share_id,
+            a.share_type,
+            a.share_topic,
+            a.share_content,
+            a.share_picture,
+            a.task_score,
+            a.share_store_label,
+            a.store_id,
+            a.task_sub_id,
+            a.task_id,
+            a.detail,
+            a.create_time,
+            a.create_user,
+            a.update_time,
+            a.update_user,
+            a.visible_range,
+            a.business_id,
+            a.loop_count
+            from task_share_${eId} a
+            left join store_${eId} b
+            on a.store_id = b.store_id
+            where
+            <foreach collection="shareIdList" item="shareId" separator="," open="a.share_id in (" close=") ">
+                #{shareId}
+            </foreach>
+            <if test="key !=null and key != ''">
+                and (store_name like concat('%',#{key},'%') or share_content like concat('%',#{key},'%') or share_topic like concat('%',#{key},'%'))
+            </if>
+        ) a
+        left join store_${eId} b
+        on a.store_id = b.store_id
+        left join enterprise_user_${eId} c
+        on a.create_user = c.user_id
+        left join unify_task_sub_${eId} d
+        on a.task_sub_id = d.id
+        where c.active = true
+        group by a.share_id
+        order by a.create_time desc
+    </select>
+    <select id="getDetail" resultType="java.lang.String">
+        select detail from task_share_${eId}
+        where share_id = #{shareId}
+    </select>
+    <select id="getAllVisibleRangeShare" resultType="java.lang.String">
+        select share_id
+        from task_share_${eId}
+        where visible_range = 'ALL'
+    </select>
+
+</mapper>

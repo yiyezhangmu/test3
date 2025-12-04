@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.fsGroup.FsGroupNoticeMappingMapper">
+
+    <resultMap type="com.coolcollege.intelligent.model.fsGroup.FsGroupNoticeMappingDO" id="FsGroupNoticeMappingMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="noticeId" column="notice_id" jdbcType="INTEGER"/>
+        <result property="chatId" column="chat_id" jdbcType="VARCHAR"/>
+        <result property="msgId" column="msg_id" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    <sql id="baseSql">
+        id as id,notice_id as noticeId,chat_id as chatId,msg_id as msgId,create_time as createTime    </sql>
+
+    <!--查询单个-->
+    <select id="queryById" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupNoticeMappingDO">
+        select
+          <include refid="baseSql"></include>
+        from fs_group_notice_mapping_${eid}
+        where id = #{id}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from fs_group_notice_mapping_${eid}
+        <where>
+            <if test="fsGroupNoticeMappingDO.id != null">
+                and id = #{fsGroupNoticeMappingDO.id}
+            </if>
+            <if test="fsGroupNoticeMappingDO.noticeId != null">
+                and notice_id = #{fsGroupNoticeMappingDO.noticeId}
+            </if>
+            <if test="fsGroupNoticeMappingDO.chatId != null and fsGroupNoticeMappingDO.chatId != ''">
+                and chat_id = #{fsGroupNoticeMappingDO.chatId}
+            </if>
+            <if test="fsGroupNoticeMappingDO.msgId != null and fsGroupNoticeMappingDO.msgId != ''">
+                and msg_id = #{fsGroupNoticeMappingDO.msgId}
+            </if>
+            <if test="fsGroupNoticeMappingDO.createTime != null">
+                and create_time = #{fsGroupNoticeMappingDO.createTime}
+            </if>
+        </where>
+    </select>
+    <select id="queryByNoticeId" resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupNoticeMappingDO">
+        select
+        <include refid="baseSql"></include>
+        from fs_group_notice_mapping_${eid}
+        where notice_id = #{noticeId}
+    </select>
+    <select id="selectNeedQueryMsgId"
+            resultType="com.coolcollege.intelligent.model.fsGroup.FsGroupNoticeMappingDO">
+        SELECT
+        <include refid="baseSql"></include>
+        FROM fs_group_notice_mapping_${eid}
+        WHERE create_time &gt;=  NOW() - INTERVAL 7 DAY
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="fsGroupNoticeMappingDO.id" useGeneratedKeys="true">
+        insert into fs_group_notice_mapping_${eid}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fsGroupNoticeMappingDO.noticeId != null">
+                notice_id,
+            </if>
+            <if test="fsGroupNoticeMappingDO.chatId != null and fsGroupNoticeMappingDO.chatId != ''">
+                chat_id,
+            </if>
+            <if test="fsGroupNoticeMappingDO.msgId != null and fsGroupNoticeMappingDO.msgId != ''">
+                msg_id,
+            </if>
+            <if test="fsGroupNoticeMappingDO.createTime != null">
+                create_time,
+            </if>
+     </trim>
+        values 
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fsGroupNoticeMappingDO.noticeId != null">
+                #{fsGroupNoticeMappingDO.noticeId},
+            </if>
+            <if test="fsGroupNoticeMappingDO.chatId != null and fsGroupNoticeMappingDO.chatId != ''">
+                #{fsGroupNoticeMappingDO.chatId},
+            </if>
+            <if test="fsGroupNoticeMappingDO.msgId != null and fsGroupNoticeMappingDO.msgId != ''">
+                #{fsGroupNoticeMappingDO.msgId},
+            </if>
+            <if test="fsGroupNoticeMappingDO.createTime != null">
+                #{fsGroupNoticeMappingDO.createTime},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" keyProperty="dos.id" useGeneratedKeys="true">
+        insert into fs_group_notice_mapping_${eid}(notice_id, chat_id, msg_id, create_time)
+        values
+        <foreach collection="dos" item="do" separator=",">
+        (#{do.noticeId}, #{do.chatId}, #{do.msgId}, #{do.createTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="dos.id" useGeneratedKeys="true">
+        insert into fs_group_notice_mapping_${eid}(notice_id, chat_id, msg_id, create_time)
+        values
+        <foreach collection="dos" item="do" separator=",">
+            (#{do.noticeId}, #{do.chatId}, #{do.msgId}, #{do.createTime})
+        </foreach>
+        on duplicate key update
+        notice_id = values(notice_id),
+        chat_id = values(chat_id),
+        msg_id = values(msg_id),
+        create_time = values(create_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update fs_group_notice_mapping_${eid}
+        <set>
+            <if test="fsGroupNoticeMappingDO.noticeId != null">
+                notice_id = #{fsGroupNoticeMappingDO.noticeId},
+            </if>
+            <if test="fsGroupNoticeMappingDO.chatId != null and fsGroupNoticeMappingDO.chatId != ''">
+                chat_id = #{fsGroupNoticeMappingDO.chatId},
+            </if>
+            <if test="fsGroupNoticeMappingDO.msgId != null and fsGroupNoticeMappingDO.msgId != ''">
+                msg_id = #{fsGroupNoticeMappingDO.msgId},
+            </if>
+            <if test="fsGroupNoticeMappingDO.createTime != null">
+                create_time = #{fsGroupNoticeMappingDO.createTime},
+            </if>
+        </set>
+        where id = #{fsGroupNoticeMappingDO.id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from fs_group_notice_mapping_${eid} where id = #{id}
+    </delete>
+    <delete id="deleteByChatId">
+        delete from fs_group_notice_mapping_${eid} where chat_id = #{chatId}
+    </delete>
+    <delete id="deleteByNoticeId">
+        delete from fs_group_notice_mapping_${eid} where notice_id = #{noticeId}
+    </delete>
+
+</mapper>
+

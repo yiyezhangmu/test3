@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.safetycheck.TbDataColumnHistoryMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.safetycheck.TbDataColumnHistoryDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="business_id" jdbcType="BIGINT" property="businessId" />
+    <result column="history_id" jdbcType="BIGINT" property="historyId" />
+    <result column="operate_type" jdbcType="VARCHAR" property="operateType" />
+    <result column="operate_user_id" jdbcType="VARCHAR" property="operateUserId" />
+    <result column="operate_user_name" jdbcType="VARCHAR" property="operateUserName" />
+    <result column="data_table_id" jdbcType="BIGINT" property="dataTableId" />
+    <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId" />
+    <result column="meta_column_id" jdbcType="BIGINT" property="metaColumnId" />
+    <result column="data_column_id" jdbcType="BIGINT" property="dataColumnId" />
+    <result column="meta_column_name" jdbcType="VARCHAR" property="metaColumnName" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="check_result" jdbcType="VARCHAR" property="checkResult" />
+    <result column="check_result_id" jdbcType="BIGINT" property="checkResultId" />
+    <result column="check_result_name" jdbcType="VARCHAR" property="checkResultName" />
+    <result column="check_text" jdbcType="VARCHAR" property="checkText" />
+    <result column="check_score" jdbcType="DECIMAL" property="checkScore" />
+    <result column="check_video" jdbcType="VARCHAR" property="checkVideo" />
+    <result column="reward_penalt_money" jdbcType="DECIMAL" property="rewardPenaltMoney" />
+    <result column="check_result_reason" jdbcType="VARCHAR" property="checkResultReason" />
+    <result column="appeal_content" jdbcType="VARCHAR" property="appealContent" />
+    <result column="appeal_remark" jdbcType="VARCHAR" property="appealRemark" />
+    <result column="appeal_user_id" jdbcType="VARCHAR" property="appealUserId" />
+    <result column="appeal_time" jdbcType="TIMESTAMP" property="appealTime" />
+    <result column="appeal_result" jdbcType="VARCHAR" property="appealResult" />
+    <result column="appeal_review_remark" jdbcType="VARCHAR" property="appealReviewRemark" />
+    <result column="appeal_actual_review_user_id" jdbcType="VARCHAR" property="appealActualReviewUserId" />
+    <result column="appeal_review_time" jdbcType="TIMESTAMP" property="appealReviewTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="check_pics" jdbcType="LONGVARCHAR" property="checkPics" />
+    <result column="score_times" jdbcType="DECIMAL" property="scoreTimes" />
+    <result column="award_times" jdbcType="DECIMAL" property="awardTimes" />
+    <result column="weight_percent" jdbcType="DECIMAL" property="weightPercent" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, business_id, history_id, operate_type, operate_user_id, operate_user_name, data_table_id, 
+    meta_table_id, meta_column_id, data_column_id, meta_column_name, description, category_name, 
+    check_result, check_result_id, check_result_name, check_text, check_score, check_video, 
+    reward_penalt_money, check_result_reason, appeal_content, appeal_remark,
+    appeal_user_id, appeal_time, appeal_result, appeal_review_remark, appeal_actual_review_user_id, 
+    appeal_review_time, create_time, update_time, deleted,store_id, check_pics, score_times, award_times, weight_percent
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_data_column_history_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_data_column_history_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.safetycheck.TbDataColumnHistoryDO">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_data_column_history_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.businessId != null">
+        business_id,
+      </if>
+      <if test="record.historyId != null">
+        history_id,
+      </if>
+      <if test="record.operateType != null">
+        operate_type,
+      </if>
+      <if test="record.operateUserId != null">
+        operate_user_id,
+      </if>
+      <if test="record.operateUserName != null">
+        operate_user_name,
+      </if>
+      <if test="record.dataTableId != null">
+        data_table_id,
+      </if>
+      <if test="record.metaTableId != null">
+        meta_table_id,
+      </if>
+      <if test="record.metaColumnId != null">
+        meta_column_id,
+      </if>
+      <if test="record.dataColumnId != null">
+        data_column_id,
+      </if>
+      <if test="record.metaColumnName != null">
+        meta_column_name,
+      </if>
+      <if test="record.description != null">
+        description,
+      </if>
+      <if test="record.categoryName != null">
+        category_name,
+      </if>
+      <if test="record.checkResult != null">
+        check_result,
+      </if>
+      <if test="record.checkResultId != null">
+        check_result_id,
+      </if>
+      <if test="record.checkResultName != null">
+        check_result_name,
+      </if>
+      <if test="record.checkText != null">
+        check_text,
+      </if>
+      <if test="record.checkScore != null">
+        check_score,
+      </if>
+      <if test="record.checkVideo != null">
+        check_video,
+      </if>
+      <if test="record.rewardPenaltMoney != null">
+        reward_penalt_money,
+      </if>
+      <if test="record.checkResultReason != null">
+        check_result_reason,
+      </if>
+      <if test="record.appealContent != null">
+        appeal_content,
+      </if>
+      <if test="record.appealRemark != null">
+        appeal_remark,
+      </if>
+      <if test="record.appealUserId != null">
+        appeal_user_id,
+      </if>
+      <if test="record.appealTime != null">
+        appeal_time,
+      </if>
+      <if test="record.appealResult != null">
+        appeal_result,
+      </if>
+      <if test="record.appealReviewRemark != null">
+        appeal_review_remark,
+      </if>
+      <if test="record.appealActualReviewUserId != null">
+        appeal_actual_review_user_id,
+      </if>
+      <if test="record.appealReviewTime != null">
+        appeal_review_time,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+      <if test="record.checkPics != null">
+        check_pics,
+      </if>
+      <if test="record.storeId != null">
+        store_id,
+      </if>
+      <if test="record.scoreTimes != null">
+        score_times,
+      </if>
+      <if test="record.awardTimes != null">
+        award_times,
+      </if>
+      <if test="record.weightPercent != null">
+        weight_percent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.businessId != null">
+        #{record.businessId,jdbcType=BIGINT},
+      </if>
+      <if test="record.historyId != null">
+        #{record.historyId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operateType != null">
+        #{record.operateType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operateUserId != null">
+        #{record.operateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operateUserName != null">
+        #{record.operateUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataTableId != null">
+        #{record.dataTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaTableId != null">
+        #{record.metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaColumnId != null">
+        #{record.metaColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.dataColumnId != null">
+        #{record.dataColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaColumnName != null">
+        #{record.metaColumnName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.categoryName != null">
+        #{record.categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkResult != null">
+        #{record.checkResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkResultId != null">
+        #{record.checkResultId,jdbcType=BIGINT},
+      </if>
+      <if test="record.checkResultName != null">
+        #{record.checkResultName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkText != null">
+        #{record.checkText,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkScore != null">
+        #{record.checkScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.checkVideo != null">
+        #{record.checkVideo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rewardPenaltMoney != null">
+        #{record.rewardPenaltMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.checkResultReason != null">
+        #{record.checkResultReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealContent != null">
+        #{record.appealContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealRemark != null">
+        #{record.appealRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealUserId != null">
+        #{record.appealUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealTime != null">
+        #{record.appealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.appealResult != null">
+        #{record.appealResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealReviewRemark != null">
+        #{record.appealReviewRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealActualReviewUserId != null">
+        #{record.appealActualReviewUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealReviewTime != null">
+        #{record.appealReviewTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.checkPics != null">
+        #{record.checkPics,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.storeId != null">
+        #{record.storeId},
+      </if>
+      <if test="record.scoreTimes != null">
+        #{record.scoreTimes},
+      </if>
+      <if test="record.awardTimes != null">
+        #{record.awardTimes},
+      </if>
+      <if test="record.weightPercent != null">
+        #{record.weightPercent},
+      </if>
+    </trim>
+  </insert>
+
+  <insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.ArrayList" keyProperty="entityList.id">
+    insert into tb_data_column_history_${enterpriseId}
+    (
+    business_id,
+    history_id,
+    operate_type,
+    operate_user_id,
+    operate_user_name,
+    data_table_id,
+    meta_table_id,
+    meta_column_id,
+    data_column_id,
+    meta_column_name,
+    description,
+    category_name,
+    check_result,
+    check_result_id,
+    check_result_name,
+    check_text,
+    check_score,
+    check_video,
+    reward_penalt_money,
+    check_result_reason,
+    appeal_content,
+    appeal_remark,
+    appeal_user_id,
+    appeal_time,
+    appeal_result,
+    appeal_review_remark,
+    appeal_actual_review_user_id,
+    appeal_review_time,
+    create_time,
+    update_time,
+    deleted,
+    check_pics,
+    store_id,
+    score_times,
+    award_times,
+    weight_percent
+    )values
+    <foreach collection="entityList" separator="," item="entity">
+      (
+      #{entity.businessId},
+      #{entity.historyId},
+      #{entity.operateType},
+      #{entity.operateUserId},
+      #{entity.operateUserName},
+      #{entity.dataTableId},
+      #{entity.metaTableId},
+      #{entity.metaColumnId},
+      #{entity.dataColumnId},
+      #{entity.metaColumnName},
+      #{entity.description},
+      #{entity.categoryName},
+      #{entity.checkResult},
+      #{entity.checkResultId},
+      #{entity.checkResultName},
+      #{entity.checkText},
+      #{entity.checkScore},
+      #{entity.checkVideo},
+      #{entity.rewardPenaltMoney},
+      #{entity.checkResultReason},
+      #{entity.appealContent},
+      #{entity.appealRemark},
+      #{entity.appealUserId},
+      #{entity.appealTime},
+      #{entity.appealResult},
+      #{entity.appealReviewRemark},
+      #{entity.appealActualReviewUserId},
+      #{entity.appealReviewTime},
+      #{entity.createTime},
+      #{entity.updateTime},
+      #{entity.deleted},
+      #{entity.checkPics},
+      #{entity.storeId},
+      #{entity.scoreTimes},
+      #{entity.awardTimes},
+      #{entity.weightPercent}
+      )
+    </foreach>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.safetycheck.TbDataColumnHistoryDO">
+    update tb_data_column_history_${enterpriseId}
+    <set>
+      <if test="record.businessId != null">
+        business_id = #{record.businessId,jdbcType=BIGINT},
+      </if>
+      <if test="record.historyId != null">
+        history_id = #{record.historyId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operateType != null">
+        operate_type = #{record.operateType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operateUserId != null">
+        operate_user_id = #{record.operateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operateUserName != null">
+        operate_user_name = #{record.operateUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataTableId != null">
+        data_table_id = #{record.dataTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaTableId != null">
+        meta_table_id = #{record.metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaColumnId != null">
+        meta_column_id = #{record.metaColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.dataColumnId != null">
+        data_column_id = #{record.dataColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.metaColumnName != null">
+        meta_column_name = #{record.metaColumnName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.categoryName != null">
+        category_name = #{record.categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkResult != null">
+        check_result = #{record.checkResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkResultId != null">
+        check_result_id = #{record.checkResultId,jdbcType=BIGINT},
+      </if>
+      <if test="record.checkResultName != null">
+        check_result_name = #{record.checkResultName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkText != null">
+        check_text = #{record.checkText,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkScore != null">
+        check_score = #{record.checkScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.checkVideo != null">
+        check_video = #{record.checkVideo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rewardPenaltMoney != null">
+        reward_penalt_money = #{record.rewardPenaltMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.checkResultReason != null">
+        check_result_reason = #{record.checkResultReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealContent != null">
+        appeal_content = #{record.appealContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealRemark != null">
+        appeal_remark = #{record.appealRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealUserId != null">
+        appeal_user_id = #{record.appealUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealTime != null">
+        appeal_time = #{record.appealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.appealResult != null">
+        appeal_result = #{record.appealResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealReviewRemark != null">
+        appeal_review_remark = #{record.appealReviewRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealActualReviewUserId != null">
+        appeal_actual_review_user_id = #{record.appealActualReviewUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealReviewTime != null">
+        appeal_review_time = #{record.appealReviewTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.checkPics != null">
+        check_pics = #{record.checkPics,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != businessId">
+         and t.business_id = #{businessId,jdbcType=BIGINT}
+      </if>
+      <if test="null != historyId">
+         and t.history_id = #{historyId,jdbcType=BIGINT}
+      </if>
+      <if test="null != operateType">
+         and t.operate_type = #{operateType,jdbcType=VARCHAR}
+      </if>
+      <if test="null != operateUserId">
+         and t.operate_user_id = #{operateUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != operateUserName">
+         and t.operate_user_name = #{operateUserName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != dataTableId">
+         and t.data_table_id = #{dataTableId,jdbcType=BIGINT}
+      </if>
+      <if test="null != metaTableId">
+         and t.meta_table_id = #{metaTableId,jdbcType=BIGINT}
+      </if>
+      <if test="null != metaColumnId">
+         and t.meta_column_id = #{metaColumnId,jdbcType=BIGINT}
+      </if>
+      <if test="null != dataColumnId">
+         and t.data_column_id = #{dataColumnId,jdbcType=BIGINT}
+      </if>
+      <if test="null != metaColumnName">
+         and t.meta_column_name = #{metaColumnName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != description">
+         and t.description = #{description,jdbcType=VARCHAR}
+      </if>
+      <if test="null != categoryName">
+         and t.category_name = #{categoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkResult">
+         and t.check_result = #{checkResult,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkResultId">
+         and t.check_result_id = #{checkResultId,jdbcType=BIGINT}
+      </if>
+      <if test="null != checkResultName">
+         and t.check_result_name = #{checkResultName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkText">
+         and t.check_text = #{checkText,jdbcType=VARCHAR}
+      </if>
+      <if test="null != checkScore">
+         and t.check_score = #{checkScore,jdbcType=DECIMAL}
+      </if>
+      <if test="null != checkVideo">
+         and t.check_video = #{checkVideo,jdbcType=VARCHAR}
+      </if>
+      <if test="null != rewardPenaltMoney">
+         and t.reward_penalt_money = #{rewardPenaltMoney,jdbcType=DECIMAL}
+      </if>
+      <if test="null != checkResultReason">
+         and t.check_result_reason = #{checkResultReason,jdbcType=VARCHAR}
+      </if>
+      <if test="null != appealContent">
+         and t.appeal_content = #{appealContent,jdbcType=VARCHAR}
+      </if>
+      <if test="null != appealRemark">
+         and t.appeal_remark = #{appealRemark,jdbcType=VARCHAR}
+      </if>
+      <if test="null != appealUserId">
+         and t.appeal_user_id = #{appealUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != appealTime">
+         and t.appeal_time = #{appealTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != appealResult">
+         and t.appeal_result = #{appealResult,jdbcType=VARCHAR}
+      </if>
+      <if test="null != appealReviewRemark">
+         and t.appeal_review_remark = #{appealReviewRemark,jdbcType=VARCHAR}
+      </if>
+      <if test="null != appealActualReviewUserId">
+         and t.appeal_actual_review_user_id = #{appealActualReviewUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != appealReviewTime">
+         and t.appeal_review_time = #{appealReviewTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != updateTime">
+         and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != deleted">
+         and t.deleted = #{deleted,jdbcType=BIT}
+      </if>
+      <if test="null != checkPics">
+         and t.check_pics = #{checkPics,jdbcType=LONGVARCHAR}
+      </if>
+    </trim>
+  </sql>
+
+  <select id="listDataColumnCheckHistory" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_data_column_history_${enterpriseId}
+    where business_id = #{businessId}
+    and data_column_id = #{dataColumnId}
+    and deleted = 0
+    order by id desc
+  </select>
+
+  <select id="getLatestSubmitInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_data_column_history_${enterpriseId} where id in
+    (select max(id) from tb_data_column_history_${enterpriseId} where business_id = #{businessId}
+    GROUP BY data_column_id)
+  </select>
+
+  <select id="getColumnCheckCount" resultType="com.coolcollege.intelligent.model.safetycheck.vo.DataColumnHasHistoryVO">
+    select data_column_id as dataColumnId , count(*) as checkCount
+    from tb_data_column_history_${enterpriseId}
+    where business_id = #{businessId}
+    group by data_column_id
+  </select>
+
+  <select id="countByBusinessId" resultType="java.lang.Long">
+        select count(1) from  tb_data_column_history_${enterpriseId}
+        where business_id  = #{businessId} and data_table_id  = #{dataTableId}
+  </select>
+
+  <update id="updateDelByBusinessIds">
+    update tb_data_column_history_${enterpriseId}
+    set deleted = 1
+    where business_id in (
+    <foreach collection="businessIds" separator="," item="item">
+      #{item}
+    </foreach>
+    )
+  </update>
+
+
+</mapper>

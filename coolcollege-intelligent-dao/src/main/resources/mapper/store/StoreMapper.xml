@@ -1,0 +1,3180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.store.StoreMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.store.StoreDO">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="store_name" property="storeName" jdbcType="VARCHAR"/>
+        <result column="store_num" property="storeNum" jdbcType="VARCHAR"/>
+        <result column="store_address" property="storeAddress" jdbcType="VARCHAR"/>
+        <result column="location_address" property="locationAddress" jdbcType="VARCHAR"/>
+        <result column="is_lock" property="isLock" jdbcType="CHAR"/>
+        <result column="longitude_latitude" property="longitudeLatitude" jdbcType="VARCHAR"/>
+        <result column="longitude" property="longitude" jdbcType="VARCHAR"/>
+        <result column="latitude" property="latitude" jdbcType="VARCHAR"/>
+        <result column="is_delete" property="isDelete" jdbcType="CHAR"/>
+        <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+        <result column="business_hours" property="businessHours" jdbcType="VARCHAR"/>
+        <result column="store_acreage" property="storeAcreage" jdbcType="VARCHAR"/>
+        <result column="store_bandwidth" property="storeBandwidth" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="BIGINT"/>
+        <result column="create_name" property="createName" jdbcType="VARCHAR"/>
+        <result column="create_user" property="createUser" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="BIGINT"/>
+        <result column="update_name" property="updateName" jdbcType="VARCHAR"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="LONGVARCHAR"/>
+        <result column="is_device" property="isDevice" jdbcType="VARCHAR"/>
+        <result column="aliyun_corp_id" property="aliyunCorpId" jdbcType="VARCHAR"/>
+        <result column="vds_corp_id" property="vdsCorpId" jdbcType="VARCHAR"/>
+        <result column="syn_ding_dept_id" property="synDingDeptId" jdbcType="VARCHAR"/>
+        <result column="region_path" property="regionPath" jdbcType="VARCHAR"/>
+        <result column="has_camera" property="hasCamera" jdbcType="TINYINT"/>
+        <result column="region_id" property="regionId" jdbcType="VARCHAR"/>
+        <result column="store_status" property="storeStatus" jdbcType="VARCHAR"/>
+        <result column="open_date" property="openDate" jdbcType="DATE"/>
+    </resultMap>
+
+    <resultMap id="storesResultMap" type="com.coolcollege.intelligent.model.store.dto.StoreDTO">
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="store_name" property="storeName" jdbcType="VARCHAR"/>
+        <result column="store_num" property="storeNum" jdbcType="VARCHAR"/>
+        <result column="region_id" property="regionId" jdbcType="BIGINT"/>
+        <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
+        <result column="store_address" property="storeAddress" jdbcType="VARCHAR"/>
+        <result column="location_address" property="locationAddress" jdbcType="VARCHAR"/>
+        <result column="is_lock" property="isLock" jdbcType="CHAR"/>
+        <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+        <result column="business_hours" property="businessHours" jdbcType="VARCHAR"/>
+        <result column="store_acreage" property="storeAcreage" jdbcType="VARCHAR"/>
+        <result column="store_bandwidth" property="storeBandwidth" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="BIGINT"/>
+        <result column="create_name" property="createName" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="BIGINT"/>
+        <result column="update_name" property="updateName" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="LONGVARCHAR"/>
+        <result column="is_delete" property="isDelete" jdbcType="VARCHAR"/>
+        <result column="longitude" property="longitude" jdbcType="VARCHAR"/>
+        <result column="latitude" property="latitude" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" jdbcType="LONGVARCHAR"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="county" property="county" jdbcType="VARCHAR"/>
+        <result column="is_device" property="isDevice" jdbcType="VARCHAR"/>
+        <result column="aliyun_corp_id" property="aliyunCorpId" jdbcType="VARCHAR"/>
+        <result column="vds_corp_id" property="vdsCorpId" jdbcType="VARCHAR"/>
+        <result column="source" property="source" jdbcType="VARCHAR"/>
+        <result column="region_path" property="regionPath" jdbcType="VARCHAR"/>
+        <result column="extend_field" property="extendField" jdbcType="LONGVARCHAR"/>
+        <result column="third_dept_id" property="thirdDeptId" jdbcType="VARCHAR"/>
+        <result column="store_status" property="storeStatus" jdbcType="VARCHAR"/>
+        <result column="open_date" property="openDate" jdbcType="DATE"/>
+        <result column="brand_id" property="brandId" jdbcType="BIGINT"/>
+        <collection property="storeGroupList"
+                    ofType="com.coolcollege.intelligent.model.store.StoreGroupDO">
+            <result column="group_id" property="groupId" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </collection>
+
+    </resultMap>
+
+
+    <resultMap id="storeDeviceMap" type="com.coolcollege.intelligent.model.store.vo.StoreDeviceVO">
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="store_name" property="storeName" jdbcType="VARCHAR"/>
+        <result column="store_num" property="storeNum" jdbcType="VARCHAR"/>
+        <result column="store_address" property="storeAddress" jdbcType="VARCHAR"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="county" property="county" jdbcType="VARCHAR"/>
+        <result column="longitude" property="longitude" jdbcType="VARCHAR"/>
+        <result column="latitude" property="latitude" jdbcType="VARCHAR"/>
+        <result column="aliyun_corp_id" property="aliyunCorpId" jdbcType="VARCHAR"/>
+        <result column="vds_corp_id" property="vdsCorpId" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+        <result column="store_status" property="storeStatus" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <collection property="deviceList"
+                    ofType="com.coolcollege.intelligent.model.device.dto.DeviceDTO">
+            <result column="type" property="type" jdbcType="VARCHAR"/>
+            <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
+            <result column="device_id" property="deviceId" jdbcType="VARCHAR"/>
+        </collection>
+
+    </resultMap>
+
+
+    <select id="getStores" resultMap="storesResultMap">
+        select
+        s.store_id,
+        s.store_name,
+        s.store_num,
+        s.region_id,
+        s.store_address,
+        s.location_address,
+        s.is_lock,
+        s.telephone,
+        s.business_hours,
+        s.store_acreage,
+        s.store_bandwidth,
+        s.create_time,
+        s.create_name,
+        s.create_user,
+        s.update_time,
+        s.update_name,
+        s.update_user,
+        s.remark,
+        s.longitude,
+        s.latitude,
+        s.avatar,
+        s.province,
+        s.city,
+        s.county,
+        s.vds_corp_id,
+        s.region_path,
+        s.extend_field,
+        s.store_status
+        from store_${enterpriseId} s
+        <where> s.is_delete = #{query.is_delete, jdbcType=VARCHAR}
+        <if test="query.keyword != null and query.keyword != ''">
+            and (s.store_name like concat('%',#{query.keyword, jdbcType=VARCHAR},'%')
+            or s.store_num like concat('%',#{query.keyword, jdbcType=VARCHAR},'%')
+            )
+        </if>
+        <if test="query.store_name != null and query.store_name != ''">
+            and s.store_name like concat('%',#{query.store_name, jdbcType=VARCHAR},'%')
+        </if>
+            <if test="query.storeStatusList != null and query.storeStatusList.size > 0 != ''">
+                and s.store_status in
+                <foreach item="item" collection="query.storeStatusList" separator="," open="(" close=")" index=""> #{item} </foreach>
+            </if>
+
+        <if test="query.store_area != null and query.store_area != ''">
+            <choose>
+                <when test="query.recursion != null and query.recursion">
+                    <if test='query.store_area != "/1/" '>
+                        and s.region_path like concat(#{query.store_area}, '%')
+                    </if>
+                </when>
+                <otherwise>
+                    and s.region_id = #{query.store_area, jdbcType=VARCHAR}
+                </otherwise>
+            </choose>
+        </if>
+        <if test="query.source!=null and query.source!=''">
+            and s.source=#{query.source,jdbcType=VARCHAR}
+        </if>
+        <if test="query.start_time != null">
+            <choose>
+                <when test="query.is_delete=='invalid'">
+                    and s.update_time >= #{query.start_time, jdbcType=BIGINT}
+                </when>
+                <otherwise>
+                    and s.create_time >= #{query.start_time, jdbcType=BIGINT}
+                </otherwise>
+            </choose>
+        </if>
+        <if test="query.end_time != null">
+            <choose>
+                <when test="query.is_delete=='invalid'">
+                    and s.update_time <![CDATA[ <= ]]> #{query.end_time, jdbcType=BIGINT}
+                </when>
+                <otherwise>
+                    and s.create_time <![CDATA[ <= ]]> #{query.end_time, jdbcType=BIGINT}
+                </otherwise>
+            </choose>
+        </if>
+        <choose>
+            <when test="query.is_admin" />
+            <otherwise>
+                and
+                (<if test="query.storeIds!=null and query.storeIds.size>0">
+                <foreach collection="query.storeIds" item="storeId" open="s.store_id in (" close=")" separator=",">
+                    #{storeId}
+                </foreach>
+                </if>
+                <if test="query.regionPathList!=null and query.regionPathList.size>0">
+                    <if test="query.storeIds!=null and query.storeIds.size>0">
+                        or
+                    </if>
+                    <foreach collection="query.regionPathList" item="regionPath"  separator="or">
+                        s.region_path like concat( #{regionPath}, '%')
+                    </foreach>
+                </if>)
+            </otherwise>
+        </choose>
+        </where>
+
+        <if test="query.orderBy != null and query.orderBy != '' ">
+            order by #{query.orderBy} #{query.orderRule}
+        </if>
+    </select>
+
+    <select id="getStoreByStoreId" resultMap="storesResultMap">
+        select
+            s.store_id,
+            s.source,
+            s.store_name,
+            s.store_num,
+            s.store_address,
+            s.location_address,
+            s.is_lock,
+            s.telephone,
+            s.business_hours,
+            s.store_acreage,
+            s.store_bandwidth,
+            s.create_time,
+            s.create_name,
+            s.update_time,
+            s.update_name,
+            s.remark,
+            s.is_delete,
+            s.longitude,
+            s.latitude,
+            s.avatar,
+            s.province,
+            s.city,
+            s.county,
+            s.aliyun_corp_id,
+            s.vds_corp_id,
+            s.region_id,
+            s.region_path,
+            s.store_status,
+            s.extend_field,
+            s.open_date,
+            s.third_dept_id,
+            s.brand_id
+        from store_${enterpriseId} s
+        where s.store_id = #{storeId, jdbcType=VARCHAR}
+    </select>
+
+    <update id="deleteStoreByStoreIds">
+        update store_${enterpriseId}
+        set is_delete='invalid',
+        update_name=#{userId, jdbcType=VARCHAR},
+        update_time=#{updateTime, jdbcType=BIGINT}
+        where store_id in
+        <foreach collection="storeIds" item="storeId" separator="," open="(" close=")">
+            #{storeId, jdbcType=VARCHAR}
+        </foreach>
+    </update>
+    <update id="deleteStoreByIds">
+        update store_${enterpriseId}
+        set is_delete='invalid',
+        update_name=#{userId, jdbcType=VARCHAR},
+        update_time=#{updateTime, jdbcType=BIGINT}
+        where id in
+        <foreach collection="storeIds" item="storeId" separator="," open="(" close=")">
+            #{storeId, jdbcType=VARCHAR}
+        </foreach>
+    </update>
+    <update id="lockStoreByStoreIds">
+        update store_${enterpriseId} set is_lock=#{isLock, jdbcType=VARCHAR}
+        where store_id in
+        <foreach collection="storeIds" item="storeId" separator="," open="(" close=")">
+            #{storeId, jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <insert id="insertStore">
+        insert into store_${enterpriseId}
+        (
+        store_id,
+        store_name,
+        store_num,
+        region_id,
+        avatar,
+        province,
+        city,
+        county,
+        store_address,
+        location_address,
+        is_lock,
+        longitude_latitude,
+        longitude,
+        latitude,
+        is_delete,
+        telephone,
+        business_hours,
+        store_acreage,
+        store_bandwidth,
+        create_time,
+        create_name,
+        remark,
+        region_path,
+        extend_field,
+        syn_ding_dept_id,
+        source,
+        store_status,
+        open_date,
+        address_point
+        )
+        values
+        (
+            #{storeDO.storeId,jdbcType=VARCHAR},
+            #{storeDO.storeName,jdbcType=VARCHAR},
+            #{storeDO.storeNum,jdbcType=VARCHAR},
+            #{storeDO.regionId,jdbcType=VARCHAR},
+            #{storeDO.avatar,jdbcType=VARCHAR},
+            #{storeDO.province,jdbcType=VARCHAR},
+            #{storeDO.city,jdbcType=VARCHAR},
+            #{storeDO.county,jdbcType=VARCHAR},
+            #{storeDO.storeAddress,jdbcType=VARCHAR},
+            #{storeDO.locationAddress,jdbcType=VARCHAR},
+            #{storeDO.isLock,jdbcType=CHAR},
+            #{storeDO.longitudeLatitude,jdbcType=VARCHAR},
+            #{storeDO.longitude,jdbcType=VARCHAR},
+            #{storeDO.latitude,jdbcType=VARCHAR},
+            #{storeDO.isDelete,jdbcType=CHAR},
+            #{storeDO.telephone,jdbcType=VARCHAR},
+            #{storeDO.businessHours,jdbcType=VARCHAR},
+            #{storeDO.storeAcreage,jdbcType=VARCHAR},
+            #{storeDO.storeBandwidth,jdbcType=VARCHAR},
+            #{storeDO.createTime,jdbcType=BIGINT},
+            #{storeDO.createName,jdbcType=VARCHAR},
+            #{storeDO.remark,jdbcType=LONGVARCHAR},
+            #{storeDO.regionPath},
+            #{storeDO.extendField},
+            #{storeDO.synDingDeptId},
+            #{storeDO.source},
+            #{storeDO.storeStatus},
+            #{storeDO.openDate},
+            ST_GeomFromText(#{storeDO.addressPoint})
+        )
+    </insert>
+
+    <select id="getStoreByStoreName" resultType="com.coolcollege.intelligent.model.store.StoreDO">
+            select
+                  store_id as storeId,
+                  store_name as storeName,
+                  is_delete as isDelete
+            from store_${enterpriseId}
+            where store_name like concat ('%',#{storeName,jdbcType=VARCHAR},'%')
+    </select>
+
+    <update id="updateStore">
+        update store_${enterpriseId} set
+        <trim suffixOverrides=",">
+            <if test="storeDO.storeName != null ">
+                store_name = #{storeDO.storeName,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.storeNum != null ">
+                store_num = #{storeDO.storeNum,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.regionPath!= null ">
+                region_path = #{storeDO.regionPath},
+            </if>
+            <if test="storeDO.regionId!= null and storeDO.regionId != 0 ">
+                region_id = #{storeDO.regionId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.avatar!= null ">
+                avatar = #{storeDO.avatar,jdbcType=VARCHAR},
+            </if>
+
+            <if test="storeDO.province!= null ">
+                province = #{storeDO.province,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.city!= null ">
+                city = #{storeDO.city,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.county!= null ">
+                county = #{storeDO.county,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.storeAddress!= null ">
+                store_address = #{storeDO.storeAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.locationAddress!= null ">
+                location_address = #{storeDO.locationAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.longitudeLatitude!= null ">
+                longitude_latitude = #{storeDO.longitudeLatitude,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.longitude!= null ">
+                longitude = #{storeDO.longitude,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.latitude!= null ">
+                latitude = #{storeDO.latitude,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.addressPoint!= null ">
+                address_point = ST_GeomFromText(#{storeDO.addressPoint}),
+            </if>
+            <if test="storeDO.telephone!= null ">
+                telephone = #{storeDO.telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.businessHours!= null ">
+                business_hours = #{storeDO.businessHours,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.storeAcreage!= null ">
+                store_acreage = #{storeDO.storeAcreage,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.storeBandwidth!= null ">
+                store_bandwidth = #{storeDO.storeBandwidth,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.updateTime != null ">
+                update_time = #{storeDO.updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="storeDO.updateName != null ">
+                update_name = #{storeDO.updateName,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.remark!= null ">
+                remark = #{storeDO.remark,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="storeDO.isDelete != null ">
+                is_delete = #{storeDO.isDelete,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.storeStatus != null ">
+                store_status = #{storeDO.storeStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDO.extendField != null ">
+                extend_field = #{storeDO.extendField},
+            </if>
+            <if test="storeDO.openDate != null ">
+                open_date = #{storeDO.openDate},
+            </if>
+            <if test="storeDO.brandId != null">
+                brand_id = #{storeDO.brandId}
+            </if>
+            <if test="storeDO.nodeId != null">
+                node_id = #{storeDO.nodeId}
+            </if>
+        </trim>
+        where store_id=#{storeDO.storeId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateAliyunCorpId">
+        update store_${eid} set aliyun_corp_id = #{corpId} where store_id = #{storeId}
+    </update>
+    <update id="updateVdsCorpId">
+        update store_${eid} set vds_corp_id = #{corpId} where store_id = #{storeId}
+    </update>
+
+    <insert id="batchInsertStore">
+        insert into store_${enterpriseId}
+        (
+        store_id,
+        store_name,
+        store_num,
+        region_path,
+        province,
+        city,
+        county,
+        store_address,
+        location_address,
+        is_lock,
+        longitude_latitude,
+        longitude,
+        latitude,
+        is_delete,
+        telephone,
+        create_time,
+        create_name,
+        remark,
+        source,
+        address_point,
+        syn_ding_dept_id,
+        region_id,
+        third_dept_id,
+        store_status
+        )
+        values
+        <foreach collection="stores" item="store" separator=",">
+            (
+            #{store.storeId,jdbcType=VARCHAR},
+            #{store.storeName,jdbcType=VARCHAR},
+            #{store.storeNum,jdbcType=VARCHAR},
+            #{store.regionPath,jdbcType=VARCHAR},
+            #{store.province,jdbcType=VARCHAR},
+            #{store.city,jdbcType=VARCHAR},
+            #{store.county,jdbcType=VARCHAR},
+            #{store.storeAddress,jdbcType=VARCHAR},
+            #{store.locationAddress,jdbcType=VARCHAR},
+            #{store.isLock,jdbcType=CHAR},
+            #{store.longitudeLatitude,jdbcType=VARCHAR},
+            #{store.longitude,jdbcType=VARCHAR},
+            #{store.latitude,jdbcType=VARCHAR},
+            #{store.isDelete,jdbcType=CHAR},
+            #{store.telephone,jdbcType=VARCHAR},
+            #{store.createTime,jdbcType=BIGINT},
+            #{store.createName,jdbcType=VARCHAR},
+            #{store.remark,jdbcType=LONGVARCHAR},
+            #{store.source,jdbcType=VARCHAR},
+            ST_GeomFromText(#{store.addressPoint}),
+            #{store.synDingDeptId},
+            #{store.regionId},
+            #{store.thirdDeptId},
+            #{store.storeStatus}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        is_delete='effective'
+    </insert>
+
+    <select id="getStoresByStoreNames" resultType="com.coolcollege.intelligent.model.store.StoreDO">
+        select
+        store_id as storeId,
+        store_name as storeName,
+        is_delete as isDelete
+        from store_${enterpriseId}
+        where store_name in
+        <foreach collection="names" item="storeName" separator="," open="(" close=")">
+            #{storeName,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <select id="getStoresByStoreNums" resultType="com.coolcollege.intelligent.model.store.StoreDO">
+        select
+        store_id as storeId,
+        store_num as storeNum,
+        store_name as storeName,
+        is_delete as isDelete
+        from store_${enterpriseId}
+        where store_num in
+        <foreach collection="nums" item="num" separator="," open="(" close=")">
+            #{num,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+    <!--只服务于区域的数量，其他字段不返回-->
+    <select id="getAllStoresByStatus" resultType="com.coolcollege.intelligent.model.store.dto.StoreDTO">
+        select
+        s.store_id as storeId,
+        s.region_path as regionPath
+        from store_${enterpriseId} s
+        where s.is_delete = #{isDelete, jdbcType=VARCHAR}
+    </select>
+
+    <select id="getStoreRegionByStoreIdList" resultType="com.coolcollege.intelligent.model.store.dto.StoreDTO">
+        select
+        s.store_id as storeId,
+        s.region_path as regionPath
+        from store_${enterpriseId} s
+        where s.is_delete = #{isDelete, jdbcType=VARCHAR}
+        <if test="storeIdList!=null and storeIdList.size>0">
+            <foreach collection="storeIdList" item="storeId" open="and s.store_id in(" close=")" separator=",">
+                #{storeId}
+            </foreach>
+        </if>
+    </select>
+
+
+
+
+    <select id="getStoreCountByStoreNum" resultType="java.lang.Long">
+        select count(*) from store_${enterpriseId} s
+        where s.is_delete = 'effective'
+        <if test="storeNum != null and storeNum != '' ">
+            and s.store_num = #{storeNum, jdbcType=VARCHAR}
+        </if>
+        <if test="exceptStoreId != null and exceptStoreId != ''">
+            and s.store_id != #{exceptStoreId, jdbcType=VARCHAR}
+        </if>
+    </select>
+
+
+
+
+
+
+    <select id="getStoreBaseInfo" resultMap="storesResultMap">
+
+        select
+            s.store_id,
+            s.store_name,
+            s.store_num,
+            s.store_address,
+            s.location_address,
+            s.is_lock,
+            s.telephone,
+            s.create_time,
+            s.create_name,
+            s.update_time,
+            s.update_name,
+            s.remark,
+            s.is_delete,
+            s.longitude,
+            s.latitude,
+            s.avatar,
+            s.province,
+            s.city,
+            s.county,
+            s.aliyun_corp_id,
+            s.vds_corp_id,
+            s.region_id,
+            s.region_path
+        from store_${eid} s
+        where s.store_id = #{storeId, jdbcType=VARCHAR}
+    </select>
+
+    <update id="batchUpdateStoreNum">
+        update store_${enterpriseId}
+        set
+        store_num =
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.storeNum,jdbcType=VARCHAR}
+        </foreach>
+        ,
+        update_time = #{updateTime,jdbcType=VARCHAR},
+        update_name = #{updateName,jdbcType=VARCHAR}
+        where store_id in
+        <foreach collection="stores" index="index" item="store"
+                 separator="," open="(" close=")">
+            #{store.storeId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <update id="batchMoveStore" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update store_${eid} set `region_id` = #{item.regionId}, region_path = #{item.regionPath}
+            where store_id = #{item.storeId}
+        </foreach>
+    </update>
+
+
+
+    <select id="getCollectStoresByUser" resultMap="storeDeviceMap">
+        select
+        a.store_name ,
+        a.store_id ,
+        a.province ,
+        a.city ,
+        a.county ,
+        a.store_address,
+        a.longitude ,
+        a.latitude ,
+        a.vds_corp_id ,
+        a.aliyun_corp_id,
+        a.avatar,
+        b.biz_inst_id
+        FROM store_${eip} a
+        left join store_device_mapping_${eip} b on a.store_id=b.store_id
+        where
+        a.is_delete='effective'
+        <if test="storeUserMappingDTO.store_name!=null">
+            and a.store_name like concat('%',#{storeUserMappingDTO.store_name, jdbcType=VARCHAR},'%')
+        </if>
+        <if test="storeUserMappingDTO.storeIds!=null and storeUserMappingDTO.storeIds.size>0">
+            and a.store_id in
+            <foreach collection="storeUserMappingDTO.storeIds" separator="," open="(" close=")" item="storeId">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="storeUserMappingDTO.regionIds!=null and storeUserMappingDTO.regionIds.size>0">
+            <choose>
+                <when test="storeUserMappingDTO.recursion">
+                    and a.region_path in
+                    <foreach collection="storeUserMappingDTO.regionIds" item="regionId" index="index" separator="," open="("
+                             close=")">
+                        #{regionId}
+                    </foreach>
+                </when>
+                <otherwise>
+                    and a.region_id in
+                    <foreach collection="storeUserMappingDTO.regionIds" item="regionId" index="index" separator="," open="("
+                             close=")">
+                        #{regionId}
+                    </foreach>
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+    <select id="getCollectStoresByUserV2" resultMap="storeDeviceMap">
+        select
+        <if test="storeUserMappingDTO.longitude != null and storeUserMappingDTO.latitude != null">
+            a.store_name ,
+            a.store_num,
+            a.store_id ,
+            a.province ,
+            a.city ,
+            a.county ,
+            a.store_address,
+            a.longitude ,
+            a.latitude ,
+            a.vds_corp_id ,
+            a.aliyun_corp_id,
+            a.avatar,
+            b.biz_inst_id,
+            a.store_status,
+            ST_Distance_Sphere(
+            POINT(longitude, latitude),
+            POINT(#{storeUserMappingDTO.longitude}, #{storeUserMappingDTO.latitude})
+            ) AS distance
+        </if>
+        <if test="storeUserMappingDTO.longitude == null or storeUserMappingDTO.latitude == null">
+            a.store_name ,
+            a.store_num,
+            a.store_id ,
+            a.province ,
+            a.city ,
+            a.county ,
+            a.store_address,
+            a.longitude ,
+            a.latitude ,
+            a.vds_corp_id ,
+            a.aliyun_corp_id,
+            a.avatar,
+            b.biz_inst_id,
+            a.store_status
+        </if>
+        FROM store_${eip} a
+        left join store_device_mapping_${eip} b on a.store_id=b.store_id
+        where
+        a.is_delete='effective'
+        <if test="storeUserMappingDTO.store_name!=null">
+            and (a.store_name like concat('%',#{storeUserMappingDTO.store_name},'%') or a.store_num like concat('%',#{storeUserMappingDTO.store_name},'%'))
+        </if>
+        <if test="storeUserMappingDTO.storeIds!=null and storeUserMappingDTO.storeIds.size>0">
+            and a.store_id in
+            <foreach collection="storeUserMappingDTO.storeIds" separator="," open="(" close=")" item="storeId">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="storeUserMappingDTO.regionIds!=null and storeUserMappingDTO.regionIds.size>0">
+            <choose>
+                <when test="storeUserMappingDTO.recursion">
+                    and a.region_path in
+                    <foreach collection="storeUserMappingDTO.regionIds" item="regionId" index="index" separator="," open="("
+                             close=")">
+                        #{regionId}
+                    </foreach>
+                </when>
+                <otherwise>
+                    and a.region_id in
+                    <foreach collection="storeUserMappingDTO.regionIds" item="regionId" index="index" separator="," open="("
+                             close=")">
+                        #{regionId}
+                    </foreach>
+                </otherwise>
+            </choose>
+        </if>
+        <if test="storeUserMappingDTO.range != null and storeUserMappingDTO.longitude!=null and storeUserMappingDTO.latitude!=null ">
+            AND (
+            ST_Distance_Sphere(
+            POINT(longitude, latitude),
+            POINT(#{storeUserMappingDTO.longitude}, #{storeUserMappingDTO.latitude})
+            ) <![CDATA[ <= ]]> #{storeUserMappingDTO.range})
+        </if>
+        <if test="storeUserMappingDTO.storeStatusList!=null and storeUserMappingDTO.storeStatusList.size()>0">
+            and a.store_status in
+            <foreach collection="storeUserMappingDTO.storeStatusList" item="storeStatus" separator="," open="(" close=")">#{storeStatus}</foreach>
+        </if>
+        <if test="storeUserMappingDTO.longitude != null and storeUserMappingDTO.latitude != null">
+            ORDER BY distance is null,  distance ASC
+        </if>
+    </select>
+
+
+
+
+    <select id="getStoreListByStoreIds" resultType="com.coolcollege.intelligent.model.store.dto.StoreDTO">
+        select
+        a.store_name as storeName,
+        a.region_path as regionPath,
+        a.store_id as storeId,
+        a.province as province,
+        a.store_num as storeNum,
+        a.city as city,
+        a.county as county,
+        a.store_address as storeAddress,
+        a.store_status as storeStatus,
+        a.longitude as longitude,
+        a.latitude as latitude,
+        a.aliyun_corp_id as aliyunCorpId,
+        c.device_name AS B1Name,
+        c.device_id as deviceId,
+        b.biz_inst_id as bizInstId,
+        a.vds_corp_id as vdsCorpId,
+        a.extend_field as extendField
+        FROM store_${eip} a
+        LEFT JOIN store_device_mapping_${eip} b ON a.store_id=b.store_id
+        LEFT JOIN device_${eip} c ON c.device_id =b.device_id
+        where 1=1
+        and a.is_delete='effective'
+        <if test="storeIds!=null and storeIds.size>0 ">
+            and a.store_id in
+            <foreach collection="storeIds" item="storeId" index="index" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+
+        </if>
+        GROUP BY a.store_id
+    </select>
+
+    <select id="getStoreListByStoreNameList" resultType="com.coolcollege.intelligent.model.store.dto.StoreDTO">
+        select
+        a.store_name as storeName,
+        a.region_path as regionPath,
+        a.store_id as storeId,
+        a.province as province,
+        a.store_num as storeNum,
+        a.city as city,
+        a.county as county,
+        a.store_address as storeAddress,
+        a.longitude as longitude,
+        a.latitude as latitude,
+        a.aliyun_corp_id as aliyunCorpId,
+        c.device_name AS B1Name,
+        c.device_id as deviceId,
+        b.biz_inst_id as bizInstId,
+        a.vds_corp_id as vdsCorpId,
+        a.extend_field as extendField
+        FROM store_${eip} a
+        LEFT JOIN store_device_mapping_${eip} b ON a.store_id=b.store_id
+        LEFT JOIN device_${eip} c ON c.device_id =b.device_id
+        where a.is_delete='effective'
+        <if test="storeNameList!=null and storeNameList.size>0 ">
+            and a.store_name in
+            <foreach collection="storeNameList" item="storeName" index="index" separator="," open="(" close=")">
+                #{storeName}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getStoreListByStoreNumList" resultType="com.coolcollege.intelligent.model.store.dto.StoreDTO">
+        select
+        a.store_name as storeName,
+        a.region_path as regionPath,
+        a.store_id as storeId,
+        a.province as province,
+        a.store_num as storeNum,
+        a.city as city,
+        a.county as county,
+        a.store_address as storeAddress,
+        a.longitude as longitude,
+        a.latitude as latitude,
+        a.aliyun_corp_id as aliyunCorpId,
+        c.device_name AS B1Name,
+        c.device_id as deviceId,
+        b.biz_inst_id as bizInstId,
+        a.vds_corp_id as vdsCorpId,
+        a.extend_field as extendField
+        FROM store_${eip} a
+        LEFT JOIN store_device_mapping_${eip} b ON a.store_id=b.store_id
+        LEFT JOIN device_${eip} c ON c.device_id =b.device_id
+        where a.is_delete='effective'
+        <if test="storeNumList!=null and storeNumList.size>0 ">
+            and a.store_num in
+            <foreach collection="storeNumList" item="storeNum" index="index" separator="," open="(" close=")">
+                #{storeNum}
+            </foreach>
+        </if>
+    </select>
+
+
+    <select id="getStoreListByStoreIdsInCludingDeleted" resultType="com.coolcollege.intelligent.model.store.dto.StoreDTO">
+        select
+        a.store_name as storeName,
+        a.region_path as regionPath,
+        a.store_id as storeId,
+        a.province as province,
+        a.store_num as storeNum,
+        a.city as city,
+        a.county as county,
+        a.store_address as storeAddress,
+        a.longitude as longitude,
+        a.latitude as latitude,
+        a.aliyun_corp_id as aliyunCorpId,
+        c.device_name AS B1Name,
+        c.device_id as deviceId,
+        b.biz_inst_id as bizInstId,
+        a.vds_corp_id as vdsCorpId,
+        a.extend_field as extendField
+        FROM store_${eip} a
+        LEFT JOIN store_device_mapping_${eip} b ON a.store_id=b.store_id
+        LEFT JOIN device_${eip} c ON c.device_id =b.device_id
+        where 1=1
+        <if test="storeIds!=null and storeIds.size>0 ">
+            and a.store_id in
+            <foreach collection="storeIds" item="storeId" index="index" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+
+        </if>
+        GROUP BY a.store_id
+    </select>
+
+
+    <select id="getStoreAreaList" resultType="com.coolcollege.intelligent.model.store.dto.StoreAreaDTO">
+        select
+        a.store_name as storeName,
+        a.store_id as storeId,
+        a.region_path as regionPath,
+        a.region_id as regionId,
+        a.region_id as areaId,
+        a.store_status as storeStatus
+        FROM store_${eip} a
+        <where>
+            a.is_delete='effective'
+            <if test="storeIds!=null and storeIds.size>0">
+                <foreach collection="storeIds" item="storeId" index="index" separator="," open="and  a.store_id in("
+                         close=")">
+                    #{storeId}
+                </foreach>
+            </if>
+        </where>
+
+    </select>
+
+
+
+    <select id="getStoreRegion" resultType="com.coolcollege.intelligent.model.region.dto.RegionStoreDTO">
+        select
+            id as id,
+            name,
+            parent_id as parentId
+         from region_${eid}
+    </select>
+
+    <select id="getAllStores" resultType="com.coolcollege.intelligent.model.store.dto.StoreDTO">
+        select
+        store_id as storeId,
+        store_name as storeName,
+        store_num as storeNum,
+        is_delete as isDelete,
+        ding_id as dingId,
+        region_id as regionId,
+        region_path as regionPath
+        from store_${eip}
+        where 1=1
+        <if test="isDelete!=null and isDelete!=''">
+            and is_delete=#{isDelete}
+        </if>
+        and source='sync'
+    </select>
+    <select id="getAllStoresByStoreNum" resultType="com.coolcollege.intelligent.model.store.dto.StoreDTO">
+        select
+        store_num as storeNum,
+        store_id as storeId,
+        store_name as storeName,
+        extend_field as extendField
+        from store_${eip}
+        where
+         is_delete=#{isDelete}
+    </select>
+    <select id="getAllStoresByLongitudeLatitude" resultType="com.coolcollege.intelligent.model.store.dto.StoreDTO">
+        select
+        store_num as storeNum,
+        store_id as storeId,
+        longitude,
+        latitude,
+        longitude_latitude as longitudeLatitude,
+        store_address as storeAddress
+        from store_${eid}
+        where
+         is_delete=#{isDelete}
+    </select>
+
+    <update id="updateLongitudeLatitude">
+        update store_${eid}
+        set longitude =
+        <foreach collection="storeDOList" item="item" index="index" separator=" " open="case store_id" close="end">
+            when #{item.storeId} then #{item.longitude}
+        </foreach>,
+        latitude =
+        <foreach collection="storeDOList" item="item" index="index" separator=" " open="case store_id" close="end">
+            when #{item.storeId} then #{item.latitude}
+        </foreach>
+        ,
+        longitude_latitude =
+        <foreach collection="storeDOList" item="item" index="index" separator=" " open="case store_id" close="end">
+            when #{item.storeId} then #{item.longitudeLatitude}
+        </foreach> ,
+        address_point =
+        <foreach collection="storeDOList" item="item" index="index" separator=" " open="case store_id" close="end">
+            when #{item.storeId} then ST_GeomFromText(#{item.addressPoint})
+        </foreach>
+        where store_id in
+        <foreach collection="storeDOList" item="item" index="index" separator="," open="(" close=")">
+            #{item.storeId}
+        </foreach>
+    </update>
+    <update id="updateLongitudeLatitudeAndAddress">
+        update store_${eid}
+        set longitude =
+        <foreach collection="storeDOList" item="item" index="index" separator=" " open="case store_id" close="end">
+            when #{item.storeId} then #{item.longitude}
+        </foreach>,
+        latitude =
+        <foreach collection="storeDOList" item="item" index="index" separator=" " open="case store_id" close="end">
+            when #{item.storeId} then #{item.latitude}
+        </foreach>
+        ,
+        longitude_latitude =
+        <foreach collection="storeDOList" item="item" index="index" separator=" " open="case store_id" close="end">
+            when #{item.storeId} then #{item.longitudeLatitude}
+        </foreach>
+        ,
+        store_address =
+        <foreach collection="storeDOList" item="item" index="index" separator=" " open="case store_id" close="end">
+            when #{item.storeId} then #{item.storeAddress}
+        </foreach> ,
+        address_point =
+        <foreach collection="storeDOList" item="item" index="index" separator=" " open="case store_id" close="end">
+            when #{item.storeId} then ST_GeomFromText(#{item.addressPoint})
+        </foreach>
+        where store_id in
+        <foreach collection="storeDOList" item="item" index="index" separator="," open="(" close=")">
+            #{item.storeId}
+        </foreach>
+    </update>
+    <select id="getStoreNameByIdList" resultType="java.util.Map">
+        select
+        store_id, store_name, is_delete, location_address, aliyun_corp_id, longitude_latitude
+        from store_${eid}
+        where  store_id in
+            <foreach collection="ids" item="storeId" open="(" close=")" separator=",">
+                #{storeId}
+            </foreach>
+    </select>
+
+
+    <insert id="batchInsertStoreInformation">
+        insert into store_${eip}
+        (
+        store_id,
+        store_name,
+        is_delete,
+        create_time,
+        create_name,
+        source,
+        ding_id
+        )
+        values
+        <foreach collection="stores" item="store" separator=",">
+            (
+            #{store.storeId,jdbcType=VARCHAR},
+            #{store.storeName,jdbcType=VARCHAR},
+            #{store.isDelete,jdbcType=CHAR},
+            #{store.createTime,jdbcType=BIGINT},
+            #{store.createName,jdbcType=BIGINT},
+            #{store.source,jdbcType=VARCHAR},
+            #{store.dingId,jdbcType=VARCHAR}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        <if test="type=='effective'">
+            is_delete=#{type},
+        </if>
+        <if test="type=='ignored'">
+            is_delete=#{type},
+        </if>
+        update_time=#{updateTime}
+
+    </insert>
+    <insert id="batchInsertStoreByImport">
+        insert into store_${eid}
+       (store_id,
+        store_name,
+        store_num,
+        region_id,
+        region_path,
+        location_address,
+        store_address,
+        longitude_latitude,
+        longitude,
+        latitude,
+        is_delete,
+        telephone,
+        business_hours,
+        store_acreage,
+        store_bandwidth,
+        remark,
+        create_time,
+        create_name,
+        create_user,
+        update_time,
+        update_name,
+        update_user,
+        address_point,
+        open_date
+        )
+        values
+        <foreach collection="stores" item="store" separator=",">
+            (
+                #{store.storeId},
+                #{store.storeName},
+                #{store.storeNum},
+                #{store.regionId},
+                #{store.regionPath},
+                #{store.locationAddress},
+                #{store.storeAddress},
+                #{store.longitudeLatitude},
+                #{store.longitude},
+                #{store.latitude},
+                #{store.isDelete},
+                #{store.telephone},
+                #{store.businessHours},
+                #{store.storeAcreage},
+                #{store.storeBandwidth},
+                #{store.remark},
+                #{store.createTime},
+                #{store.createName},
+                #{store.createUser},
+                #{store.updateTime},
+                #{store.updateName},
+                #{store.updateUser},
+                ST_GeomFromText(#{store.addressPoint}),
+            #{store.openDate}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        store_name=values(store_name), store_num=values(store_num), region_id=values(region_id),region_path=values(region_path),
+        location_address=values(location_address), store_address=values(store_address), longitude_latitude=values(longitude_latitude),
+        longitude=values(longitude), latitude=values(latitude), is_delete=values(is_delete), telephone=values(telephone),
+        business_hours=values(business_hours), store_acreage=values(store_acreage), store_bandwidth=values(store_bandwidth),
+        remark=values(remark), update_time=values(update_time), update_name=values(update_name), update_user=values(update_user),address_point=values(address_point),
+        open_date=values(open_date)
+    </insert>
+
+    <update id="updateStatus">
+        update store_${eip}
+        set is_delete=#{type}
+        where 1>2
+        <if test="storeDTOS!=null">
+            or store_id in
+            <foreach collection="storeDTOS" item="storeId" open="(" close=")" separator=",">
+                #{storeId}
+            </foreach>
+        </if>
+    </update>
+    <update id="updateStoreStatus">
+        update store_${eid} set is_delete = 'effective' where store_id = #{storeId}
+    </update>
+
+
+    <select id="getAllStoreList" resultType="com.coolcollege.intelligent.model.store.dto.StoreDTO">
+        select store_id as storeId,
+        store_name as storeName,
+        is_delete as isDelete,
+        ding_id as dingId
+        from store_${eid}
+        where 1>2
+        <if test="dingIds!=null and dingIds.size>0">
+            or (ding_id in
+            <foreach collection="dingIds" item="dingId" open="(" close=")" separator=",">
+                #{dingId}
+            </foreach>
+            <if test="isDel != null and isDel != '' ">
+                and is_delete = #{isDel}
+            </if>
+            and source='sync')
+        </if>
+
+    </select>
+
+    <select id="listStoreByRegionId" resultMap="BaseResultMap">
+        select
+        *
+        from store_${eid}
+        where is_delete = 'effective'
+        <if test="regionId != null and regionId!= '' ">
+            and region_path like concat('%/', #{regionId}, '/%')
+        </if>
+    </select>
+
+    <select id="listStoreByRegionIdNotChild" resultMap="BaseResultMap">
+        select
+        *
+        from store_${eid}
+        where is_delete = 'effective'
+        <if test="regionId != null and regionId!= '' ">
+            and region_path like concat('%/', #{regionId}, '/')
+        </if>
+    </select>
+
+    <select id="listStoreByRegionIdList" resultType="com.coolcollege.intelligent.model.store.dto.StoreAreaDTO">
+        select
+        store_name as storeName,
+        store_id as storeId,
+        region_path as regionPath,
+        region_id as areaId,
+        region_id as regionId
+        from store_${eid}
+        where is_delete = 'effective'
+        <if test="regionIdList != null and regionIdList.size >0 ">
+            <foreach collection="regionIdList" item="regionId" separator=" or " open="and (" close=" )">
+                region_path like concat('%/', #{regionId}, '/%')
+            </foreach>
+        </if>
+    </select>
+
+    <select id="listStoreByRegionPathList" resultType="com.coolcollege.intelligent.model.store.dto.StoreAreaDTO">
+        select
+        store_name as storeName,
+        store_id as storeId,
+        region_path as regionPath,
+        region_id as regionId,
+        region_id as areaId
+        from store_${eid}
+        where is_delete = 'effective'
+        <if test="regionPathList != null and regionPathList.size >0 ">
+            <foreach collection="regionPathList" item="regionPath" separator=" or " open="and (" close=" )">
+                region_path like concat(#{regionPath}, '%')
+            </foreach>
+        </if>
+    </select>
+
+    <select id="listStoreByRegionIdListNotChild" resultType="com.coolcollege.intelligent.model.store.dto.StoreAreaDTO">
+        select
+        store_name as storeName,
+        store_id as storeId,
+        region_path as regionPath,
+        region_id as regionId,
+        region_id as areaId
+        from store_${eid}
+        where is_delete = 'effective'
+        <if test="regionIdList != null and regionIdList.size >0 ">
+            and region_id in
+            <foreach collection="regionIdList" item="regionId" separator="," open="(" close=" )">
+                #{regionId,jdbcType=BIGINT}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getEffectiveStoreByIdList" resultType="java.lang.String">
+        select store_id from store_${eid}
+        where store_id in
+        <foreach collection="ids" item="storeId" open="(" close=")" separator=",">
+            #{storeId}
+        </foreach>
+        and is_delete ='effective'
+    </select>
+
+    <select id="getStoreIdByIdList" resultType="java.lang.String">
+        select store_id from store_${eid}
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getExistStoreByStoreId" resultType="java.lang.String">
+        select store_id
+        from store_${eid}
+        where store_id = #{storeId}
+        and is_delete ='effective'
+    </select>
+
+    <select id="listAllStoreByRegionId" resultMap="BaseResultMap">
+        select
+        *
+        from store_${eid}
+        where
+        <if test="regionId != null and regionId!= '' ">
+            region_path like concat('%/', #{regionId}, '/%')
+        </if>
+    </select>
+
+    <select id="getStoreDeviceList" resultType="com.coolcollege.intelligent.model.device.dto.DeviceDTO">
+        select
+        s.store_id storeId,
+        s.store_name storeName,
+        s.store_status storeStatus,
+        d.device_id deviceId,
+        d.device_name deviceName,
+        d.type,
+        d.device_scene as deviceScene,
+        d.bind_time as bindTime,
+        d.device_status as deviceStatus,
+        d.has_child_device as hasChildDevice,
+        d.has_ptz as hasPtz,
+        d.resource as deviceSource
+        from store_${eid} s
+        join device_${eid} d
+        <choose>
+            <when test="eid == '28c8c7dd86b146e1b164c1eacb2bd87e'">
+                on d.bind_store_ids like concat('%',s.store_id,'%')
+            </when>
+            <otherwise>
+                on d.bind_store_ids = s.store_id
+            </otherwise>
+        </choose>
+        where 1> 2
+        <if test="storeIds != null and storeIds.size > 0">
+            or store_id in
+            <foreach collection="storeIds" item="storeId" open="(" separator="," close=")">
+                #{storeId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getAllStoreIds" resultType="com.coolcollege.intelligent.model.store.StoreDO">
+        select
+        id,
+        store_id as storeId,
+        store_name as storeName,
+        store_num as storeNum,
+        is_delete as isDelete,
+        ding_id as dingId,
+        region_id as regionId,
+        syn_ding_dept_id as synDingDeptId,
+        location_address as locationAddress,
+        source
+        from store_${eip}
+        where 1=1
+        <if test="isDelete!=null and isDelete!=''">
+            and is_delete=#{isDelete}
+        </if>
+
+    </select>
+
+    <select id="getAllStoreIdsAndDeptId" resultType="com.coolcollege.intelligent.model.store.dto.StoreSyncDTO">
+        select
+        id,
+        store_id as storeId,
+        store_name as storeName,
+        store_num as storeNum,
+        is_delete as isDelete,
+        ding_id as dingId,
+        region_id as regionId,
+        syn_ding_dept_id as synDingDeptId,
+        location_address as locationAddress,
+        source
+        from store_${eip}
+        where 1=1
+        <if test="isDelete!=null and isDelete!=''">
+            and is_delete=#{isDelete} or syn_ding_dept_id is not null
+        </if>
+    </select>
+
+    <select id="getSpecifiedStoreIdsAndDeptId" resultType="com.coolcollege.intelligent.model.store.dto.StoreSyncDTO">
+        select
+        id,
+        store_id as storeId,
+        store_name as storeName,
+        store_num as storeNum,
+        is_delete as isDelete,
+        ding_id as dingId,
+        region_id as regionId,
+        syn_ding_dept_id as synDingDeptId,
+        location_address as locationAddress,
+        source
+        from store_${eid}
+        where 1=1
+        <if test="isDelete!=null and isDelete!=''">
+            and (is_delete=#{isDelete} or syn_ding_dept_id is not null)
+        </if>
+        <if test="parentId!=null and parentId!=''">
+            and region_path like concat('%/',#{parentId},'/%')
+        </if>
+    </select>
+
+    <select id="getSignInStoreMapList"
+            resultType="com.coolcollege.intelligent.model.store.dto.StoreSignInMapDTO">
+        select
+        store_id as storeId,
+        store_name as storeName,
+        store_num as storeNum,
+        location_address as locationAddress,
+        avatar as avatar,
+        store_status as storeStatus,
+        ST_X ( address_point ) as  longitude,
+        ST_Y ( address_point ) as  latitude,
+        ST_Distance_Sphere(
+        POINT(longitude, latitude),
+        POINT(#{query.longitude}, #{query.latitude})
+        ) AS distance
+        from store_${eid}
+        <where>
+             is_delete = 'effective'
+        <choose>
+            <when test="isAdmin!=null and isAdmin" />
+            <otherwise>
+                and(<if test="authStoreIdList!=null and authStoreIdList.size>0">
+                <foreach collection="authStoreIdList" item="storeId" open="store_id in (" close=")" separator=",">
+                    #{storeId}
+                </foreach>
+            </if>
+                <if test="authFullRegionPathList!=null and authFullRegionPathList.size>0">
+                    <if test="authStoreIdList!=null and authStoreIdList.size>0">
+                        or
+                    </if>
+                    <foreach collection="authFullRegionPathList" item="regionPath"  separator="or">
+                        region_path like concat( #{regionPath}, '%')
+                    </foreach>
+                </if>)
+            </otherwise>
+        </choose>
+        <if test="query.storeName != null and query.storeName != '' ">
+            and store_name like concat('%', #{query.storeName}, '%')
+        </if>
+        <if test="query.lngList != null and query.lngList.size() > 0">
+            <foreach collection="query.lngList" item="lng" open=" and (" separator=" or " close=")">
+                longitude like concat(#{lng}, '%')
+            </foreach>
+        </if>
+        <if test="query.latList != null and query.latList.size() > 0 ">
+            <foreach collection="query.latList" item="lat" open=" and (" separator=" or " close=")">
+                latitude like concat(#{lat}, '%')
+            </foreach>
+        </if>
+        <if test="query.storeStatusList!=null and query.storeStatusList.size()>0">
+            and store_status in <foreach collection="query.storeStatusList" item="storeStatus" separator="," open="(" close=")">#{storeStatus}</foreach>
+        </if>
+        </where>
+        ORDER BY distance is null, distance ASC
+    </select>
+
+    <select id="getNearbyStore" resultType="com.coolcollege.intelligent.model.store.dto.StoreSignInMapDTO">
+        select
+        store_id as store_id,
+        store_name as storeName,
+        store_num as storeNum,
+        location_address as locationAddress,
+        avatar as avatar,
+        longitude as  longitude,
+        latitude as  latitude,
+        store_status as storeStatus,
+        ST_Distance_Sphere(
+        POINT(longitude, latitude),
+        POINT(#{longitude}, #{latitude})
+        ) AS distance
+        from store_${eid}
+        where is_delete = 'effective'
+        <if test="storeName!=null and storeName!=''">
+            and store_name like concat('%',#{storeName},'%')
+        </if>
+        <if test="storeStatusList!=null and storeStatusList.size()>0">
+            and store_status in <foreach collection="storeStatusList" item="storeStatus" separator="," open="(" close=")">#{storeStatus}</foreach>
+        </if>
+        ORDER BY distance is null, distance ASC
+    </select>
+
+
+
+    <select id="getSignInStoreMapListNew"
+            resultType="com.coolcollege.intelligent.model.store.dto.StoreSignInMapDTO">
+        select
+        store_id as storeId,
+        store_name as storeName,
+        location_address as locationAddress,
+        longitude,
+        latitude,
+        avatar,
+        store_status as storeStatus,
+        store_num as storeNum
+        from store_${eid}
+        <where>
+            ST_CONTAINS (
+            ST_MAKEENVELOPE (
+            POINT ((
+            #{request.longitude} + ( #{request.queryDistance} / 111 )),
+            (
+            #{request.latitude} + ( #{request.queryDistance} / 111 ))),
+            POINT ((
+            #{request.longitude} - ( #{request.queryDistance} / 111 )),
+            (
+            #{request.latitude} - ( #{request.queryDistance} / 111 )))),
+            address_point
+            )
+            and is_delete = 'effective'
+            <if test="request.storeName!=null and request.storeName!=''">
+                and store_name like concat('%',#{request.storeName},'%')
+            </if>
+            <if test="request.storeStatusList!=null and request.storeStatusList.size()>0">
+                and store_status in <foreach collection="request.storeStatusList" item="storeStatus" separator="," open="(" close=")">#{storeStatus}</foreach>
+            </if>
+            <choose>
+                <when test="request.isAllStore!=null and request.isAllStore" />
+                <otherwise>
+                    and(<if test="request.storeIdList!=null and request.storeIdList.size>0">
+                    <foreach collection="request.storeIdList" item="storeId" open="store_id in (" close=")" separator=",">
+                        #{storeId}
+                    </foreach>
+                </if>
+                    <if test="request.fullRegionPathList!=null and request.fullRegionPathList.size>0">
+                        <if test="request.storeIdList!=null and request.storeIdList.size>0">
+                            or
+                        </if>
+                        <foreach collection="request.fullRegionPathList" item="regionPath"  separator="or">
+                            region_path like concat( #{regionPath}, '%')
+                        </foreach>
+                    </if>)
+                </otherwise>
+            </choose>
+        </where>
+
+
+    </select>
+
+    <select id="getSignInStoreMapListById"
+            resultType="com.coolcollege.intelligent.model.store.dto.StoreSignInMapDTO">
+        select
+        store_id as storeId,
+        store_name as storeName,
+        location_address as locationAddress,
+        longitude,
+        latitude
+        from store_${eid}
+        where id = #{id} and is_delete ='effective'
+    </select>
+
+
+    <select id="listStoreIdList" resultType="java.lang.String">
+        select store_id from store_${eid}
+        where is_delete ='effective'
+    </select>
+    <select id="countStore" resultType="java.lang.Integer">
+        select count(store_id) from store_${eid}
+        where is_delete ='effective'
+    </select>
+    <select id="getEffectiveStoreByDingIdList" resultType="java.lang.String">
+        select store_id from store_${eid}
+        where ding_id in
+        <foreach collection="dingIds" item="dingId" open="(" close=")" separator=",">
+            #{dingId}
+        </foreach>
+        and is_delete ='effective'
+    </select>
+    <select id="selectStoreList" resultType="com.coolcollege.intelligent.model.store.dto.SelectStoreDTO">
+        select
+            store_id as storeId,
+            store_name as storeName,
+            location_address as locationAddress
+        from store_${eid}
+        where is_delete ='effective'
+    </select>
+
+    <select id="selectAllStoreList" resultType="com.coolcollege.intelligent.model.store.dto.SelectStoreDTO">
+        select
+            store_id as storeId,
+            store_name as storeName,
+            location_address as locationAddress,
+            node_id as nodeId,
+            region_path as regionPath
+        from store_${eid}
+        where is_delete ='effective'
+        and node_id is not null
+    </select>
+
+    <select id="selectAllStoreListNodeId" resultType="com.coolcollege.intelligent.model.store.dto.SelectStoreDTO">
+        select
+            store_id as storeId,
+            store_name as storeName,
+            location_address as locationAddress,
+            node_id as nodeId,
+            region_path as regionPath
+        from store_${eid}
+        where is_delete ='effective'
+          and (node_id is null or node_id = '')
+    </select>
+
+    <select id="getStoreAreaListByStoreIds" resultType="com.coolcollege.intelligent.model.store.dto.StoreAreaDTO">
+        select
+        a.store_name as storeName,
+        a.store_id as storeId,
+        a.region_path as regionPath,
+        a.region_id as regionId,
+        a.region_id as areaId
+        FROM store_${eip} a
+        <where>
+            <if test="storeIds!=null and storeIds.size>0">
+                <foreach collection="storeIds" item="storeId" index="index" separator="," open="and  a.store_id in("
+                         close=")">
+                    #{storeId}
+                </foreach>
+            </if>
+        </where>
+
+    </select>
+    <select id="getStoresByStoreIds" resultType="com.coolcollege.intelligent.model.store.StoreDO">
+        select
+        store_id as storeId,
+        store_name as storeName,
+        store_address as storeAddress
+        from store_${enterpriseId}
+        where store_id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getByStoreId" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where store_id = #{storeId}
+    </select>
+
+    <select id="getById" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where id = #{id}
+    </select>
+
+    <select id="getByStoreIds" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where store_id in (
+        <foreach collection="storeIds" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="selectByRegionId" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where region_id = #{regionId}
+        and is_delete ='effective'
+    </select>
+
+
+    <select id="getByRegionPathLeftLike" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where region_path like concat(#{regionPathLeftLike},'%')
+          and is_delete = 'effective'
+        <if test="storeStatus != null">
+            and store_status = #{storeStatus}
+        </if>
+        order by id desc
+    </select>
+
+    <select id="getByRegionPathList" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where
+           is_delete = 'effective'
+        <foreach collection="regionPathList" separator="or" close=")" open="and (" item="region">
+            region_path like concat(#{region}, '%')
+        </foreach>
+        <if test="storeStatus != null">
+            and store_status = #{storeStatus}
+        </if>
+        order by id desc
+    </select>
+
+    <select id="getStoreCountByRegionPath" resultType="java.lang.Integer">
+        select count(1) from store_${eid} where is_delete = 'effective'
+        <choose>
+            <when test="isRoot" />
+            <otherwise>
+                and region_path like concat(#{regionPath}, '%')
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getEffectiveStoreByStoreIds" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where is_delete = 'effective'
+        <if test="storeIds != null">
+            <foreach collection="storeIds" item="item" separator="," open="and store_id in (" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="storeStatusList != null and !storeStatusList.isEmpty()">
+            AND store_status IN
+            <foreach collection="storeStatusList" item="storeStatus" open="(" close=")" separator=",">
+                #{storeStatus}
+            </foreach>
+        </if>
+    </select>
+    <select id="checkStoreNum" resultType="java.lang.Integer">
+        select count(1)
+        from store_${eid}
+        where store_num = #{storeNum}
+        <if test="storeId != null and storeId != '' ">
+            and store_id != #{storeId}
+        </if>
+        and is_delete = 'effective'
+    </select>
+    <update id="changeStoreToRoot">
+        update store_${eid} set region_id=1 ,region_path='/1/' where
+         is_delete ='effective'
+          and <foreach collection="storeIdList" item="storeId" open="store_id in (" close=")" separator=",">
+        #{storeId}
+    </foreach>
+    </update>
+    <update id="updateCamera">
+        update store_${eid}
+        set has_camera = #{hasCamera}
+        where store_id in(
+        <foreach collection="storeIds" item="storeId" separator=",">
+            #{storeId}
+        </foreach>
+        )
+    </update>
+    <select id="getStoreRegionIdIsNull" resultMap="BaseResultMap">
+        select * from store_${eid} where region_id is null
+    </select>
+    <select id="getStoreByRegionPath"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsRankDTO">
+        select
+            store_id storeId,
+            store_name storeName
+        from store_${eid} where is_delete = 'effective'
+        <choose>
+            <when test="isRoot" />
+            <otherwise>
+                and region_path like concat(#{regionPath}, '%')
+            </otherwise>
+        </choose>
+        order by id
+    </select>
+    <select id="selectRecentStoreList"
+            resultType="com.coolcollege.intelligent.model.store.dto.SelectStoreDTO">
+        select
+            store_id as storeId,
+            store_name as storeName,
+            location_address as locationAddress,
+            region_id as regionId,
+            region_path   as regionPath,
+            vds_corp_id as corpId
+        from store_${eid}
+        where is_delete ='effective'
+        and store_id in
+        <foreach collection="storeIds" item="storeId" open="(" separator="," close=")">
+            #{storeId}
+        </foreach>
+    </select>
+    <select id="getStoreByStoreIds"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsRankDTO">
+        select
+        store_id storeId,
+        store_name storeName
+        from store_${eid} where is_delete = 'effective'
+        <choose>
+            <when test="isAll"/>
+            <otherwise>
+                and store_id in
+                <foreach collection="storeIds" item="storeId" open="(" separator="," close=")">
+                    #{storeId}
+                </foreach>
+            </otherwise>
+        </choose>
+        order by id
+    </select>
+
+    <select id="getByStoreIdList" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where store_id in (
+        <foreach collection="storeIdList" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="getByStoreIdListAndStatus" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where store_id in (
+        <foreach collection="storeIdList" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+        <if test="storeStatus != null ">
+            and store_status = #{storeStatus}
+        </if>
+    </select>
+
+    <select id="getExistStoreByStoreIdList" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where is_delete = 'effective' AND store_id in (
+        <foreach collection="storeIdList" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="getBasicStoreStoreIdList" resultType="com.coolcollege.intelligent.model.store.dto.SingleStoreDTO">
+        select
+        store_id as storeId,
+        store_name as storeName,
+        store_num as storeNum
+        from store_${enterpriseId}
+        where store_id in (
+        <foreach collection="storeIdList" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+
+
+    <select id="getDeviceStoreList" resultType="com.coolcollege.intelligent.model.store.vo.StoreDeviceVO">
+        select
+        a.store_name as storeName,
+        a.store_status as storeStatus,
+        a.store_id as storeId,
+        a.store_address as storeAddress,
+        a.store_num as storeNum,
+        vds_corp_id as vdsCorpId
+        FROM  device_${eid} c
+        LEFT JOIN store_${eid} a ON
+        <choose>
+            <when test="(keywords!=null and keywords!='') or (storeIdList!=null and storeIdList.size>0)">
+                FIND_IN_SET(a.store_id, c.bind_store_ids)
+            </when>
+            <otherwise>
+                c.bind_store_id=a.store_id
+            </otherwise>
+        </choose>
+        <where>
+           a.is_delete='effective'
+           <if test="keywords!=null and keywords!=''">
+               and (a.store_name like concat('%',#{keywords},'%')
+               or a.store_num like concat('%',#{keywords},'%'))
+           </if>
+           <if test="storeIdList!=null and storeIdList.size>0">
+               <foreach collection="storeIdList" item="storeId" open="and a.store_id in (" close=")" separator=",">
+                   #{storeId}
+               </foreach>
+           </if>
+           <if test="deviceTypeList!=null and deviceTypeList.size>0">
+               <foreach collection="deviceTypeList" item="deviceType" open="and c.type in (" close=")" separator=",">
+                   #{deviceType}
+               </foreach>
+           </if>
+            <if test="regionPathList != null and regionPathList.size()>0">
+                <foreach collection="regionPathList" separator="or" open="and (" close=")" item="regionPath">
+                    a.region_path like concat(#{regionPath},'%')
+                </foreach>
+            </if>
+        </where>
+        GROUP BY a.store_id
+        order by a.id desc
+    </select>
+    <select id="getStoreByRegionId" resultMap="BaseResultMap">
+        select
+        *
+        from store_${eid}
+        where is_delete = 'effective'
+        <foreach collection="regionIds" open="and region_id in (" close=")" separator="," item="regionId">
+            #{regionId,jdbcType = BIGINT}
+        </foreach>
+        <if test="storeStatusList != null and !storeStatusList.isEmpty()">
+            AND store_status IN
+            <foreach collection="storeStatusList" item="storeStatus" open="(" close=")" separator=",">
+                #{storeStatus}
+            </foreach>
+        </if>
+    </select>
+    <select id="listStore" resultMap="BaseResultMap">
+        select
+        <if test="longitude != null and latitude != null">
+            *,
+            ST_Distance_Sphere(
+            POINT(longitude, latitude),
+            POINT(#{longitude}, #{latitude})
+            ) AS distance
+        </if>
+        <if test="longitude == null or latitude == null">
+            *
+        </if>
+        from store_${enterpriseId}
+        where is_delete = 'effective'
+        <choose>
+            <when test="storeName != null and storeName != ''">
+                and (store_name like concat('%',#{storeName},'%') or store_num like concat('%',#{storeName},'%'))
+                <if test="regionIds != null and regionIds.size()>0">
+                    <choose>
+                        <when test="regionPathList != null and regionPathList.size()>0">
+                            <foreach collection="regionPathList" separator="or" open="and (" close=")" item="regionPath">
+                                region_path like concat(#{regionPath},'%')
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and region_id in
+                            <foreach collection="regionIds" separator="," open="(" close=")" item="regionId">
+                                #{regionId}
+                            </foreach>
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="storeIds != null and storeIds.size()>0">
+                    <if test="regionIds != null and regionIds.size()>0">
+                        or is_delete = 'effective'
+                        and (store_name like concat('%',#{storeName},'%') or store_num like concat('%',#{storeName},'%'))
+                    </if>
+                    and store_id in
+                    <foreach collection="storeIds" item="storeId" open="(" close=")" separator=",">
+                        #{storeId}
+                    </foreach>
+                </if>
+            </when>
+            <otherwise>
+                <if test="regionIds != null and regionIds.size()>0">
+                    <choose>
+                        <when test="regionPathList != null and regionPathList.size()>0">
+                            <foreach collection="regionPathList" separator="or" open="and (" close=")" item="regionPath">
+                                region_path like concat(#{regionPath},'%')
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and region_id in
+                            <foreach collection="regionIds" separator="," open="(" close=")" item="regionId">
+                                #{regionId}
+                            </foreach>
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="storeIds != null and storeIds.size()>0">
+                    and store_id in
+                    <foreach collection="storeIds" item="storeId" open="(" close=")" separator=",">
+                        #{storeId}
+                    </foreach>
+                </if>
+            </otherwise>
+        </choose>
+        <if test="range != null and longitude!=null and latitude!=null ">
+            AND (
+            ST_Distance_Sphere(
+            POINT(longitude, latitude),
+            POINT(#{longitude}, #{latitude})
+            )  <![CDATA[ <= ]]> #{range})
+        </if>
+        <if test="storeStatusList!=null and storeStatusList.size()>0">
+            and store_status in
+            <foreach collection="storeStatusList" item="storeStatus" separator="," open="(" close=")">#{storeStatus}</foreach>
+        </if>
+        <if test="regionPath != null and regionPath.size()>0">
+            and (
+            <foreach collection="regionPath" item="keyword" separator="OR" open="(" close=")">
+                region_path like concat('%',#{keyword},'%')
+            </foreach>
+            )
+        </if>
+        <if test="longitude != null and latitude != null">
+            ORDER BY distance is null, distance ASC
+        </if>
+    </select>
+    <select id="listStoreAndShowCurrent" resultType="com.coolcollege.intelligent.model.store.StoreDO">
+        select
+        id ,
+        store_id as storeId,
+        store_name as storeName,
+        store_num as storeNum,
+        region_id as regionId
+         from store_${eid}
+        <where>
+        <if test="storeName!=null and storeName!=''">
+            and (store_name like concat(#{storeName},'%') or store_num like concat(#{storeName},'%'))
+        </if>
+        <if test="!showCurrent">
+        <if test="fullRegionPath!=null and fullRegionPath!=''">
+            and  region_path like concat(#{fullRegionPath},'%')
+        </if>
+        </if>
+         <if test="showCurrent">
+         <if test="regionId!=null">
+             and  region_id =#{regionId}
+         </if>
+         </if>
+        <if test="isDelete!=null and isDelete!=''">
+           and is_delete=#{isDelete}
+        </if>
+        <if test="storeIds!=null and storeIds.size>0">
+            <foreach collection="storeIds" item="storeId" separator="," open="and store_id in(" close=")" >
+                #{storeId}
+            </foreach>
+        </if>
+        </where>
+    </select>
+
+    <select id="countStoreAndShowCurrent" resultType="java.lang.Integer">
+        select
+       count(1)
+        from store_${eid}
+        <where>
+            <if test="storeName!=null and storeName!=''">
+                and store_name like concat('%',#{storeName},'%')
+            </if>
+            <if test="!showCurrent">
+                <if test="fullRegionPath!=null and fullRegionPath!=''">
+                    and  region_path like concat(#{fullRegionPath},'%')
+                </if>
+            </if>
+            <if test="showCurrent">
+                <if test="regionId!=null">
+                    and  region_id =#{regionId}
+                </if>
+            </if>
+            <if test="isDelete!=null and isDelete!=''">
+                and is_delete=#{isDelete}
+            </if>
+            <if test="storeIds!=null and storeIds.size>0">
+                <foreach collection="storeIds" item="storeId" separator="," open="and store_id in(" close=")" >
+                    #{storeId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="countStoreByRegionPath" resultType="Integer">
+        select count(*) from store_${eid}
+        where is_delete = 'effective'
+        and region_path like concat(#{regionPath},'%')
+    </select>
+
+    <select id="countStoreByRegionPathAndStatus" resultType="Integer">
+        select count(*) from store_${eid}
+        <where> is_delete = 'effective'
+        and region_path like concat(#{regionPath},'%')
+        <if test="storeStatusList != null and storeStatusList.size() != 0">
+            and store_status in
+            <foreach collection="storeStatusList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        </where>
+    </select>
+
+    <select id="countStoreByRegionPathList" resultType="com.coolcollege.intelligent.model.region.RegionDO">
+        select region_id as regionId,region_id as id,count(region_id) as storeNum  from store_${eid}
+       WHERE is_delete ='effective'
+       <if test="regionPathList!=null and regionPathList.size>0">
+       <foreach collection="regionPathList" item="regionPath" separator="or" open="and (" close=")">
+           region_path like  concat(#{regionPath},'%')
+       </foreach>
+       </if>
+         GROUP BY region_id
+    </select>
+
+    <select id="selectStoreCountByRegionPathList" resultType="java.lang.Integer">
+        select count(*)
+        from store_${eid}
+        WHERE is_delete ='effective'
+        <if test="regionPathList!=null and regionPathList.size>0">
+            <foreach collection="regionPathList" item="regionPath" separator="or" open="and (" close=")">
+                region_path like  concat(#{regionPath},'%')
+            </foreach>
+        </if>
+    </select>
+
+
+    <select id="getStoreByDingDeptIds" resultType="com.coolcollege.intelligent.model.store.StoreDO">
+        select
+        id          ,
+        store_id   as storeId,
+        syn_ding_dept_id as synDingDeptId
+        from store_${eid}
+        where syn_ding_dept_id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+
+    <select id="getSingleStoreByDingDeptIds" resultType="com.coolcollege.intelligent.model.store.dto.SingleStoreDTO">
+        select
+        id          ,
+        store_id   as storeId,
+        syn_ding_dept_id as synDingDeptId
+        from store_${eid}
+        where syn_ding_dept_id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="getStoreBySynId" resultMap="BaseResultMap">
+        select * from store_${eid} where syn_ding_dept_id = #{synId}
+    </select>
+    <select id="getDefaultStoreDOByRegionPath" resultMap="BaseResultMap">
+        select
+        *
+        from store_${eid}
+        where is_delete = 'effective'
+        <foreach collection="fullRegionPathList" open="and (" close=")" separator="or" item="regionPath">
+            region_path like concat(#{regionPath},'%')
+        </foreach>
+        limit 1
+
+    </select>
+    <select id="countByStoreIdList" resultType="java.lang.Integer">
+        select
+        count(0)
+        from store_${enterpriseId}
+        where store_id in (
+        <foreach collection="storeIdList" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+    </select>
+    <select id="selectExportStore" resultType="com.coolcollege.intelligent.model.export.dto.StoreExportDTO">
+        select
+        store_name as storeName,
+        store_num as storeNum,
+        store_address as storeAddress,
+        telephone,
+        business_hours as businessHours,
+        store_acreage as storeAcreage,
+        store_bandwidth as storeBandWidth,
+        store_id as storeId,
+        region_id as regionId,
+        remark,
+        extend_field as extendField,
+        store_status as storeStatus,
+        open_date as openDate,
+        create_name as createName,
+        create_time as createTime,
+        update_time as updateTime
+-- 	SUBSTRING_INDEX( SUBSTRING_INDEX( region_path, '/', 2 ), '/', - 1 ) AS regionId1,
+-- 	( SELECT store_name FROM region_${enterpriseId} WHERE id = regionId1 ) AS regionOne,
+-- 	SUBSTRING_INDEX( SUBSTRING_INDEX( region_path, '/', 3 ), '/', - 1 ) AS regionId2,
+-- 	( SELECT store_name FROM region_${enterpriseId} WHERE id = regionId2 ) AS regionTwo,
+-- 	SUBSTRING_INDEX( SUBSTRING_INDEX( region_path, '/', 4 ), '/', - 1 ) AS regionId3,
+-- 	( SELECT store_name FROM region_${enterpriseId} WHERE id = regionId3 ) AS regionThree,
+-- 	SUBSTRING_INDEX( SUBSTRING_INDEX( region_path, '/', 5 ), '/', - 1 ) AS regionId4,
+-- 	( SELECT store_name FROM region_${enterpriseId} WHERE id = regionId4 ) AS regionFore,
+-- 	SUBSTRING_INDEX( SUBSTRING_INDEX( region_path, '/', 6 ), '/', - 1 ) AS regionId5,
+-- 	( SELECT store_name FROM region_${enterpriseId} WHERE id = regionId5 ) AS regionFive,
+-- 	SUBSTRING_INDEX( SUBSTRING_INDEX( region_path, '/', 7 ), '/', - 1 ) AS regionId6,
+-- 	( SELECT store_name FROM region_${enterpriseId} WHERE id = regionId6 ) AS regionSix,
+-- 	SUBSTRING_INDEX( SUBSTRING_INDEX( region_path, '/', 8 ), '/', - 1 ) AS regionId7,
+-- 	( SELECT store_name FROM region_${enterpriseId} WHERE id = regionId7 ) AS regionSeven,
+-- 	SUBSTRING_INDEX( SUBSTRING_INDEX( region_path, '/', 9 ), '/', - 1 ) AS regionId8,
+-- 	( SELECT store_name FROM region_${enterpriseId} WHERE id = regionId8 ) AS regionEight,
+-- 	SUBSTRING_INDEX( SUBSTRING_INDEX( region_path, '/', 10 ), '/', - 1 ) AS regionId9,
+-- 	( SELECT store_name FROM region_${enterpriseId} WHERE id = regionId9 ) AS regionNine,
+-- 	SUBSTRING_INDEX( SUBSTRING_INDEX( region_path, '/', 11 ), '/', - 1 ) AS regionId10,
+-- 	( SELECT store_name FROM region_${enterpriseId} WHERE id = regionId10 ) AS regionten
+        from store_${enterpriseId}
+        where is_delete = 'effective'
+        <if test="storeName != null and storeName != ''">
+            and store_name like concat('%',#{storeName},'%')
+        </if>
+        <if test=" storeNum != null and storeNum != '' ">
+            and store_num like concat('%',#{storeNum},'%')
+        </if>
+        <if test="regionPaths != null and regionPaths.size()>0">
+            <foreach collection="regionPaths" item="regionPath" separator="or" open="and (" close=")">
+                region_path like concat(#{regionPath},'%')
+            </foreach>
+        </if>
+        <if test="storeStatus!=null and storeStatus!=''">
+            and store_status=#{storeStatus}
+        </if>
+        ORDER BY id desc
+    </select>
+
+    <update id="updateRegionPathAnStoreArea">
+        update store_${eid} a
+        set a.region_path=replace(a.region_path,#{oldRegionPath},#{newFullRegionPath})
+        WHERE a.region_id!='1' and a.is_delete = 'effective' and a.region_id is not null and a.region_path like concat(#{oldFullRegionPath},'%')
+    </update>
+
+    <select id="getStoreName" resultMap="BaseResultMap">
+        SELECT id,store_id,store_name,region_id,region_path,store_num FROM store_${eid}
+        WHERE id> #{id}
+        and is_delete = 'effective'
+        ORDER BY id
+        LIMIT 50
+    </select>
+
+
+    <select id="getStoreByNameAndAuth" resultType="com.coolcollege.intelligent.model.store.vo.StoreBaseVO">
+        SELECT
+        store_id as storeId,
+        store_name as storeName,
+        vds_corp_id as vdsCorpId,
+        longitude  as longitude,
+        latitude   as latitude
+         FROM store_${eid}
+        <where>
+         is_delete = 'effective' and store_status = 'open'
+        <if test="storeName!=null and storeName !=''">
+            and store_name like concat("%",#{storeName},"%")
+        </if>
+            <choose>
+                <when test="isAdmin!=null and isAdmin" />
+                <otherwise>
+                and(<if test="authStoreIdList!=null and authStoreIdList.size>0">
+                      <foreach collection="authStoreIdList" item="storeId" open="store_id in (" close=")" separator=",">
+                       #{storeId}
+                      </foreach>
+                    </if>
+                    <if test="authFullRegionPathList!=null and authFullRegionPathList.size>0">
+                        <if test="authStoreIdList!=null and authStoreIdList.size>0">
+                        or
+                        </if>
+                        <foreach collection="authFullRegionPathList" item="regionPath"  separator="or">
+                        region_path like concat( #{regionPath}, '%')
+                        </foreach>
+                   </if>)
+                </otherwise>
+            </choose>
+
+        </where>
+    </select>
+
+
+    <select id="getBaseStore" resultType="com.coolcollege.intelligent.model.export.dto.StoreBaseInfoExportDTO">
+        SELECT
+        store_id as storeId,
+        store_num as storeNum,
+        store_name as storeName,
+        store_address as storeAddress,
+        telephone  as telephone,
+        business_hours   as businessHours,
+        store_acreage as storeAcreage,
+        store_bandwidth as storeBandwidth,
+        remark as remark,
+        region_id as regionId,
+        extend_field as extendField,
+        store_status as storeStatus
+        FROM store_${eid}
+        <where>
+            is_delete = 'effective'
+            <choose>
+                <when test="isAdmin!=null and isAdmin" />
+                <otherwise>
+                    <if test="storeName != null and storeName != ''">
+                        and store_name like concat('%',#{storeName},'%')
+                    </if>
+                    <if test="storeNum!=null and storeNum!=''">
+                        and store_num like concat('%',#{storeNum},'%')
+                    </if>
+                    <if test="regionPaths != null and regionPaths.size()>0">
+                        <foreach collection="regionPaths" item="regionPath" separator="or" open="and (" close=")">
+                            region_path like concat(#{regionPath},'%')
+                        </foreach>
+                    </if>
+                    <if test="storeStatus!=null and storeStatus!=''">
+                        and store_status=#{storeStatus}
+                    </if>
+                </otherwise>
+            </choose>
+        </where>
+        ORDER BY id desc
+    </select>
+
+    <select id="countBaseStore" resultType="java.lang.Integer">
+        SELECT
+        count(store_id)
+        FROM store_${eid}
+        <where>
+            is_delete = 'effective'
+            <choose>
+                <when test="isAdmin!=null and isAdmin" />
+                <otherwise>
+                    <if test="storeName != null and storeName != ''">
+                        and store_name like concat('%',#{storeName},'%')
+                    </if>
+                    <if test="storeNum!=null and storeNum!=''">
+                        and store_num like concat('%',#{storeNum},'%')
+                    </if>
+                    <if test="regionPaths != null and regionPaths.size()>0">
+                        <foreach collection="regionPaths" item="regionPath" separator="or" open="and (" close=")">
+                            region_path like concat(#{regionPath},'%')
+                        </foreach>
+                    </if>
+                    <if test="storeStatus!=null and storeStatus!=''">
+                        and store_status=#{storeStatus}
+                    </if>
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+    <select id="countAllStoreByRegionPath" resultType="java.lang.Integer">
+        select count(*) from store_${eid}
+        where region_path like concat(#{regionPath},'%')
+    </select>
+    <update id="batchUpdateStoreBase">
+
+        update store_${eid}
+        <trim prefix="set" suffixOverrides=",">
+
+            store_name =
+            <foreach collection="stores" item="store" index="index"
+                     separator=" " open="case store_id" close="end">
+                when #{store.storeId} then #{store.storeName,jdbcType=VARCHAR}
+            </foreach>,
+
+        store_address =
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.storeAddress,jdbcType=VARCHAR}
+        </foreach>,
+            location_address =
+            <foreach collection="stores" item="store" index="index"
+                     separator=" " open="case store_id" close="end">
+                when #{store.storeId} then #{store.storeAddress,jdbcType=VARCHAR}
+            </foreach>,
+        store_num =
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.storeNum,jdbcType=VARCHAR}
+        </foreach>,
+
+        longitude_latitude=
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.longitudeLatitude,jdbcType=VARCHAR}
+        </foreach>,
+            address_point=
+            <foreach collection="stores" item="store" index="index"
+                     separator=" " open="case store_id" close="end">
+                when #{store.storeId} then ST_GeomFromText(#{store.addressPoint})
+            </foreach>,
+        longitude=
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.longitude,jdbcType=VARCHAR}
+        </foreach>,
+        latitude=
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.latitude,jdbcType=VARCHAR}
+        </foreach>,
+
+        business_hours=
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.businessHours,jdbcType=VARCHAR}
+        </foreach>,
+
+            telephone=
+            <foreach collection="stores" item="store" index="index"
+                     separator=" " open="case store_id" close="end">
+                when #{store.storeId} then #{store.telephone,jdbcType=VARCHAR}
+            </foreach>,
+
+        store_acreage=
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.storeAcreage,jdbcType=VARCHAR}
+        </foreach>,
+
+        store_bandwidth=
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.storeBandwidth,jdbcType=VARCHAR}
+        </foreach>,
+
+        remark=
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.remark,jdbcType=VARCHAR}
+        </foreach>,
+        store_status=
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.storeStatus}
+        </foreach>,
+        extend_field=
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.extendField}
+        </foreach>,
+        third_dept_id=
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.thirdDeptId}
+        </foreach>,
+        region_id=
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.regionId}
+        </foreach>,
+        region_path=
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.regionPath}
+        </foreach>,
+        is_delete=
+        <foreach collection="stores" item="store" index="index"
+                 separator=" " open="case store_id" close="end">
+            when #{store.storeId} then #{store.isDelete}
+        </foreach>,
+
+        update_time = #{updateTime,jdbcType=VARCHAR},
+        update_name = #{updateName,jdbcType=VARCHAR}
+        </trim>
+        where store_id in
+        <foreach collection="stores" index="index" item="store"
+                 separator="," open="(" close=")">
+            #{store.storeId,jdbcType=VARCHAR}
+        </foreach>
+
+    </update>
+
+    <!--$var eid=e17cd2dc350541df8a8b0af9bd27f77d -->
+    <update id="batchUpdateStoreWithoutNull">
+        <foreach collection="stores" item="storeDO" separator=";">
+            update store_${eid}
+            <set>
+                <if test="storeDO.storeName != null">
+                    store_name = #{storeDO.storeName,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.storeNum != null">
+                    store_num = #{storeDO.storeNum,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.regionPath != null">
+                    region_path = #{storeDO.regionPath},
+                </if>
+                <if test="storeDO.regionId != null and storeDO.regionId != 0">
+                    region_id = #{storeDO.regionId,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.avatar != null">
+                    avatar = #{storeDO.avatar,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.province != null">
+                    province = #{storeDO.province,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.city != null">
+                    city = #{storeDO.city,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.county != null">
+                    county = #{storeDO.county,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.storeAddress != null">
+                    store_address = #{storeDO.storeAddress,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.locationAddress != null">
+                    location_address = #{storeDO.locationAddress,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.longitudeLatitude != null">
+                    longitude_latitude = #{storeDO.longitudeLatitude,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.longitude != null">
+                    longitude = #{storeDO.longitude,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.latitude != null">
+                    latitude = #{storeDO.latitude,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.addressPoint != null">
+                    address_point = ST_GeomFromText(#{storeDO.addressPoint}),
+                </if>
+                <if test="storeDO.telephone != null">
+                    telephone = #{storeDO.telephone,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.businessHours != null">
+                    business_hours = #{storeDO.businessHours,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.storeAcreage != null">
+                    store_acreage = #{storeDO.storeAcreage,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.storeBandwidth != null">
+                    store_bandwidth = #{storeDO.storeBandwidth,jdbcType=VARCHAR},
+                </if>
+                update_time = #{updateTime},
+                update_user = #{userId},
+                <if test="storeDO.remark != null">
+                    remark = #{storeDO.remark,jdbcType=LONGVARCHAR},
+                </if>
+                <if test="storeDO.isDelete != null">
+                    is_delete = #{storeDO.isDelete,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.storeStatus != null">
+                    store_status = #{storeDO.storeStatus,jdbcType=VARCHAR},
+                </if>
+                <if test="storeDO.extendField != null">
+                    extend_field = #{storeDO.extendField},
+                </if>
+                <if test="storeDO.thirdDeptId != null">
+                    third_dept_id = #{storeDO.thirdDeptId},
+                </if>
+                <if test="storeDO.openDate != null">
+                    open_date = #{storeDO.openDate},
+                </if>
+            </set>
+            where store_id = #{storeDO.storeId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+    <select id="selectByStoreIds" resultType="com.coolcollege.intelligent.model.store.StoreDO">
+        SELECT
+        store_id as storeId,
+        store_name as storeName,
+        longitude  as longitude,
+        latitude   as latitude,
+        region_id   as regionId,
+        store_num   as storeNum,
+        has_camera as hasCamera
+         FROM store_${enterpriseId}
+        where is_delete = 'effective'
+        and store_id in (
+        <foreach collection="storeIds" separator="," item="storeId">
+            #{storeId}
+        </foreach>
+        )
+    </select>
+
+    <select id="getByStoreIdListEffective" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where store_id in (
+        <foreach collection="storeIdList" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+        and is_delete = 'effective'
+        order by id desc
+    </select>
+    <select id="getpictureCenterStore" resultType="com.coolcollege.intelligent.model.picture.PictureCenterStoreDO">
+        select
+               store_id as storeId,
+               store_name as storeName,
+               avatar as avatar
+        from store_${enterpriseId}
+        where is_delete = 'effective'
+        and avatar is not null
+        and avatar != ""
+        <if test="storeIdList != null">
+            <foreach collection="storeIdList" open="and store_id in (" item="storeId" separator=","
+                     close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="regionPath != null">
+            AND region_path LIKE concat( #{regionPath}, '%' )
+        </if>
+        order by id desc
+    </select>
+    <select id="getAuthStoreByName" resultType="com.coolcollege.intelligent.model.store.StoreDO">
+        SELECT
+        store_id as storeId,
+        store_name as storeName,
+        region_id as regionId,
+        region_path   as regionPath,
+        store_address as storeAddress,
+        store_status as storeStatus
+        FROM store_${eid}
+        <where>
+            is_delete = 'effective'
+            <if test="storeName!=null and storeName !=''">
+                and store_name like concat('%', #{storeName},"%")
+            </if>
+            <if test="storeStatusList!=null and storeStatusList.size()>0">
+                and store_status in <foreach collection="storeStatusList" item="status" open="(" close=")" separator=","> #{status}</foreach>
+            </if>
+            <choose>
+                <when test="isAdmin!=null and isAdmin" />
+                <otherwise>
+                    and(<if test="authStoreIdList!=null and authStoreIdList.size>0">
+                    <foreach collection="authStoreIdList" item="storeId" open="store_id in (" close=")" separator=",">
+                        #{storeId}
+                    </foreach>
+                </if>
+                    <if test="authFullRegionPathList!=null and authFullRegionPathList.size>0">
+                        <if test="authStoreIdList!=null and authStoreIdList.size>0">
+                            or
+                        </if>
+                        <foreach collection="authFullRegionPathList" item="regionPath"  separator="or">
+                            region_path like concat( #{regionPath}, '%')
+                        </foreach>
+                    </if>)
+                </otherwise>
+            </choose>
+
+        </where>
+    </select>
+    <select id="selectRecentStoreByKeyword" resultType="com.coolcollege.intelligent.model.store.StoreDO">
+        select
+        store_id as storeId,
+        store_name as storeName,
+        region_id as regionId,
+        region_path   as regionPath,
+        store_address as storeAddress
+        from store_${eid}
+        <where>
+            is_delete ='effective'
+            and store_id in
+            <foreach collection="storeIds" item="storeId" open="(" separator="," close=")">
+                #{storeId}
+            </foreach>
+            <if test="storeName!=null and storeName !=''">
+                and store_name like concat('%', #{storeName},"%")
+            </if>
+            <if test="storeStatusList != null and !storeStatusList.isEmpty()">
+                AND store_status IN
+                <foreach collection="storeStatusList" item="storeStatus" open="(" close=")" separator=",">
+                    #{storeStatus}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="listStoreIdListByStoreIdList" resultType="java.lang.String">
+        select store_id from store_${eid}
+        <where>
+            <if test="storeIdList != null and storeIdList.size > 0">
+                <foreach collection="storeIdList" open="store_id in (" item="storeId" separator=","
+                         close=")">
+                    #{storeId}
+                </foreach>
+            </if>
+        </where>
+
+    </select>
+
+    <select id="getStoreByRegionPathLeftLike" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where region_path like concat(#{regionPathLeftLike},'%')
+        and is_delete = 'effective'
+        <if test="getDirectStore==true">
+            and region_id = #{regionId}
+        </if>
+        <if test=" storeIdList != null and storeIdList.size > 0">
+        <choose>
+            <when test="queryType=='checked'">
+                and store_id in
+                <foreach collection="storeIdList" item="storeId" open="(" separator="," close=")">
+                    #{storeId}
+                </foreach>
+            </when>
+            <when test="queryType=='unchecked'">
+                and store_id not in
+                <foreach collection="storeIdList" item="storeId" open="(" separator="," close=")">
+                    #{storeId}
+                </foreach>
+            </when>
+        </choose>
+        </if>
+        order by id desc
+    </select>
+
+    <select id="getStoreByStoreIdList" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where store_id in (
+        <foreach collection="storeIdList" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+        order by id desc
+    </select>
+
+    <select id="getStoreNumByRegionPathList" resultType="java.lang.String">
+        select store_id  from store_${eid}
+        WHERE is_delete ='effective'
+        <if test="regionPathList!=null and regionPathList.size>0">
+            <foreach collection="regionPathList" item="regionPath" separator="or" open="and (" close=")">
+                region_path like  concat(#{regionPath},'%')
+            </foreach>
+        </if>
+    </select>
+
+    <select id="directlyStoreCountByRegion" resultMap="BaseResultMap">
+        select
+        *
+        from store_${eid}
+        where is_delete = 'effective'
+        <if test="regionIds != null">
+            and region_id in
+            <foreach collection="regionIds" item="regionId" open="(" separator="," close=")">
+                #{regionId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getBaseStoreList" resultType="com.coolcollege.intelligent.model.store.dto.BasicsStoreDTO">
+        select store_id   as storeId,
+               store_name as storeName
+        from store_${eid}
+        where is_delete = 'effective'
+        limit #{num}
+    </select>
+    <select id="getAllStoreByStoreIds"  resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where is_delete = 'effective'
+        <if test="storeIdList != null and storeIdList.size > 0">
+            and store_id in (
+            <foreach collection="storeIdList" separator="," item="item">
+                #{item}
+            </foreach>
+            )
+        </if>
+    </select>
+    <update id="correctRegionPath">
+        UPDATE store_${eid} a
+        INNER JOIN region_${eid} b ON a.store_id = b.store_id
+        SET a.region_path = CONCAT( b.region_path, b.id, '/' )
+        WHERE
+        b.region_path IS NOT NULL
+        AND b.region_path != ''
+        AND a.region_path != CONCAT( b.region_path, b.id, '/' )
+    </update>
+
+    <select id="getAllStore" resultMap="BaseResultMap">
+        select store_id,
+        store_name,
+        store_num,
+        store_status
+        from store_${eid}
+        where is_delete = 'effective'
+    </select>
+
+    <select id="getSongxiaAllStore" resultMap="BaseResultMap">
+        select store_id,
+        store_name,
+        store_num
+        from store_${eid}
+        where is_delete = 'effective'
+        AND store_status = 'open'
+    </select>
+
+    <select id="countAllStore" resultType="Integer">
+        select count(1)
+        from store_${eid}
+        where is_delete = 'effective'
+    </select>
+
+
+    <select id="listStoreByStoreIds" resultType="com.coolcollege.intelligent.model.store.dto.StoreDTO">
+        select
+        *
+        FROM store_${eip} a
+        where  a.is_delete='effective'
+        <if test="storeIds!=null and storeIds.size>0 ">
+            and a.store_id in
+            <foreach collection="storeIds" item="storeId" index="index" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getByRegionPathListOrStoreIds" resultMap="BaseResultMap">
+        select
+        store_id,
+        store_name,
+        store_num,
+        store_status
+        from store_${eid}
+        where is_delete = 'effective'
+        and (
+        <if test="storeIdList != null and storeIdList.size > 0">
+            store_id in (
+            <foreach collection="storeIdList" separator="," item="item">
+                #{item}
+            </foreach>
+            ) or
+        </if>
+        <if test="regionPathList!=null and regionPathList.size>0">
+            <foreach collection="regionPathList" item="regionPath" separator="or">
+                region_path like  concat(#{regionPath},'%')
+            </foreach>
+        </if>
+        )
+    </select>
+
+    <select id="countByRegionPathListOrStoreIds" resultType="long">
+        select count(1)
+        from store_${eid}
+        where is_delete = 'effective' and (
+        <if test="storeIdList != null and storeIdList.size > 0">
+            store_id in (
+            <foreach collection="storeIdList" separator="," item="item">
+                #{item}
+            </foreach>
+            ) or
+        </if>
+        <if test="regionPathList!=null and regionPathList.size>0">
+            <foreach collection="regionPathList" item="regionPath" separator="or">
+                region_path like  concat(#{regionPath},'%')
+            </foreach>
+        </if>
+        )
+    </select>
+
+
+    <select id="getStoreList" resultMap="BaseResultMap">
+        select
+        id,
+        s.store_id,
+        s.store_name,
+        s.store_num,
+        s.region_id,
+        s.store_address,
+        s.location_address,
+        s.is_lock,
+        s.telephone,
+        s.business_hours,
+        s.store_acreage,
+        s.store_bandwidth,
+        s.create_time,
+        s.create_name,
+        s.create_user,
+        s.update_time,
+        s.update_name,
+        s.update_user,
+        s.remark,
+        s.longitude,
+        s.latitude,
+        s.avatar,
+        s.province,
+        s.city,
+        s.county,
+        s.vds_corp_id,
+        s.region_path,
+        s.extend_field,
+        s.store_status,
+        s.syn_ding_dept_id
+        from store_${enterpriseId} as s
+        where s.is_delete = 'effective'
+        <if test="openApiStoreDTO.currentRegionData==true">
+            and s.region_id = #{openApiStoreDTO.regionId}
+        </if>
+        <if test="fullRegionPath!=null and fullRegionPath!=''">
+            and s.region_path like  concat(#{fullRegionPath},'%')
+        </if>
+        <if test="openApiStoreDTO.storeName != null and openApiStoreDTO.storeName != '' ">
+            and s.store_name like concat('%', #{openApiStoreDTO.storeName}, '%')
+        </if>
+        <if test="openApiStoreDTO.beginTime != null ">
+            and s.create_time > #{openApiStoreDTO.beginTime}
+        </if>
+        order by id desc
+    </select>
+
+    <select id="getAllList" resultMap="BaseResultMap">
+        select * from  store_${enterpriseId} order by id desc
+    </select>
+
+
+    <select id="getStoreNameByIds" resultMap="BaseResultMap">
+        select
+            store_id, store_name
+        from
+            store_${enterpriseId}
+        where
+            is_delete = 'effective' and store_id in <foreach collection="storeIds" separator="," open="(" close=")" item="storeId">#{storeId}</foreach>
+    </select>
+
+    <select id="getStoreListStoreNumNotNull" resultMap="BaseResultMap">
+        SELECT * FROM store_${eid} where store_num is not null and is_delete  = 'effective' and has_camera = 1
+    </select>
+    <select id="getNotMyNearbyStore"
+            resultType="com.coolcollege.intelligent.model.store.dto.StoreSignInMapDTO">
+        SELECT
+            store_id AS store_id,
+            store_name AS storeName,
+            store_num AS storeNum,
+            location_address AS locationAddress,
+            avatar AS avatar,
+            longitude AS longitude,
+            latitude AS latitude,
+            ST_Distance_Sphere(
+            POINT(longitude, latitude),
+            POINT(#{longitude}, #{latitude})
+            )  AS distance
+        FROM
+            store_${enterpriseId}
+        WHERE
+            is_delete = 'effective'
+        <if test="storeName!=null and storeName!=''">
+            and store_name like concat('%',#{storeName},'%')
+        </if>
+        <if test="storeList != null and storeList.size >0 ">
+            <foreach collection="storeList" item="storeId" separator=" and " open="and (" close=" )">
+                store_id != #{storeId}
+            </foreach>
+        </if>
+        <if test="storeStatusList!=null and storeStatusList.size()>0">
+            and store_status in <foreach collection="storeStatusList" item="storeStatus" separator="," open="(" close=")">#{storeStatus}</foreach>
+        </if>
+        ORDER BY distance is null, distance ASC
+    </select>
+
+
+
+    <select id="searchStoreList" resultMap="BaseResultMap">
+        select
+            store_id, store_name, store_num,third_dept_id
+        from
+            store_${enterpriseId}
+        <where>
+            <if test="storeName != null and storeName !='' ">
+                and store_name like concat('%', #{storeName}, '%')
+            </if>
+            <if test="storeIds != null and storeIds.size() > 0">
+                and store_id in <foreach collection="storeIds" item="storeId" open="(" close=")" separator=",">#{storeId}</foreach>
+            </if>
+            and is_delete = 'effective'
+        </where>
+    </select>
+    <select id="selectStoreNameByPath" resultMap="BaseResultMap">
+        select store_id, store_name, store_num
+        from store_${enterpriseId}
+        where region_path like concat(#{path},'%')
+          and is_delete = 'effective'
+    </select>
+    <select id="selectStoreNameByNum" resultMap="BaseResultMap">
+        select store_id, store_name, store_num
+        from store_${enterpriseId}
+        where store_num = #{storeNo}
+        and is_delete = 'effective'
+    </select>
+
+    <select id="getStoreInfoByStoreNum" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where store_num = #{storeNum}
+        and is_delete = 'effective' limit 1
+    </select>
+
+    <select id="selectStoreNameByName" resultMap="BaseResultMap">
+        select store_id, store_name, store_num
+        from store_${enterpriseId}
+        where store_name = #{storeName}
+          and is_delete = 'effective' limit 1
+    </select>
+
+    <select id="getStoresByOpenDateDay" resultType="java.lang.String">
+        select
+        store_id
+        from store_${enterpriseId}
+        where DATEDIFF(now(), open_date) = #{openDateDay}
+        and is_delete = 'effective'
+        and store_status = 'open'
+        <if test="storesByParentIds != null and storesByParentIds.size() > 0">
+            and store_id in
+            <foreach collection="storesByParentIds" item="storeId" open="(" close=")" separator=",">
+                #{storeId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getStoreIdByStoreName" resultType="java.lang.String">
+        SELECT store_id
+        FROM store_${enterpriseId}
+        WHERE store_name like concat('%',#{storeName},'%')
+    </select>
+    <select id="getAllStoreId" resultType="java.lang.String">
+        select
+        store_id
+        from store_${eid}
+        where is_delete = 'effective'
+    </select>
+    <select id="getStoreIdByFullRegionPath" resultType="java.lang.String">
+        select
+        store_id
+        from store_${eid}
+        where is_delete = 'effective' and region_path like concat(#{fullRegionPath},'%')
+    </select>
+    <select id="getStoreByDingDeptId" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where third_dept_id = #{dingDeptId}
+        and is_delete = 'effective'
+    </select>
+
+    <select id="getStoreBySyncDingDeptId" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where syn_ding_dept_id = #{dingDeptId}
+        and is_delete = 'effective'
+    </select>
+
+    <select id="getIdByHuShangCode" resultType="java.lang.String">
+        select
+            store_id
+        from store_${eid}
+        where store_name like concat('%', #{code})
+          and is_delete = 'effective'
+    </select>
+    <select id="getStoreByStoreNewNos" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        <where>
+            <if test="storeNewNo != null and storeNewNo.size >0 ">
+                store_num in
+                <foreach collection="storeNewNo" item="storeNum" separator="," open="(" close=" )">
+                    #{storeNum}
+                </foreach>
+            </if>
+            and is_delete = 'effective'
+        </where>
+    </select>
+
+    <update id="clearOpenDate">
+        update store_${enterpriseId}
+        set open_date = null
+        WHERE store_id = #{storeId}
+    </update>
+    
+    <select id="getStoreIdsByStoreNums" resultMap="BaseResultMap">
+        select
+            store_id, store_num
+        from
+            store_${enterpriseId}
+        where
+            is_delete = 'effective' and
+            store_num in
+            <foreach collection="storeNums" item="storeNum" separator="," open="(" close=" )">
+                #{storeNum}
+            </foreach>
+    </select>
+
+    <update id="updateStoreHasDevice">
+       update
+            store_${enterpriseId}
+       set
+            has_camera = 1
+        where
+            store_id in
+            <foreach collection="storeIds" item="storeId" separator="," open="(" close=" )">
+                #{storeId}
+            </foreach>
+    </update>
+
+    <select id="listStoreForOaPlugin" resultMap="BaseResultMap">
+        select *
+        from store_${enterpriseId}
+        where is_delete = 'effective'
+        order by id desc
+        limit 5000
+    </select>
+    <select id="queryByRegionIdAndStoreName"
+            resultType="com.coolcollege.intelligent.model.store.dto.StoreAreaDTO">
+        select
+        store_name as storeName,
+        store_id as storeId,
+        region_path as regionPath,
+        region_id as areaId,
+        region_id as regionId
+        from store_${eid}
+        where is_delete = 'effective'
+        <if test="query.getRegionId != null">
+                and region_path like concat('%/', #{query.regionId}, '/%')
+        </if>
+        <if test="query.getRegionIds != null and query.getRegionIds.size > 0">
+            <foreach collection="query.getRegionIds" item="regionId" separator=" or " open="and (" close=" )">
+                region_path like concat('%/', #{regionId}, '/%')
+            </foreach>
+        </if>
+        <if test="query.getStoreName != null">
+                and store_name like concat('%', #{query.storeName}, '%')
+        </if>
+    </select>
+    <select id="getSongXiaByRegionPathListOrStoreIds"
+            resultType="com.coolcollege.intelligent.model.store.StoreDO">
+        select
+        store_id,
+        store_name,
+        store_num
+        from store_${eid}
+        where is_delete = 'effective'
+        AND store_status = 'open'
+        and (
+        <if test="storeIdList != null and storeIdList.size > 0">
+            store_id in (
+            <foreach collection="storeIdList" separator="," item="item">
+                #{item}
+            </foreach>
+            ) or
+        </if>
+        <if test="regionPathList!=null and regionPathList.size>0">
+            <foreach collection="regionPathList" item="regionPath" separator="or">
+                region_path like  concat(#{regionPath},'%')
+            </foreach>
+        </if>
+        )
+
+    </select>
+
+    <select id="getStoreListByStoreIdsAndLimit" resultMap="BaseResultMap">
+        select
+            *
+        from
+            store_${enterpriseId}
+        where
+            is_delete = 'effective'
+        <if test="storeIds != null and storeIds.size() > 0">
+            and store_id in
+            <foreach collection="storeIds" item="storeId" separator="," open="(" close=" )">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="storeStatusList != null and storeStatusList.size() > 0">
+            and store_status in
+            <foreach collection="storeStatusList" item="item" separator="," open="(" close=" )">
+                #{item}
+            </foreach>
+        </if>
+        <if test="storeName != null and storeName != ''">
+            and store_name like concat ('%', #{storeName}, '%')
+        </if>
+        <if test="limitStoreCount != null">
+            limit #{limitStoreCount}
+        </if>
+    </select>
+
+    <select id="getStoreByStoreStatus" resultType="java.lang.String">
+        select store_id from store_${eid}
+        <where> is_delete = 'effective'
+        and region_path like concat(#{regionPath},'%')
+        <if test="storeStatusList != null and storeStatusList.size() != 0">
+            and store_status in
+            <foreach collection="storeStatusList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        </where>
+    </select>
+
+    <select id="getStoreIdByStoreNum" resultType="java.lang.String">
+        SELECT store_id FROM store_${enterpriseId}
+        WHERE store_num = #{storeNum} AND is_delete = 'effective'
+    </select>
+
+    <select id="getLicenseStoreList" resultType="com.coolcollege.intelligent.model.store.dto.StoreAreaDTO">
+        select
+        store_name as storeName,
+        store_id as storeId,
+        region_path as regionPath,
+        region_id as areaId,
+        region_id as regionId,
+        store_status as storeStatus
+        from store_${eid}
+        where is_delete = 'effective'
+        <if test="query.getRegionId != null">
+            and region_path like concat('%/', #{query.regionId}, '/%')
+        </if>
+        <if test="query.getRegionIds != null and query.getRegionIds.size > 0">
+            <foreach collection="query.getRegionIds" item="regionId" separator=" or " open="and (" close=" )">
+                region_path like concat('%/', #{regionId}, '/%')
+            </foreach>
+        </if>
+        <if test="query.getStoreName != null">
+            and store_name like concat('%', #{query.storeName}, '%')
+        </if>
+        <if test="query.storeStatusList != null and query.storeStatusList.size > 0">
+            and store_status in
+            <foreach collection="query.storeStatusList" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getLicenseStoreCount" resultType="java.lang.Long">
+        select
+            count(1)
+        from store_${eid}
+        where is_delete = 'effective'
+        <if test="query.getRegionId != null">
+            and region_path like concat('%/', #{query.regionId}, '/%')
+        </if>
+        <if test="query.getRegionIds != null and query.getRegionIds.size > 0">
+            <foreach collection="query.getRegionIds" item="regionId" separator=" or " open="and (" close=" )">
+                region_path like concat('%/', #{regionId}, '/%')
+            </foreach>
+        </if>
+        <if test="query.getStoreName != null">
+            and store_name like concat('%', #{query.storeName}, '%')
+        </if>
+        <if test="query.licenseStatusList != null and query.licenseStatusList.size > 0">
+            and store_status in
+            <foreach collection="query.licenseStatusList" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    
+    <select id="getStoreCountGroupByStoreStatus" resultType="com.coolcollege.intelligent.model.store.dto.StoreStatusStoreCountDTO">
+        select
+            store_status as storeStatus,
+            count(1) as storeCount
+        from
+            store_${enterpriseId}
+        where
+            is_delete = 'effective'
+        group by store_status
+    </select>
+</mapper>

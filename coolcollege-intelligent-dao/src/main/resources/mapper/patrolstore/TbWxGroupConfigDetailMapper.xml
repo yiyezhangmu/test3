@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.patrolstore.TbWxGroupConfigDetailMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.patrolstore.entity.TbWxGroupConfigDetailDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="group_id" jdbcType="BIGINT" property="groupId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="push_address" jdbcType="VARCHAR" property="pushAddress" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, group_id, user_id, push_address, create_time, create_user_id, update_time, update_user_id, 
+    deleted
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into tb_wx_group_config_detail_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.groupId != null">
+        group_id,
+      </if>
+      <if test="record.userId != null">
+        user_id,
+      </if>
+      <if test="record.pushAddress != null">
+        push_address,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.groupId != null">
+        #{record.groupId},
+      </if>
+      <if test="record.userId != null">
+        #{record.userId},
+      </if>
+      <if test="record.pushAddress != null">
+        #{record.pushAddress},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update tb_wx_group_config_detail_${enterpriseId}
+    <set>
+      <if test="record.groupId != null">
+        group_id = #{record.groupId},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId},
+      </if>
+      <if test="record.pushAddress != null">
+        push_address = #{record.pushAddress},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime},
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = #{record.updateUserId},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+
+  <insert id="insertBatch" useGeneratedKeys="true" keyProperty="list.id">
+    insert into tb_wx_group_config_detail_${enterpriseId}
+    (
+      group_id,
+      user_id,
+      push_address,
+      create_user_id,
+      update_user_id
+    )
+    values
+    <foreach collection="list" item="entity" separator=",">
+      (
+      #{entity.groupId},
+      #{entity.userId},
+      #{entity.pushAddress},
+      #{entity.createUserId},
+      #{entity.updateUserId}
+      )
+    </foreach>
+  </insert>
+
+  <update id="removeByGroupId">
+    update tb_wx_group_config_detail_${enterpriseId}
+    set
+      deleted = 1,
+      update_user_id = #{userId},
+      update_time = now()
+    where group_id = #{groupId}
+  </update>
+
+  <select id="getListByGroupId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_wx_group_config_detail_${enterpriseId}
+    where
+    deleted = 0
+    and group_id = #{groupId}
+  </select>
+
+  <select id="getListByGroupIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_wx_group_config_detail_${enterpriseId}
+    where
+    deleted = 0
+    and group_id in
+    <foreach collection="groupIds" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+
+  <update id="updateByGroupId">
+    update tb_wx_group_config_detail_${enterpriseId}
+    set
+      push_address = #{pushAddress},
+      update_user_id = #{userId},
+      update_time = now()
+    where
+      deleted = 0
+      and group_id = #{groupId}
+  </update>
+
+  <update id="removeByIds">
+    update tb_wx_group_config_detail_${enterpriseId}
+    set deleted = 1,
+    update_user_id = #{userId},
+    update_time = now()
+    where id in
+    <foreach collection="ids" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+
+  <select id="getDetailByUserId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_wx_group_config_detail_${enterpriseId}
+    where
+    deleted = 0
+    and user_id = #{userId}
+  </select>
+
+</mapper>

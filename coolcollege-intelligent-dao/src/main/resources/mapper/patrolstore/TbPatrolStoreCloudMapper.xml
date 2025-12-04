@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.patrolstore.TbPatrolStoreCloudMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.patrolstore.entity.TbPatrolStoreCloudDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="business_id" jdbcType="BIGINT" property="businessId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_name" jdbcType="VARCHAR" property="createName" />
+    <result column="create_id" jdbcType="VARCHAR" property="createId" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.coolcollege.intelligent.model.patrolstore.entity.TbPatrolStoreCloudDO">
+    <result column="pics" jdbcType="LONGVARCHAR" property="pics" />
+    <result column="video" jdbcType="LONGVARCHAR" property="video" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, business_id, create_time, create_id, create_name, deleted
+  </sql>
+  <sql id="Blob_Column_List">
+    pics, video
+  </sql>
+
+  <!--$var enterpriseId=118bc3c221294bdbb772dc430b9dfcb5 -->
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into tb_patrol_store_cloud_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.businessId != null">
+        business_id,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.createId != null">
+        create_id,
+      </if>
+      <if test="record.createName != null">
+        create_name,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+      <if test="record.pics != null">
+        pics,
+      </if>
+      <if test="record.video != null">
+        video,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.businessId != null">
+        #{record.businessId},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime},
+      </if>
+      <if test="record.createId != null">
+        #{record.createId},
+      </if>
+      <if test="record.createName != null">
+        #{record.createName},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted},
+      </if>
+      <if test="record.pics != null">
+        #{record.pics},
+      </if>
+      <if test="record.video != null">
+        #{record.video},
+      </if>
+    </trim>
+  </insert>
+
+  <!--$var enterpriseId=118bc3c221294bdbb772dc430b9dfcb5 -->
+  <update id="updateByPrimaryKeySelective">
+    update tb_patrol_store_cloud_${enterpriseId}
+    <set>
+      <if test="record.businessId != null">
+        business_id = #{record.businessId},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime},
+      </if>
+      <if test="record.createId != null">
+        create_id = #{record.createId},
+      </if>
+      <if test="record.createName != null">
+        create_name = #{record.createName},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted},
+      </if>
+      <if test="record.pics != null">
+        pics = #{record.pics},
+      </if>
+      <if test="record.video != null">
+        video = #{record.video},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+
+  <!--$var enterpriseId=118bc3c221294bdbb772dc430b9dfcb5 -->
+  <select id="getByBusinessId" resultMap="ResultMapWithBLOBs">
+      select <include refid="Base_Column_List"/>,
+      <include refid="Blob_Column_List"/>
+      from tb_patrol_store_cloud_${enterpriseId}
+      where deleted = 0
+        and business_id = #{businessId}
+        and create_id = #{userId}
+      order by id desc
+      limit 1
+  </select>
+
+  <!--$var enterpriseId=118bc3c221294bdbb772dc430b9dfcb5 -->
+  <update id="deleteByPrimaryKey">
+      update tb_patrol_store_cloud_${enterpriseId}
+      set deleted = 1
+      where id = #{id,jdbcType=BIGINT}
+  </update>
+
+   <!--$var enterpriseId=118bc3c221294bdbb772dc430b9dfcb5 -->
+  <select id="selectById" resultMap="ResultMapWithBLOBs">
+      select <include refid="Base_Column_List"/>,
+      <include refid="Blob_Column_List"/>
+      from tb_patrol_store_cloud_${enterpriseId}
+      where deleted = 0
+        and id = #{id}
+  </select>
+
+</mapper>

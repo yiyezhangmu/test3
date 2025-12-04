@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.metatable.TbMetaQuickColumnReasonMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.metatable.TbMetaQuickColumnReasonDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="quick_column_id" jdbcType="BIGINT" property="quickColumnId" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="reason_name" jdbcType="VARCHAR" property="reasonName" />
+    <result column="mapping_result" jdbcType="VARCHAR" property="mappingResult" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_time, update_time, quick_column_id, create_user_id,
+    reason_name,mapping_result
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_meta_quick_column_reason_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_meta_quick_column_reason_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.metatable.TbMetaQuickColumnReasonDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_meta_quick_column_reason_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+
+      <if test="quickColumnId != null">
+        quick_column_id,
+      </if>
+      <if test="createUserId != null">
+        create_user_id,
+      </if>
+      <if test="reasonName != null">
+        reason_name,
+      </if>
+      <if test="mappingResult != null">
+        mapping_result,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="quickColumnResultId != null">
+        #{quickColumnResultId,jdbcType=BIGINT},
+      </if>
+      <if test="quickColumnId != null">
+        #{quickColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="reasonName != null">
+        #{reasonName,jdbcType=VARCHAR},
+      </if>
+      <if test="mappingResult != null">
+        #{mappingResult,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.metatable.TbMetaQuickColumnReasonDO">
+    update tb_meta_quick_column_reason_${enterpriseId}
+    <set>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.quickColumnId != null">
+        quick_column_id = #{record.quickColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reasonName != null">
+        reason_name = #{record.reasonName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != updateTime">
+         and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != quickColumnId">
+         and t.quick_column_id = #{quickColumnId,jdbcType=BIGINT}
+      </if>
+      <if test="null != createUserId">
+         and t.create_user_id = #{createUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != reasonName">
+         and t.reason_name = #{reasonName,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+
+  <select id="selectListByColumnId" parameterType="java.lang.Long" resultType="com.coolcollege.intelligent.model.metatable.dto.TbQuickColumnReasonDTO">
+    select
+      id, quick_column_id as quickColumnId,
+      reason_name AS reasonname, mapping_result as mappingResult
+    from tb_meta_quick_column_reason_${enterpriseId}
+    where quick_column_id = #{columnId}
+      and deleted = 0
+  </select>
+  <insert id="batchInsert" >
+    insert into tb_meta_quick_column_reason_${enterpriseId}
+    (
+     quick_column_id,
+     create_user_id,
+     reason_name,
+    mapping_result,
+    deleted)
+    values
+    <foreach collection="list" item="item" separator=",">(
+      #{item.quickColumnId},
+      #{item.createUserId},
+      #{item.reasonName},
+      #{item.mappingResult},
+        0)
+    </foreach>
+  </insert>
+  <update id="deleteByQuickColumnId">
+    update tb_meta_quick_column_reason_${enterpriseId} set deleted = 1 where quick_column_id = #{quickColumnId}
+  </update>
+
+  <update id="deleteByQuickColumnIds">
+    update tb_meta_quick_column_reason_${enterpriseId}
+    set deleted = 1
+    where quick_column_id in
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+        #{id}
+    </foreach>
+  </update>
+
+
+  <update id="logicallyDeleteByIds">
+    update tb_meta_quick_column_reason_${enterpriseId} set deleted = 1 where id in <foreach collection="ids" item="id" open="(" close=")" separator=",">#{id}</foreach>
+  </update>
+  <select id="selectListByColumnIdList" parameterType="java.lang.Long" resultType="com.coolcollege.intelligent.model.metatable.dto.TbQuickColumnReasonDTO">
+    select
+      id, quick_column_id as quickColumnId,
+      reason_name AS reasonname, mapping_result as mappingResult
+    from tb_meta_quick_column_reason_${enterpriseId}
+    where quick_column_id in
+    <foreach collection="list" item="columnId" open="(" close=")" separator=",">#{columnId}</foreach>
+      and deleted = 0
+  </select>
+  <select id="selectIdListByColumnId" parameterType="java.lang.Long" resultType="java.lang.Long">
+    select
+      id
+    from tb_meta_quick_column_reason_${enterpriseId}
+    where quick_column_id = #{columnId}
+      and deleted = 0
+  </select>
+
+  <select id="getListByColumnIdList" parameterType="java.lang.Long" resultType="com.coolcollege.intelligent.model.metatable.dto.TbQuickColumnReasonDTO">
+    select
+      id, quick_column_id as quickColumnId,
+      reason_name AS reasonname, mapping_result as mappingResult
+    from tb_meta_quick_column_reason_${enterpriseId}
+    where quick_column_id in
+    <foreach collection="list" item="columnId" open="(" close=")" separator=",">#{columnId}</foreach>
+    and deleted = 0
+  </select>
+  <select id="getNamesByColumnIdAndType" resultType="java.lang.String">
+    select reason_name
+    from tb_meta_quick_column_reason_${enterpriseId}
+    where quick_column_id=#{columnId}
+    AND mapping_result=#{mappingResult}
+    AND deleted=0
+  </select>
+</mapper>

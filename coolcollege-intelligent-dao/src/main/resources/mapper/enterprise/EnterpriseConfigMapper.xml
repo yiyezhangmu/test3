@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseConfigMapper" >
+
+    <select id="selectEnterpriseConfigAll" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseConfigDO">
+        select
+            current_package   as currentPackage,
+            enterprise_id     as enterpriseId,
+            staff_count       as staffCount,
+            db_source_name    as dbSourceName,
+            db_server         as dbServer,
+            db_port           as dbPort,
+            db_name           as dbName,
+            db_user           as dbUser,
+            db_pwd            as dbPwd,
+            license           as license,
+            license_expires   as licenseExpires,
+            license_type      as licenseType,
+            ding_corp_id      as dingCorpId,
+            ding_corp_secret  as dingCorpSecret,
+            create_time       as createTime,
+            create_user       as createUser,
+            main_corp_id      as mainCorpId
+        from enterprise_config
+    </select>
+
+    <select id="selectByCorpId" parameterType="java.lang.String" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseConfigDO">
+        select
+            current_package   as currentPackage,
+            enterprise_id     as enterpriseId,
+            staff_count       as staffCount,
+            db_source_name    as dbSourceName,
+            db_server         as dbServer,
+            db_port           as dbPort,
+            db_name           as dbName,
+            db_user           as dbUser,
+            db_pwd            as dbPwd,
+            license           as license,
+            license_expires   as licenseExpires,
+            license_type      as licenseType,
+            ding_corp_id      as dingCorpId,
+            ding_corp_secret  as dingCorpSecret,
+            create_time       as createTime,
+            create_user       as createUser,
+            main_corp_id      as mainCorpId,
+            app_type          as appType,
+            cool_college_enterprise_id as coolCollegeEnterpriseId,
+            cool_college_secret as coolCollegeSecret
+        from enterprise_config where ding_corp_id = #{dingCorpId, jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByEnterpriseId" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseConfigDO">
+        select
+            current_package   as currentPackage,
+            enterprise_id     as enterpriseId,
+            staff_count       as staffCount,
+            db_source_name    as dbSourceName,
+            db_server         as dbServer,
+            db_port           as dbPort,
+            db_name           as dbName,
+            db_user           as dbUser,
+            db_pwd            as dbPwd,
+            license           as license,
+            license_expires   as licenseExpires,
+            license_type      as licenseType,
+            ding_corp_id      as dingCorpId,
+            ding_corp_secret  as dingCorpSecret,
+            create_time       as createTime,
+            create_user       as createUser,
+            main_corp_id      as mainCorpId,
+            app_type       as appType,
+            cool_college_enterprise_id as coolCollegeEnterpriseId,
+            cool_college_secret as coolCollegeSecret
+        from enterprise_config where enterprise_id = #{enterpriseId, jdbcType=VARCHAR}
+    </select>
+
+    <select id="updateByEnterpriseId" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseConfigDO">
+        update enterprise_config
+        set ding_corp_id = #{dingCorpId, jdbcType=VARCHAR},
+            <if test="licenseType != null" >`license_type` = #{licenseType}, </if>
+            app_type = #{appType}
+        where enterprise_id = #{enterpriseId, jdbcType=VARCHAR}
+    </select>
+
+    <select id="updateMainCorpIdByEnterpriseId" >
+        update enterprise_config set main_corp_id=#{mainCorpId}where enterprise_id = #{eid}
+    </select>
+    
+    <select id="selectByEnterpriseIds" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseConfigDO">
+        select
+            a.current_package   as currentPackage,
+            a.enterprise_id     as enterpriseId,
+            b.name     as enterpriseName,
+            b.csm     as csm,
+            a.staff_count       as staffCount,
+            a.db_source_name    as dbSourceName,
+            a.db_server         as dbServer,
+            a.db_port           as dbPort,
+            a.db_name           as dbName,
+            a.db_user           as dbUser,
+            a.db_pwd            as dbPwd,
+            a.license           as license,
+            a.license_expires   as licenseExpires,
+            a.license_type      as licenseType,
+            a.ding_corp_id      as dingCorpId,
+            a.ding_corp_secret  as dingCorpSecret,
+            a.create_time       as createTime,
+            a.create_user       as createUser,
+            a.main_corp_id      as mainCorpId,
+            a.app_type       as appType
+        from 
+            enterprise_config a inner join enterprise b on a.enterprise_id = b.id and b.status in ('1', '100')
+        <if test="enterpriseIds != null and enterpriseIds.size() > 0">
+            where
+                enterprise_id in <foreach collection="enterpriseIds" item="enterpriseId" separator="," open="(" close=")">#{enterpriseId}</foreach>
+        </if>
+        order by a.id asc
+    </select>
+
+
+    <select id="selectByEnterpriseIdsAndStatus" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseConfigDO">
+        select
+        a.current_package   as currentPackage,
+        a.enterprise_id     as enterpriseId,
+        a.staff_count       as staffCount,
+        a.db_source_name    as dbSourceName,
+        a.db_server         as dbServer,
+        a.db_port           as dbPort,
+        a.db_name           as dbName,
+        a.db_user           as dbUser,
+        a.db_pwd            as dbPwd,
+        a.license           as license,
+        a.license_expires   as licenseExpires,
+        a.license_type      as licenseType,
+        a.ding_corp_id      as dingCorpId,
+        a.ding_corp_secret  as dingCorpSecret,
+        a.create_time       as createTime,
+        a.create_user       as createUser,
+        a.main_corp_id      as mainCorpId,
+        a.app_type       as appType
+        from
+        enterprise_config a
+            inner join enterprise b on a.enterprise_id = b.id
+        <where>
+            <if test="statusList != null and statusList.size() > 0">
+                and b.status in <foreach collection="statusList" separator="," open="(" close=")" item="status" >#{status}</foreach>
+            </if>
+            <if test="enterpriseIds != null and enterpriseIds.size() > 0">
+                and enterprise_id in <foreach collection="enterpriseIds" item="enterpriseId" separator="," open="(" close=")">#{enterpriseId}</foreach>
+            </if>
+        </where>
+        order by a.id asc
+    </select>
+    
+    <select id="getDbServerByDbName" resultType="string">
+        select db_server from enterprise_config where db_name = #{dbName} limit 1
+    </select>
+    
+    <select id="getDistinctDbServer" resultType="string">
+        select distinct(db_server) from enterprise_config
+    </select>
+
+    <select id="enterprisePackageStatistics"
+            resultType="com.coolcollege.intelligent.model.bosspackage.dto.EnterprisePackageNumDTO">
+        SELECT current_package as enterprisePackageId,
+               COUNT(current_package)  as enterprisePackageNum
+        FROM `enterprise_config`
+        WHERE current_package is not null
+          and ding_corp_id is not null
+        GROUP BY current_package
+    </select>
+
+    <select id="selectByCurrentPackage"
+            resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseConfigDO">
+        select
+            current_package   as currentPackage,
+            enterprise_id     as enterpriseId,
+            staff_count       as staffCount,
+            db_source_name    as dbSourceName,
+            db_server         as dbServer,
+            db_port           as dbPort,
+            db_name           as dbName,
+            db_user           as dbUser,
+            db_pwd            as dbPwd,
+            license           as license,
+            license_expires   as licenseExpires,
+            license_type      as licenseType,
+            ding_corp_id      as dingCorpId,
+            ding_corp_secret  as dingCorpSecret,
+            create_time       as createTime,
+            create_user       as createUser,
+            main_corp_id      as mainCorpId
+        from enterprise_config
+        where current_package = #{packageId}
+    </select>
+    <select id="getEnterpriseConfigByCorpIdAndAppType"
+            resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseConfigDO">
+        select
+            current_package   as currentPackage,
+            enterprise_id     as enterpriseId,
+            staff_count       as staffCount,
+            db_source_name    as dbSourceName,
+            db_server         as dbServer,
+            db_port           as dbPort,
+            db_name           as dbName,
+            db_user           as dbUser,
+            db_pwd            as dbPwd,
+            license           as license,
+            license_expires   as licenseExpires,
+            license_type      as licenseType,
+            ding_corp_id      as dingCorpId,
+            ding_corp_secret  as dingCorpSecret,
+            create_time       as createTime,
+            create_user       as createUser,
+            main_corp_id      as mainCorpId,
+            app_type       as appType,
+            cool_college_enterprise_id as coolCollegeEnterpriseId,
+            cool_college_secret as coolCollegeSecret
+        from enterprise_config where ding_corp_id = #{dingCorpId} and app_type = #{appType} order by create_time desc limit 1
+    </select>
+    <select id="selectByDingCorpId"
+            resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseConfigDO">
+         select
+            current_package   as currentPackage,
+            enterprise_id     as enterpriseId,
+            staff_count       as staffCount,
+            db_source_name    as dbSourceName,
+            db_server         as dbServer,
+            db_port           as dbPort,
+            db_name           as dbName,
+            db_user           as dbUser,
+            db_pwd            as dbPwd,
+            license           as license,
+            license_expires   as licenseExpires,
+            license_type      as licenseType,
+            ding_corp_id      as dingCorpId,
+            ding_corp_secret  as dingCorpSecret,
+            create_time       as createTime,
+            create_user       as createUser,
+            main_corp_id      as mainCorpId,
+            app_type       as appType,
+            cool_college_enterprise_id as coolCollegeEnterpriseId,
+            cool_college_secret as coolCollegeSecret
+        from enterprise_config
+        where ding_corp_id = #{dingCorpId}
+        and (
+        app_type = 'one_party'
+        or app_type = 'one_party2'
+        )
+    </select>
+    <select id="selectByAppType" resultType="com.coolcollege.intelligent.model.enterprise.EnterpriseConfigDO">
+        select
+        current_package   as currentPackage,
+            enterprise_id     as enterpriseId,
+            staff_count       as staffCount,
+            db_source_name    as dbSourceName,
+            db_server         as dbServer,
+            db_port           as dbPort,
+            db_name           as dbName,
+            db_user           as dbUser,
+            db_pwd            as dbPwd,
+            license           as license,
+            license_expires   as licenseExpires,
+            license_type      as licenseType,
+            ding_corp_id      as dingCorpId,
+            ding_corp_secret  as dingCorpSecret,
+            create_time       as createTime,
+            create_user       as createUser,
+            main_corp_id      as mainCorpId,
+            app_type       as appType,
+            cool_college_enterprise_id as coolCollegeEnterpriseId,
+            cool_college_secret as coolCollegeSecret
+            from enterprise_config
+            where app_type = #{appType}
+    </select>
+
+    <update id="updateCoolCollegeInfo">
+        update enterprise_config set cool_college_enterprise_id = #{coolCollegeEnterpriseId}, cool_college_secret = #{coolCollegeSecret} where ding_corp_id = #{dingCorpId} and app_type = #{appType}
+    </update>
+
+    <update id="updateCurrentPackageByEnterpriseId">
+        update enterprise_config set current_package = #{packageId} where enterprise_id = #{enterpriseId}
+    </update>
+    
+    <select id="selectStoreCountByDingCorpId" resultType="com.coolcollege.intelligent.model.enterprise.dto.EnterpriseBossDTO">
+        select
+            IFNULL(b.store_count, 0) as storeCount,
+            a.app_type as appType,
+            b.name
+        from
+        enterprise_config a inner join enterprise b on a.enterprise_id = b.id
+        where
+        a.ding_corp_id = #{dingCorpId}
+        ORDER BY field(a.app_type, 'one_party', 'one_party2', 'dingding2', a.app_type);
+    </select>
+
+</mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--scan:配置文件如果发生改变,将会被重新加载,scanPeriod:设置监测配置文件是否有修改的时间间隔 -->
+<configuration scan="true" scanPeriod="60 seconds">
+    <!--应用的名称 -->
+    <property name="APPNAME" value="intelligent-server" />
+    <!--应用的端口号 -->
+    <property name="PORT" value="30000" />
+    <!--日志文件本地存放目录路径-->
+    <property name="logBaseFolder" value="/data/log/main" />
+    <!--日志文件最小切割单位 -->
+    <property name="every_file_size" value="300MB" />
+    <!--日志文件保存时间 -->
+    <property name="every_his_size" value="1" />
+    <!--用来指定日志文件的上限大小,删除旧的日志 -->
+    <property name="every_max_size" value="20GB" />
+    <!-- 日志文件的编码 -->
+    <property name="log_charset" value="UTF-8" />
+    <!--|日志时间|线程id|端口号|应用名称|类名|方法名|日志级别|traceId |输入参数|输出参数|耗时|任意多个扩展字段|具体打印的msg内容然后换行-->
+    <property name="log_pattern" value="|%d{yyyy-MM-dd HH:mm:ss.SSS}|%t|${APPNAME}|[%X{requestId}]|[%X{messageId}]%logger|%M|%p|%m%n"/>
+
+    <!-- 输出到控制台 -->
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <encoder>
+            <pattern>${log_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 核心系统日志输出到文件，基于日志大小和时间归档 -->
+    <appender name="rollingFile"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">>
+            <fileNamePattern>${logBaseFolder}/main.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${every_his_size}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.coolcollege.intelligent.dao" level="DEBUG"   additivity="true" />
+    <!-- 忽略日志 -->
+    <springProfile name="online">
+        <logger name="com.coolcollege.intelligent.dao.patrolstore.TbDataStaTableColumnMapper"  level="WARN"   additivity="true"/>
+        <logger name="com.coolcollege.intelligent.dao.system.SysRoleMapper"  level="WARN"   additivity="true"/>
+        <logger name="com.coolcollege.intelligent.dao.log"  level="WARN"   additivity="true"/>
+        <logger name="com.coolcollege.intelligent.dao.enterprise.EnterpriseUserAppMenuMapper"  level="WARN"   additivity="true"/>
+        <logger name="com.coolcollege.intelligent.dao.menu"  level="WARN"   additivity="true"/>
+    </springProfile>
+
+
+
+    <springProfile name="hd,online,pre">
+        <root level="info">
+            <appender-ref ref="rollingFile"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="ab,dev,dev2,dev3,test,test2,test3,test4,test5,bailiTest,local,zcb">
+        <root level="info">
+            <appender-ref ref="stdout"/>
+        </root>
+    </springProfile>
+</configuration>

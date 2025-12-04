@@ -1,0 +1,1511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.patrolstore.TbDataTableMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.patrolstore.TbDataTableDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="task_id" jdbcType="BIGINT" property="taskId" />
+        <result column="sub_task_id" jdbcType="BIGINT" property="subTaskId" />
+        <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+        <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+        <result column="region_id" jdbcType="BIGINT" property="regionId" />
+        <result column="region_path" jdbcType="VARCHAR" property="regionPath" />
+        <result column="business_id" jdbcType="BIGINT" property="businessId" />
+        <result column="business_type" jdbcType="VARCHAR" property="businessType" />
+        <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
+        <result column="table_name" jdbcType="VARCHAR" property="tableName" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+        <result column="supervisor_id" jdbcType="VARCHAR" property="supervisorId" />
+        <result column="support_score" jdbcType="TINYINT" property="supportScore" />
+        <result column="table_type" jdbcType="VARCHAR" property="tableType" />
+        <result column="submit_status" jdbcType="TINYINT" property="submitStatus" />
+        <result column="business_status" jdbcType="TINYINT" property="businessStatus" />
+        <result column="deleted" jdbcType="TINYINT" property="deleted" />
+        <result column="create_date" jdbcType="VARCHAR" property="createDate" />
+        <result column="audit_user_id" jdbcType="VARCHAR" property="auditUserId" />
+        <result column="audit_time" jdbcType="TIMESTAMP" property="auditTime" />
+        <result column="audit_picture" jdbcType="VARCHAR" property="auditPicture" />
+        <result column="audit_opinion" jdbcType="VARCHAR" property="auditOpinion" />
+        <result column="audit_user_name" jdbcType="VARCHAR" property="auditUserName" />
+        <result column="audit_remark" jdbcType="VARCHAR" property="auditRemark" />
+        <result column="total_score" jdbcType="DECIMAL" property="totalScore" />
+        <result column="table_property" jdbcType="TINYINT" property="tableProperty" />
+        <result column="task_cal_total_score" jdbcType="DECIMAL" property="taskCalTotalScore" />
+        <result column="check_score" jdbcType="DECIMAL" property="checkScore" />
+        <result column="total_result_award" jdbcType="DECIMAL" property="totalResultAward" />
+        <result column="no_applicable_rule" jdbcType="DECIMAL" property="noApplicableRule" />
+        <result column="fail_num" jdbcType="INTEGER" property="failNum" />
+        <result column="pass_num" jdbcType="INTEGER" property="passNum" />
+        <result column="inapplicable_num" jdbcType="INTEGER" property="inapplicableNum" />
+        <result column="total_cal_column_num" jdbcType="INTEGER" property="totalCalColumnNum" />
+        <result column="collect_column_num" jdbcType="INTEGER" property="collectColumnNum" />
+        <result column="check_result_level" jdbcType="VARCHAR" property="checkResultLevel" />
+        <result column="sign_start_time" jdbcType="TIMESTAMP" property="signStartTime" />
+        <result column="sign_end_time" jdbcType="TIMESTAMP" property="signEndTime" />
+        <result column="patrol_type" jdbcType="VARCHAR" property="patrolType" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, task_id, sub_task_id, store_id, store_name, region_id, region_path, business_id,
+        business_type, meta_table_id, create_time, edit_time, table_name, description, create_user_id,
+        supervisor_id, support_score, table_type, submit_status, business_status, deleted,
+        create_date, audit_user_id, audit_time, audit_picture, audit_opinion, audit_user_name,
+        audit_remark, total_score, table_property, task_cal_total_score, check_score, total_result_award, no_applicable_rule,
+        fail_num, pass_num, inapplicable_num, total_cal_column_num, collect_column_num, check_result_level, sign_start_time,
+        sign_end_time, patrol_type
+    </sql>
+
+    <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+        insert into tb_data_table_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.taskId != null">
+                task_id,
+            </if>
+            <if test="record.subTaskId != null">
+                sub_task_id,
+            </if>
+            <if test="record.storeId != null">
+                store_id,
+            </if>
+            <if test="record.storeName != null">
+                store_name,
+            </if>
+            <if test="record.regionId != null">
+                region_id,
+            </if>
+            <if test="record.regionPath != null">
+                region_path,
+            </if>
+            <if test="record.businessId != null">
+                business_id,
+            </if>
+            <if test="record.businessType != null">
+                business_type,
+            </if>
+            <if test="record.metaTableId != null">
+                meta_table_id,
+            </if>
+            <if test="record.createTime != null">
+                create_time,
+            </if>
+            <if test="record.editTime != null">
+                edit_time,
+            </if>
+            <if test="record.tableName != null">
+                table_name,
+            </if>
+            <if test="record.description != null">
+                description,
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id,
+            </if>
+            <if test="record.supervisorId != null">
+                supervisor_id,
+            </if>
+            <if test="record.supportScore != null">
+                support_score,
+            </if>
+            <if test="record.tableType != null">
+                table_type,
+            </if>
+            <if test="record.submitStatus != null">
+                submit_status,
+            </if>
+            <if test="record.businessStatus != null">
+                business_status,
+            </if>
+            <if test="record.deleted != null">
+                deleted,
+            </if>
+            <if test="record.createDate != null">
+                create_date,
+            </if>
+            <if test="record.auditUserId != null">
+                audit_user_id,
+            </if>
+            <if test="record.auditTime != null">
+                audit_time,
+            </if>
+            <if test="record.auditOpinion != null">
+                audit_opinion,
+            </if>
+            <if test="record.auditUserName != null">
+                audit_user_name,
+            </if>
+            <if test="record.auditRemark != null">
+                audit_remark,
+            </if>
+            <if test="record.totalScore != null">
+                total_score,
+            </if>
+            <if test="record.checkScore != null">
+                check_score,
+            </if>
+            <if test="record.taskCalTotalScore != null">
+                task_cal_total_score,
+            </if>
+            <if test="record.tableProperty != null">
+                table_property,
+            </if>
+            <if test="record.totalResultAward != null">
+                total_result_award,
+            </if>
+            <if test="record.noApplicableRule != null">
+                no_applicable_rule,
+            </if>
+            <if test="record.failNum != null">
+                fail_num,
+            </if>
+            <if test="record.passNum != null">
+                pass_num,
+            </if>
+            <if test="record.inapplicableNum != null">
+                inapplicable_num,
+            </if>
+            <if test="record.totalCalColumnNum != null">
+                total_cal_column_num,
+            </if>
+            <if test="record.collectColumnNum != null">
+                collect_column_num,
+            </if>
+            <if test="record.checkResultLevel != null">
+                check_result_level,
+            </if>
+            <if test="record.signStartTime != null">
+                sign_start_time,
+            </if>
+            <if test="record.signEndTime != null">
+                sign_end_time,
+            </if>
+            <if test="record.patrolType != null">
+                patrol_type,
+            </if>
+            <if test="record.auditPicture != null">
+                audit_picture,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="record.taskId != null">
+                #{record.taskId,jdbcType=BIGINT},
+            </if>
+            <if test="record.subTaskId != null">
+                #{record.subTaskId,jdbcType=BIGINT},
+            </if>
+            <if test="record.storeId != null">
+                #{record.storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.storeName != null">
+                #{record.storeName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.regionId != null">
+                #{record.regionId,jdbcType=BIGINT},
+            </if>
+            <if test="record.regionPath != null">
+                #{record.regionPath,jdbcType=VARCHAR},
+            </if>
+            <if test="record.businessId != null">
+                #{record.businessId,jdbcType=BIGINT},
+            </if>
+            <if test="record.businessType != null">
+                #{record.businessType,jdbcType=VARCHAR},
+            </if>
+            <if test="record.metaTableId != null">
+                #{record.metaTableId,jdbcType=BIGINT},
+            </if>
+            <if test="record.createTime != null">
+                #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.editTime != null">
+                #{record.editTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.tableName != null">
+                #{record.tableName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.description != null">
+                #{record.description,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createUserId != null">
+                #{record.createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.supervisorId != null">
+                #{record.supervisorId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.supportScore != null">
+                #{record.supportScore,jdbcType=TINYINT},
+            </if>
+            <if test="record.tableType != null">
+                #{record.tableType,jdbcType=VARCHAR},
+            </if>
+            <if test="record.submitStatus != null">
+                #{record.submitStatus,jdbcType=TINYINT},
+            </if>
+            <if test="record.businessStatus != null">
+                #{record.businessStatus,jdbcType=TINYINT},
+            </if>
+            <if test="record.deleted != null">
+                #{record.deleted,jdbcType=TINYINT},
+            </if>
+            <if test="record.createDate != null">
+                #{record.createDate,jdbcType=VARCHAR},
+            </if>
+            <if test="record.auditUserId != null">
+                #{record.auditUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.auditTime != null">
+                #{record.auditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.auditOpinion != null">
+                #{record.auditOpinion,jdbcType=VARCHAR},
+            </if>
+            <if test="record.auditUserName != null">
+                #{record.auditUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.auditRemark != null">
+                #{record.auditRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="record.totalScore != null">
+                #{record.totalScore,jdbcType=DECIMAL},
+            </if>
+            <if test="record.checkScore != null">
+                #{record.checkScore,jdbcType=DECIMAL},
+            </if>
+            <if test="record.taskCalTotalScore != null">
+                #{record.taskCalTotalScore,jdbcType=DECIMAL},
+            </if>
+            <if test="record.tableProperty != null">
+                #{record.tableProperty,jdbcType=TINYINT},
+            </if>
+            <if test="record.totalResultAward != null">
+                #{record.totalResultAward,jdbcType=DECIMAL},
+            </if>
+            <if test="record.noApplicableRule != null">
+                #{record.noApplicableRule,jdbcType=TINYINT},
+            </if>
+            <if test="record.failNum != null">
+                #{record.failNum,jdbcType=INTEGER},
+            </if>
+            <if test="record.passNum != null">
+                #{record.passNum,jdbcType=INTEGER},
+            </if>
+            <if test="record.inapplicableNum != null">
+                #{record.inapplicableNum,jdbcType=INTEGER},
+            </if>
+            <if test="record.totalCalColumnNum != null">
+                #{record.totalCalColumnNum,jdbcType=INTEGER},
+            </if>
+            <if test="record.collectColumnNum != null">
+                #{record.collectColumnNum,jdbcType=INTEGER},
+            </if>
+            <if test="record.checkResultLevel != null">
+                #{record.checkResultLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="record.signStartTime != null">
+                #{record.signStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.signEndTime != null">
+                #{record.signEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.patrolType != null">
+                #{record.patrolType,jdbcType=VARCHAR},
+            </if>
+            <if test="record.auditPicture != null">
+                #{record.auditPicture,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective">
+        update tb_data_table_${enterpriseId}
+        <set>
+            <if test="record.taskId != null">
+                task_id = #{record.taskId},
+            </if>
+            <if test="record.subTaskId != null">
+                sub_task_id = #{record.subTaskId},
+            </if>
+            <if test="record.storeId != null">
+                store_id = #{record.storeId},
+            </if>
+            <if test="record.storeName != null">
+                store_name = #{record.storeName},
+            </if>
+            <if test="record.regionId != null">
+                region_id = #{record.regionId},
+            </if>
+            <if test="record.regionPath != null">
+                region_path = #{record.regionPath},
+            </if>
+            <if test="record.businessId != null">
+                business_id = #{record.businessId},
+            </if>
+            <if test="record.businessType != null">
+                business_type = #{record.businessType},
+            </if>
+            <if test="record.metaTableId != null">
+                meta_table_id = #{record.metaTableId},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.editTime != null">
+                edit_time = #{record.editTime},
+            </if>
+            <if test="record.tableName != null">
+                table_name = #{record.tableName},
+            </if>
+            <if test="record.description != null">
+                description = #{record.description},
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id = #{record.createUserId},
+            </if>
+            <if test="record.supervisorId != null">
+                supervisor_id = #{record.supervisorId},
+            </if>
+            <if test="record.supportScore != null">
+                support_score = #{record.supportScore},
+            </if>
+            <if test="record.tableType != null">
+                table_type = #{record.tableType},
+            </if>
+            <if test="record.submitStatus != null">
+                submit_status = #{record.submitStatus},
+            </if>
+            <if test="record.businessStatus != null">
+                business_status = #{record.businessStatus},
+            </if>
+            <if test="record.deleted != null">
+                deleted = #{record.deleted},
+            </if>
+            <if test="record.createDate != null">
+                create_date = #{record.createDate},
+            </if>
+            <if test="record.auditUserId != null">
+                audit_user_id = #{record.auditUserId},
+            </if>
+            <if test="record.auditTime != null">
+                audit_time = #{record.auditTime},
+            </if>
+            <if test="record.auditPicture != null">
+                audit_picture = #{record.auditPicture},
+            </if>
+            <if test="record.auditOpinion != null">
+                audit_opinion = #{record.auditOpinion},
+            </if>
+            <if test="record.auditUserName != null">
+                audit_user_name = #{record.auditUserName},
+            </if>
+            <if test="record.auditRemark != null">
+                audit_remark = #{record.auditRemark},
+            </if>
+            <if test="record.totalScore != null">
+                total_score = #{record.totalScore},
+            </if>
+            <if test="record.tableProperty != null">
+                table_property = #{record.tableProperty},
+            </if>
+            <if test="record.taskCalTotalScore != null">
+                task_cal_total_score = #{record.taskCalTotalScore},
+            </if>
+            <if test="record.checkScore != null">
+                check_score = #{record.checkScore},
+            </if>
+            <if test="record.totalResultAward != null">
+                total_result_award = #{record.totalResultAward},
+            </if>
+            <if test="record.noApplicableRule != null">
+                no_applicable_rule = #{record.noApplicableRule},
+            </if>
+            <if test="record.failNum != null">
+                fail_num = #{record.failNum},
+            </if>
+            <if test="record.passNum != null">
+                pass_num = #{record.passNum},
+            </if>
+            <if test="record.inapplicableNum != null">
+                inapplicable_num = #{record.inapplicableNum},
+            </if>
+            <if test="record.totalCalColumnNum != null">
+                total_cal_column_num = #{record.totalCalColumnNum},
+            </if>
+            <if test="record.collectColumnNum != null">
+                collect_column_num = #{record.collectColumnNum},
+            </if>
+            <if test="record.checkResultLevel != null">
+                check_result_level = #{record.checkResultLevel},
+            </if>
+            sign_start_time = #{record.signStartTime}
+        </set>
+        where id = #{record.id}
+    </update>
+
+    <update id="updateForeachByPrimaryKeySelective">
+    <foreach collection="records" separator=";" item="record">
+        update tb_data_table_${enterpriseId}
+        <set>
+            <if test="record.taskId != null">
+                task_id = #{record.taskId},
+            </if>
+            <if test="record.subTaskId != null">
+                sub_task_id = #{record.subTaskId},
+            </if>
+            <if test="record.storeId != null">
+                store_id = #{record.storeId},
+            </if>
+            <if test="record.storeName != null">
+                store_name = #{record.storeName},
+            </if>
+            <if test="record.regionId != null">
+                region_id = #{record.regionId},
+            </if>
+            <if test="record.regionPath != null">
+                region_path = #{record.regionPath},
+            </if>
+            <if test="record.businessId != null">
+                business_id = #{record.businessId},
+            </if>
+            <if test="record.businessType != null">
+                business_type = #{record.businessType},
+            </if>
+            <if test="record.metaTableId != null">
+                meta_table_id = #{record.metaTableId},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime},
+            </if>
+            <if test="record.editTime != null">
+                edit_time = #{record.editTime},
+            </if>
+            <if test="record.tableName != null">
+                table_name = #{record.tableName},
+            </if>
+            <if test="record.description != null">
+                description = #{record.description},
+            </if>
+            <if test="record.createUserId != null">
+                create_user_id = #{record.createUserId},
+            </if>
+            <if test="record.supervisorId != null">
+                supervisor_id = #{record.supervisorId},
+            </if>
+            <if test="record.supportScore != null">
+                support_score = #{record.supportScore},
+            </if>
+            <if test="record.tableType != null">
+                table_type = #{record.tableType},
+            </if>
+            <if test="record.submitStatus != null">
+                submit_status = #{record.submitStatus},
+            </if>
+            <if test="record.businessStatus != null">
+                business_status = #{record.businessStatus},
+            </if>
+            <if test="record.deleted != null">
+                deleted = #{record.deleted},
+            </if>
+            <if test="record.createDate != null">
+                create_date = #{record.createDate},
+            </if>
+            <if test="record.auditUserId != null">
+                audit_user_id = #{record.auditUserId},
+            </if>
+            <if test="record.auditTime != null">
+                audit_time = #{record.auditTime},
+            </if>
+            <if test="record.auditPicture != null">
+                audit_picture = #{record.auditPicture},
+            </if>
+            <if test="record.auditOpinion != null">
+                audit_opinion = #{record.auditOpinion},
+            </if>
+            <if test="record.auditUserName != null">
+                audit_user_name = #{record.auditUserName},
+            </if>
+            <if test="record.auditRemark != null">
+                audit_remark = #{record.auditRemark},
+            </if>
+            <if test="record.totalScore != null">
+                total_score = #{record.totalScore},
+            </if>
+            <if test="record.tableProperty != null">
+                table_property = #{record.tableProperty},
+            </if>
+            <if test="record.taskCalTotalScore != null">
+                task_cal_total_score = #{record.taskCalTotalScore},
+            </if>
+            <if test="record.checkScore != null">
+                check_score = #{record.checkScore},
+            </if>
+            <if test="record.totalResultAward != null">
+                total_result_award = #{record.totalResultAward},
+            </if>
+            <if test="record.noApplicableRule != null">
+                no_applicable_rule = #{record.noApplicableRule},
+            </if>
+            <if test="record.failNum != null">
+                fail_num = #{record.failNum},
+            </if>
+            <if test="record.passNum != null">
+                pass_num = #{record.passNum},
+            </if>
+            <if test="record.inapplicableNum != null">
+                inapplicable_num = #{record.inapplicableNum},
+            </if>
+            <if test="record.totalCalColumnNum != null">
+                total_cal_column_num = #{record.totalCalColumnNum},
+            </if>
+            <if test="record.collectColumnNum != null">
+                collect_column_num = #{record.collectColumnNum},
+            </if>
+            <if test="record.checkResultLevel != null">
+                check_result_level = #{record.checkResultLevel},
+            </if>
+            sign_start_time = #{record.signStartTime}
+        </set>
+        where id = #{record.id}
+    </foreach>
+    </update>
+    <select id="selectListByIdList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_table_${enterpriseId}
+        <foreach collection="dataTableIdList" item="dataTableId" open="where id in(" separator="," close=")">
+            #{dataTableId}
+        </foreach>
+    </select>
+
+    <insert id="batchInsert" keyColumn="id" keyProperty="list.id" useGeneratedKeys="true">
+        insert into tb_data_table_${enterpriseId}
+        (task_id,
+        sub_task_id,
+        store_id,
+        store_name,
+        region_id,
+        region_path,
+        business_id,
+        business_type,
+        meta_table_id,
+        `table_name`,
+        description,
+        create_user_id,
+        supervisor_id,
+        support_score,
+        table_type,
+        table_property,
+        patrol_type,
+        sign_start_time,
+        sign_end_time,
+        create_date)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.taskId},
+            #{item.subTaskId},
+            #{item.storeId},
+            #{item.storeName},
+            #{item.regionId},
+            #{item.regionPath},
+            #{item.businessId},
+            #{item.businessType},
+            #{item.metaTableId},
+            #{item.tableName},
+            #{item.description},
+            #{item.createUserId},
+            #{item.supervisorId},
+            #{item.supportScore},
+            #{item.tableType},
+            #{item.tableProperty},
+            #{item.patrolType},
+            #{item.signStartTime},
+            #{item.signEndTime},
+            CURRENT_DATE)
+        </foreach>
+    </insert>
+
+    <update id="updateDelByBusinessIds">
+        update tb_data_table_${enterpriseId}
+        set deleted = 1
+        where business_id in (
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>
+        ) and business_type = #{businessType}
+    </update>
+
+    <delete id="delByBusinessIdAndMetaTableIds">
+        delete from tb_data_table_${enterpriseId}
+        where business_id = #{businessId}
+        and meta_table_id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="deleteAbsoluteByBusinessId">
+        delete from tb_data_table_${enterpriseId}
+        where business_id = #{businessId}
+    </delete>
+
+    <update id="updateBusinessStatus">
+        update tb_data_table_${enterpriseId}
+        set business_status = 1, sub_task_id = #{subTaskId}, supervisor_id = #{supervisorId}
+        where business_id = #{businessId}
+        and business_type = #{businessType}
+    </update>
+
+    <update id="updateSubmitStatus">
+        update tb_data_table_${enterpriseId}
+        set submit_status = #{submitStatus}
+        where id = #{id}
+    </update>
+
+    <update id="updateAuditInfo">
+        update tb_data_table_${enterpriseId}
+        set audit_user_id = #{auditUserId}
+        , audit_picture = #{auditPicture}, audit_opinion = #{auditOpinion}
+        , audit_user_name = #{auditUserName}, audit_remark = #{auditRemark}, audit_time = now()
+        where business_id = #{businessId}
+        and business_type = #{businessType}
+    </update>
+
+    <select id="existNotSubmitByBusinessId" resultType="java.lang.Integer">
+        select exists (
+            select *
+            from tb_data_table_${enterpriseId}
+            where business_id = #{businessId}
+            and business_type = #{businessType}
+            and submit_status = 0
+            and deleted = 0
+            limit 1
+        )
+    </select>
+    <select id="getListBySubTaskIdAndTaskId"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_table_${enterpriseId}
+        where deleted = 0
+        and sub_task_id in
+        <foreach collection="subTaskIdList" item="subTaskId" close=")" open="(" separator=",">
+            #{subTaskId}
+        </foreach>
+        <if test="taskId != null">
+            and task_id = #{taskId}
+        </if>
+    </select>
+    <select id="getListByTaskId" resultType="java.lang.Long">
+        select
+            DISTINCT meta_table_id
+        from tb_data_table_${enterpriseId}
+        where deleted = 0
+        and task_id = #{taskId}
+    </select>
+    <select id="getSubmitTableByRecordId"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_table_${enterpriseId}
+        where deleted = 0
+        and business_id = #{businessId}
+        and task_id = #{taskId}
+    </select>
+
+    <select id="selectByBusinessId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_table_${enterpriseId}
+        where business_id = #{businessId}
+        and business_type = #{businessType}
+        and deleted = 0
+    </select>
+    <select id="selectByBusinessIdAndTaskId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_table_${enterpriseId}
+        where business_id = #{businessId}
+        and task_id = #{taskId}
+        and deleted = 0
+    </select>
+    <select id="selectOneByBusinessId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_table_${enterpriseId}
+        where business_id = #{businessId}
+        and business_type = #{businessType}
+        and deleted = 0
+        limit 1
+    </select>
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_table_${enterpriseId}
+        where id = #{dataTableId}
+        and deleted = 0
+    </select>
+    <select id="selectTableNameById" resultType="java.lang.String">
+        select
+            table_name
+        from tb_data_table_${enterpriseId}
+        where id = #{dataTableId}
+    </select>
+    <select id="getListByBusinessIdList"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_data_table_${enterpriseId}
+        where 1 = 1
+        <choose>
+            <when test="businessType != null and (businessType == 'PATROL_RECHECK' or businessType == 'PATROL_STORE')">
+                and business_type in ('PATROL_STORE', 'PATROL_RECHECK')
+            </when>
+            <otherwise>
+                and business_type = #{businessType}
+            </otherwise>
+        </choose>
+        <foreach collection="businessIdList" open="and business_id in (" close=")" separator="," item="businessId">
+            #{businessId}
+        </foreach>
+    </select>
+    <select id="getUserListByBusinessIdList"
+            resultType="com.coolcollege.intelligent.model.enterprise.dto.PersonNodeNoDTO">
+        select audit_user_id as userId, audit_user_name as userName, task_id as unifyTaskId, store_id as storeId, business_id as businessId
+        from tb_data_table_${enterpriseId}
+        where  business_type = #{businessType}
+        <foreach collection="businessIdList" open="and business_id in (" close=")" separator="," item="businessId">
+            #{businessId}
+        </foreach>
+    </select>
+
+    <update id="updateSubTaskIdById">
+        update tb_data_table_${enterpriseId}
+        set sub_task_id=#{updatedSubTaskId,jdbcType=BIGINT}
+        where id=#{id,jdbcType=BIGINT}
+    </update>
+    <update id="changeSubmitStatus">
+        update tb_data_table_${enterpriseId}
+        set submit_status = submit_status|#{query.submitStatus,jdbcType=BIGINT}
+        where business_id=#{query.businessId,jdbcType=BIGINT} and business_type = 'PATROL_STORE'
+    </update>
+    <update id="resetSubmitStatus">
+        update tb_data_table_${enterpriseId}
+        set submit_status = 0
+        where business_id=#{query.businessId,jdbcType=BIGINT} and business_type = 'PATROL_STORE'
+    </update>
+    <update id="changeDataTableSubmitStatus">
+        update tb_data_table_${enterpriseId}
+        set submit_status = submit_status|#{query.submitStatus,jdbcType=BIGINT}
+        where id = #{query.dataTableId,jdbcType=BIGINT}
+    </update>
+    <select id="getSubmitStatus" resultType="java.lang.Integer">
+        SELECT DISTINCT
+        submit_status
+        FROM
+        tb_data_table_${enterpriseId}
+        WHERE
+        business_id = #{businessId} and business_type = 'PATROL_STORE' limit 1
+    </select>
+
+    <select id="selectLastMetaTableData"
+            resultType="com.coolcollege.intelligent.model.metatable.vo.TaskStoreMetaDataVO">
+        SELECT
+        id as dataTableId,
+        meta_table_id AS metaTableId,
+        table_property AS tableProperty,
+        `table_name` AS tableName,
+        table_type as tableType,
+        create_time AS lastTime
+        FROM
+        `tb_data_table_${enterpriseId}`
+        WHERE
+        store_id = #{storeId}
+        AND meta_table_id = #{metaTableId}
+        and business_status = 1
+        order by create_time desc
+        limit 1
+    </select>
+
+
+    <update id="updateTbDateTableByBusinessId" parameterType="com.coolcollege.intelligent.model.patrolstore.TbDataTableDO">
+        update tb_data_table_${enterpriseId}
+        set task_id = #{tbDataTableDO.taskId},
+        sub_task_id = #{tbDataTableDO.subTaskId},
+        store_id = #{tbDataTableDO.storeId},
+        store_name = #{tbDataTableDO.storeName},
+        region_id = #{tbDataTableDO.regionId},
+        region_path = #{tbDataTableDO.regionPath},
+        business_id = #{tbDataTableDO.businessId},
+        business_type = #{tbDataTableDO.businessType},
+        meta_table_id = #{tbDataTableDO.metaTableId},
+        `table_name` = #{tbDataTableDO.tableName},
+        description = #{tbDataTableDO.description},
+        create_user_id = #{tbDataTableDO.createUserId},
+        supervisor_id = #{tbDataTableDO.supervisorId},
+        support_score = #{tbDataTableDO.supportScore},
+        table_type = #{tbDataTableDO.tableType},
+        table_property= #{tbDataTableDO.tableProperty},
+        create_date = CURRENT_DATE
+        where business_id = #{tbDataTableDO.businessId} and business_type = #{tbDataTableDO.businessType}
+    </update>
+    <insert id="insertBeforeConfigTbDateTable">
+        insert into tb_data_table_${enterpriseId}
+        (business_id,
+        submit_status,
+        business_type,
+        sign_start_time,
+        sign_end_time,
+        patrol_type
+        )
+        values
+        (#{businessId},#{submitStatus},#{businessType},#{signStartTime},#{signEndTime},#{patrolType})
+    </insert>
+
+    <select id="getLastTimeDataTableDO"  resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        `tb_data_table_${enterpriseId}`
+        WHERE store_id = #{storeId}
+        AND meta_table_id = #{metaTableId}
+        and business_status = 1
+        order by edit_time desc
+        limit 1
+    </select>
+
+    <select id="getTbDataTableListByUnifyTaskIds" resultMap="BaseResultMap">
+        select * from `tb_data_table_${enterpriseId}` where task_id in <foreach collection="unifyTaskIds" open="(" close=")" separator="," item="unifyTaskId">#{unifyTaskId}</foreach>
+    </select>
+
+    <insert id="copyDataTable">
+        insert into tb_data_table_${enterpriseId}
+        (id,task_id,
+        sub_task_id,
+        store_id,
+        store_name,
+        region_id,
+        region_path,
+        business_id,
+        business_type,
+        meta_table_id,
+        `table_name`,
+        description,
+        create_user_id,
+        supervisor_id,
+        support_score,
+        table_type,
+        table_property,
+        create_date,
+        create_time,
+        edit_time,
+        business_status,
+        `deleted`,
+        audit_user_id,
+        audit_time,
+        audit_picture,
+        audit_opinion,
+        audit_user_name,
+        audit_remark,
+        total_score,
+        check_score,
+        task_cal_total_score,
+        total_result_award,
+        no_applicable_rule
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.taskId},
+            #{item.subTaskId},
+            #{item.storeId},
+            #{item.storeName},
+            #{item.regionId},
+            #{item.regionPath},
+            #{item.businessId},
+            #{item.businessType},
+            #{item.metaTableId},
+            #{item.tableName},
+            #{item.description},
+            #{item.createUserId},
+            #{item.supervisorId},
+            #{item.supportScore},
+            #{item.tableType},
+            #{item.tableProperty},
+            #{item.createDate},
+            #{item.createTime},
+            #{item.editTime},
+            #{item.businessStatus},
+            #{item.deleted},
+            #{item.auditUserId},
+            #{item.auditTime},
+            #{item.auditPicture},
+            #{item.auditOpinion},
+            #{item.auditUserName},
+            #{item.auditRemark},
+            #{item.totalScore},
+            #{item.checkScore},
+            #{item.taskCalTotalScore},
+            #{item.totalResultAward},
+            #{item.noApplicableRule})
+        </foreach>
+    </insert>
+
+
+    <delete id="deleteByIds">
+        delete from tb_data_table_${enterpriseId}
+        where id in <foreach collection="ids" item="id" open="(" close=")" separator=",">#{id}</foreach>
+    </delete>
+
+    <update id="updateSignStartEndTime">
+        update tb_data_table_${enterpriseId}
+        <set>
+            <if test="signStartTime != null">
+                sign_start_time = #{signStartTime},
+            </if>
+            <if test="signEndTime != null">
+                sign_end_time = #{signEndTime},
+            </if>
+        </set>
+        where business_id = #{businessId}
+        and business_type = #{businessType}
+    </update>
+
+    <select id="statisticsWhenCountScore" resultType="com.coolcollege.intelligent.model.patrolstore.dto.TbPatrolStoreRecordStatisticsDTO">
+    select
+        business_id as id,
+        sum(check_score) as score,
+        sum(task_cal_total_score) as taskCalTotalScore,
+        sum(total_cal_column_num) as totalCalColumnNum,
+        sum(collect_column_num) as collectColumnNum,
+        sum(fail_num) as failNum,
+        sum(pass_num) as passNum,
+        sum(inapplicable_num) as inapplicableNum,
+        sum(total_result_award) as totalResultAward,
+        GROUP_CONCAT(DISTINCT CASE WHEN check_result_level != '0' then check_result_level end) as checkResultLevel
+    from tb_data_table_${enterpriseId}
+    where deleted = 0 and business_id = #{businessId} and business_type = #{businessType} and table_property != 6
+  </select>
+
+    <select id="getScoreRateByBusinessId" resultType="com.coolcollege.intelligent.model.patrolstore.dto.TbPatrolStoreRecordStatisticsDTO">
+    select
+        ROUND(ifnull(sum(check_score/task_cal_total_score)/count(1),0), 4) as avgScoreRate
+    from tb_data_table_${enterpriseId}
+    where deleted = 0 and business_id = #{businessId} and business_type = #{businessType}
+        and table_property != 6  and submit_status <![CDATA[ & ]]> 1 = 1
+  </select>
+
+    <select id="getListByMetaTableIdListAndTimeGroupBy" resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsUserDTO">
+        select
+        ifnull(count(distinct business_id),0) as patrolNum,
+        meta_table_id as  metaTableId
+        from tb_data_table_${enterpriseId}
+        where deleted = 0  and business_type = 'PATROL_STORE'
+        <if test="beginDate!=null and endDate != null">
+            and create_time between #{beginDate} and #{endDate}
+        </if>
+        <if test="metaTableIdList != null">
+            <foreach collection="metaTableIdList" open="and meta_table_id in (" item="metaTableId" separator=","
+                     close=")">
+                #{metaTableId}
+            </foreach>
+        </if>
+        group by meta_table_id
+    </select>
+    <select id="tableBoardStatistics"
+            resultType="com.coolcollege.intelligent.model.operationboard.dto.TableBoardStatisticDTO">
+        select
+        count(distinct business_id) as patrolNum,
+        count(distinct store_id) as patrolStoreNum
+        from tb_data_table_${enterpriseId}
+        <where>
+            <if test="metaTableIds !=null and metaTableIds.size()>0">
+                and meta_table_id in (
+                <foreach collection="metaTableIds" item="metaTableId" separator=",">
+                    #{metaTableId}
+                </foreach>
+                )
+            </if>
+            and create_time between #{beginDate} and #{endDate}
+            and business_type = 'PATROL_STORE'
+            and table_property != 6
+            and business_status = 1
+            and deleted = 0
+        </where>
+    </select>
+
+    <select id="tableBoardRank" resultType="com.coolcollege.intelligent.model.operationboard.dto.TableBoardRankDTO">
+        select meta_table_id               as metaTableId,
+        count(distinct business_id) as patrolNum,
+        count(distinct store_id)    as patrolStoreNum
+        from tb_data_table_${enterpriseId}
+        where create_time between #{beginDate}
+        and #{endDate}
+        and business_type = 'PATROL_STORE'
+        and table_property != 6
+        and business_status = 1
+        and deleted = 0
+        <if test="metaTableIds != null and metaTableIds.size()>0">
+            and meta_table_id in (
+            <foreach collection="metaTableIds" item="metaTableId" separator=",">
+                #{metaTableId}
+            </foreach>
+            )
+        </if>
+        group by meta_table_id
+        order by patrolNum desc
+    </select>
+
+    <select id="tableBoardTrend" resultType="com.coolcollege.intelligent.model.operationboard.dto.TableBoardTrendDTO">
+        select create_date as createDate,
+        count(distinct business_id) as patrolNum,
+        count(distinct store_id) as patrolStoreNum
+        from tb_data_table_${enterpriseId}
+        <where>
+            <if test="query.metaTableIds != null and query.metaTableIds.size()>0">
+                and meta_table_id in (
+                <foreach collection="query.metaTableIds" separator="," item="tableId">
+                    #{tableId}
+                </foreach>
+                )
+            </if>
+            <if test="query.storeIds != null">
+                and store_id in (
+                <foreach collection="query.storeIds" separator="," item="item">
+                    #{item}
+                </foreach>
+                )
+            </if>
+            <if test="query.regionPathLeft != null">
+                and region_path like concat(#{query.regionPathLeft},'%')
+            </if>
+            and create_time between #{query.beginDate} and #{query.endDate}
+            and business_type = 'PATROL_STORE'
+            and table_property != 6
+            and business_status = 1
+            and deleted = 0
+        </where>
+        group by create_date
+        order by createDate asc
+    </select>
+
+    <select id="patrolStoreStatisticsMetaTable"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsMetaTableDTO">
+        select
+        meta_table_id as metaTableId,
+        count(distinct business_id) as patrolNum,
+        count(distinct supervisor_id) as usePersonNum,
+        count(distinct store_id) as patrolStoreNum
+        from tb_data_table_${enterpriseId}
+        where meta_table_id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        ) and create_time between #{beginDate} and #{endDate}
+        and deleted = 0
+        and business_type = 'PATROL_STORE'
+        and business_status = 1
+        group by meta_table_id
+    </select>
+
+    <select id="getCheckedStore"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsTableDTO">
+
+        SELECT
+        count(distinct business_id) AS checkedTimes,
+        count( distinct store_id ) as checkedStore,
+        COALESCE(sum( check_score ),0) as sumScore,
+        ROUND(sum(check_score/task_cal_total_score) / count(distinct business_id),4) as percent
+        FROM
+        tb_data_table_${enterpriseId}
+        WHERE
+        meta_table_id = #{query.metaTableId}
+        and business_type = 'PATROL_STORE'
+        and business_status = 1
+        AND deleted = 0
+        AND create_time BETWEEN #{query.beginDate}
+        AND #{query.endDate}
+        <if test="regionPath != null">
+            AND region_path LIKE concat( #{regionPath}, '%' )
+        </if>
+        <if test="storeId != null">
+            AND store_id = #{storeId}
+        </if>
+    </select>
+
+    <select id="getCheckedTimesGroup"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsTableDTO">
+        SELECT
+        count(distinct business_id) AS checkedTimes,
+        store_id AS storeId,
+        store_name as storeName
+        FROM
+        tb_data_table_${enterpriseId}
+        WHERE
+        business_type = 'PATROL_STORE'
+        and business_status = 1
+        AND deleted = 0
+        AND create_time BETWEEN #{beginDate}
+        AND #{endDate}
+        <if test="metaTableId != null and metaTableId != ''">
+            AND  meta_table_id = #{metaTableId}
+        </if>
+        AND store_id in(
+        <foreach collection="storeIds" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+        GROUP BY store_id,store_name
+    </select>
+
+    <select id="getGradeInfo"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsTableDTO">
+
+        <if test="query.levelRule == 'SCORING_RATE'">
+            SELECT
+            count(distinct business_id) as checkedTimes,
+            COALESCE(sum(case when check_score/task_cal_total_score &gt;= #{query.excellentPercent}/100 then 1 else 0 end ),0) as excellent,
+            COALESCE(sum(case when check_score/task_cal_total_score &gt;= #{query.goodPercent}/100 AND check_score/task_cal_total_score &lt; #{query.excellentPercent}/100 then 1 else 0 end ),0) as good,
+            COALESCE(sum(case when check_score/task_cal_total_score &gt;= #{query.eligiblePercent}/100 AND check_score/task_cal_total_score &lt; #{query.goodPercent}/100 then 1 else 0 end ),0) as eligible,
+            COALESCE(sum(case when check_score/task_cal_total_score &gt;= #{query.disqualificationPercent}/100 AND check_score/task_cal_total_score &lt; #{query.eligiblePercent}/100 then 1 else 0 end ),0) as disqualification
+            FROM
+            tb_data_table_${enterpriseId}
+            WHERE
+            meta_table_id = #{query.metaTableId}
+            and business_type = 'PATROL_STORE'
+            and business_status = 1
+            AND deleted = 0
+            AND create_time BETWEEN #{query.beginDate}
+            AND #{query.endDate}
+            <if test="regionPath != null">
+                AND region_path LIKE concat( #{regionPath}, '%' )
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId}
+            </if>
+        </if>
+        <if test="query.levelRule == 'ITEM_NUM'">
+            SELECT
+            count(distinct business_id) as checkedTimes,
+            COALESCE(sum(case when pass_num &gt;= #{query.excellentNum} then 1 else 0 end ),0) as excellent,
+            COALESCE(sum(case when pass_num &gt;= #{query.goodNum} AND pass_num &lt; #{query.excellentNum} then 1 else 0 end ),0) as good,
+            COALESCE(sum(case when pass_num &gt;= #{query.eligibleNum} AND pass_num &lt; #{query.goodNum} then 1 else 0 end ),0) as eligible,
+            COALESCE(sum(case when pass_num &gt;= #{query.disqualificationNum} AND pass_num &lt; #{query.eligibleNum} then 1 else 0 end ),0) as disqualification
+            FROM
+            tb_data_table_${enterpriseId}
+            WHERE
+            meta_table_id = #{query.metaTableId}
+            and business_type = 'PATROL_STORE'
+            and business_status = 1
+            AND deleted = 0
+            AND create_time BETWEEN #{query.beginDate}
+            AND #{query.endDate}
+            <if test="regionPath != null">
+                AND region_path LIKE concat( #{regionPath}, '%' )
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId}
+            </if>
+        </if>
+    </select>
+
+    <select id="getPatrolStoreIdBySpecifiedTime" resultType="java.lang.String">
+        SELECT
+        distinct store_id
+        FROM
+        tb_data_table_${enterpriseId}
+        WHERE
+        business_type = 'PATROL_STORE'
+        and business_status = 1
+        AND deleted = 0
+        AND create_time BETWEEN #{beginDate}
+        AND #{endDate}
+        <if test="metaTableId != null and metaTableId != ''">
+            AND  meta_table_id = #{metaTableId}
+        </if>
+        <if test="regionIds != null and regionIds.size > 0">
+            and region_id in
+            <foreach collection="regionIds" item="regionId" separator="," open="(" close=")">
+                #{regionId}
+            </foreach>
+        </if>
+        <if test="storeIds != null and storeIds.size > 0">
+            and store_id in
+            <foreach collection="storeIds" item="storeId" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="selectStorePatrolList"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsDTO">
+        SELECT
+        store_id storeId,
+        supervisor_id userId,
+        count(distinct business_id) `count`,
+        true checked,
+        MAX(create_time) lastTime
+        FROM
+        tb_data_table_${eid}
+        WHERE
+        create_time between #{beginDate} and #{endDate}
+        and store_id in
+        <foreach collection="storeIds" item="storeId" open="(" separator="," close=")">
+            #{storeId}
+        </foreach>
+        <if test="metaTableId != null and metaTableId != ''">
+            AND  meta_table_id = #{metaTableId}
+        </if>
+        and business_type = 'PATROL_STORE'
+        and business_status = 1
+        AND deleted = 0
+        GROUP BY store_id
+    </select>
+    <select id="selectPatrolStoreByCondition" resultType="java.lang.Long">
+        select
+        distinct business_id
+        from tb_data_table_${enterpriseId}
+        where deleted = 0 and business_status = 1
+        <if test="beginTime != null and endTime != null">
+            and sign_end_time between #{beginTime} and #{endTime}
+        </if>
+        <if test="metaTableId != null ">
+            and meta_table_id = #{metaTableId}
+        </if>
+        <if test="patrolTypeList !=null and patrolTypeList.size() > 0    ">
+            <foreach collection="patrolTypeList" separator="," close=")" open="and  patrol_type in(" item="patrolType">
+                #{patrolType}
+            </foreach>
+        </if>
+        <if test="patrolStoreMode != null and patrolStoreMode == 0">
+            and task_id = 0
+        </if>
+        <if test="patrolStoreMode != null and patrolStoreMode == 1">
+            and task_id !=0
+        </if>
+        order by create_time desc,id desc
+    </select>
+    <select id="countPatrolStoreByCondition" resultType="java.lang.Long">
+        select
+        count(distinct business_id)
+        from tb_data_table_${enterpriseId}
+        where deleted = 0 and business_status = 1
+        <if test="beginTime != null and endTime != null">
+            and sign_end_time between #{beginTime} and #{endTime}
+        </if>
+        <if test="metaTableId != null ">
+            and meta_table_id = #{metaTableId}
+        </if>
+        <if test="patrolTypeList !=null and patrolTypeList.size() > 0    ">
+            <foreach collection="patrolTypeList" separator="," close=")" open="and  patrol_type in(" item="patrolType">
+                #{patrolType}
+            </foreach>
+        </if>
+        <if test="patrolStoreMode != null and patrolStoreMode == 0">
+            and task_id = 0
+        </if>
+        <if test="patrolStoreMode != null and patrolStoreMode == 1">
+            and task_id !=0
+        </if>
+        order by create_time desc,id desc
+    </select>
+
+    <select id="statisticsSafetyCheckUser"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.SafetyCheckUserDTO">
+        select
+        supervisor_id as userId,
+        sum(check_score) as totalCheckScore,
+        count(distinct store_id) as patrolStoreNum,
+        count(id) as patrolNum
+        from tb_data_table_${enterpriseId}
+        where deleted = 0
+        and business_status = 1
+        and business_type = 'PATROL_STORE'
+        and patrol_type = 'PATROL_STORE_SAFETY_CHECK'
+        and sign_end_time between #{beginDate} and #{endDate}
+        <foreach collection="userIdList" close=")" separator="," open="and supervisor_id in (" item="userId">
+            #{userId}
+        </foreach>
+        group by supervisor_id
+    </select>
+    <select id="statisticsSafetyCheckUserScore"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.SafetyCheckScoreUserDTO">
+        select
+        supervisor_id as userId,
+        ifnull(sum(case when check_score > 90 then 1 else 0 end),0) as ninetyScoreStoreNum,
+        ifnull(sum(case when (check_score >= 80 and check_score <![CDATA[ <= ]]> 90) then 1 else 0 end),0) as eightyScoreStoreNum,
+        ifnull(sum(case when check_score <![CDATA[ <= ]]> 80 then 1 else 0 end),0) as eightyDownScoreStoreNum
+        from tb_data_table_${enterpriseId}
+        where deleted = 0
+        and business_status = 1
+        and business_type = 'PATROL_STORE'
+        and patrol_type = 'PATROL_STORE_SAFETY_CHECK'
+        and sign_end_time between #{beginDate} and #{endDate}
+        <foreach collection="userIdList" close=")" separator="," open="and supervisor_id in (" item="userId">
+            #{userId}
+        </foreach>
+        group by supervisor_id
+    </select>
+
+    <select id="getTableInfo" resultMap="BaseResultMap">
+        select * from tb_data_table_${enterpriseId}
+        where business_id = #{businessId}
+        and meta_table_id = #{metaTableId}
+        and deleted = 0
+    </select>
+
+    <select id="getTableInfoByList" resultMap="BaseResultMap">
+        select * from tb_data_table_${enterpriseId}
+        where
+        ( business_id = #{businessId}
+        and meta_table_id in
+        <foreach collection="metaTableIdList" close=")" separator="," open="(" item="metaTableId">#{metaTableId}
+        </foreach>
+        )
+        and deleted = 0
+    </select>
+
+    <select id="getTableListByBusinessId" resultMap="BaseResultMap">
+        select * from tb_data_table_${enterpriseId}
+        where business_id in
+        <foreach collection="businessIds" close=")" separator="," open="(" item="businessId">#{businessId}
+        </foreach>
+        and deleted = 0
+    </select>
+    <select id="getTableListByBusinessIds" resultMap="BaseResultMap">
+        select * from tb_data_table_${enterpriseId}
+        WHERE deleted = 0
+        AND business_id IN
+        <foreach collection="businessIds" item="businessId" open="(" separator="," close=")">
+            #{businessId}
+        </foreach>
+        AND meta_table_id IN
+        <foreach collection="metaTableIds" item="metaTableId" open="(" separator="," close=")">
+            #{metaTableId}
+        </foreach>
+    </select>
+
+    <update id="updateBatchById">
+        <foreach collection="records" item="record" separator=";">
+            update tb_data_table_${enterpriseId}
+            <set>
+                <if test="record.taskId != null">
+                    task_id = #{record.taskId},
+                </if>
+                <if test="record.subTaskId != null">
+                    sub_task_id = #{record.subTaskId},
+                </if>
+                <if test="record.storeId != null">
+                    store_id = #{record.storeId},
+                </if>
+                <if test="record.storeName != null">
+                    store_name = #{record.storeName},
+                </if>
+                <if test="record.regionId != null">
+                    region_id = #{record.regionId},
+                </if>
+                <if test="record.regionPath != null">
+                    region_path = #{record.regionPath},
+                </if>
+                <if test="record.businessId != null">
+                    business_id = #{record.businessId},
+                </if>
+                <if test="record.businessType != null">
+                    business_type = #{record.businessType},
+                </if>
+                <if test="record.metaTableId != null">
+                    meta_table_id = #{record.metaTableId},
+                </if>
+                <if test="record.createTime != null">
+                    create_time = #{record.createTime},
+                </if>
+                <if test="record.editTime != null">
+                    edit_time = #{record.editTime},
+                </if>
+                <if test="record.tableName != null">
+                    table_name = #{record.tableName},
+                </if>
+                <if test="record.description != null">
+                    description = #{record.description},
+                </if>
+                <if test="record.createUserId != null">
+                    create_user_id = #{record.createUserId},
+                </if>
+                <if test="record.supervisorId != null">
+                    supervisor_id = #{record.supervisorId},
+                </if>
+                <if test="record.supportScore != null">
+                    support_score = #{record.supportScore},
+                </if>
+                <if test="record.tableType != null">
+                    table_type = #{record.tableType},
+                </if>
+                <if test="record.submitStatus != null">
+                    submit_status = #{record.submitStatus},
+                </if>
+                <if test="record.businessStatus != null">
+                    business_status = #{record.businessStatus},
+                </if>
+                <if test="record.deleted != null">
+                    deleted = #{record.deleted},
+                </if>
+                <if test="record.createDate != null">
+                    create_date = #{record.createDate},
+                </if>
+                <if test="record.auditUserId != null">
+                    audit_user_id = #{record.auditUserId},
+                </if>
+                <if test="record.auditTime != null">
+                    audit_time = #{record.auditTime},
+                </if>
+                <if test="record.auditPicture != null">
+                    audit_picture = #{record.auditPicture},
+                </if>
+                <if test="record.auditOpinion != null">
+                    audit_opinion = #{record.auditOpinion},
+                </if>
+                <if test="record.auditUserName != null">
+                    audit_user_name = #{record.auditUserName},
+                </if>
+                <if test="record.auditRemark != null">
+                    audit_remark = #{record.auditRemark},
+                </if>
+                <if test="record.totalScore != null">
+                    total_score = #{record.totalScore},
+                </if>
+                <if test="record.tableProperty != null">
+                    table_property = #{record.tableProperty},
+                </if>
+                <if test="record.taskCalTotalScore != null">
+                    task_cal_total_score = #{record.taskCalTotalScore},
+                </if>
+                <if test="record.checkScore != null">
+                    check_score = #{record.checkScore},
+                </if>
+                <if test="record.totalResultAward != null">
+                    total_result_award = #{record.totalResultAward},
+                </if>
+                <if test="record.noApplicableRule != null">
+                    no_applicable_rule = #{record.noApplicableRule},
+                </if>
+                <if test="record.failNum != null">
+                    fail_num = #{record.failNum},
+                </if>
+                <if test="record.passNum != null">
+                    pass_num = #{record.passNum},
+                </if>
+                <if test="record.inapplicableNum != null">
+                    inapplicable_num = #{record.inapplicableNum},
+                </if>
+                <if test="record.totalCalColumnNum != null">
+                    total_cal_column_num = #{record.totalCalColumnNum},
+                </if>
+                <if test="record.collectColumnNum != null">
+                    collect_column_num = #{record.collectColumnNum},
+                </if>
+                <if test="record.checkResultLevel != null">
+                    check_result_level = #{record.checkResultLevel},
+                </if>
+                sign_start_time = #{record.signStartTime}
+            </set>
+            where id = #{record.id}
+        </foreach>
+    </update>
+</mapper>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.menu.SysMenuExtendMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.menu.SysMenuExtendDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="menu_id" jdbcType="BIGINT" property="menuId" />
+    <result column="define_name" jdbcType="VARCHAR" property="defineName" />
+    <result column="menu_pic" jdbcType="VARCHAR" property="menuPic" />
+    <result column="platform" jdbcType="VARCHAR" property="platform" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, menu_id, define_name, menu_pic, platform
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_menu_extend_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_menu_extend_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.menu.SysMenuExtendDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_menu_extend_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="menuId != null">
+        menu_id,
+      </if>
+      <if test="defineName != null">
+        define_name,
+      </if>
+      <if test="menuPic != null">
+        menu_pic,
+      </if>
+      <if test="platform != null">
+        platform,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="menuId != null">
+        #{menuId,jdbcType=BIGINT},
+      </if>
+      <if test="defineName != null">
+        #{defineName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuPic != null">
+        #{menuPic,jdbcType=VARCHAR},
+      </if>
+      <if test="platform != null">
+        #{platform,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.menu.SysMenuExtendDO">
+    update sys_menu_extend_${enterpriseId}
+    <set>
+      <if test="menuId != null">
+        menu_id = #{menuId,jdbcType=BIGINT},
+      </if>
+      <if test="defineName != null">
+        define_name = #{defineName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuPic != null">
+        menu_pic = #{menuPic,jdbcType=VARCHAR},
+      </if>
+      <if test="platform != null">
+        platform = #{platform,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != menuId">
+         and t.menu_id = #{menuId,jdbcType=BIGINT}
+      </if>
+      <if test="null != defineName">
+         and t.define_name = #{defineName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != menuPic">
+         and t.menu_pic = #{menuPic,jdbcType=VARCHAR}
+      </if>
+      <if test="null != platform">
+         and t.platform = #{platform,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+
+  <delete id="deleteByMenuIdList">
+    delete from sys_menu_extend_${enterpriseId}
+    where menu_id in
+    <foreach collection="menuIdList" item="menuId" open="(" separator="," close=")">
+      #{menuId}
+    </foreach>
+  </delete>
+
+  <insert  id="batchInsertMenuExtend">
+    insert into sys_menu_extend_${eid}
+    (
+    menu_id,
+    define_name,
+    menu_pic,
+    platform
+    )
+    VALUES
+    <foreach collection="menuExtendList" item="item" separator=",">
+      (
+      #{item.menuId},
+      #{item.defineName},
+      #{item.menuPic},
+      #{item.platform}
+      )
+    </foreach>
+  </insert>
+
+  <select id="listByMenuIdList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_menu_extend_${enterpriseId}
+    where menu_id in
+    <foreach collection="menuIdList" item="menuId" open="(" separator="," close=")">
+      #{menuId}
+    </foreach>
+  </select>
+
+</mapper>

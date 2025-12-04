@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.patrolstore.AiPictureResultMappingMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.patrolstore.AiPictureResultMappingDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="picture_id" jdbcType="BIGINT" property="pictureId"/>
+        <result column="meta_column_id" jdbcType="BIGINT" property="metaColumnId"/>
+        <result column="ai_result" jdbcType="VARCHAR" property="aiResult"/>
+        <result column="ai_content" jdbcType="VARCHAR" property="aiContent"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, picture_id, meta_column_id, ai_result, ai_content,  create_time, update_time
+    </sql>
+
+    <insert id="insert" >
+        insert into ai_picture_result_mapping_${enterpriseId}
+        (
+        picture_id,
+        meta_column_id,
+        ai_result,
+        ai_content,
+        create_time,
+        update_time
+        )
+        values
+        (
+        #{picture.pictureId},
+        #{picture.metaColumnId},
+        #{picture.aiResult},
+        #{picture.aiContent},
+        #{picture.createTime},
+        #{picture.updateTime}
+    </insert>
+    <insert id="batchInsert" keyColumn="id" keyProperty="list.id" useGeneratedKeys="true">
+        insert into ai_picture_result_mapping_${enterpriseId}
+        (
+        picture_id,
+        meta_column_id,
+        ai_result,
+        ai_content,
+        create_time,
+        update_time
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.pictureId},
+            #{item.metaColumnId},
+            #{item.aiResult},
+            #{item.aiContent},
+            #{item.createTime},
+            #{item.updateTime}
+            )
+        </foreach>
+    </insert>
+    <select id="selectByPictureIdList"
+            resultType="com.coolcollege.intelligent.model.patrolstore.AiPictureResultMappingDO">
+        select
+        <include refid="Base_Column_List"/>
+        from ai_picture_result_mapping_${enterpriseId}
+        where 1 = 1
+        <foreach collection="pictureIdList" open="and picture_id in (" close=")" separator="," item="pictureId">
+            #{pictureId}
+        </foreach>
+    </select>
+</mapper>

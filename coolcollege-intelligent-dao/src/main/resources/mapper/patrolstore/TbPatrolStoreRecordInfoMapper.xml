@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.patrolstore.TbPatrolStoreRecordInfoMapper">
+    <resultMap id="baseMap" type="com.coolcollege.intelligent.model.patrolstore.TbPatrolStoreRecordInfoDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="eid"  property="eid"/>
+        <result column="sign_in_way"  property="signInWay"/>
+        <result column="sign_in_remark"  property="signInRemark"/>
+        <result column="sign_out_way"  property="signOutWay"/>
+        <result column="sign_out_remark"  property="signOutRemark"/>
+        <result column="params"  property="params"/>
+        <result column="create_time"  property="createTime"/>
+        <result column="update_time"  property="updateTime"/>
+        <result column="audit_user_id" jdbcType="VARCHAR" property="auditUserId" />
+        <result column="audit_time" jdbcType="TIMESTAMP" property="auditTime" />
+        <result column="audit_picture" jdbcType="VARCHAR" property="auditPicture" />
+        <result column="audit_opinion" jdbcType="VARCHAR" property="auditOpinion" />
+        <result column="audit_user_name" jdbcType="VARCHAR" property="auditUserName" />
+        <result column="audit_remark" jdbcType="VARCHAR" property="auditRemark" />
+        <result column="signature_url" jdbcType="VARCHAR" property="signatureUrl" />
+        <result column="signature_result" jdbcType="VARCHAR" property="signatureResult" />
+        <result column="signature_remark" jdbcType="VARCHAR" property="signatureRemark" />
+        <result column="signature_user_id" jdbcType="VARCHAR" property="signatureUserId" />
+        <result column="signature_time" jdbcType="TIMESTAMP" property="signatureTime" />
+        <result column="finish_time" jdbcType="TIMESTAMP" property="finishTime" />
+
+        <result column="supervisor_id" jdbcType="VARCHAR" property="supervisorId" />
+        <result column="supervisor_name" jdbcType="VARCHAR" property="supervisorName" />
+        <result column="patrol_type" jdbcType="VARCHAR" property="patrolType" />
+        <result column="sign_end_time" jdbcType="TIMESTAMP" property="signEndTime" />
+        <result column="audit_reject_num" jdbcType="INTEGER" property="auditRejectNum" />
+        <result column="appeal_pass_num" jdbcType="INTEGER" property="appealPassNum" />
+        <result column="appeal_reject_num" jdbcType="INTEGER" property="appealRejectNum" />
+    </resultMap>
+    <insert id="saveTbPatrolStoreRecordInfo">
+        insert into tb_patrol_store_record_info_${eid}
+        (
+        id,
+        <if test="tbPatrolStoreRecordInfo.signInWay !=null and tbPatrolStoreRecordInfo.signInWay!=''">
+            sign_in_way,
+        </if>
+        <if test="tbPatrolStoreRecordInfo.signInRemark !=null and tbPatrolStoreRecordInfo.signInRemark!=''">
+            sign_in_remark,
+        </if>
+        <if test="tbPatrolStoreRecordInfo.signOutWay !=null and tbPatrolStoreRecordInfo.signOutWay!=''">
+            sign_out_way,
+        </if>
+        <if test="tbPatrolStoreRecordInfo.signOutRemark !=null and tbPatrolStoreRecordInfo.signOutRemark!=''">
+            sign_out_remark,
+        </if>
+        <if test="tbPatrolStoreRecordInfo.params !=null and tbPatrolStoreRecordInfo.params!=''">
+            params,
+        </if>
+        <if test="tbPatrolStoreRecordInfo.supervisorId !=null and tbPatrolStoreRecordInfo.supervisorId!=''">
+            supervisor_id,
+        </if>
+        <if test="tbPatrolStoreRecordInfo.supervisorName !=null and tbPatrolStoreRecordInfo.supervisorName!=''">
+            supervisor_name,
+        </if>
+        <if test="tbPatrolStoreRecordInfo.patrolType !=null and tbPatrolStoreRecordInfo.patrolType!=''">
+            patrol_type,
+        </if>
+        eid
+        )values(
+        #{tbPatrolStoreRecordInfo.id},
+        <if test="tbPatrolStoreRecordInfo.signInWay !=null and tbPatrolStoreRecordInfo.signInWay!=''">
+            #{tbPatrolStoreRecordInfo.signInWay},
+        </if>
+        <if test="tbPatrolStoreRecordInfo.signInRemark !=null and tbPatrolStoreRecordInfo.signInRemark!=''">
+            #{tbPatrolStoreRecordInfo.signInRemark},
+        </if>
+        <if test="tbPatrolStoreRecordInfo.signOutWay !=null and tbPatrolStoreRecordInfo.signOutWay!=''">
+            #{tbPatrolStoreRecordInfo.signOutWay},
+        </if>
+        <if test="tbPatrolStoreRecordInfo.signOutRemark !=null and tbPatrolStoreRecordInfo.signOutRemark!=''">
+            #{tbPatrolStoreRecordInfo.signOutRemark},
+        </if>
+        <if test="tbPatrolStoreRecordInfo.params !=null and tbPatrolStoreRecordInfo.params!=''">
+            #{tbPatrolStoreRecordInfo.params},
+        </if>
+        <if test="tbPatrolStoreRecordInfo.supervisorId !=null and tbPatrolStoreRecordInfo.supervisorId!=''">
+            #{tbPatrolStoreRecordInfo.supervisorId},
+        </if>
+        <if test="tbPatrolStoreRecordInfo.supervisorName !=null and tbPatrolStoreRecordInfo.supervisorName!=''">
+            #{tbPatrolStoreRecordInfo.supervisorName},
+        </if>
+        <if test="tbPatrolStoreRecordInfo.patrolType !=null and tbPatrolStoreRecordInfo.patrolType!=''">
+            #{tbPatrolStoreRecordInfo.patrolType},
+        </if>
+        #{tbPatrolStoreRecordInfo.eid}
+        ) ON DUPLICATE KEY UPDATE
+        <if test="tbPatrolStoreRecordInfo.signInWay !=null and tbPatrolStoreRecordInfo.signInWay!=''">
+            sign_in_way=values(sign_in_way),
+        </if>
+        <if test="tbPatrolStoreRecordInfo.signInRemark !=null and tbPatrolStoreRecordInfo.signInRemark!=''">
+            sign_in_remark=values(sign_in_remark),
+        </if>
+        <if test="tbPatrolStoreRecordInfo.signOutWay !=null and tbPatrolStoreRecordInfo.signOutWay!=''">
+            sign_out_way=values(sign_out_way),
+        </if>
+        <if test="tbPatrolStoreRecordInfo.signOutRemark !=null and tbPatrolStoreRecordInfo.signOutRemark!=''">
+            sign_out_remark=values(sign_out_remark),
+        </if>
+        <if test="tbPatrolStoreRecordInfo.params !=null and tbPatrolStoreRecordInfo.params!=''">
+            params=values(params),
+        </if>
+        <if test="tbPatrolStoreRecordInfo.supervisorId !=null and tbPatrolStoreRecordInfo.supervisorId!=''">
+            supervisor_id=values(supervisor_id),
+        </if>
+        <if test="tbPatrolStoreRecordInfo.supervisorName !=null and tbPatrolStoreRecordInfo.supervisorName!=''">
+            supervisor_name=values(supervisor_name),
+        </if>
+        <if test="tbPatrolStoreRecordInfo.patrolType !=null and tbPatrolStoreRecordInfo.patrolType!=''">
+            patrol_type=values(patrol_type),
+        </if>
+        eid=values(eid)
+
+
+    </insert>
+
+    <select id="selectTbPatrolStoreRecordInfoList" resultMap="baseMap">
+        select *
+         from tb_patrol_store_record_info_${eid}
+         <where>
+             <if test="idList !=null and idList.size>0">
+                 <foreach collection="idList" open="id in(" separator="," close=")" item="item">
+                     #{item}
+                 </foreach>
+             </if>
+         </where>
+    </select>
+
+    <select id="selectTbPatrolStoreRecordInfo" resultMap="baseMap">
+        select *
+        from tb_patrol_store_record_info_${eid}
+        <where>
+        id =#{id}
+        </where>
+    </select>
+    <select id="deleteTbPatrolStoreRecordInfo" resultMap="baseMap">
+        delete  from tb_patrol_store_record_info_${eid}
+          where  id =#{id}
+    </select>
+
+    <update id="updateAuditInfo">
+        update tb_patrol_store_record_info_${enterpriseId}
+        set audit_user_id = #{auditUserId}
+        , audit_picture = #{auditPicture}, audit_opinion = #{auditOpinion}
+        , audit_user_name = #{auditUserName}, audit_remark = #{auditRemark}, audit_time = now()
+        where id =#{id}
+    </update>
+
+    <update id="updateStorePartnerSignatureInfo">
+        update tb_patrol_store_record_info_${enterpriseId}
+        set signature_url = #{signatureUrl}
+        , signature_result = #{signatureResult}, signature_remark = #{signatureRemark}
+        , signature_user_id = #{signatureUserId}, signature_time = now()
+        where id =#{id}
+    </update>
+
+    <update id="updatesafetyCheckFinishTime">
+        update tb_patrol_store_record_info_${enterpriseId}
+        set finish_time = now(), sign_end_time = #{signEndTime}
+        where id =#{id}
+    </update>
+    <select id="statisticsSafetyCheckUser"
+            resultType="com.coolcollege.intelligent.model.safetycheck.vo.ScSafetyCheckCountVO">
+        select
+        supervisor_id as userId,
+        ifnull(sum(audit_reject_num), 0) as auditRejectNum,
+        ifnull(sum(appeal_pass_num), 0) as storeAppealPassNum,
+        ifnull(sum(appeal_reject_num), 0) as storeAppealRejectNum
+        from tb_patrol_store_record_info_${enterpriseId}
+        where patrol_type = 'PATROL_STORE_SAFETY_CHECK'
+        and sign_end_time between #{beginDate} and #{endDate}
+        <foreach collection="userIdList" close=")" separator="," open="and supervisor_id in (" item="userId">
+            #{userId}
+        </foreach>
+        group by supervisor_id
+    </select>
+    <update id="updateSafetyCheckAppealPassNum">
+        update tb_patrol_store_record_info_${enterpriseId}
+        set appeal_pass_num = appeal_pass_num + 1
+        where id =#{id}
+    </update>
+    <update id="updateSafetyCheckAppealRejectNum">
+        update tb_patrol_store_record_info_${enterpriseId}
+        set appeal_reject_num = appeal_reject_num + 1
+        where id =#{id}
+    </update>
+    <update id="updateSafetyCheckAuditRejectNum">
+        update tb_patrol_store_record_info_${enterpriseId}
+        set audit_reject_num = 1
+        where id =#{id}
+    </update>
+
+    <update id="updateDeleteUserInfo">
+        update tb_patrol_store_record_info_${enterpriseId}
+        set delete_user_id = #{deleteUserId}
+          , delete_user_name = #{deleteUserName}
+          , delete_time =  now()
+        where id =#{id}
+    </update>
+</mapper>

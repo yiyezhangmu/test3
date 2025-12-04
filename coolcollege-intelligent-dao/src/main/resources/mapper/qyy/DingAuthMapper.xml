@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.qyy.DingAuthMapper">
+    <insert id="insetDingAuth">
+        insert into enterprise_ding_auth
+        (
+            `ding_corp_id`,
+            `auth_param`,
+            `flag`
+        )
+        values
+        (
+        #{cardDingAuthDTO.dingCorpId},
+        #{cardDingAuthDTO.authParam},
+        '0'
+        )
+    </insert>
+
+
+    <select id="judgeDingAuth"
+            resultType="com.coolcollege.intelligent.facade.dto.openApi.achieve.qyy.CardDingAuthDTO">
+        select * from enterprise_ding_auth
+        <where>
+            <if test="cardDingAuthDTO.dingCorpId != null">
+               and ding_corp_id = #{cardDingAuthDTO.dingCorpId}
+            </if>
+            <if test="">
+
+            </if>
+            <if test=""></if>
+            <if test=""></if>
+        </where>
+    </select>
+    <select id="findDingAuth"
+            resultType="com.coolcollege.intelligent.facade.dto.openApi.achieve.qyy.CardDingAuthDTO">
+        select *
+        from enterprise_ding_auth
+        where
+        ding_corp_id = #{cardDingAuthDTO.dingCorpId}
+        and  auth_param = #{cardDingAuthDTO.authParam}
+    </select>
+</mapper>

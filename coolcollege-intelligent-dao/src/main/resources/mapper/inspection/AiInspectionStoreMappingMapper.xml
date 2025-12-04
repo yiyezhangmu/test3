@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.inspection.AiInspectionStoreMappingMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.inspection.entity.AiInspectionStoreMappingDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="inspection_id" jdbcType="BIGINT" property="inspectionId" />
+    <result column="mapping_id" jdbcType="VARCHAR" property="mappingId" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, inspection_id, mapping_id, type
+  </sql>
+  <insert id="insertSelective" keyColumn="id" keyProperty="record.id" useGeneratedKeys="true">
+    insert into ai_inspection_store_mapping_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.inspectionId != null">
+        inspection_id,
+      </if>
+      <if test="record.mappingId != null">
+        mapping_id,
+      </if>
+      <if test="record.type != null">
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.inspectionId != null">
+        #{record.inspectionId},
+      </if>
+      <if test="record.mappingId != null">
+        #{record.mappingId},
+      </if>
+      <if test="record.type != null">
+        #{record.type},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update ai_inspection_store_mapping_${enterpriseId}
+    <set>
+      <if test="record.inspectionId != null">
+        inspection_id = #{record.inspectionId},
+      </if>
+      <if test="record.mappingId != null">
+        mapping_id = #{record.mappingId},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type},
+      </if>
+    </set>
+    where id = #{record.id}
+  </update>
+  <delete id="deleteByPrimaryKey">
+    delete from ai_inspection_store_mapping_${enterpriseId}
+    where id = #{id}
+  </delete>
+    <delete id="deleteByInspectionId">
+      delete from ai_inspection_store_mapping_${enterpriseId}
+      where inspection_id = #{inspectionId}
+    </delete>
+    <select id="selectByInspectionIdList"
+            resultType="com.coolcollege.intelligent.model.inspection.entity.AiInspectionStoreMappingDO">
+    SELECT * FROM ai_inspection_store_mapping_${enterpriseId}
+    WHERE inspection_id IN
+    <foreach collection="inspectionIdList" item="inspectionId" open="(" separator="," close=")">
+      #{inspectionId}
+    </foreach>
+    </select>
+  <select id="selectByPrimaryKey"
+          resultType="com.coolcollege.intelligent.model.inspection.entity.AiInspectionStoreMappingDO">
+    select * from ai_inspection_store_mapping_${enterpriseId} where id = #{id}
+  </select>
+</mapper>

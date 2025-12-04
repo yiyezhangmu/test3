@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.enterpriseMenu.EnterpriseMenuInfoMapper">
+
+    <select id="getByEnterpriseId" resultType="com.coolcollege.intelligent.model.enterpriseMenu.EnterpriseMenuInfoDO">
+        select *
+        from enterprise_menu_info
+        where enterprise_id = #{enterpriseId}
+    </select>
+
+    <update id="updateById" parameterType="com.coolcollege.intelligent.model.enterpriseMenu.EnterpriseMenuInfoDO">
+        update enterprise_menu_info
+        set menu_info = #{menuInfoDO.menuInfo}
+        where enterprise_id = #{menuInfoDO.enterpriseId}
+    </update>
+
+    <insert id="create">
+        insert into enterprise_menu_info (enterprise_id, menu_info)
+        values (#{menuInfoDO.enterpriseId}, #{menuInfoDO.menuInfo})
+    </insert>
+
+</mapper>

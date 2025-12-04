@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.qyy.QyyConversationSceneMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.qyy.QyyConversationSceneDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="scene_code" jdbcType="VARCHAR" property="sceneCode" />
+        <result column="scene_name" jdbcType="VARCHAR" property="sceneName" />
+        <result column="auth_code" jdbcType="VARCHAR" property="authCode" />
+        <result column="auth_name" jdbcType="VARCHAR" property="authName" />
+        <result column="priority" jdbcType="INTEGER" property="priority" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="scene_card_desc" jdbcType="VARCHAR" property="sceneCardDesc"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, scene_code, scene_name, auth_code, auth_name, priority, create_time, update_time,scene_card_desc
+    </sql>
+    <insert id="insertSelective">
+        insert into qyy_conversation_scene_${enterpriseId}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sceneCode != null">
+              scene_code,
+            </if>
+            <if test="sceneName != null">
+              scene_name,
+            </if>
+            <if test="authCode != null">
+              auth_code,
+            </if>
+            <if test="authName != null">
+              auth_name,
+            </if>
+            <if test="createTime != null">
+              create_time,
+            </if>
+            <if test="updateTime != null">
+              update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sceneCode != null">
+              #{sceneCode},
+            </if>
+            <if test="sceneName != null">
+              #{sceneName},
+            </if>
+            <if test="authCode != null">
+              #{authCode},
+            </if>
+            <if test="authName != null">
+              #{authName},
+            </if>
+            <if test="createTime != null">
+              #{createTime},
+            </if>
+            <if test="updateTime != null">
+              #{updateTime},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update qyy_conversation_scene_${enterpriseId}
+        <set>
+            <if test="sceneCode != null">
+              scene_code = #{sceneCode},
+            </if>
+            <if test="sceneName != null">
+              scene_name = #{sceneName},
+            </if>
+            <if test="authCode != null">
+              auth_code = #{authCode},
+            </if>
+            <if test="authName != null">
+              auth_name = #{authName},
+            </if>
+            <if test="createTime != null">
+              create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+              update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    
+    <select id="getConversationScene" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            qyy_conversation_scene_${enterpriseId}
+        where
+            scene_code = #{sceneCode}
+    </select>
+    
+    <select id="getConversationSceneByAuthCodes" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            qyy_conversation_scene_${enterpriseId}
+        where
+            auth_code in <foreach collection="authCodes" separator="," open="(" close=")" item="authCode">#{authCode}</foreach>
+    </select>
+
+
+    <select id="getAllConversationScene" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            qyy_conversation_scene_${enterpriseId}
+    </select>
+</mapper>

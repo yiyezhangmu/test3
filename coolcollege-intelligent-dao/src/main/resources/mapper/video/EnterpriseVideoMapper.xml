@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.video.EnterpriseVideoMapper">
+    <resultMap type="com.coolcollege.intelligent.model.video.platform.EnterpriseVideoDO" id="baseMap">
+        <result property="id" column="id"/>
+        <result property="enterpriseId" column="enterprise_id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="deviceName" column="device_name"/>
+        <result property="model" column="model"/>
+        <result property="status" column="status"/>
+        <result property="defence" column="defence"/>
+        <result property="isEncrypt" column="is_encrypt"/>
+        <result property="alarmSoundMode" column="alarm_sound_mode"/>
+        <result property="offlineNotify" column="offline_notify"/>
+        <result property="category" column="category"/>
+        <result property="netType" column="net_type"/>
+        <result property="signal" column="signal"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="deviceTrustId" column="device_trust_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+    <insert id="batchInsertOrUpdateEnterpriseVideo"
+            parameterType="com.coolcollege.intelligent.model.video.platform.EnterpriseVideoDO">
+        insert into enterprise_video
+        (
+        `enterprise_id`,
+        `device_id`,
+        channel_no,
+        `device_name`,
+        `model`,
+        `status`,
+        `defence`,
+        `is_encrypt`,
+        `alarm_sound_mode`,
+        `offline_notify`,
+        `category`,
+        `net_type`,
+        `user_id`,
+        `user_name`,
+        `signal`,
+        `device_trust_id`,
+        yun_type,
+        channel_ability,
+        share_functions,
+        share_status,
+        cs_status,
+        phone,
+        is_delete
+        )
+        VALUES
+        <foreach collection="enterpriseVideoDOList" item="item" separator=",">
+            (
+            #{item.enterpriseId},
+            #{item.deviceId},
+            #{item.channelNo},
+            #{item.deviceName},
+            #{item.model},
+            #{item.status},
+            #{item.defence},
+            #{item.isEncrypt},
+            #{item.alarmSoundMode},
+            #{item.offlineNotify},
+            #{item.category},
+            #{item.netType},
+            #{item.userId},
+            #{item.userName},
+            #{item.signal},
+            #{item.deviceTrustId},
+            #{item.yunType},
+            #{item.channelAbility},
+            #{item.shareFunctions},
+            #{item.shareStatus},
+            #{item.csStatus},
+            #{item.phone},
+            #{item.isDelete}
+            )
+        </foreach>
+
+        ON DUPLICATE KEY UPDATE
+        is_delete=values(is_delete),
+        device_name=values(device_name),
+        user_name=values(user_name)
+    </insert>
+    <delete id="deleteEnterpriseVideo">
+        update enterprise_video set is_delete=true where enterprise_id=#{eid} and device_id=#{deviceId}
+        <if test="channelNoList!=null and channelNoList.size > 0">
+            <foreach collection="channelNoList" open="and channel_no in (" close=")" item="channelNo" separator=",">
+                #{channelNo}
+            </foreach>
+        </if>
+
+    </delete>
+    <select id="selectEnterpriseIdByDeviceIdList" resultType="java.lang.String">
+        select enterprise_id from enterprise_video
+        where
+        <foreach collection="deviceIdList" separator="," item="deviceId" open="device_id in (" close=")">
+            #{deviceId}
+        </foreach>
+    </select>
+
+</mapper>

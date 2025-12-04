@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.coolcollege.intelligent.dao.userstatus.UserPersonnelStatusHistoryMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.coolcollege.intelligent.model.user.UserPersonnelStatusHistoryDO" id="userPersonnelStatusHistoryMap">
+        <result property="id" column="id"/>
+        <result property="statusName" column="status_name"/>
+        <result property="userId" column="user_id"/>
+        <result property="remarks" column="remarks"/>
+        <result property="effectiveTime" column="effective_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="createUserName" column="create_user_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUserId" column="update_user_id"/>
+        <result property="updateUserName" column="update_user_name"/>
+    </resultMap>
+
+	<sql id="Base_Column_List">
+		`id`,
+		`status_name`,
+		`user_id`,
+		`remarks`,
+		`effective_time`,
+		`create_time`,
+		`create_user_id`,
+		`create_user_name`,
+		`update_time`,
+		`update_user_id`,
+		`update_user_name`
+	</sql>
+
+	<select id="selectById" resultMap="userPersonnelStatusHistoryMap">
+		select
+		<include refid="Base_Column_List"/>
+		from user_personnel_status_history_${eid} where id = #{id}
+	</select>
+
+	<select id="selectByUserIdAndEffectiveTime" resultMap="userPersonnelStatusHistoryMap">
+		select
+		<include refid="Base_Column_List"/>
+		from user_personnel_status_history_${eid}
+		where user_id = #{userId}
+		and effective_time = #{effectiveTime}
+	</select>
+
+	<select id="getStatusHistoryReport"
+			resultType="com.coolcollege.intelligent.model.user.vo.UserPersonnelStatusHistoryVO">
+		select
+			status_name as statusName,
+			user_id as userId,
+			remarks as remarks,
+			effective_time as effectiveTime
+		from user_personnel_status_history_${eid}
+		where
+	    	user_id in
+	    	<foreach collection="userIds" item="userId" open="(" separator="," close=")">
+				#{userId}
+			</foreach>
+			and effective_time &gt;= #{starTime}
+			and effective_time &lt;= #{endTime}
+	</select>
+
+	<insert id="save" parameterType="com.coolcollege.intelligent.model.user.UserPersonnelStatusHistoryDO" useGeneratedKeys="true" keyProperty="entity.id">
+		insert into user_personnel_status_history_${eid}
+		(
+			`status_name`,
+			`user_id`,
+			`remarks`,
+			`effective_time`, 
+			`create_time`, 
+			`create_user_id`, 
+			`create_user_name`,
+			`update_time`,
+			`update_user_id`,
+			`update_user_name`
+		)
+		values
+		(
+			#{entity.statusName}, 
+			#{entity.userId},
+			#{entity.remarks},
+			#{entity.effectiveTime}, 
+			#{entity.createTime}, 
+			#{entity.createUserId}, 
+			#{entity.createUserName},
+			#{entity.updateTime},
+			#{entity.updateUserId},
+			#{entity.updateUserName}
+		)
+	</insert>
+
+	<insert id="batchInsertOrUpdate" parameterType="java.util.List">
+		insert into user_personnel_status_history_${eid} (
+		`status_name`,
+		`user_id`,
+		`remarks`,
+		`effective_time`,
+		`create_time`,
+		`create_user_id`,
+		`create_user_name`,
+		`update_time`,
+		`update_user_id`,
+		`update_user_name`
+		) values
+
+		<foreach collection="list" item="it" separator=",">
+			(
+			#{it.statusName},
+			#{it.userId},
+			#{it.remarks},
+			#{it.effectiveTime},
+			#{it.createTime},
+			#{it.createUserId},
+			#{it.createUserName},
+			sysdate(),
+			#{it.updateUserId},
+			#{it.updateUserName}
+			)
+		</foreach>
+		ON DUPLICATE KEY UPDATE status_name=values(status_name),
+		remarks=values(remarks)
+	</insert>
+	 
+	<update id="updateById" parameterType="com.coolcollege.intelligent.model.user.UserPersonnelStatusHistoryDO">
+		update user_personnel_status_history_${eid}
+		<set>
+			<if test="entity.statusName != null and entity.statusName !=''" >`status_name` = #{entity.statusName}, </if>
+			<if test="entity.userId != null and entity.userId !=''" >`user_id` = #{entity.userId}, </if>
+			<if test="entity.remarks != null and entity.remarks !=''" >`remarks` = #{entity.remarks}, </if>
+			<if test="entity.effectiveTime != null" >`effective_time` = #{entity.effectiveTime}, </if>
+			<if test="entity.createTime != null" >`create_time` = #{entity.createTime}, </if>
+			<if test="entity.createUserId != null and entity.createUserId !=''" >`create_user_id` = #{entity.createUserId}, </if>
+			<if test="entity.createUserName != null and entity.createUserName !=''" >`create_user_name` = #{entity.createUserName}, </if>
+			<if test="entity.updateUserId != null and entity.updateUserId !=''" >`update_user_id` = #{entity.updateUserId}, </if>
+			<if test="entity.updateUserName != null and entity.updateUserName !=''" >`update_user_name` = #{entity.updateUserName}, </if>
+			`update_time` = now()
+		</set>
+		where id = #{entity.id}
+	</update>
+	
+	<delete id="deleteById">
+		delete from user_personnel_status_history_${eid} where id = #{id}
+	</delete>
+	
+	<delete id="deleteBatchByIds">
+		delete from user_personnel_status_history_${eid} where id in
+		<foreach item="id" collection="ids" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

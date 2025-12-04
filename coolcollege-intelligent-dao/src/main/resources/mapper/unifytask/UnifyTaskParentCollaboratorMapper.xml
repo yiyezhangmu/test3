@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.unifytask.UnifyTaskParentCollaboratorMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.unifytask.UnifyTaskParentCollaboratorDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="unify_task_id" jdbcType="BIGINT" property="unifyTaskId" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="task_type" jdbcType="VARCHAR" property="taskType" />
+    <result column="collaborator_id" jdbcType="VARCHAR" property="collaboratorId" />
+    <result column="parent_status" jdbcType="VARCHAR" property="parentStatus" />
+    <result column="begin_time" jdbcType="BIGINT" property="beginTime" />
+    <result column="end_time" jdbcType="BIGINT" property="endTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, unify_task_id, task_name, task_type, collaborator_id, parent_status, begin_time, 
+    end_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from unify_task_parent_collaborator_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from unify_task_parent_collaborator_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByTaskId" parameterType="java.lang.Long">
+    delete from unify_task_parent_collaborator_${enterpriseId}
+    where unify_task_id = #{unifyTaskId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.unifytask.UnifyTaskParentCollaboratorDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into unify_task_parent_collaborator_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="unifyTaskId != null">
+        unify_task_id,
+      </if>
+      <if test="taskName != null">
+        task_name,
+      </if>
+      <if test="taskType != null">
+        task_type,
+      </if>
+      <if test="collaboratorId != null">
+        collaborator_id,
+      </if>
+      <if test="parentStatus != null">
+        parent_status,
+      </if>
+      <if test="beginTime != null">
+        begin_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="unifyTaskId != null">
+        #{unifyTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="taskName != null">
+        #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskType != null">
+        #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="collaboratorId != null">
+        #{collaboratorId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentStatus != null">
+        #{parentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null">
+        #{beginTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <insert id="batchInsertOrUpdate">
+    insert into unify_task_parent_collaborator_${eid}
+    (
+    `unify_task_id`,
+    `task_name`,
+    `task_type`,
+    `collaborator_id`,
+    `parent_status`,
+    `begin_time`,
+    `end_time`
+    )
+    values
+    <foreach collection="list" item="entity" separator=",">
+      (
+      #{entity.unifyTaskId},
+      #{entity.taskName},
+      #{entity.taskType},
+      #{entity.collaboratorId},
+      #{entity.parentStatus},
+      #{entity.beginTime},
+      #{entity.endTime}
+      )
+    </foreach>
+    ON DUPLICATE KEY UPDATE
+    task_name=values(task_name)
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.unifytask.UnifyTaskParentCollaboratorDO">
+    update unify_task_parent_collaborator_${enterpriseId}
+    <set>
+      <if test="unifyTaskId != null">
+        unify_task_id = #{unifyTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="taskName != null">
+        task_name = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskType != null">
+        task_type = #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="collaboratorId != null">
+        collaborator_id = #{collaboratorId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentStatus != null">
+        parent_status = #{parentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null">
+        begin_time = #{beginTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != unifyTaskId">
+         and t.unify_task_id = #{unifyTaskId,jdbcType=BIGINT}
+      </if>
+      <if test="null != taskName">
+         and t.task_name = #{taskName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != taskType">
+         and t.task_type = #{taskType,jdbcType=VARCHAR}
+      </if>
+      <if test="null != collaboratorId">
+         and t.collaborator_id = #{collaboratorId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != parentStatus">
+         and t.parent_status = #{parentStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="null != beginTime">
+         and t.begin_time = #{beginTime,jdbcType=BIGINT}
+      </if>
+      <if test="null != endTime">
+         and t.end_time = #{endTime,jdbcType=BIGINT}
+      </if>
+    </trim>
+  </sql>
+  <select id="selectCollaboratorIdByTaskId" parameterType="java.lang.Long" resultType="java.lang.String">
+    select  collaborator_id from unify_task_parent_collaborator_${enterpriseId}
+    where unify_task_id = #{unifyTaskId,jdbcType=BIGINT}
+  </select>
+  <select id="selectCollaboratorIdByTaskIdList" parameterType="java.lang.Long" resultType="com.coolcollege.intelligent.model.unifytask.dto.UnifyPersonDTO">
+    select collaborator_id as userId, unify_task_id as unifyTaskId  from unify_task_parent_collaborator_${enterpriseId}
+    where unify_task_id in
+    <foreach collection="unifyTaskIdList" item="unifyTaskId" open="(" close=")" separator=",">
+      #{unifyTaskId}
+    </foreach>
+  </select>
+  <select id="selectByCollaboratorId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from unify_task_parent_collaborator_${enterpriseId}
+    where collaborator_id = #{userId}
+    <if test="query.taskType != null and query.taskType != ''">
+      and task_type = #{query.taskType}
+    </if>
+    <if test="query.queryType != null and query.queryType != ''">
+      <choose>
+        <when test="query.queryType=='nostart'">
+          AND begin_time &gt;= UNIX_TIMESTAMP(now())*1000
+        </when>
+        <when test="query.queryType=='ongoing'">
+          and parent_status = 'ongoing'
+          AND begin_time &lt; UNIX_TIMESTAMP(now())*1000
+        </when>
+        <when test="query.queryType=='complete'">
+          and parent_status = 'complete'
+          AND begin_time &lt; UNIX_TIMESTAMP(now())*1000
+        </when>
+        <otherwise>
+          and parent_status is not null
+        </otherwise>
+      </choose>
+    </if>
+    <if test="query.taskName != null and query.taskName != ''">
+      and task_name like concat('%',trim(#{query.taskName,jdbcType=VARCHAR}),'%')
+    </if>
+    order by id desc
+  </select>
+  <select id="selectDisplayParentStatistics" resultType="java.lang.Integer">
+    select count(a.id)
+    from unify_task_parent_collaborator_${enterpriseId} a
+    where a.task_type = #{taskType}
+    and a.collaborator_id = #{userId}
+    <if test="status != null and status != ''">
+      <choose>
+        <when test="status=='nostart'">
+          AND a.begin_time &gt;= UNIX_TIMESTAMP(now())*1000
+        </when>
+        <otherwise>
+          and a.parent_status = #{status}
+          AND a.begin_time &lt; UNIX_TIMESTAMP(now())*1000
+        </otherwise>
+      </choose>
+    </if>
+  </select>
+  <select id="selectByUserId" resultType="java.lang.String">
+    select unify_task_id
+    from unify_task_parent_collaborator_${enterpriseId}
+    where collaborator_id = #{userId}
+    and task_type = #{taskType}
+  </select>
+  <update id="updateTaskParentStatus">
+    update unify_task_parent_collaborator_${eid}
+    set parent_status=#{parentStatus}
+    where unify_task_id = #{taskId}
+  </update>
+</mapper>

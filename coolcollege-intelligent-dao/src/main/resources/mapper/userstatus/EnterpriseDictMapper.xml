@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseDictMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.coolcollege.intelligent.model.enterprise.EnterpriseDictDO" id="userPersonnelStatusMap">
+        <result property="id" column="id"/>
+        <result property="businessType" column="business_type"/>
+        <result property="businessValue" column="business_value"/>
+        <result property="remarks" column="remarks"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="createUserName" column="create_user_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUserId" column="update_user_id"/>
+        <result property="updateUserName" column="update_user_name"/>
+    </resultMap>
+
+	<sql id="Base_Column_List">
+		`id`,
+		`business_type`,
+		`business_value`,
+		`remarks`,
+		`create_time`,
+		`create_user_id`,
+		`create_user_name`,
+		`update_time`,
+		`update_user_id`,
+		`update_user_name`
+	</sql>
+
+	<select id="selectById" resultMap="userPersonnelStatusMap">
+		select
+		<include refid="Base_Column_List"/>
+		from enterprise_dict_${eid} where id = #{id}
+	</select>
+
+	<select id="selectByTypeAndValue" resultMap="userPersonnelStatusMap">
+		select
+		<include refid="Base_Column_List"/>
+		from enterprise_dict_${eid}
+		where business_type = #{businessType}
+		and business_value = #{businessValue}
+	</select>
+
+	<select id="selectAllByType" resultType="com.coolcollege.intelligent.model.user.vo.UserPersonnelStatusVO">
+		select
+			id as id,
+			business_value as statusName
+		from enterprise_dict_${eid}
+		where business_type = #{businessType}
+		order by id desc
+	</select>
+	<select id="selectByType" resultMap="userPersonnelStatusMap">
+		select
+		<include refid="Base_Column_List"/>
+		from enterprise_dict_${eid}
+		where business_type = #{businessType}
+		order by id desc
+	</select>
+
+
+	<insert id="save" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseDictDO" useGeneratedKeys="true" keyProperty="entity.id">
+		insert into enterprise_dict_${eid}
+		(
+			`business_type`,
+			`business_value`,
+			`remarks`,
+			`create_time`,
+			`create_user_id`,
+			`create_user_name`,
+			`update_time`,
+			`update_user_id`,
+			`update_user_name`
+		)
+		values
+		(
+			#{entity.businessType},
+			#{entity.businessValue},
+			#{entity.remarks},
+			#{entity.createTime}, 
+			#{entity.createUserId}, 
+			#{entity.createUserName},
+			#{entity.updateTime},
+			#{entity.updateUserId},
+			#{entity.updateUserName}
+		)
+	</insert>
+	 
+	<update id="updateById" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseDictDO">
+		update enterprise_dict_${eid} 
+		<set>
+			<if test="entity.businessType != null and entity.businessType !=''" >`business_type` = #{entity.businessType}, </if>
+			<if test="entity.businessValue != null and entity.businessValue !=''" >`business_value` = #{entity.businessValue}, </if>
+			<if test="entity.remarks != null and entity.remarks !=''" >`remarks` = #{entity.remarks}, </if>
+			<if test="entity.updateUserId != null and entity.updateUserId !=''" >`update_user_id` = #{entity.updateUserId}, </if>
+			<if test="entity.updateUserName != null and entity.updateUserName !=''" >`update_user_name` = #{entity.updateUserName}, </if>
+			`update_time` = now()
+		</set>
+		where id = #{entity.id}
+	</update>
+	
+	<delete id="deleteById">
+		delete from enterprise_dict_${eid} where id = #{id}
+	</delete>
+	
+	<delete id="deleteBatchByIds">
+		delete from enterprise_dict_${eid} where id in 
+		<foreach item="id" collection="ids" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

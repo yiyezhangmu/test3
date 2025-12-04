@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseStoreCheckSettingMapper">
+    <resultMap type="com.coolcollege.intelligent.model.enterprise.EnterpriseStoreCheckSettingDO" id="BaseMap">
+        <result property="enterpriseId" column="enterprise_id"/>
+        <result property="locationRange" column="location_range"/>
+        <result property="locationMethod" column="location_method"/>
+        <result property="signInError" column="sign_in_error"/>
+        <result property="signOutError" column="sign_out_error"/>
+        <result property="storeCheckTime" column="store_check_time"/>
+        <result property="defaultCheckTime" column="default_check_time"/>
+        <result property="locationErrorCommit" column="location_error_commit"/>
+        <result property="uploadLocalImg" column="upload_local_img"/>
+        <result property="customizeGrade" column="customize_grade"/>
+        <result property="autoSendProblem" column="auto_send_problem"/>
+        <result property="notifySupervisor" column="notify_supervisor"/>
+        <result property="patrolDay" column="patrol_day"/>
+        <result property="patrolPosition" column="patrol_position"/>
+        <result property="patrolOpen" column="patrol_open"/>
+        <result property="overdueTaskContinue" column="overdue_task_continue"/>
+        <result property="taskRemind" column="task_remind"/>
+        <result property="problemTickRemind" column="problem_tick_remind"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUserId" column="update_user_id"/>
+        <result property="continuePatrol" column="continue_patrol"/>
+        <result property="uploadImgNeed" column="upload_img_need"/>
+        <result property="patrolOpenScheduleId" column="patrol_open_schedule_id"/>
+        <result property="autonomyOpenSummary" column="autonomy_open_summary"/>
+        <result property="autonomyOpenSignature" column="autonomy_open_signature"/>
+        <result property="openSubmitFirst" column="open_submit_first"/>
+        <result property="taskCcRemind" column="task_cc_remind"/>
+        <result property="taskQuestionValidday" column="task_question_validday"/>
+        <result property="handlerOvertimeTaskContinue" column="handler_overtime_task_continue"/>
+        <result property="approveOvertimeTaskContinue" column="approve_overtime_task_continue"/>
+        <result property="overdueDisplay" column="overdue_display"/>
+        <result property="checkPriority" column="check_priority"/>
+        <result property="b1RoleScope" column="b1_role_scope"/>
+        <result property="gpsRoleScope" column="gps_role_scope"/>
+        <result property="patrolRecheck" column="patrol_recheck"/>
+        <result property="patrolRecheckSendProblem" column="patrol_recheck_send_problem"/>
+        <result property="selfGuidedStoreCCRules" column="self_guided_store_CC_rules"/>
+        <result property="bigRegionCheckUser" column="big_region_check_user"/>
+        <result property="warZoneCheckUser" column="war_zone_check_user"/>
+        <result property="uploadSignInOutImg" column="upload_sign_in_out_img"/>
+        <result property="extendField" column="extend_field"/>
+        <result property="patrolSkipApproval" column="patrol_skip_approval"/>
+    </resultMap>
+    <sql id="baseSql">
+     <trim suffixOverrides=",">
+         enterprise_id,
+         location_range,
+         location_method,
+         sign_in_error,
+         sign_out_error,
+         store_check_time,
+         default_check_time,
+         location_error_commit,
+         upload_local_img,
+         customize_grade,
+         auto_send_problem,
+         notify_supervisor,
+         patrol_day,
+         patrol_position,
+         patrol_open,
+         overdue_task_continue,
+         task_remind,
+         problem_tick_remind,
+         continue_patrol,
+         level_info,
+         check_result_info,
+         create_time,
+         create_user_id,
+         update_time,
+         update_user_id,
+         upload_img_need,
+         patrol_open_schedule_id,
+         autonomy_open_summary,
+         autonomy_open_signature,
+         open_submit_first,
+         task_cc_remind,
+         task_question_validday,
+         handler_overtime_task_continue,
+         approve_overtime_task_continue,
+         overdue_display,
+         check_priority,
+         b1_role_scope,
+         gps_role_scope,
+         patrol_recheck,
+         patrol_recheck_send_problem,
+         self_guided_store_CC_rules,
+         display_water_mark,
+         video_patrol_store_CC_rules,
+         big_region_check_user,
+         war_zone_check_user,
+         upload_sign_in_out_img,
+         extend_field,
+         patrol_skip_approval
+     </trim>
+
+    </sql>
+    <update id="updatePatrolScheduleId">
+        update enterprise_store_check_settings
+        set patrol_open_schedule_id = #{patrolOpenScheduleId}
+        where enterprise_id = #{eId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateLevelInfo">
+        update enterprise_store_check_settings
+        set level_info = #{levelInfo}, check_result_info = #{checkResultInfo}
+        where enterprise_id = #{eid}
+    </update>
+    <select id="getEnterpriseStoreCheckSetting" resultMap="BaseMap">
+    select
+    <include refid="baseSql"></include>
+    from enterprise_store_check_settings
+    where enterprise_id = #{eId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getEnterpriseStoreCheckSettingAll" resultMap="BaseMap">
+        select
+        <include refid="baseSql"></include>
+        from enterprise_store_check_settings
+    </select>
+
+    <select id="getLevelInfo" resultType="java.lang.String">
+        select
+            level_info
+        from enterprise_store_check_settings
+        where enterprise_id = #{eid}
+    </select>
+    <select id="getCheckResult" resultType="java.lang.String">
+        select
+            check_result_info
+        from enterprise_store_check_settings
+        where enterprise_id = #{eid}
+    </select>
+    <select id="getPatrolBiosInfo" resultType="java.util.Map">
+        select
+            level_info levelInfo,
+            check_result_info checkResultInfo
+        from enterprise_store_check_settings
+        where enterprise_id = #{eid}
+    </select>
+    <insert id="insertOrUpdate">
+        insert into enterprise_store_check_settings
+        (
+         <include refid="baseSql"></include>
+        )values
+        (
+        #{eId,jdbcType=VARCHAR},
+        #{entity.locationRange,jdbcType=INTEGER},
+        #{entity.locationMethod,jdbcType=INTEGER},
+        #{entity.signInError,jdbcType=TINYINT},
+        #{entity.signOutError,jdbcType=TINYINT},
+        #{entity.storeCheckTime,jdbcType=INTEGER},
+        #{entity.defaultCheckTime,jdbcType=INTEGER},
+        #{entity.locationErrorCommit,jdbcType=TINYINT},
+        #{entity.uploadLocalImg,jdbcType=TINYINT},
+        #{entity.customizeGrade,jdbcType=TINYINT},
+        #{entity.autoSendProblem,jdbcType=TINYINT},
+        #{entity.notifySupervisor,jdbcType=TINYINT},
+        #{entity.patrolDay,jdbcType=INTEGER},
+        #{entity.patrolPosition,jdbcType=VARCHAR},
+        #{entity.patrolOpen,jdbcType=TINYINT},
+        #{entity.overdueTaskContinue,jdbcType=TINYINT},
+        #{entity.taskRemind,jdbcType=TINYINT},
+        #{entity.problemTickRemind,jdbcType=TINYINT},
+        #{entity.continuePatrol,jdbcType=TINYINT},
+        #{entity.levelInfo,jdbcType=VARCHAR},
+        #{entity.checkResultInfo,jdbcType=VARCHAR},
+        #{entity.createTime,jdbcType=BIGINT},
+        #{entity.createUserId,jdbcType=VARCHAR},
+        #{entity.updateTime,jdbcType=BIGINT},
+        #{entity.updateUserId,jdbcType=VARCHAR},
+        #{entity.uploadImgNeed,jdbcType=TINYINT},
+        #{entity.patrolOpenScheduleId,jdbcType=VARCHAR},
+        #{entity.autonomyOpenSummary},
+        #{entity.autonomyOpenSignature},
+        #{entity.openSubmitFirst},
+        #{entity.taskCcRemind},
+        #{entity.taskQuestionValidday},
+        #{entity.handlerOvertimeTaskContinue},
+        #{entity.approveOvertimeTaskContinue},
+        #{entity.overdueDisplay},
+        #{entity.checkPriority},
+        #{entity.b1RoleScope},
+        #{entity.gpsRoleScope},
+        #{entity.patrolRecheck},
+        #{entity.patrolRecheckSendProblem},
+        #{entity.selfGuidedStoreCCRules},
+        #{entity.displayWaterMark},
+        #{entity.videoPatrolStoreCCRules},
+        #{entity.bigRegionCheckUser},
+        #{entity.warZoneCheckUser},
+        #{entity.uploadSignInOutImg},
+        #{entity.extendField},
+        #{entity.patrolSkipApproval}
+        )
+        ON DUPLICATE KEY UPDATE
+        location_range=#{entity.locationRange,jdbcType=INTEGER},
+        location_method=#{entity.locationMethod,jdbcType=INTEGER},
+        sign_in_error=#{entity.signInError,jdbcType=TINYINT},
+        sign_out_error=#{entity.signOutError,jdbcType=TINYINT},
+        store_check_time=#{entity.storeCheckTime,jdbcType=INTEGER},
+        default_check_time=#{entity.defaultCheckTime,jdbcType=INTEGER},
+        location_error_commit=#{entity.locationErrorCommit,jdbcType=TINYINT},
+        upload_local_img=#{entity.uploadLocalImg,jdbcType=TINYINT},
+        customize_grade=#{entity.customizeGrade,jdbcType=TINYINT},
+        auto_send_problem=#{entity.autoSendProblem,jdbcType=TINYINT},
+        notify_supervisor=#{entity.notifySupervisor,jdbcType=TINYINT},
+        patrol_day=#{entity.patrolDay,jdbcType=INTEGER},
+        patrol_position=#{entity.patrolPosition,jdbcType=VARCHAR},
+        patrol_open = #{entity.patrolOpen,jdbcType=TINYINT},
+        overdue_task_continue = #{entity.overdueTaskContinue,jdbcType=TINYINT},
+        task_remind = #{entity.taskRemind,jdbcType=TINYINT},
+        problem_tick_remind = #{entity.problemTickRemind,jdbcType=TINYINT},
+        continue_patrol = #{entity.continuePatrol,jdbcType=TINYINT},
+        update_time=#{entity.updateTime,jdbcType=BIGINT},
+        update_user_id=#{entity.updateUserId,jdbcType=VARCHAR},
+        upload_img_need = #{entity.uploadImgNeed,jdbcType=TINYINT},
+        patrol_open_schedule_id = #{entity.patrolOpenScheduleId,jdbcType=VARCHAR},
+        autonomy_open_summary = #{entity.autonomyOpenSummary},
+        autonomy_open_signature = #{entity.autonomyOpenSignature},
+        open_submit_first = #{entity.openSubmitFirst},
+        task_cc_remind = #{entity.taskCcRemind},
+        task_question_validday = #{entity.taskQuestionValidday},
+        handler_overtime_task_continue = #{entity.handlerOvertimeTaskContinue},
+        approve_overtime_task_continue = #{entity.approveOvertimeTaskContinue},
+        overdue_display = #{entity.overdueDisplay},
+        check_priority = #{entity.checkPriority},
+        b1_role_scope = #{entity.b1RoleScope},
+        gps_role_scope = #{entity.gpsRoleScope},
+        patrol_recheck = #{entity.patrolRecheck},
+        patrol_recheck_send_problem = #{entity.patrolRecheckSendProblem},
+        self_guided_store_CC_rules = #{entity.selfGuidedStoreCCRules},
+        display_water_mark = #{entity.displayWaterMark},
+        video_patrol_store_CC_rules = #{entity.videoPatrolStoreCCRules},
+        big_region_check_user = #{entity.bigRegionCheckUser},
+        war_zone_check_user = #{entity.warZoneCheckUser},
+        upload_sign_in_out_img = #{entity.uploadSignInOutImg},
+        extend_field = #{entity.extendField},
+        patrol_skip_approval = #{entity.patrolSkipApproval}
+    </insert>
+
+    <insert id="initCheckSetting">
+        insert into enterprise_store_check_settings
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            enterprise_id,
+            <if test="entity.createTime != null">
+                create_time,
+            </if>
+            <if test="entity.levelInfo != null">
+                level_info,
+            </if>
+            <if test="entity.checkResultInfo != null">
+                check_result_info,
+            </if>
+            <if test="entity.storeCheckTime != null">
+                store_check_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{eId},
+            <if test="entity.createTime != null">
+                #{entity.createTime},
+            </if>
+            <if test="entity.levelInfo != null">
+                #{entity.levelInfo},
+            </if>
+            <if test="entity.checkResultInfo != null">
+                #{entity.checkResultInfo},
+            </if>
+            <if test="entity.storeCheckTime != null">
+                #{entity.storeCheckTime},
+            </if>
+        </trim>
+    </insert>
+</mapper>

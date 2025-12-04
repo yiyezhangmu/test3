@@ -1,0 +1,771 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.unifytask.AgencyMapper">
+
+    <select id="selectAgencyPendingListNew"
+            resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskAgencyVO">
+        SELECT
+        a.instance_id as flowInstanceId,
+        a.node_no as flowNodeNo,
+        a.cycle_count as flowCycleCount,
+        a.template_id as flowTemplateId,
+        a.node_no as flowNodeNo,
+        a.store_id as storeId,
+        a.action_key as flowActionKey,
+        a.store_name as storeName,
+        a.sub_status as subStatus,
+        a.create_user_id as createUserId,
+        a.handle_user_id as handleUserId,
+        a.create_time as createTime,
+        a.handle_time as handleTime,
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.cid as cid,
+        a.biz_code as bizCode,
+        a.group_item as groupItem,
+        a.task_data as taskData,
+        a.task_type as taskType,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime,
+        a.loop_count as loopCount,
+        a.handler_end_time as handlerEndTime
+        FROM
+        unify_task_sub_${enterpriseId} a
+        WHERE 1 = 1
+        <if test="handleUserId != null and handleUserId != ''">
+            and a.handle_user_id = #{handleUserId}
+        </if>
+        and a.sub_status = 'ongoing'
+        and a.task_type != 'DISPLAY_TASK'
+        and a.task_type != 'PATROL_STORE_AI'
+        and a.task_type != 'SUPERVISION'
+
+        and
+        CASE
+        WHEN a.task_type = 'PATROL_STORE_PLAN' THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+        ELSE 1 = 1
+        end
+
+        <if test="overdueTask==false">
+            and
+            CASE
+            WHEN a.task_type != 'TB_DISPLAY_TASK' THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="handlerOvertimeTaskContinue==false">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK'  and node_no = 1 THEN a.handler_end_time  >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="approverOvertimeTaskContinue==false">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK' and node_no != 1  THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="taskType != null and taskType != ''">
+            and a.task_type = #{taskType}
+        </if>
+        <if test="storeIdList != null and storeIdList.size > 0">
+            and a.store_id in
+            <foreach collection="storeIdList" item="storeId" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="storeId != null and storeId != ''">
+            and a.store_id = #{storeId}
+        </if>
+
+        order by a.create_time desc
+    </select>
+
+    <select id="selectUnifyTaskPendingSub"
+            resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskAgencyVO">
+        SELECT
+        a.instance_id as flowInstanceId,
+        a.node_no as flowNodeNo,
+        a.cycle_count as flowCycleCount,
+        a.template_id as flowTemplateId,
+        a.node_no as flowNodeNo,
+        a.store_id as storeId,
+        a.action_key as flowActionKey,
+        a.store_name as storeName,
+        a.sub_status as subStatus,
+        a.create_user_id as createUserId,
+        a.handle_user_id as handleUserId,
+        a.create_time as createTime,
+        a.handle_time as handleTime,
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.cid as cid,
+        a.biz_code as bizCode,
+        a.group_item as groupItem,
+        a.task_data as taskData,
+        a.task_type as taskType,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime,
+        a.loop_count as loopCount,
+        a.handler_end_time as handlerEndTime
+        FROM
+        unify_task_sub_${enterpriseId} a
+        WHERE 1 = 1
+        <if test="handleUserId != null and handleUserId != ''">
+            and a.handle_user_id = #{handleUserId}
+        </if>
+        and a.sub_status = 'ongoing'
+        and a.task_type != 'DISPLAY_TASK'
+        <if test="overdueTask==false">
+            and
+            CASE
+            WHEN a.task_type != 'TB_DISPLAY_TASK' THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="handlerOvertimeTaskContinue==false">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK'  and node_no = 1 THEN a.handler_end_time  >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="approverOvertimeTaskContinue==false">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK' and node_no != 1  THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="unifyTaskId != null">
+            and a.unify_task_id = #{unifyTaskId}
+        </if>
+        <if test="loopCount != null">
+            and a.loop_count = #{loopCount}
+        </if>
+        order by a.create_time desc
+    </select>
+
+    <select id="selectAgencyCreateOrCCList"
+            resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskAgencyVO">
+        SELECT
+        a.instance_id as flowInstanceId,
+        a.node_no as flowNodeNo,
+        a.cycle_count as flowCycleCount,
+        a.template_id as flowTemplateId,
+        a.node_no as flowNodeNo,
+        a.store_id as storeId,
+        a.action_key as flowActionKey,
+        c.store_name as storeName,
+        a.sub_status as subStatus,
+        a.create_user_id as createUserId,
+        a.handle_user_id as handleUserId,
+        a.create_time as createTime,
+        a.handle_time as handleTime,
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.cid as cid,
+        a.biz_code as bizCode,
+        a.group_item as groupItem,
+        b.task_name as taskName,
+        b.id as unifyTaskId,
+        b.begin_time as beginTime,
+        b.end_time as endTime,
+        b.node_info as nodeInfo,
+        b.create_user_id as taskCreateUserId,
+        CONCAT(a.unify_task_id,'#',a.store_id,'#',a.group_item,'#',a.node_no) as groupSign,
+        a.task_data as taskData,
+        a.sub_task_code as subTaskCode,
+        b.task_type as taskType,
+        b.task_info as taskInfo,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime
+        FROM
+        unify_task_sub_${enterpriseId} a
+        INNER JOIN unify_task_parent_${enterpriseId} b ON a.unify_task_id = b.id
+        LEFT JOIN store_${enterpriseId} c ON a.store_id = c.store_id
+        WHERE  b.task_type != 'DISPLAY_TASK' and
+        a.unify_task_id  in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        <if test="storeId != null and storeId != ''">
+            and a.store_id = #{storeId}
+        </if>
+        <if test="taskType != null and taskType != ''">
+            and b.task_type = #{taskType}
+        </if>
+        order by a.create_time desc
+    </select>
+
+    <select id="selectAgencyCreateOrCCTaskIdList" resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        a.store_id as storeId,
+        a.unify_task_id as unifyTaskId,
+        a.create_user_id as createUserId,
+        a.loop_count as loopCount
+        FROM
+        unify_task_store_${enterpriseId} a
+        WHERE  a.task_type != 'DISPLAY_TASK'
+        and create_time >= #{createTime}
+        and a.task_type != 'PATROL_STORE_AI'
+        <if test="ccUserId !=null and ccUserId !=''">
+            and cc_user_ids like concat('%,',#{ccUserId},',%')
+        </if>
+        <if test="storeIdList != null and storeIdList.size > 0">
+            and a.store_id in
+            <foreach collection="storeIdList" item="storeId" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="storeId != null and storeId != ''">
+            and a.store_id = #{storeId}
+        </if>
+        <if test="taskType != null and taskType != ''">
+            and a.task_type = #{taskType}
+        </if>
+        order by a.create_time desc,a.id desc
+    </select>
+
+    <select id="selectAgencyCreateOrCCListByTaskIds"
+            resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskAgencyVO">
+        SELECT
+        a.instance_id as flowInstanceId,
+        a.node_no as flowNodeNo,
+        a.cycle_count as flowCycleCount,
+        a.template_id as flowTemplateId,
+        a.node_no as flowNodeNo,
+        a.store_id as storeId,
+        a.action_key as flowActionKey,
+        a.store_name as storeName,
+        a.sub_status as subStatus,
+        a.create_user_id as createUserId,
+        a.handle_user_id as handleUserId,
+        a.create_time as createTime,
+        a.handle_time as handleTime,
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.cid as cid,
+        a.biz_code as bizCode,
+        a.group_item as groupItem,
+        CONCAT(a.unify_task_id,'#',a.store_id,'#',a.group_item,'#',a.node_no) as groupSign,
+        a.task_data as taskData,
+        a.sub_task_code as subTaskCode,
+        a.task_type as taskType,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime,
+        a.loop_count as loopCount,
+        a.handler_end_time as handlerEndTime
+        FROM
+        unify_task_sub_${enterpriseId} a
+        WHERE  a.task_type != 'DISPLAY_TASK' and
+        a.task_type != 'PATROL_STORE_AI' and
+        concat(a.sub_task_code, '#' , a.loop_count)  in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        <if test="subTaskCodes!=null and subTaskCodes.size>0">
+            <foreach collection="subTaskCodes" open="and sub_task_code in (" item="item" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by a.create_time desc
+    </select>
+
+    <select id="selectAgencyAllListNew" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskAgencyVO">
+        SELECT
+        a.instance_id as flowInstanceId,
+        a.node_no as flowNodeNo,
+        a.cycle_count as flowCycleCount,
+        a.template_id as flowTemplateId,
+        a.node_no as flowNodeNo,
+        a.store_id as storeId,
+        a.action_key as flowActionKey,
+        a.store_name as storeName,
+        a.sub_status as subStatus,
+        a.create_user_id as createUserId,
+        a.handle_user_id as handleUserId,
+        a.create_time as createTime,
+        a.handle_time as handleTime,
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.cid as cid,
+        a.biz_code as bizCode,
+        a.group_item as groupItem,
+        CONCAT(a.unify_task_id,'#',a.store_id,'#',a.group_item,'#',a.node_no) as groupSign,
+        a.task_data as taskData,
+        a.sub_task_code as subTaskCode,
+        a.task_type as taskType,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime,
+        a.loop_count as loopCount
+        FROM
+        unify_task_sub_${enterpriseId} a
+        WHERE 1=1  and a.task_type != 'DISPLAY_TASK'
+        and a.task_type != 'PATROL_STORE_AI'
+        <if test="list !=null and list.size > 0">
+            and a.unify_task_id  in
+            <foreach collection="list" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="storeIdList != null and storeIdList.size > 0">
+            and a.store_id in
+            <foreach collection="storeIdList" item="storeId" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="query.storeId != null and query.storeId != ''">
+            and a.store_id = #{query.storeId}
+        </if>
+        <if test="query.taskType != null and query.taskType != ''">
+            and a.task_type = #{query.taskType}
+        </if>
+        <if test="query.status!=null and query.status!=''">
+            <choose>
+                <when test="query.status=='handle'">
+                    and a.node_no = '1'
+                    and a.sub_status = 'ongoing'
+                </when>
+                <when test="query.status=='approver'">
+                    and a.node_no = '2'
+                    and a.sub_status = 'ongoing'
+                </when>
+                <when test="query.status=='recheck'">
+                    and a.node_no = '3'
+                    and a.sub_status = 'ongoing'
+                </when>
+                <when test="query.status=='complete'">
+                    and a.node_no = 'endNode'
+                    and a.sub_status = 'complete'
+                </when>
+                <otherwise>
+                    and a.node_no = 'endNode'
+                    and a.sub_status = 'complete'
+                </otherwise>
+            </choose>
+        </if>
+        order by a.create_time desc
+    </select>
+
+    <select id="selectStoreAgencyTaskPendingList" resultType="java.lang.String">
+        SELECT
+        distinct a.store_id
+        FROM
+        unify_task_sub_${enterpriseId} a
+        INNER JOIN unify_task_parent_${enterpriseId} b ON a.unify_task_id = b.id
+        WHERE
+        a.handle_user_id = #{userId}
+        and a.sub_status = 'ongoing'
+        and b.task_type  = #{taskType}
+        <if test="overdueTask==false">
+            and a.sub_end_time  &gt;= UNIX_TIMESTAMP(now())*1000
+        </if>
+    </select>
+    <select id="selectTodoTaskList" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskAgencyVO">
+        SELECT
+        a.instance_id as flowInstanceId,
+        a.node_no as flowNodeNo,
+        a.cycle_count as flowCycleCount,
+        a.template_id as flowTemplateId,
+        a.node_no as flowNodeNo,
+        a.store_id as storeId,
+        a.action_key as flowActionKey,
+        a.store_name as storeName,
+        a.sub_status as subStatus,
+        a.create_user_id as createUserId,
+        a.handle_user_id as handleUserId,
+        a.create_time as createTime,
+        a.handle_time as handleTime,
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.cid as cid,
+        a.biz_code as bizCode,
+        a.group_item as groupItem,
+        a.task_data as taskData,
+        a.task_type as taskType,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime,
+        a.loop_count as loopCount,
+        a.handler_end_time as handlerEndTime
+        FROM
+        unify_task_sub_${enterpriseId} a
+        WHERE 1 = 1
+        <if test="handleUserId != null and handleUserId != ''">
+            and a.handle_user_id = #{handleUserId}
+        </if>
+        and a.sub_status = 'ongoing'
+        and a.task_type != 'DISPLAY_TASK'
+
+        and
+        CASE
+        WHEN a.task_type = 'PATROL_STORE_PLAN' THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+        ELSE 1 = 1
+        end
+
+        <if test="overdueTask==false">
+            and
+            CASE
+            WHEN a.task_type != 'TB_DISPLAY_TASK' THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="handlerOvertimeTaskContinue==false">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK'  and node_no = 1 THEN a.handler_end_time  >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="approverOvertimeTaskContinue==false">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK' and node_no != 1  THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="taskTypes != null and taskTypes.size > 0">
+            and a.task_type in
+            <foreach collection="taskTypes" item="taskType" separator="," open="(" close=")">
+                #{taskType}
+            </foreach>
+        </if>
+        <if test="storeIdList != null and storeIdList.size > 0">
+            and a.store_id in
+            <foreach collection="storeIdList" item="storeId" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="storeId != null and storeId != ''">
+            and a.store_id = #{storeId}
+        </if>
+
+        order by a.create_time desc
+    </select>
+
+    <select id="selectNewTodoTaskList" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskAgencyVO">
+        SELECT
+        a.instance_id as flowInstanceId,
+        a.node_no as flowNodeNo,
+        a.cycle_count as flowCycleCount,
+        a.template_id as flowTemplateId,
+        a.node_no as flowNodeNo,
+        a.store_id as storeId,
+        a.action_key as flowActionKey,
+        a.store_name as storeName,
+        a.sub_status as subStatus,
+        a.create_user_id as createUserId,
+        a.handle_user_id as handleUserId,
+        a.create_time as createTime,
+        a.handle_time as handleTime,
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.cid as cid,
+        a.biz_code as bizCode,
+        a.group_item as groupItem,
+        a.task_data as taskData,
+        a.task_type as taskType,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime,
+        a.loop_count as loopCount,
+        a.handler_end_time as handlerEndTime
+        FROM
+        unify_task_sub_${enterpriseId} a
+        WHERE 1 = 1
+        and (
+        is_operate_overdue is null
+        or
+        is_operate_overdue = 1
+        or (
+        is_operate_overdue = 0
+        <if test="handlerOvertimeTaskContinue==false">
+        and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK'
+            and node_no = 1
+            and a.create_time &lt;= '1712591999000'
+            THEN a.handler_end_time  >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="handlerOvertimeTaskContinue==true">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK'
+            and node_no = 1
+            and a.create_time > '1712591999000'
+            THEN a.handler_end_time  >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="overdueTask==false">
+        and
+            CASE
+            WHEN a.task_type != 'TB_DISPLAY_TASK'
+            and a.create_time &lt;= '1712591999000'
+            THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="overdueTask==true">
+            and
+            CASE
+            WHEN a.task_type != 'TB_DISPLAY_TASK'
+            and a.create_time > '1712591999000'
+            THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+            ELSE 1 = 1
+            end
+        </if>
+        )
+        )
+        <if test="handleUserId != null and handleUserId != ''">
+            and a.handle_user_id = #{handleUserId}
+        </if>
+        and a.sub_status = 'ongoing'
+        and a.task_type != 'DISPLAY_TASK'
+        and
+        CASE
+        WHEN a.task_type = 'PATROL_STORE_PLAN' THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+        ELSE 1 = 1
+        end
+        <if test="approverOvertimeTaskContinue==false">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK' and node_no != 1  THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="taskTypes != null and taskTypes.size > 0">
+            and a.task_type in
+            <foreach collection="taskTypes" item="taskType" separator="," open="(" close=")">
+                #{taskType}
+            </foreach>
+        </if>
+        <if test="storeIdList != null and storeIdList.size > 0">
+            and a.store_id in
+            <foreach collection="storeIdList" item="storeId" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="storeId != null and storeId != ''">
+            and a.store_id = #{storeId}
+        </if>
+        order by a.create_time desc
+    </select>
+
+
+    <select id="selectBeforeTimeNewTodoTaskList" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskAgencyVO">
+        SELECT
+        a.instance_id as flowInstanceId,
+        a.node_no as flowNodeNo,
+        a.cycle_count as flowCycleCount,
+        a.template_id as flowTemplateId,
+        a.node_no as flowNodeNo,
+        a.store_id as storeId,
+        a.action_key as flowActionKey,
+        a.store_name as storeName,
+        a.sub_status as subStatus,
+        a.create_user_id as createUserId,
+        a.handle_user_id as handleUserId,
+        a.create_time as createTime,
+        a.handle_time as handleTime,
+        a.id as subTaskId,
+        a.unify_task_id as unifyTaskId,
+        a.cid as cid,
+        a.biz_code as bizCode,
+        a.group_item as groupItem,
+        a.task_data as taskData,
+        a.task_type as taskType,
+        a.sub_begin_time as subBeginTime,
+        a.sub_end_time as subEndTime,
+        a.loop_count as loopCount,
+        a.handler_end_time as handlerEndTime
+        FROM
+        unify_task_sub_${enterpriseId} a
+        WHERE 1 = 1
+        <if test="handleUserId != null and handleUserId != ''">
+            and a.handle_user_id = #{handleUserId}
+        </if>
+        and a.sub_status = 'ongoing'
+        and a.task_type != 'DISPLAY_TASK'
+        and a.task_type != 'PATROL_STORE_AI'
+        and a.task_type != 'SUPERVISION'
+
+        and
+        CASE
+        WHEN a.task_type = 'PATROL_STORE_PLAN' THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+        ELSE 1 = 1
+        end
+
+        <if test="overdueTask==false">
+            and
+            CASE
+            WHEN a.task_type != 'TB_DISPLAY_TASK' THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="handlerOvertimeTaskContinue==false">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK'  and node_no = 1 THEN a.handler_end_time  >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="approverOvertimeTaskContinue==false">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK' and node_no != 1  THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="taskType != null and taskType != ''">
+            and a.task_type = #{taskType}
+        </if>
+        <if test="storeIdList != null and storeIdList.size > 0">
+            and a.store_id in
+            <foreach collection="storeIdList" item="storeId" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="storeId != null and storeId != ''">
+            and a.store_id = #{storeId}
+        </if>
+
+        order by a.create_time desc
+    </select>
+
+    <select id="selectCreateOrCCTodoTaskList"
+            resultType="com.coolcollege.intelligent.model.unifytask.TaskStoreDO">
+        SELECT
+        a.store_id as storeId,
+        a.unify_task_id as unifyTaskId,
+        a.create_user_id as createUserId,
+        a.loop_count as loopCount
+        FROM
+        unify_task_store_${enterpriseId} a
+        WHERE  a.task_type != 'DISPLAY_TASK'
+        and create_time >= #{createTime}
+        <if test="ccUserId !=null and ccUserId !=''">
+            and cc_user_ids like concat('%,',#{ccUserId},',%')
+        </if>
+        <if test="storeIdList != null and storeIdList.size > 0">
+            and a.store_id in
+            <foreach collection="storeIdList" item="storeId" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="storeId != null and storeId != ''">
+            and a.store_id = #{storeId}
+        </if>
+        <if test="taskTypes != null and taskTypes.size > 0">
+            and a.task_type in
+            <foreach collection="taskTypes" item="taskType" separator="," open="(" close=")">
+                #{taskType}
+            </foreach>
+        </if>
+        order by a.create_time desc,a.id desc
+    </select>
+    <select id="selectTodoTaskListCount"
+            resultType="com.coolcollege.intelligent.model.unifytask.dto.CommissionTotalDTO">
+        SELECT
+        ifnull( sum( CASE WHEN (a.task_type = 'PATROL_STORE_ONLINE' or a.task_type = 'PATROL_STORE_OFFLINE'
+            or a.task_type = 'PATROL_STORE_PICTURE_ONLINE' or a.task_type = 'PATROL_STORE_PLAN') THEN 1 ELSE 0 END ), 0 ) AS storeTotal,
+        ifnull( sum( CASE WHEN a.task_type = 'TB_DISPLAY_TASK' THEN 1 ELSE 0 END ), 0 ) AS displayTotal,
+        ifnull( sum( CASE WHEN a.task_type = 'PATROL_STORE_INFORMATION' THEN 1 ELSE 0 END ), 0 ) AS messageTotal
+        FROM
+        unify_task_sub_${enterpriseId} a
+        WHERE a.handle_user_id = #{handleUserId}
+        and a.sub_status = 'ongoing'
+        and
+        CASE
+        WHEN a.task_type = 'PATROL_STORE_PLAN' THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+        ELSE 1 = 1
+        end
+        and (
+        is_operate_overdue is null
+        or
+        is_operate_overdue = 1
+        or (
+        is_operate_overdue = 0
+        <if test="handlerOvertimeTaskContinue==false">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK'
+            and node_no = 1
+            and a.create_time &lt;= '1712591999000'
+            THEN a.handler_end_time  >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="handlerOvertimeTaskContinue==true">
+            and
+            CASE
+            WHEN a.task_type = 'TB_DISPLAY_TASK'
+            and node_no = 1
+            and a.create_time > '1712591999000'
+            THEN a.handler_end_time  >= now()
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="overdueTask==false">
+            and
+            CASE
+            WHEN a.task_type != 'TB_DISPLAY_TASK'
+            and a.create_time &lt;= '1712591999000'
+            THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+            ELSE 1 = 1
+            end
+        </if>
+        <if test="overdueTask==true">
+            and
+            CASE
+            WHEN a.task_type != 'TB_DISPLAY_TASK'
+            and a.create_time > '1712591999000'
+            THEN a.sub_end_time  >= UNIX_TIMESTAMP(now())*1000
+            ELSE 1 = 1
+            end
+        </if>
+        )
+        )
+        <if test="storeIdList != null and storeIdList.size > 0">
+            and a.store_id in
+            <foreach collection="storeIdList" item="storeId" separator="," open="(" close=")">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="storeId != null and storeId != ''">
+            and a.store_id = #{storeId}
+        </if>
+    </select>
+
+
+    <select id="getPatrolPlanList"
+            resultType="com.coolcollege.intelligent.model.unifytask.vo.PatrolPlanVO">
+        SELECT
+            id as subTaskId,
+            unify_task_id as  unifyTaskId,
+            task_type as taskType,
+            sub_status as subStatus,
+            sub_begin_time as subBeginTime,
+            sub_end_time as subEndTime
+        FROM
+        unify_task_sub_${enterpriseId}
+        <where>
+            <if test="handleUserId != null and handleUserId != ''">
+                and handle_user_id = #{handleUserId}
+            </if>
+            <if test="taskTypes != null and taskTypes.size > 0">
+                and task_type in
+                <foreach collection="taskTypes" item="taskType" separator="," open="(" close=")">
+                    #{taskType}
+                </foreach>
+            </if>
+            <if test="completeFlag!=null and completeFlag==1">
+                and sub_status != 'complete'
+            </if>
+        </where>
+        order by sub_end_time desc
+    </select>
+</mapper>

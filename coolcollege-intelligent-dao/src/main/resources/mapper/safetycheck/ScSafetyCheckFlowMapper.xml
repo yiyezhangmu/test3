@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.safetycheck.ScSafetyCheckFlowMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.safetycheck.ScSafetyCheckFlowDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="business_id" jdbcType="BIGINT" property="businessId" />
+    <result column="whole_node_no" jdbcType="VARCHAR" property="wholeNodeNo" />
+    <result column="current_node_no" jdbcType="VARCHAR" property="currentNodeNo" />
+    <result column="cycle_count" jdbcType="INTEGER" property="cycleCount" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="select_reason" jdbcType="BIT" property="selectReason" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.coolcollege.intelligent.model.safetycheck.ScSafetyCheckFlowDO">
+    <result column="signature_user" jdbcType="LONGVARCHAR" property="signatureUser" />
+    <result column="signature_user_id" jdbcType="LONGVARCHAR" property="signatureUserId" />
+    <result column="cc_user_info" jdbcType="LONGVARCHAR" property="ccUserInfo" />
+    <result column="approve_user_info" jdbcType="LONGVARCHAR" property="approveUserInfo" />
+    <result column="appeal_review_user" jdbcType="LONGVARCHAR" property="appealReviewUser" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, business_id, whole_node_no, current_node_no, cycle_count, create_time, create_user_id, 
+    update_time, update_user_id, deleted, select_reason
+  </sql>
+  <sql id="Blob_Column_List">
+    signature_user, signature_user_id, cc_user_info, approve_user_info, appeal_review_user
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from sc_safety_check_flow_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sc_safety_check_flow_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.safetycheck.ScSafetyCheckFlowDO">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sc_safety_check_flow_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.businessId != null">
+        business_id,
+      </if>
+      <if test="record.wholeNodeNo != null">
+        whole_node_no,
+      </if>
+      <if test="record.currentNodeNo != null">
+        current_node_no,
+      </if>
+      <if test="record.cycleCount != null">
+        cycle_count,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+      <if test="record.signatureUser != null">
+        signature_user,
+      </if>
+      <if test="record.signatureUserId != null">
+        signature_user_id,
+      </if>
+      <if test="record.ccUserInfo != null">
+        cc_user_info,
+      </if>
+      <if test="record.approveUserInfo != null">
+        approve_user_info,
+      </if>
+      <if test="record.appealReviewUser != null">
+        appeal_review_user,
+      </if>
+      <if test="record.selectReason != null">
+        select_reason,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.businessId != null">
+        #{record.businessId,jdbcType=BIGINT},
+      </if>
+      <if test="record.wholeNodeNo != null">
+        #{record.wholeNodeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.currentNodeNo != null">
+        #{record.currentNodeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cycleCount != null">
+        #{record.cycleCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUserId != null">
+        #{record.updateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.signatureUser != null">
+        #{record.signatureUser,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.signatureUserId != null">
+        #{record.signatureUserId,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.ccUserInfo != null">
+        #{record.ccUserInfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.approveUserInfo != null">
+        #{record.approveUserInfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.appealReviewUser != null">
+        #{record.appealReviewUser,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.selectReason != null">
+        #{record.selectReason},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.safetycheck.ScSafetyCheckFlowDO">
+    update sc_safety_check_flow_${enterpriseId}
+    <set>
+      <if test="record.businessId != null">
+        business_id = #{record.businessId,jdbcType=BIGINT},
+      </if>
+      <if test="record.wholeNodeNo != null">
+        whole_node_no = #{record.wholeNodeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.currentNodeNo != null">
+        current_node_no = #{record.currentNodeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cycleCount != null">
+        cycle_count = #{record.cycleCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = #{record.updateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.signatureUser != null">
+        signature_user = #{record.signatureUser,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.signatureUserId != null">
+        signature_user_id = #{record.signatureUserId,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.ccUserInfo != null">
+        cc_user_info = #{record.ccUserInfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.approveUserInfo != null">
+        approve_user_info = #{record.approveUserInfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.appealReviewUser != null">
+        appeal_review_user = #{record.appealReviewUser,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != businessId">
+         and t.business_id = #{businessId,jdbcType=BIGINT}
+      </if>
+      <if test="null != wholeNodeNo">
+         and t.whole_node_no = #{wholeNodeNo,jdbcType=VARCHAR}
+      </if>
+      <if test="null != currentNodeNo">
+         and t.current_node_no = #{currentNodeNo,jdbcType=VARCHAR}
+      </if>
+      <if test="null != cycleCount">
+         and t.cycle_count = #{cycleCount,jdbcType=INTEGER}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != createUserId">
+         and t.create_user_id = #{createUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != updateTime">
+         and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != updateUserId">
+         and t.update_user_id = #{updateUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != deleted">
+         and t.deleted = #{deleted,jdbcType=BIT}
+      </if>
+      <if test="null != signatureUser">
+         and t.signature_user = #{signatureUser,jdbcType=LONGVARCHAR}
+      </if>
+      <if test="null != signatureUserId">
+         and t.signature_user_id = #{signatureUserId,jdbcType=LONGVARCHAR}
+      </if>
+      <if test="null != ccUserInfo">
+         and t.cc_user_info = #{ccUserInfo,jdbcType=LONGVARCHAR}
+      </if>
+      <if test="null != approveUserInfo">
+         and t.approve_user_info = #{approveUserInfo,jdbcType=LONGVARCHAR}
+      </if>
+      <if test="null != appealReviewUser">
+         and t.appeal_review_user = #{appealReviewUser,jdbcType=LONGVARCHAR}
+      </if>
+    </trim>
+  </sql>
+
+  <select id="getByBusinessId" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from sc_safety_check_flow_${enterpriseId}
+    where business_id = #{businessId}
+  </select>
+
+  <update id="updateCurrentNodeAndCycleCount">
+    UPDATE sc_safety_check_flow_${enterpriseId}
+    set current_node_no = #{currentNodeNo},
+    cycle_count = #{cycleCount}
+    where business_id = #{businessId}
+  </update>
+
+  <update id="updateDelByBusinessIds">
+    update sc_safety_check_flow_${enterpriseId}
+    set deleted = 1
+    where business_id in (
+    <foreach collection="businessIds" separator="," item="item">
+      #{item}
+    </foreach>
+    )
+  </update>
+
+</mapper>

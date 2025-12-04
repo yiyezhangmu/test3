@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.tbdisplay.TbDisplayTableRecordMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.tbdisplay.TbDisplayTableRecordDO">
+
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="unify_task_id" jdbcType="BIGINT" property="unifyTaskId" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="loop_count" jdbcType="INTEGER" property="loopCount" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="region_id" jdbcType="BIGINT" property="regionId" />
+    <result column="region_path" jdbcType="VARCHAR" property="regionPath" />
+    <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId" />
+    <result column="handle_user_id" jdbcType="VARCHAR" property="handleUserId" />
+    <result column="handle_user_name" jdbcType="VARCHAR" property="handleUserName" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="attach_url" jdbcType="VARCHAR" property="attachUrl" />
+    <result column="is_support_score" jdbcType="BIT" property="isSupportScore" />
+    <result column="is_support_photo" jdbcType="BIT" property="isSupportPhoto" />
+    <result column="score" jdbcType="DECIMAL" property="score" />
+    <result column="ai_score" jdbcType="DECIMAL" property="aiScore" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="sub_begin_time" jdbcType="TIMESTAMP" property="subBeginTime" />
+    <result column="sub_end_time" jdbcType="TIMESTAMP" property="subEndTime" />
+    <result column="handler_end_time" jdbcType="TIMESTAMP" property="handlerEndTime" />
+    <result column="first_handler_time" jdbcType="TIMESTAMP" property="firstHandlerTime" />
+    <result column="first_approve_time" jdbcType="TIMESTAMP" property="firstApproveTime" />
+    <result column="approve_user_id" jdbcType="VARCHAR" property="approveUserId" />
+    <result column="approve_user_name" jdbcType="VARCHAR" property="approveUserName" />
+    <result column="recheck_user_id" jdbcType="VARCHAR" property="recheckUserId" />
+    <result column="recheck_user_name" jdbcType="VARCHAR" property="recheckUserName" />
+    <result column="complete_time" jdbcType="TIMESTAMP" property="completeTime" />
+    <result column="delete_user_id" jdbcType="VARCHAR" property="deleteUserId" />
+    <result column="delete_user_name" jdbcType="VARCHAR" property="deleteUserName" />
+    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    <result column="is_ai_check" jdbcType="BIT" property="isAiCheck" />
+    <result column="latest_handler_time" jdbcType="TIMESTAMP" property="latestHandlerTime" />
+    <result column="latest_approve_time" jdbcType="TIMESTAMP" property="latestApproveTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+
+    id, create_time, update_time, deleted, unify_task_id, store_id, loop_count, store_name,
+    region_id, region_path, meta_table_id, handle_user_id, handle_user_name, status,
+    attach_url, is_support_score, is_support_photo,score, ai_score, remark,task_name,sub_begin_time, sub_end_time,handler_end_time,
+    first_handler_time,first_approve_time,approve_user_id,approve_user_name,recheck_user_id,recheck_user_name,complete_time,
+    delete_user_id, delete_user_name, delete_time, is_ai_check, latest_handler_time, latest_approve_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_display_table_record_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.tbdisplay.TbDisplayTableRecordDO">
+
+    update tb_display_table_record_${enterpriseId}
+    <set>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.unifyTaskId != null">
+        unify_task_id = #{record.unifyTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loopCount != null">
+        loop_count = #{record.loopCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.storeName != null">
+        store_name = #{record.storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regionId != null">
+        region_id = #{record.regionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.regionPath != null">
+        region_path = #{record.regionPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.metaTableId != null">
+        meta_table_id = #{record.metaTableId,jdbcType=BIGINT},
+      </if>
+      <if test="record.handleUserId != null">
+        handle_user_id = #{record.handleUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.handleUserName != null">
+        handle_user_name = #{record.handleUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attachUrl != null">
+        attach_url = #{record.attachUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isSupportScore != null">
+        is_support_score = #{record.isSupportScore},
+      </if>
+      <if test="record.isSupportPhoto != null">
+        is_support_photo = #{record.isSupportPhoto,jdbcType=BIT},
+      </if>
+      <if test="record.score != null">
+        score = #{record.score},
+      </if>
+      <if test="record.aiScore != null">
+        ai_score = #{record.aiScore},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approveUserId != null">
+        approve_user_id = #{record.approveUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approveUserName != null">
+        approve_user_name = #{record.approveUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recheckUserId != null">
+        recheck_user_id = #{record.recheckUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recheckUserName != null">
+        recheck_user_name = #{record.recheckUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleteUserId != null">
+        delete_user_id = #{record.deleteUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleteUserName != null">
+        delete_user_name = #{record.deleteUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleteTime != null">
+        delete_time = #{record.deleteTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isAiCheck != null">
+        is_ai_check = #{record.isAiCheck},
+      </if>
+      <if test="record.latestApproveTime != null">
+        latest_approve_time = #{record.latestApproveTime}
+      </if>
+    </set>
+    ,first_approve_time = (
+    CASE
+    WHEN  first_approve_time is null  THEN now()
+    else first_approve_time
+    end
+    )
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+
+
+
+  <update id="batchUpdate">
+    <foreach collection="recordList" item="record" separator=";">
+      update tb_display_table_record_${enterpriseId}
+      <set>
+        <if test="record.updateTime != null">
+          update_time = #{record.updateTime},
+        </if>
+        <if test="record.deleted != null">
+          deleted = #{record.deleted},
+        </if>
+        <if test="record.unifyTaskId != null">
+          unify_task_id = #{record.unifyTaskId},
+        </if>
+        <if test="record.storeId != null">
+          store_id = #{record.storeId},
+        </if>
+        <if test="record.loopCount != null">
+          loop_count = #{record.loopCount},
+        </if>
+        <if test="record.storeName != null">
+          store_name = #{record.storeName},
+        </if>
+        <if test="record.regionId != null">
+          region_id = #{record.regionId},
+        </if>
+        <if test="record.regionPath != null">
+          region_path = #{record.regionPath},
+        </if>
+        <if test="record.metaTableId != null">
+          meta_table_id = #{record.metaTableId},
+        </if>
+        <if test="record.handleUserId != null">
+          handle_user_id = #{record.handleUserId},
+        </if>
+        <if test="record.handleUserName != null">
+          handle_user_name = #{record.handleUserName},
+        </if>
+        <if test="record.status != null">
+          status = #{record.status},
+        </if>
+        <if test="record.attachUrl != null">
+          attach_url = #{record.attachUrl},
+        </if>
+        <if test="record.isSupportScore != null">
+          is_support_score = #{record.isSupportScore},
+        </if>
+        <if test="record.isSupportPhoto != null">
+          is_support_photo = #{record.isSupportPhoto},
+        </if>
+        <if test="record.score != null">
+          score = #{record.score},
+        </if>
+        <if test="record.remark != null">
+          remark = #{record.remark},
+        </if>
+        <if test="record.approveUserId != null">
+          approve_user_id = #{record.approveUserId},
+        </if>
+        <if test="record.approveUserName != null">
+          approve_user_name = #{record.approveUserName},
+        </if>
+        <if test="record.recheckUserId != null">
+          recheck_user_id = #{record.recheckUserId},
+        </if>
+        <if test="record.recheckUserName != null">
+          recheck_user_name = #{record.recheckUserName},
+        </if>
+        <if test="record.deleteUserId != null">
+          delete_user_id = #{record.deleteUserId},
+        </if>
+        <if test="record.deleteUserName != null">
+          delete_user_name = #{record.deleteUserName},
+        </if>
+        <if test="record.deleteTime != null">
+          delete_time = #{record.deleteTime},
+        </if>
+        <if test="record.isAiCheck != null">
+          is_ai_check = #{record.isAiCheck},
+        </if>
+      </set>
+      ,first_approve_time = (
+      CASE
+      WHEN  first_approve_time is null  THEN now()
+      else first_approve_time
+      end
+      )
+      where id = #{record.id}
+    </foreach>
+  </update>
+
+  <insert id="batchInsert" keyColumn="id" keyProperty="list.id" useGeneratedKeys="true">
+    INSERT INTO tb_display_table_record_${enterpriseId}(
+    create_time,
+    unify_task_id,
+    store_id,
+    loop_count,
+    store_name,
+    region_id,
+    region_path,
+    meta_table_id,
+    handle_user_id,
+    handle_user_name,
+    status,
+    attach_url,
+    is_support_score,
+    is_support_photo,
+    task_name,
+    sub_begin_time,
+    sub_end_time,
+    handler_end_time
+    )VALUES
+    <foreach collection="list" item="element" index="index" separator=",">
+      (
+      now(),
+      #{element.unifyTaskId,jdbcType=BIGINT},
+      #{element.storeId,jdbcType=VARCHAR},
+      #{element.loopCount,jdbcType=INTEGER},
+      #{element.storeName,jdbcType=VARCHAR},
+      #{element.regionId,jdbcType=BIGINT},
+      #{element.regionPath,jdbcType=VARCHAR},
+      #{element.metaTableId,jdbcType=BIGINT},
+      #{element.handleUserId,jdbcType=BIGINT},
+      #{element.handleUserName,jdbcType=VARCHAR},
+      #{element.status,jdbcType=VARCHAR},
+      #{element.attachUrl,jdbcType=VARCHAR},
+      #{element.isSupportScore},
+      #{element.isSupportPhoto,jdbcType=BIT},
+      #{element.taskName},
+      #{element.subBeginTime},
+      #{element.subEndTime},
+      #{element.handlerEndTime}
+      )
+    </foreach>
+  </insert>
+
+  <select id="getByUnifyTaskIdAndStoreIdAndLoopCount" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_display_table_record_${enterpriseId}
+    where unify_task_id=#{unifyTaskId,jdbcType=BIGINT} and store_id=#{storeId,jdbcType=VARCHAR} and
+    loop_count=#{loopCount,jdbcType=INTEGER}
+  </select>
+
+  <select id="getIdByUnifyTaskIdAndStoreIdAndLoopCount" resultType="long">
+    select
+      id
+    from tb_display_table_record_${enterpriseId}
+    where unify_task_id=#{unifyTaskId} and store_id=#{storeId} and
+    loop_count=#{loopCount}
+  </select>
+
+
+  <select id="batchGetByUnifyTaskIdAndStoreIdAndLoopCount" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from
+      tb_display_table_record_${enterpriseId}
+    where
+    <foreach collection="taskStoreList" separator="or" item="item">
+      (unify_task_id=#{item.unifyTaskId} and store_id=#{item.storeId} and loop_count=#{item.loopCount})
+    </foreach>
+
+  </select>
+
+  <select id="listByUnifyTaskId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_display_table_record_${enterpriseId}
+        where unify_task_id=#{unifyTaskId,jdbcType=BIGINT}
+        <if test="loopCount != null">
+          and loop_count=#{loopCount}
+        </if>
+        <if test="storeIdList != null and storeIdList.size > 0">
+          and store_id in
+          <foreach collection="storeIdList" item="storeId" separator="," open="(" close=")">
+            #{storeId}
+          </foreach>
+        </if>
+    </select>
+    <select id="listByIdList" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from tb_display_table_record_${enterpriseId}
+      where id in
+      <if test="list!=null and list.size>0">
+        <foreach collection="list" open="(" item="item" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </select>
+
+    <update id="updateHandleInfoByRecordId">
+    update tb_display_table_record_${enterpriseId}
+    set status=#{status},
+    handle_user_id=#{updatedHandleUserId},
+    handle_user_name=#{updatedHandleUserName,jdbcType=VARCHAR},
+    first_handler_time = (
+    CASE
+    WHEN first_handler_time is null  THEN now()
+    else first_handler_time
+    end
+    ),
+    latest_handler_time = now()
+    where id=#{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateStatusByTaskIdStoreIdLoopCount">
+    update tb_display_table_record_${enterpriseId}
+    set status = #{status},complete_time=now()
+    where unify_task_id=#{unifyTaskId,jdbcType=BIGINT} and store_id=#{storeId,jdbcType=VARCHAR} and
+    loop_count=#{loopCount,jdbcType=INTEGER}
+  </update>
+
+  <select id="listByUnifyTaskIdAndloopCount" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_display_table_record_${enterpriseId}
+    where unify_task_id=#{unifyTaskId,jdbcType=BIGINT} and loop_count=#{loopCount,jdbcType=BIGINT}
+  </select>
+
+  <select id="listByUnifyTaskIdAndloopCountAndStoreIds" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_display_table_record_${enterpriseId}
+    where unify_task_id=#{unifyTaskId,jdbcType=BIGINT} and loop_count=#{loopCount,jdbcType=BIGINT}
+    and store_id in
+    <foreach item="item" index="index" collection="storeIdList"
+             open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+  <select id="listByUnifyTaskIdsAndloopCountAndStoreIds" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_display_table_record_${enterpriseId}
+    where loop_count=#{loopCount,jdbcType=BIGINT}
+    <if test="unifyTaskIds != null and unifyTaskIds.size > 0">
+      and unify_task_id in
+      <foreach collection="unifyTaskIds" item="unifyTaskId" open="(" close=")" separator=",">
+        #{unifyTaskId}
+      </foreach>
+    </if>
+    and store_id in
+    <foreach item="item" index="index" collection="storeIdList"
+             open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+
+  <select id="sumTaskScore" resultType="com.coolcollege.intelligent.model.unifytask.vo.TaskReportVO">
+    select unify_task_id as unifyTaskId, ifnull(SUM(score),0) as totalScore
+    from tb_display_table_record_${enterpriseId}
+    where 1 =1
+    <if test="list != null and list.size > 0 ">
+      <foreach collection="list" open="and unify_task_id in (" close=")" item="taskId" separator="," >
+        #{taskId}
+      </foreach>
+    </if>
+    group by unify_task_id
+  </select>
+
+  <select id="getRecordByTaskName"
+          resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_display_table_record_${enterpriseId}
+    where deleted = 0
+    and status != 'handle'
+    <if test="beginTime!=null and endTime != null">
+      and sub_begin_time between #{beginTime} and #{endTime}
+    </if>
+    <if test="completeBeginDate!=null and completeEndDate != null">
+      and complete_time between #{completeBeginDate} and #{completeEndDate}
+    </if>
+    <if test="metaTableId!=null">
+      and meta_table_id = #{metaTableId}
+    </if>
+    <if test="storeIdList != null">
+      <foreach collection="storeIdList" open="and store_id in (" item="storeId" separator=","
+               close=")">
+        #{storeId}
+      </foreach>
+    </if>
+    <if test="regionPath != null">
+      AND region_path LIKE concat(#{regionPath}, '%' )
+    </if>
+    <if test="taskName != null and taskName != ''">
+      AND task_name LIKE concat('%',#{taskName}, '%' )
+    </if>
+    <if test="regionPathList !=null and regionPathList.size() > 0">
+      AND
+      <foreach collection="regionPathList" separator="or" close=")" open=" (" item="region">
+        region_path like concat(#{region}, '%')
+      </foreach>
+    </if>
+    <if test="status != null and status =='complete'">
+      AND status = 'complete'
+    </if>
+    <if test="status != null and status !='' and status !='complete'">
+      AND status != 'complete'
+    </if>
+    order by id desc
+  </select>
+
+  <select id="listByUnifyTaskIdList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_display_table_record_${enterpriseId}
+    where unify_task_id in
+    <if test="list!=null and list.size>0">
+      <foreach collection="list" open="(" item="item" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+  </select>
+
+
+  <select id="displayList" resultMap="BaseResultMap" parameterType="com.coolcollege.intelligent.facade.dto.openApi.DisplayDTO">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_display_table_record_${enterpriseId}
+    <where>
+      <if test="record.beginTime!=null and record.endTime != null">
+        and sub_begin_time between FROM_UNIXTIME(#{record.beginTime}/1000) and FROM_UNIXTIME(#{record.endTime}/1000)
+      </if>
+      <if test="record.storeId != null">
+        and store_id = #{record.storeId}
+      </if>
+    </where>
+    order by create_time desc ,id desc
+  </select>
+  <select id="deleteListByUnifyTaskId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_display_table_record_${enterpriseId}
+    where unify_task_id=#{unifyTaskId,jdbcType=BIGINT}
+    and deleted = 1
+  </select>
+
+  <select id="deleteListByUnifyTaskIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_display_table_record_${enterpriseId}
+    where
+    unify_task_id in
+    <foreach collection="unifyTaskIds" item="unifyTaskId" open="(" close=")" separator=",">
+      #{unifyTaskId}
+    </foreach>
+    and deleted = 1
+  </select>
+
+  <update id="correctRegionIdAndPath">
+    UPDATE tb_display_table_record_${enterpriseId} a
+    INNER JOIN store_${enterpriseId} b ON a.store_id = b.store_id
+    SET a.region_id = b.region_id, a.region_path = b.region_path
+    WHERE a.unify_task_id = #{unifyTaskId}
+  </update>
+</mapper>

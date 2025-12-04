@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.metatable.TbMetaDefTableColumnMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.metatable.TbMetaDefTableColumnDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="edit_time" jdbcType="TIMESTAMP" property="editTime"/>
+        <result column="meta_table_id" jdbcType="BIGINT" property="metaTableId"/>
+        <result column="column_name" jdbcType="VARCHAR" property="columnName"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="column_length" jdbcType="INTEGER" property="columnLength"/>
+        <result column="format" jdbcType="VARCHAR" property="format"/>
+        <result column="required" jdbcType="TINYINT" property="required"/>
+        <result column="creater_user_id" jdbcType="VARCHAR" property="createrUserId"/>
+        <result column="order_num" jdbcType="INTEGER" property="orderNum"/>
+        <result column="choose_values" jdbcType="VARCHAR" property="chooseValues"/>
+        <result column="schema" jdbcType="VARCHAR" property="schema"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, create_time, edit_time, meta_table_id, `column_name`, description, column_length,
+    format, required, creater_user_id, order_num, choose_values, `schema`, deleted
+  </sql>
+
+    <select id="selectByTableId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_meta_def_table_column_${enterpriseId}   where meta_table_id = #{metaTableId}   order by order_num
+    </select>
+
+    <select id="selectByTableIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_meta_def_table_column_${enterpriseId}
+        where 
+            <foreach collection="list" separator="," item="item" open=" meta_table_id in (" close=") ">
+                #{item}
+            </foreach>
+
+
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_meta_def_table_column_${enterpriseId}
+    </select>
+
+    <insert id="batchInsert" keyColumn="id" keyProperty="list.id" useGeneratedKeys="true">
+        insert into tb_meta_def_table_column_${enterpriseId} (
+        meta_table_id, `column_name`, description, column_length,
+        format, required, creater_user_id, order_num,
+        choose_values, `schema`)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.metaTableId},
+            #{item.columnName},
+            #{item.description},
+            #{item.columnLength},
+            #{item.format},
+            #{item.required},
+            #{item.createrUserId},
+            #{item.orderNum},
+            #{item.chooseValues},
+            #{item.schema})
+        </foreach>
+    </insert>
+
+    <delete id="delByTableId">
+        delete from tb_meta_def_table_column_${enterpriseId}
+        where meta_table_id = #{metaTableId}
+    </delete>
+
+    <update id="updateDelByTableIds">
+        update tb_meta_def_table_column_${enterpriseId}
+        set deleted = 1
+        where meta_table_id in (
+        <foreach collection="list" separator="," item="item">
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="batchUpdateStaColumn">
+        <foreach collection="columnList" item="column" separator=";">
+            update tb_meta_def_table_column_${enterpriseId}
+            set edit_time = current_date,
+            column_name  = #{column.columnName},
+            description = #{column.description},
+            column_length = #{column.columnLength},
+            format = #{column.format},
+            required = #{column.required},
+            order_num = #{column.orderNum},
+            choose_values = #{column.chooseValues},
+            `schema` = #{column.schema}
+            where id = #{column.id}
+        </foreach>
+    </update>
+    <select id="selectByIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_meta_def_table_column_${enterpriseId}
+        where id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+    <select id="getAllColumnByMetaTableIdList"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_meta_def_table_column_${enterpriseId}
+        where 1 = 1
+        <if test="tableIdList != null">
+            <foreach collection="tableIdList" open="and meta_table_id in (" close=")" separator="," item="tableId">
+                #{tableId}
+            </foreach>
+        </if>
+        order by order_num
+    </select>
+
+    <select id="statisticsColumnNum"
+            resultType="com.coolcollege.intelligent.model.patrolstore.statistics.PatrolStoreStatisticsMetaDefTableDTO">
+        select
+        meta_table_id as metaTableId,
+        count(id) as columnNum
+        from tb_meta_def_table_column_${enterpriseId}
+        where meta_table_id in (
+        <foreach collection="metaTableIds" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+        group by meta_table_id
+    </select>
+    <select id="selectColumnCountByTableId" resultType="java.lang.Integer">
+        select
+            count(id) as columnNum
+        from tb_meta_def_table_column_${enterpriseId}
+        where meta_table_id = #{tableId}
+        and deleted = 0
+    </select>
+
+    <insert id="copyDefTableColumn">
+        insert into tb_meta_def_table_column_${enterpriseId} (id,
+        meta_table_id, `column_name`, description, column_length,
+        format, required, creater_user_id, order_num,
+        choose_values, `schema`,`deleted`,create_time,edit_time)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},
+            #{item.metaTableId},
+            #{item.columnName},
+            #{item.description},
+            #{item.columnLength},
+            #{item.format},
+            #{item.required},
+            #{item.createrUserId},
+            #{item.orderNum},
+            #{item.chooseValues},
+            #{item.schema},
+            #{item.deleted},
+            #{item.createTime},
+            #{item.editTime})
+        </foreach>
+    </insert>
+
+    <delete id="deleteAllDefTable">
+        delete from tb_meta_def_table_column_${enterpriseId}
+    </delete>
+</mapper>

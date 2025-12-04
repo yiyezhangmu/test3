@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.enterprise.EnterpriseSettingMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.enterprise.EnterpriseSettingDO">
+
+    <id column="enterprise_id" jdbcType="VARCHAR" property="enterpriseId" />
+    <result column="location_sign_in" jdbcType="TINYINT" property="locationSignIn" />
+    <result column="force_b1" jdbcType="TINYINT" property="forceB1" />
+    <result column="in_store_commit_result" jdbcType="TINYINT" property="inStoreCommitResult" />
+    <result column="offline_in_store_sign_out" jdbcType="TINYINT" property="offlineInStoreSignOut" />
+    <result column="upload_local_img" jdbcType="TINYINT" property="uploadLocalImg" />
+    <result column="customize_grade" jdbcType="TINYINT" property="customizeGrade" />
+    <result column="continue_patrol" jdbcType="TINYINT" property="continuePatrol" />
+    <result column="overdue_task_continue" jdbcType="TINYINT" property="overdueTaskContinue" />
+    <result column="manual_train" jdbcType="TINYINT" property="manualTrain" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="enable_ding_sync" jdbcType="BIT" property="enableDingSync" />
+    <result column="auto_send_problem" jdbcType="TINYINT" property="autoSendProblem" />
+    <result column="organization_sync" jdbcType="TINYINT" property="organizationSync" />
+    <result column="position_sync" jdbcType="TINYINT" property="positionSync" />
+    <result column="customize_model" jdbcType="TINYINT" property="customizeModel" />
+    <result column="photo_watermark" jdbcType="TINYINT" property="photoWatermark" />
+    <result column="vcs_corp_id" jdbcType="VARCHAR" property="vcsCorpId" />
+    <result column="ding_sync_org_scope" jdbcType="VARCHAR" property="dingSyncOrgScope" />
+    <result column="ding_sync_store_rule" jdbcType="VARCHAR" property="dingSyncStoreRule" />
+    <result column="ding_sync_role_rule" jdbcType="INTEGER" property="dingSyncRoleRule" />
+    <result column="ding_sync_user_region_store_auth_rule" jdbcType="VARCHAR" property="dingSyncUserRegionStoreAuthRule" />
+    <result column="access_cool_college" jdbcType="BIT" property="accessCoolCollege" />
+    <result column="multi_login" jdbcType="BIT" property="multiLogin" />
+    <result column="send_upcoming" jdbcType="TINYINT" property="sendUpcoming" />
+    <result column="ding_sync_role_rule_detail" jdbcType="VARCHAR" property="dingSyncRoleRuleDetail" />
+    <result column="sync_passenger"  property="syncPassenger" />
+    <result column="sync_passenger_schedule_id" jdbcType="VARCHAR" property="syncPassengerScheduleId" />
+    <result column="sync_subordinate_change" jdbcType="TINYINT" property="syncSubordinateChange" />
+    <result column="sync_Direct_superior" jdbcType="TINYINT" property="syncDirectSuperior" />
+    <result column="manage_user" jdbcType="TINYINT" property="manageUser" />
+    <result column="is_delete_no_user_role" jdbcType="BIT" property="isDeleteNoUserRole" />
+    <result column="ai_algorithms" jdbcType="BIGINT" property="aiAlgorithms" />
+    <result column="extend_field" property="extendField" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    enterprise_id, location_sign_in, force_b1, in_store_commit_result, offline_in_store_sign_out, 
+    upload_local_img, customize_grade, continue_patrol, overdue_task_continue, manual_train, 
+    create_time, create_user_id, update_time, update_user_id, enable_ding_sync, auto_send_problem, 
+    organization_sync, position_sync, customize_model, photo_watermark, vcs_corp_id, ding_sync_org_scope,manage_user,
+    ding_sync_store_rule, ding_sync_role_rule, ding_sync_user_region_store_auth_rule, access_cool_college,multi_login,send_upcoming,ding_sync_role_rule_detail,
+    sync_passenger,sync_passenger_schedule_id,sync_subordinate_change,sync_direct_superior, enable_external_user, is_delete_no_user_role,customize_package_end_time ,
+    ai_algorithms,extend_field
+  </sql>
+
+  <select id="selectByEnterpriseId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from enterprise_settings
+    where enterprise_id = #{enterpriseId,jdbcType=VARCHAR}
+  </select>
+
+  <insert id="insert" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseSettingDO">
+    insert into enterprise_settings (enterprise_id, location_sign_in, force_b1, 
+      in_store_commit_result, offline_in_store_sign_out, 
+      upload_local_img, customize_grade, continue_patrol, 
+      overdue_task_continue, manual_train, create_time, 
+      create_user_id, enable_ding_sync, auto_send_problem, organization_sync,
+      position_sync, customize_model, photo_watermark, 
+      vcs_corp_id, ding_sync_org_scope,
+      ding_sync_store_rule, ding_sync_role_rule, ding_sync_user_region_store_auth_rule,
+      access_cool_college,send_upcoming,ding_sync_role_rule_detail,
+      sync_passenger,sync_passenger_schedule_id,sync_subordinate_change,sync_direct_superior,is_delete_no_user_role
+      )
+    values (#{enterpriseId,jdbcType=VARCHAR}, #{locationSignIn,jdbcType=TINYINT}, #{forceB1,jdbcType=TINYINT}, 
+      #{inStoreCommitResult,jdbcType=TINYINT}, #{offlineInStoreSignOut,jdbcType=TINYINT}, 
+      #{uploadLocalImg,jdbcType=TINYINT}, #{customizeGrade,jdbcType=TINYINT}, #{continuePatrol,jdbcType=TINYINT}, 
+      #{overdueTaskContinue,jdbcType=TINYINT}, #{manualTrain,jdbcType=TINYINT}, now(),
+      #{createUserId,jdbcType=VARCHAR}, #{enableDingSync,jdbcType=BIT}, #{autoSendProblem,jdbcType=TINYINT}, #{organizationSync,jdbcType=TINYINT},
+      #{positionSync,jdbcType=TINYINT}, #{customizeModel,jdbcType=TINYINT}, #{photoWatermark,jdbcType=TINYINT}, 
+      #{vcsCorpId,jdbcType=VARCHAR}, #{dingSyncOrgScope,jdbcType=VARCHAR},
+      #{dingSyncStoreRule,jdbcType=VARCHAR}, #{dingSyncRoleRule,jdbcType=BIT}, #{dingSyncUserRegionStoreAuthRule,jdbcType=VARCHAR},
+      #{accessCoolCollege,jdbcType=BIT},#{sendUpcoming,jdbcType=TINYINT},#{dingSyncRoleRuleDetail},
+      #{syncPassenger},#{syncPassengerScheduleId},#{syncSubordinateChange}, #{syncDirectSuperior},#{isDeleteNoUserRole}
+      )
+  </insert>
+
+  <update id="updateDingDingSyncSettingByEnterpriseId" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseSettingDO">
+    update enterprise_settings
+    <set>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateUserId != null">
+        update_user_id = #{updateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="enableDingSync != null">
+        enable_ding_sync = #{enableDingSync,jdbcType=BIT},
+      </if>
+      <if test="dingSyncOrgScope != null">
+        ding_sync_org_scope = #{dingSyncOrgScope,jdbcType=VARCHAR},
+      </if>
+      <if test="dingSyncStoreRule != null">
+        ding_sync_store_rule = #{dingSyncStoreRule,jdbcType=VARCHAR},
+      </if>
+      <if test="dingSyncRoleRule != null">
+        ding_sync_role_rule = #{dingSyncRoleRule,jdbcType=BIT},
+      </if>
+      <if test="dingSyncUserRegionStoreAuthRule != null">
+        ding_sync_user_region_store_auth_rule = #{dingSyncUserRegionStoreAuthRule,jdbcType=VARCHAR},
+      </if>
+      <if test="sendUpcoming != null">
+        send_upcoming = #{sendUpcoming,jdbcType=BIGINT},
+      </if>
+      <if test="dingSyncRoleRuleDetail != null">
+        ding_sync_role_rule_detail = #{dingSyncRoleRuleDetail},
+      </if>
+      <if test="syncSubordinateChange != null">
+        sync_subordinate_change = #{syncSubordinateChange},
+      </if>
+      <if test="syncDirectSuperior != null">
+        sync_direct_superior = #{syncDirectSuperior},
+      </if>
+      <if test="isDeleteNoUserRole != null">
+        is_delete_no_user_role = #{isDeleteNoUserRole},
+      </if>
+      <if test="extendField != null">
+        extend_field = #{extendField}
+      </if>
+    </set>
+    where enterprise_id = #{enterpriseId,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateAccessCoolCollegeByEnterpriseId" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseSettingDO">
+    update enterprise_settings
+    <set>
+      <if test="accessCoolCollege != null">
+        access_cool_college = #{accessCoolCollege,jdbcType=BIT},
+      </if>
+      <if test="sendUpcoming != null">
+        send_upcoming = #{sendUpcoming,jdbcType=BIGINT},
+      </if>
+      <if test="enableExternalUser != null">
+        enable_external_user = #{enableExternalUser},
+      </if>
+      <if test="customizePackageEndTime != null">
+        customize_package_end_time = #{customizePackageEndTime},
+      </if>
+      <if test="aiAlgorithms != null">
+        ai_algorithms = #{aiAlgorithms},
+      </if>
+      <if test="extendField != null">
+        extend_field = #{extendField},
+      </if>
+    </set>
+    where enterprise_id = #{enterpriseId,jdbcType=VARCHAR}
+  </update>
+    <update id="updateSyncPassengerByEnterpriseId" parameterType="com.coolcollege.intelligent.model.enterprise.EnterpriseSettingDO">
+        update enterprise_settings
+        <set>
+            <if test="syncPassenger != null">
+                sync_passenger = #{syncPassenger},
+            </if>
+                sync_passenger_schedule_id = #{syncPassengerScheduleId},
+        </set>
+        where enterprise_id = #{enterpriseId}
+    </update>
+
+  <update id="updateAppHomePagePic">
+    update enterprise_settings set app_home_page_pic = #{appHomePagePic} where enterprise_id = #{enterpriseId}
+  </update>
+  <select id="selectListExtend" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from enterprise_settings
+    WHERE `extend_field` LIKE '%enableAiModel%' AND `extend_field` LIKE '%true%'
+</select>
+
+</mapper>

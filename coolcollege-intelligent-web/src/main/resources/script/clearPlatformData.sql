@@ -1,0 +1,20 @@
+update enterprise_config set current_package = NULL, license = NULL, license_expires = NULL, license_type = 0, ding_corp_id = null, ding_corp_secret = NULL, main_corp_id = NULL, app_type = NULL, permanent_code = '', agentid = NULL, cool_college_enterprise_id = NULL, cool_college_secret = NULL where enterprise_id = #{enterpriseId};
+delete from enterprise where id = #{enterpriseId};
+delete from enterprise_user_mapping where enterprise_id = #{enterpriseId};
+delete from enterprise_banner WHERE enterprise_id = #{enterpriseId};
+delete from enterprise_store_required WHERE enterprise_id = #{enterpriseId};
+delete from enterprise_video_setting WHERE enterprise_id = #{enterpriseId};
+delete from enterprise_b1_setting where enterprise_id = #{enterpriseId}; 
+delete from enterprise_config_extend_info where enterprise_id = #{enterpriseId}; 
+delete from enterprise_dict_mapping where enterprise_id = #{enterpriseId};
+delete from enterprise_live_record where enterprise_id = #{enterpriseId}; 
+delete from enterprise_notice_setting where enterprise_id = #{enterpriseId};
+delete from enterprise_operate_log where enterprise_id = #{enterpriseId}; 
+delete from enterprise_order where enterprise_id = #{enterpriseId};
+delete from enterprise_question_settings where enterprise_id = #{enterpriseId};
+delete from enterprise_settings WHERE enterprise_id = #{enterpriseId};
+delete from enterprise_store_check_settings WHERE enterprise_id = #{enterpriseId};
+delete from enterprise_store_required where enterprise_id = #{enterpriseId};
+delete from enterprise_store_setting WHERE enterprise_id = #{enterpriseId};
+delete from enterprise_store_work_settings where enterprise_id = #{enterpriseId};
+

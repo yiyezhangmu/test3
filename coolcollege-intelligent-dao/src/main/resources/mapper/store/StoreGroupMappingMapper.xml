@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.store.StoreGroupMappingMapper">
+    <resultMap id="StoreLabelMapping" type="com.coolcollege.intelligent.model.store.StoreGroupMappingDO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="group_id" property="groupId" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="BIGINT"/>
+        <result column="create_user" property="createUser" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="BIGINT"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="StoreGroupDTO" type="com.coolcollege.intelligent.model.store.dto.StoreGroupDTO">
+        <result column="groupId" property="groupId" jdbcType="VARCHAR"/>
+        <association property="storeGroup" javaType="com.coolcollege.intelligent.model.store.StoreGroupDO">
+            <result column="group_name" property="groupName" jdbcType="VARCHAR"></result>
+            <result column="group_id" property="groupId" jdbcType="VARCHAR"></result>
+        </association>
+        <collection property="storeList" resultMap="com.coolcollege.intelligent.dao.store.StoreMapper.BaseResultMap"></collection>
+    </resultMap>
+    <insert id="insertStoreGroupMapping">
+        insert into store_group_mapping_${enterpriseId}
+        (
+        store_id,
+        group_id,
+        create_time,
+        create_user
+        )values
+        (
+        #{storeGroupMappingDO.storeId},
+        #{storeGroupMappingDO.groupId},
+        #{storeGroupMappingDO.createTime},
+        #{storeGroupMappingDO.createUser}
+        )
+
+
+    </insert>
+    <insert id="batchInsertMapping">
+            insert into store_group_mapping_${eId}
+            (
+            group_id,
+            store_id
+            )
+            values
+        <foreach collection="storeIdList" separator="," item="storeId">
+            (
+            #{groupId},
+            #{storeId}
+            )
+        </foreach>
+
+    </insert>
+    <insert id="insertGroupMappingList">
+        insert into store_group_mapping_${eId}
+        (
+        store_id,
+        group_id,
+        create_time,
+        create_user
+        )values
+        <foreach collection="storeMappingIdList" separator="," item="storeGroupMappingDO">
+            (
+            #{storeGroupMappingDO.storeId},
+            #{storeGroupMappingDO.groupId},
+            #{storeGroupMappingDO.createTime},
+            #{storeGroupMappingDO.createUser}
+            )
+        </foreach>
+    </insert>
+    <update id="updateStoreGroupMapping">
+        update store_group_mapping_${enterprisedId} set
+            store_id = #{storeGroupMappingDO.storeId},
+            group_id = #{storeGroupMappingDO.groupId},
+            update_time = #{storeGroupMappingDO.updateTime},
+            update_user = #{storeGroupMappingDO.updateUser}
+        where id = #{storeGroupMappingDO.id}
+    </update>
+    <delete id="deleteStoreGroupMappingByGroupId">
+        delete from store_group_mapping_${enterpriseId}
+        where group_id in (#{groupId})
+    </delete>
+    <delete id="deleteMappingByStoreId">
+        delete from store_group_mapping_${eId}
+        where store_id = #{storeId}
+    </delete>
+
+    <delete id="deleteMappingByStoreIdList">
+        delete from store_group_mapping_${eId}
+        where store_id in
+        <foreach collection="storeIds" item="storeId" open="(" separator="," close=")">
+            #{storeId}
+        </foreach>
+    </delete>
+
+    <delete id="batchDeleteMappingByGroupIdList">
+        delete from store_group_mapping_${eId}
+        where group_id in 
+        <foreach collection="storeGroupIdList" close=")" separator="," open="(" item="groupId">
+            #{groupId}
+        </foreach>
+    </delete>
+    <select id="selectStoreByGroupId" resultType="java.lang.String">
+        select
+        store_id as storeId
+        from store_group_mapping_${enterpriseId}
+        where group_id= #{groupId}
+                group by group_id,store_id
+    </select>
+    <select id="selectGroupsByStoreId" resultType="com.coolcollege.intelligent.model.store.StoreGroupDO">
+        select
+        id as id,
+        store_id as storeId,
+        group_id as groupId,
+        create_time as createTime,
+        create_user as createUser,
+        update_time as updateTime,
+        update_user as updateUser
+        from store_group_mapping_${enterpriseId}
+        where store_id = #{storeId,jdbcType=VARCHAR}
+    </select>
+    <select id="getAllGroupMapping" resultType="com.coolcollege.intelligent.model.store.StoreGroupMappingDO">
+        select
+        group_id as groupId,
+        store_id as storeId
+        from store_group_mapping_${enterpriseId}
+        <where>
+            <foreach collection="storeIds" open=" store_id in (" close=")" separator="," item="storeId">
+                #{storeId}
+            </foreach>
+        </where>
+        group by group_id,store_id
+    </select>
+    <select id="getStoreGroupMappingByGroupIDs"
+            resultType="com.coolcollege.intelligent.model.store.StoreGroupMappingDO">
+        select
+        group_id as groupId,
+        store_id as storeId
+        from store_group_mapping_${enterpriseId}
+        <where>
+            <foreach collection="groupIds" open=" group_id in (" close=")" separator="," item="groupId">
+                #{groupId}
+            </foreach>
+        </where>
+        group by group_id,store_id
+    </select>
+    <select id="selectStoreGroupDTO" resultMap="StoreGroupDTO">
+        select
+        a.group_id as groupId,
+        a.group_name,
+        a.group_id,
+        b.store_id,
+        b.store_name
+        from store_group_${eId} a
+        left join store_group_mapping_${eId} c
+        on c.group_id = a.group_id
+        left join store_${eId} b
+        on c.store_id = b.store_id
+        where a.group_id in
+        <foreach collection="groupIds" item="groupId" separator="," open="(" close=")">
+            #{groupId}
+        </foreach>
+        <if test="storeIds != null and storeIds.size()>0">
+            <foreach collection="storeIds" item="storeId" open="and b.store_id in (" close=")" separator=",">
+                #{storeId}
+            </foreach>
+        </if>
+        group by a.group_id,b.store_id
+
+    </select>
+    <select id="selectMappingByStoreIds" resultType="com.coolcollege.intelligent.model.store.StoreGroupMappingDO">
+        select
+        store_id as storeId,
+        group_id as groupId
+        from store_group_mapping_${enterpriseId}
+        where store_id in (
+        <foreach collection="storeIds" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </select>
+    <select id="selectStoreIdByGroupId" resultType="java.lang.String">
+        select
+        a.store_id as storeId
+        from store_group_mapping_${enterpriseId} a
+        left join store_${enterpriseId} b
+        on b.store_id = a.store_id
+        where a.group_id = #{groupId}
+        and  b.is_delete = 'effective'
+    </select>
+    <select id="selectAuthStoreIdByGroupId" resultType="java.lang.String">
+        select
+        a.store_id as storeId
+        from store_group_mapping_${enterpriseId} a
+        left join store_${enterpriseId} b
+        on b.store_id = a.store_id
+        <where> a.group_id = #{groupId}
+        and  b.is_delete = 'effective'
+        <choose>
+            <when test="isAdmin!=null and isAdmin" />
+            <otherwise>
+                and(<if test="authStoreIdList!=null and authStoreIdList.size>0">
+                <foreach collection="authStoreIdList" item="storeId" open="b.store_id in (" close=")" separator=",">
+                    #{storeId}
+                </foreach>
+            </if>
+                <if test="authFullRegionPathList!=null and authFullRegionPathList.size>0">
+                    <if test="authStoreIdList!=null and authStoreIdList.size>0">
+                        or
+                    </if>
+                    <foreach collection="authFullRegionPathList" item="regionPath"  separator="or">
+                        b.region_path like concat( #{regionPath}, '%')
+                    </foreach>
+                </if>)
+            </otherwise>
+        </choose>
+        </where>
+    </select>
+
+    <delete id="deleteByGroupIdAndStoreIdList">
+        delete from store_group_mapping_${eid}
+        where group_id = #{groupId}
+        and store_id in
+        <foreach collection="storeDeptIdList" item="storeDeptId" separator="," open="(" close=")">
+            #{storeDeptId}
+        </foreach>
+    </delete>
+</mapper>

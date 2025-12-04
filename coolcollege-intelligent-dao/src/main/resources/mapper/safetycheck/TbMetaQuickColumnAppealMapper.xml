@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.safetycheck.TbMetaQuickColumnAppealMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.safetycheck.TbMetaQuickColumnAppealDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="meta_quick_column_id" jdbcType="BIGINT" property="metaQuickColumnId" />
+    <result column="appeal_name" jdbcType="VARCHAR" property="appealName" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, meta_quick_column_id, appeal_name, deleted, create_user_id,
+    update_user_id, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_meta_quick_column_appeal_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_meta_quick_column_appeal_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.safetycheck.TbMetaQuickColumnAppealDO">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_meta_quick_column_appeal_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.metaQuickColumnId != null">
+        meta_quick_column_id,
+      </if>
+      <if test="record.appealName != null">
+        appeal_name,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id,
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.metaQuickColumnId != null">
+        #{record.metaQuickColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.appealName != null">
+        #{record.appealName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted,jdbcType=TINYINT},
+      </if>
+      <if test="record.createUserId != null">
+        #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateUserId != null">
+        #{record.updateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.safetycheck.TbMetaQuickColumnAppealDO">
+    update tb_meta_quick_column_appeal_${enterpriseId}
+    <set>
+      <if test="record.metaQuickColumnId != null">
+        meta_quick_column_id = #{record.metaQuickColumnId,jdbcType=BIGINT},
+      </if>
+      <if test="record.appealName != null">
+        appeal_name = #{record.appealName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=TINYINT},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateUserId != null">
+        update_user_id = #{record.updateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != metaQuickColumnId">
+         and t.meta_quick_column_id = #{metaQuickColumnId,jdbcType=BIGINT}
+      </if>
+      <if test="null != appealName">
+         and t.appeal_name = #{appealName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != deleted">
+         and t.deleted = #{deleted,jdbcType=TINYINT}
+      </if>
+      <if test="null != createUserId">
+         and t.create_user_id = #{createUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != updateUserId">
+         and t.update_user_id = #{updateUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != updateTime">
+         and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+  </sql>
+
+  <insert id="batchInsert" >
+    insert into tb_meta_quick_column_appeal_${enterpriseId}
+    (
+    meta_quick_column_id,
+    create_user_id,
+    appeal_name,
+    deleted)
+    values
+    <foreach collection="list" item="item" separator=",">(
+      #{item.metaQuickColumnId},
+      #{item.createUserId},
+      #{item.appealName},
+      0)
+    </foreach>
+  </insert>
+  <select id="selectListByColumnId" parameterType="java.lang.Long" resultType="com.coolcollege.intelligent.model.metatable.dto.TbQuickColumnAppealDTO">
+    select
+      id, meta_quick_column_id as metaQuickColumnId,
+      appeal_name AS appealName
+    from tb_meta_quick_column_appeal_${enterpriseId}
+    where meta_quick_column_id = #{columnId}
+      and deleted = 0
+  </select>
+  <update id="deleteByQuickColumnId">
+    update tb_meta_quick_column_appeal_${enterpriseId} set deleted = 1 where meta_quick_column_id = #{quickColumnId}
+  </update>
+  <select id="selectIdListByColumnId" parameterType="java.lang.Long" resultType="java.lang.Long">
+    select
+      id
+    from tb_meta_quick_column_appeal_${enterpriseId}
+    where meta_quick_column_id = #{columnId}
+      and deleted = 0
+  </select>
+
+  <update id="logicallyDeleteByIds">
+    update tb_meta_quick_column_appeal_${enterpriseId} set deleted = 1 where id in <foreach collection="ids" item="id" open="(" close=")" separator=",">#{id}</foreach>
+  </update>
+  <select id="getListByColumnIdList" parameterType="java.lang.Long" resultType="com.coolcollege.intelligent.model.metatable.dto.TbQuickColumnAppealDTO">
+    select
+    id, meta_quick_column_id as metaQuickColumnId,
+    appeal_name AS appealName
+    from tb_meta_quick_column_appeal_${enterpriseId}
+    where meta_quick_column_id in
+    <foreach collection="list" item="columnId" open="(" close=")" separator=",">#{columnId}</foreach>
+    and deleted = 0
+  </select>
+</mapper>

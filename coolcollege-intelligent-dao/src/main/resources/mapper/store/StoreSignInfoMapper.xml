@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolcollege.intelligent.dao.store.StoreSignInfoMapper">
+  <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.store.StoreSignInfoDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="sign_date" jdbcType="DATE" property="signDate" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="region_id" jdbcType="BIGINT" property="regionId" />
+    <result column="region_way" jdbcType="VARCHAR" property="regionWay" />
+    <result column="supervisor_id" jdbcType="VARCHAR" property="supervisorId" />
+    <result column="supervisor_name" jdbcType="VARCHAR" property="supervisorName" />
+    <result column="sign_start_time" jdbcType="TIMESTAMP" property="signStartTime" />
+    <result column="sign_end_time" jdbcType="TIMESTAMP" property="signEndTime" />
+    <result column="sign_start_address" jdbcType="VARCHAR" property="signStartAddress" />
+    <result column="sign_end_address" jdbcType="VARCHAR" property="signEndAddress" />
+    <result column="start_longitude_latitude" jdbcType="VARCHAR" property="startLongitudeLatitude" />
+    <result column="end_longitude_latitude" jdbcType="VARCHAR" property="endLongitudeLatitude" />
+    <result column="sign_in_status" jdbcType="TINYINT" property="signInStatus" />
+    <result column="sign_out_status" jdbcType="TINYINT" property="signOutStatus" />
+    <result column="sign_start_remark" jdbcType="VARCHAR" property="signStartRemark" />
+    <result column="sign_end_remark" jdbcType="VARCHAR" property="signEndRemark" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="sign_in_picture" jdbcType="VARCHAR" property="signInPicture" />
+    <result column="sign_out_picture" jdbcType="VARCHAR" property="signOutPicture" />
+    <result column="task_id" jdbcType="VARCHAR" property="taskId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.coolcollege.intelligent.model.store.StoreSignInfoDO">
+    <result column="sign_in_video" jdbcType="LONGVARCHAR" property="signInVideo" />
+    <result column="sign_out_video" jdbcType="LONGVARCHAR" property="signOutVideo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sign_date, store_id, store_name, region_id, region_way, supervisor_id, supervisor_name, 
+    sign_start_time, sign_end_time, sign_start_address, sign_end_address, start_longitude_latitude, 
+    end_longitude_latitude, sign_in_status, sign_out_status, sign_start_remark, sign_end_remark, 
+    deleted, create_time, update_time, sign_in_picture, sign_out_picture, task_id
+  </sql>
+  <sql id="Blob_Column_List">
+    sign_in_video, sign_out_video
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from store_sign_info_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectByStoreIdAndSignDate" resultType="com.coolcollege.intelligent.model.store.StoreSignInfoDO">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from store_sign_info_${enterpriseId}
+    where store_id = #{storeId} and sign_date = #{signDate} and deleted = 0 and supervisor_id = #{userId}
+  </select>
+  <select id="list" resultType="com.coolcollege.intelligent.model.store.StoreSignInfoDO">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from store_sign_info_${enterpriseId}
+    where  deleted = 0 and sign_date BETWEEN #{beginDate} and #{endDate}
+    <if test="regionWays != null and regionWays.size() > 0">
+      <foreach collection="regionWays" separator="or" close=")" open="and (" item="regionWay">
+        region_way like concat(#{regionWay}, '%')
+      </foreach>
+    </if>
+    <if test="userIdList!=null and userIdList.size>0">
+      <foreach collection="userIdList" item="userId" separator="," open="and supervisor_id in(" close=")" >
+        #{userId}
+      </foreach>
+    </if>
+    <if test="storeName != null ">
+      and store_name like concat('%', #{storeName}, '%')
+    </if>
+    order by sign_date desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from store_sign_info_${enterpriseId}
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.coolcollege.intelligent.model.store.StoreSignInfoDO">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into store_sign_info_${enterpriseId}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.signDate != null">
+        sign_date,
+      </if>
+      <if test="record.storeId != null">
+        store_id,
+      </if>
+      <if test="record.storeName != null">
+        store_name,
+      </if>
+      <if test="record.regionId != null">
+        region_id,
+      </if>
+      <if test="record.regionWay != null">
+        region_way,
+      </if>
+      <if test="record.supervisorId != null">
+        supervisor_id,
+      </if>
+      <if test="record.supervisorName != null">
+        supervisor_name,
+      </if>
+      <if test="record.signStartTime != null">
+        sign_start_time,
+      </if>
+      <if test="record.signEndTime != null">
+        sign_end_time,
+      </if>
+      <if test="record.signStartAddress != null">
+        sign_start_address,
+      </if>
+      <if test="record.signEndAddress != null">
+        sign_end_address,
+      </if>
+      <if test="record.startLongitudeLatitude != null">
+        start_longitude_latitude,
+      </if>
+      <if test="record.endLongitudeLatitude != null">
+        end_longitude_latitude,
+      </if>
+      <if test="record.signInStatus != null">
+        sign_in_status,
+      </if>
+      <if test="record.signOutStatus != null">
+        sign_out_status,
+      </if>
+      <if test="record.signStartRemark != null">
+        sign_start_remark,
+      </if>
+      <if test="record.signEndRemark != null">
+        sign_end_remark,
+      </if>
+      <if test="record.deleted != null">
+        deleted,
+      </if>
+      <if test="record.createTime != null">
+        create_time,
+      </if>
+      <if test="record.updateTime != null">
+        update_time,
+      </if>
+      <if test="record.signInPicture != null">
+        sign_in_picture,
+      </if>
+      <if test="record.signOutPicture != null">
+        sign_out_picture,
+      </if>
+      <if test="record.signInVideo != null">
+        sign_in_video,
+      </if>
+      <if test="record.signOutVideo != null">
+        sign_out_video,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.signDate != null">
+        #{record.signDate,jdbcType=DATE},
+      </if>
+      <if test="record.storeId != null">
+        #{record.storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeName != null">
+        #{record.storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regionId != null">
+        #{record.regionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.regionWay != null">
+        #{record.regionWay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supervisorId != null">
+        #{record.supervisorId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supervisorName != null">
+        #{record.supervisorName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signStartTime != null">
+        #{record.signStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.signEndTime != null">
+        #{record.signEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.signStartAddress != null">
+        #{record.signStartAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signEndAddress != null">
+        #{record.signEndAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startLongitudeLatitude != null">
+        #{record.startLongitudeLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endLongitudeLatitude != null">
+        #{record.endLongitudeLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signInStatus != null">
+        #{record.signInStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.signOutStatus != null">
+        #{record.signOutStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.signStartRemark != null">
+        #{record.signStartRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signEndRemark != null">
+        #{record.signEndRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        #{record.deleted,jdbcType=TINYINT},
+      </if>
+      <if test="record.createTime != null">
+        #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.signInPicture != null">
+        #{record.signInPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signOutPicture != null">
+        #{record.signOutPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signInVideo != null">
+        #{record.signInVideo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.signOutVideo != null">
+        #{record.signOutVideo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.coolcollege.intelligent.model.store.StoreSignInfoDO">
+    update store_sign_info_${enterpriseId}
+    <set>
+      <if test="record.signDate != null">
+        sign_date = #{record.signDate,jdbcType=DATE},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeName != null">
+        store_name = #{record.storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regionId != null">
+        region_id = #{record.regionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.regionWay != null">
+        region_way = #{record.regionWay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supervisorId != null">
+        supervisor_id = #{record.supervisorId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supervisorName != null">
+        supervisor_name = #{record.supervisorName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signStartTime != null">
+        sign_start_time = #{record.signStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.signEndTime != null">
+        sign_end_time = #{record.signEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.signStartAddress != null">
+        sign_start_address = #{record.signStartAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signEndAddress != null">
+        sign_end_address = #{record.signEndAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startLongitudeLatitude != null">
+        start_longitude_latitude = #{record.startLongitudeLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endLongitudeLatitude != null">
+        end_longitude_latitude = #{record.endLongitudeLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signInStatus != null">
+        sign_in_status = #{record.signInStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.signOutStatus != null">
+        sign_out_status = #{record.signOutStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.signStartRemark != null">
+        sign_start_remark = #{record.signStartRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signEndRemark != null">
+        sign_end_remark = #{record.signEndRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=TINYINT},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.signInPicture != null">
+        sign_in_picture = #{record.signInPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signOutPicture != null">
+        sign_out_picture = #{record.signOutPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signInVideo != null">
+        sign_in_video = #{record.signInVideo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.signOutVideo != null">
+        sign_out_video = #{record.signOutVideo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.taskId != null">
+        task_id = #{record.taskId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=BIGINT}
+  </update>
+  <sql id="dynamicQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != signDate">
+         and t.sign_date = #{signDate,jdbcType=DATE}
+      </if>
+      <if test="null != storeId">
+         and t.store_id = #{storeId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != storeName">
+         and t.store_name = #{storeName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != regionId">
+         and t.region_id = #{regionId,jdbcType=BIGINT}
+      </if>
+      <if test="null != regionWay">
+         and t.region_way = #{regionWay,jdbcType=VARCHAR}
+      </if>
+      <if test="null != supervisorId">
+         and t.supervisor_id = #{supervisorId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != supervisorName">
+         and t.supervisor_name = #{supervisorName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != signStartTime">
+         and t.sign_start_time = #{signStartTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != signEndTime">
+         and t.sign_end_time = #{signEndTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != signStartAddress">
+         and t.sign_start_address = #{signStartAddress,jdbcType=VARCHAR}
+      </if>
+      <if test="null != signEndAddress">
+         and t.sign_end_address = #{signEndAddress,jdbcType=VARCHAR}
+      </if>
+      <if test="null != startLongitudeLatitude">
+         and t.start_longitude_latitude = #{startLongitudeLatitude,jdbcType=VARCHAR}
+      </if>
+      <if test="null != endLongitudeLatitude">
+         and t.end_longitude_latitude = #{endLongitudeLatitude,jdbcType=VARCHAR}
+      </if>
+      <if test="null != signInStatus">
+         and t.sign_in_status = #{signInStatus,jdbcType=TINYINT}
+      </if>
+      <if test="null != signOutStatus">
+         and t.sign_out_status = #{signOutStatus,jdbcType=TINYINT}
+      </if>
+      <if test="null != signStartRemark">
+         and t.sign_start_remark = #{signStartRemark,jdbcType=VARCHAR}
+      </if>
+      <if test="null != signEndRemark">
+         and t.sign_end_remark = #{signEndRemark,jdbcType=VARCHAR}
+      </if>
+      <if test="null != deleted">
+         and t.deleted = #{deleted,jdbcType=TINYINT}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != updateTime">
+         and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != signInPicture">
+         and t.sign_in_picture = #{signInPicture,jdbcType=VARCHAR}
+      </if>
+      <if test="null != signOutPicture">
+         and t.sign_out_picture = #{signOutPicture,jdbcType=VARCHAR}
+      </if>
+      <if test="null != signInVideo">
+         and t.sign_in_video = #{signInVideo,jdbcType=LONGVARCHAR}
+      </if>
+      <if test="null != signOutVideo">
+         and t.sign_out_video = #{signOutVideo,jdbcType=LONGVARCHAR}
+      </if>
+    </trim>
+  </sql>
+</mapper>

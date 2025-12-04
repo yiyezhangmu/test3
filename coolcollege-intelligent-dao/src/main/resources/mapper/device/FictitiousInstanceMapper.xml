@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.device.FictitiousInstanceMapper">
+    <resultMap id="BaseResultMap" type="com.coolcollege.intelligent.model.device.FictitiousInstanceDO">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="biz_inst_id" property="bizInstId" jdbcType="VARCHAR"/>
+        <result column="punch_group_id" property="punchGroupId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectFictitiousInstance" resultType="com.coolcollege.intelligent.model.device.FictitiousInstanceDO">
+        select
+            id as id,
+            biz_inst_id as bizInstId,
+            punch_group_id as punchGroupId
+        from fictitious_instance_${enterpriseId}
+    </select>
+
+    <insert id="insertFictitiousInstance">
+        insert into fictitious_instance_${enterpriseId}
+        (
+            biz_inst_id,
+            punch_group_id
+        )
+        values (
+            #{instanceDO.bizInstId, jdbcType=VARCHAR},
+            #{instanceDO.punchGroupId, jdbcType=VARCHAR}
+        )
+    </insert>
+</mapper>

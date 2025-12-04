@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coolcollege.intelligent.dao.songxia.SongXiaMapper">
+
+    <insert id="batchInsertPromoterStoreInfo" parameterType="java.util.List">
+        INSERT INTO panasonic_promoter_store_info (
+            promoter_user_id,
+            promoter_name,
+            promoter_num,
+            promoter_type,
+            category_name,
+            category_code,
+            store_id,
+            store_name,
+            store_level,
+            store_type,
+            physical_store_num,
+            dimission_status,
+            dimission_date,
+            re_admission_date,
+            without_basic_pay,
+            without_commission,
+            admission_date,
+            entry_date,
+            probation_period,
+            job_on_month_start_date,
+            job_on_month_end_date,
+            job_on_month_day,
+            stop_shop,
+            job_on_store_month_start_date,
+            job_on_store_month_end_date,
+            job_on_store_month_day,
+            local_wage_scale,
+            basic_monthly_wage,
+            wage_ratio,
+            basic_wage_amount,
+            seniority_wage,
+            insured_place_code,
+            insured_place_name,
+            minimum_wage_place_code,
+            minimum_wage_place_name,
+            business_region_name,
+            business_region_code,
+            business_segment_name,
+            business_segment_code,
+            create_time,
+            create_user_id
+        ) VALUES
+        <foreach collection="insertDOList" item="item" index="index" separator=",">
+            (
+            #{item.promoterUserId},
+            #{item.promoterName},
+            #{item.promoterNum},
+            #{item.promoterType},
+            #{item.categoryName},
+            #{item.categoryCode},
+            #{item.storeId},
+            #{item.storeName},
+            #{item.storeLevel},
+            #{item.storeType},
+            #{item.physicalStoreNum},
+            #{item.dimissionStatus},
+            #{item.dimissionDate},
+            #{item.reAdmissionDate},
+            #{item.withoutBasicPay},
+            #{item.withoutCommission},
+            #{item.admissionDate},
+            #{item.entryDate},
+            #{item.probationPeriod},
+            #{item.jobOnMonthStartDate},
+            #{item.jobOnMonthEndDate},
+            #{item.jobOnMonthDay},
+            #{item.stopShop},
+            #{item.jobOnStoreMonthStartDate},
+            #{item.jobOnStoreMonthEndDate},
+            #{item.jobOnStoreMonthDay},
+            #{item.localWageScale},
+            #{item.basicMonthlyWage},
+            #{item.wageRatio},
+            #{item.basicWageAmount},
+            #{item.seniorityWage},
+            #{item.insuredPlaceCode},
+            #{item.insuredPlaceName},
+            #{item.minimumWagePlaceCode},
+            #{item.minimumWagePlaceName},
+            #{item.businessRegionName},
+            #{item.businessRegionCode},
+            #{item.businessSegmentName},
+            #{item.businessSegmentCode},
+            #{item.createTime},
+            #{item.createUserId}
+            )
+        </foreach>
+    </insert>
+
+
+    <select id="getSalesInfo"
+            resultType="com.coolcollege.intelligent.facade.dto.openApi.vo.SongXiaSalesInfoVO">
+        SELECT product_model      AS productModel,
+               physical_store_num AS physicalStoreNum,
+               transaction_code   AS transactionCode,
+               report_date        AS reportDate,
+               category_code      AS categoryCode,
+               category_name      AS categoryName,
+               CASE
+                   WHEN report_type = 'generalSales' THEN '01'
+                   WHEN report_type = 'prototypeSales' THEN '02'
+                   WHEN report_type = 'returnsGoods' THEN '03'
+                   ELSE NULL -- 处理其他未定义类型的默认情况
+                   END AS reportType,
+               SUM(amount)        AS amount,
+               IFNULL(SUM(money),0)         AS money
+        FROM `panasonic_actual_report_record`
+        WHERE deleted = 0
+          and report_date between #{startReportDate} and #{endReportDate}
+        GROUP BY report_date,product_model,physical_store_num,category_code,report_type
+        order by reportDate
+    </select>
+    <select id="getSampleInfo"
+            resultType="com.coolcollege.intelligent.facade.dto.openApi.vo.SongXiaSampleInfoVO">
+        select
+            sse.product_model as productModel,
+            pas.transaction_code as transactionCode,
+            sse.category_code as categoryCode,
+            sse.category_name as categoryName,
+            DATE_FORMAT(NOW(),'%Y%m') as yearMonth,
+            SUM(sse.goods_num) as amount
+        from panasonic_store_sample_extraction sse
+        LEFT JOIN panasonic_actual_store pas
+        on sse.store_id=pas.store_id
+        where
+              sse.deleted = 0
+          and sse.status=1
+          and pas.deleted=0
+        GROUP BY sse.product_model,pas.transaction_code
+    </select>
+    <select id="getActualStoreByStoreIds" resultType="com.coolcollege.intelligent.model.songXia.ActualStoreDO">
+        SELECT
+            a.id AS id,
+            a.store_id AS storeId,
+            a.actual_store_num AS actualStoreNum,
+            a.actual_store_name AS actualStoreName,
+            a.physical_store_name AS physicalStoreName,
+            a.physical_store_num AS physicalStoreNum,
+            a.category_name AS categoryName,
+            a.category_code AS categoryCode,
+            a.store_level AS storeLevel,
+            a.management_category AS managementCategory,
+            a.channel_code AS channelCode,
+            a.channel_name AS channelName,
+            a.market_hierarchy AS marketHierarchy,
+            a.transaction_name AS transactionName,
+            a.transaction_code AS transactionCode,
+            a.address AS address,
+            a.supervisor_id AS supervisorId,
+            a.store_manager_id AS storeManagerId,
+            a.remark AS remark,
+            a.status AS status,
+            a.begin_time AS beginTime,
+            a.end_time AS endTime,
+            a.sales_representative_id AS salesRepresentativeId,
+            a.create_time AS createTime,
+            a.create_user_id AS createUser,
+            a.update_time AS updateTime,
+            a.update_user_id AS updateUser,
+            b.business_region_name as businessRegionName,
+            b.business_segment_name as businessSegmentName,
+            b.business_region_code as businessRegionCode,
+            b.business_segment_code as businessSegmentCode
+        FROM panasonic_actual_store a
+        left join panasonic_transaction_object b
+        on a.transaction_code = b.transaction_code
+        where
+            a.deleted = 0
+        and
+            a.status = 1
+        and
+            a.store_id in
+        <foreach collection="storeIds" item="storeId" open="(" separator="," close=")">
+            #{storeId}
+        </foreach>
+    </select>
+    <select id="getPromoterStoreIdsByUserId" resultType="java.lang.String">
+        select store_id as storeId
+        from panasonic_promoter_store_info
+        where promoter_user_id = #{userId}
+        and deleted = 0
+    </select>
+    <select id="getTransactionIdsByStoreIds"
+            resultType="com.coolcollege.intelligent.model.songXia.TransactionObjectDO">
+        SELECT
+            id AS transactionInfoId,
+            transaction_name AS transactionName,
+            transaction_code AS transactionCode,
+            channel_name AS channelName,
+            channel_code AS channelCode,
+            crop_name AS cropName,
+            crop_code AS cropCode,
+            business_region_name AS businessRegionName,
+            business_region_code AS businessRegionCode,
+            business_segment_name AS businessSegmentName,
+            business_segment_code AS businessSegmentCode,
+            create_time AS createTime,
+            create_user_id AS createUserId,
+            update_time AS updateTime,
+            update_user_id AS updateUserId
+        FROM transaction_info
+        where deleted = 0
+        and
+            transaction_code in
+        <foreach collection="transactionCodes" item="transactionCode" open="(" separator="," close=")">
+            #{transactionCode}
+        </foreach>
+
+    </select>
+    <select id="getPanasonicPromoterInfoByUserId"
+            resultType="com.coolcollege.intelligent.model.songXia.PromoterInfoDO">
+        SELECT
+            a.user_id AS promoterUserId,
+            a.name AS promoterName,
+            a.jobnumber AS promoterNum,
+            b.promoter_type AS promoterType,
+            b.category_name AS categoryName,
+            b.category_code AS categoryCode,
+            b.dimission_status AS dimissionStatus,
+            b.sex AS sex,
+            b.without_basic_pay AS withoutBasicPay,
+            b.without_commission AS withoutCommission,
+            b.birth_date AS birthDate,
+            b.phone AS phone,
+            b.address AS address,
+            b.id_number AS idNumber,
+            b.actual_store_num AS actualStoreNum,
+            b.physical_store_num AS physicalStoreNum,
+            b.physical_store_name AS physicalStoreName,
+            b.business_region_name AS businessRegionName,
+            b.business_region_code AS businessRegionCode,
+            b.business_segment_name AS businessSegmentName,
+            b.business_segment_code AS businessSegmentCode,
+            b.status AS status,
+            b.remark AS remark,
+            b.create_time AS createTime,
+            b.create_user_id AS createUserId,
+            b.update_time AS updateTime,
+            b.update_user_id AS updateUserId,
+            b.deleted AS deleted,
+            b.insured_place_code AS insuredPlaceCode,
+            b.insured_place_name AS insuredPlaceName,
+            b.minimum_wage_place_code AS minimumWagePlaceCode,
+            b.minimum_wage_place_name AS minimumWagePlaceName,
+            b.contract_nature AS contractNature,
+            b.contract_num AS contractNum,
+            b.job_date AS jobDate,
+            b.resignation_date AS resignationDate,
+            b.open_bank AS openBank,
+            b.open_bank_card AS openBankCard,
+            b.basic_monthly_wage AS basicMonthlyWage,
+            b.wage_ratio AS wageRatio,
+            b.seniority_wage AS seniorityWage,
+            b.seniority AS seniority
+        FROM enterprise_user_${eid} a
+            left join panasonic_promoter_info b
+        on a.user_id = b.promoter_user_id
+        where a.user_id = #{userId}
+    </select>
+    <select id="getCategoryMappingByStoreIds"
+            resultType="com.coolcollege.intelligent.model.achievement.entity.ManageStoreCategoryCodeDO">
+        select
+            *
+        from panasonic_manage_store_category_code
+        where store_id in
+        <foreach collection="storeIds" item="storeId" open="(" separator="," close=")">
+            #{storeId}
+        </foreach>
+    </select>
+
+    <select id="getStockInfo"
+            resultType="com.coolcollege.intelligent.facade.dto.openApi.vo.SongXiaSampleInfoVO">
+        select
+            product_model as productModel,
+            customer_code as transactionCode,
+            category_code as categoryCode,
+            category_name as categoryName,
+            DATE_FORMAT(NOW(),'%Y%m') as yearMonth,
+            SUM(good_stock) as amount
+        from panasonic_stock_inventory
+        where
+            deleted = 0
+        <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+            AND record_date BETWEEN #{startDate} AND #{endDate}
+        </if>
+
+        GROUP BY product_model, customer_code
+    </select>
+
+</mapper>
